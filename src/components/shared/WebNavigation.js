@@ -2,6 +2,8 @@ import React, {useContext, useState} from 'react'
 import MFLogoNav from "../../assets/images/logo/logo.png"
 import {Modal} from "antd"
 import AuthContext from "../../contexts/AuthContext"
+import {Link} from "react-router-dom"
+import Paths from "../../routes/Paths"
 
 
 const WebNavigation = ({isConnected}) => {
@@ -40,32 +42,31 @@ const WebNavigation = ({isConnected}) => {
                             <ul className="nav">
                                 <li className="nav-item">
                                     <a className="nav-link" href="/">
-                                        <span className="nav-text">Homepage</span>
+                                        <span className="nav-text">Home</span>
                                     </a>
                                 </li>
                                 <li className="nav-item">
-                                    <a className="nav-link" href="/litepaper/">
-                                        <span className="nav-text">Litepaper</span>
-                                    </a>
+                                    <Link className="nav-link" to={Paths.PrivateSale}>
+                                        <span className="nav-text">MFG Private Sale
+                                        </span>
+                                    </Link>
                                 </li>
                                 <li className="nav-item">
-                                    <a className="nav-link" href="https://whitepaper.moonfit.xyz/" target="_blank" rel="noreferrer">
+                                    <Link className="nav-link" to={Paths.MintPassMinting}>
+                                        <span className="nav-text">Mint Pass
+                                        </span>
+                                    </Link>
+                                </li>
+                                <li className="nav-item">
+                                    <a className="nav-link" href="https://whitepaper.moonfit.xyz/" target="_blank"
+                                       rel="noreferrer">
                                         <span className="nav-text">Whitepaper</span>
                                     </a>
                                 </li>
                                 <li className="nav-item">
-                                    <a className="nav-link" href="/whitelist/">
-                                        <span className="nav-text">WhiteList</span>
-                                    </a>
-                                </li>
-                                <li className="nav-item">
-                                    <a className="nav-link" href="/how-to-play/">
-                                        <span className="nav-text">How to play</span>
-                                    </a>
-                                </li>
-                                <li className="nav-item">
-                                    <a className="nav-link" href="/nft-sale/">
-                                        <span className="nav-text">Mint Map</span>
+                                    <a className="nav-link" href="https://litepaper.moonfit.xyz/" target="_blank"
+                                       rel="noreferrer">
+                                        <span className="nav-text">Litepaper</span>
                                     </a>
                                 </li>
                             </ul>
@@ -110,7 +111,8 @@ const WebNavigation = ({isConnected}) => {
                                     </a>
                                 </li>
                                 <li className="nav-item">
-                                    <a className="nav-link" href="https://whitepaper.moonfit.xyz/" target="_blank" rel="noreferrer">
+                                    <a className="nav-link" href="https://whitepaper.moonfit.xyz/" target="_blank"
+                                       rel="noreferrer">
                                         <span className="nav-text">Whitepaper</span>
                                     </a>
                                 </li>
