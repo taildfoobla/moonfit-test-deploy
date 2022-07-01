@@ -84,7 +84,7 @@ const WebFooter = ({isConnected}) => {
                         </li>
                     </ul>
 
-                    <div className="copyright-text mb-6">Copyright © 2022 by MoonFit. All Rights Reserved.</div>
+                    <div className="copyright-text mb-6">Copyright © {new Date().getFullYear()} by MoonFit. All Rights Reserved.</div>
                 </div>
             </div>
         </div>
