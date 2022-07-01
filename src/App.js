@@ -25,21 +25,6 @@ const App = ({route}) => {
         checkConnectedWallet()
     }, [])
 
-    const detectCurrentProvider = () => {
-        let provider
-        if (window.ethereum) {
-            provider = window.ethereum
-        } else if (window.web3) {
-            // eslint-disable-next-line
-            provider = window.web3.currentProvider
-        } else {
-            console.log(
-                'Non-Ethereum browser detected. You should consider trying MetaMask!'
-            )
-        }
-        return provider
-    }
-
     const onConnect = async () => {
         try {
             const provider = window.SubWallet
@@ -49,7 +34,7 @@ const App = ({route}) => {
             await provider.request({method: 'eth_requestAccounts'})
             const chainId = await provider.request({method: 'eth_chainId'})
 
-            // await provider.request(WEB3_METHODS.switchToMoonbaseAlphaNetwork)
+            await provider.request(WEB3_METHODS.switchToMoonbaseAlphaNetwork)
             // if (!chainId || chainId.toString() !== MOONBEAM_CHAIN_ID.toString()) {
             //     console.log("Not Moonbeam Network")
             //     try {
