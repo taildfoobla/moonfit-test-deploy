@@ -14,3 +14,11 @@ export const getWalletInfo = (address) => {
         params: {address}
     })
 }
+
+export const getWalletMerklePath = (address) => {
+    return createApiRequest({
+        url: "/mfg-private-sale/merkle-path",
+        method: "GET",
+        params: {address}
+    })
+}

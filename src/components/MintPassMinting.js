@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useContext} from 'react'
 import promotionBg from "../assets/images/promoting-bg.jpg"
 import mediumSatellite1 from "../assets/images/shapes/medium-satellite-1.png"
 import mediumSatellite2 from "../assets/images/shapes/medium-satellite-2.png"
@@ -7,11 +7,15 @@ import polkadot from "../assets/images/shapes/polkadot-v2.png"
 import tokenMFR from "../assets/images/token-mfr.png"
 import tokenMFG from "../assets/images/shapes/token-mfg.png"
 import connectSW from "../assets/images/connect-subwallet/connect.png"
+import AuthContext from "../contexts/AuthContext"
+import WalletAuthRequired from "./shared/WalletAuthRequired"
 
 
 const MintPassMinting = (props) => {
+    const {user, onConnect} = useContext(AuthContext)
+
     return (
-        <div className="section page-mint-pass">
+        <WalletAuthRequired isConnected={!!user.account} onConnect={onConnect} className="section page-mint-pass">
             <div className="section-shape section-shape-promoting-bg">
                 <img loading="lazy" src={promotionBg} alt="Promoting an active lifestyle"
                      width="1920"
@@ -75,7 +79,7 @@ const MintPassMinting = (props) => {
                     <div id="gleam-competition"></div>
                 </div>
             </div>
-        </div>
+        </WalletAuthRequired>
     )
 }
 

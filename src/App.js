@@ -4,9 +4,10 @@ import {renderRoutes} from "react-router-config"
 import AuthContext from "./contexts/AuthContext"
 import WebNavigation from "./components/shared/WebNavigation"
 import WebFooter from "./components/shared/WebFooter"
+import {WEB3_METHODS} from "./constants/blockchain"
 
 
-function App({route}) {
+const App = ({route}) => {
     const [isConnected, setIsConnected] = useState(false)
     const [userInfo, setUserInfo] = useState({})
 
@@ -41,28 +42,53 @@ function App({route}) {
 
     const onConnect = async () => {
         try {
-            const currentProvider = detectCurrentProvider()
-            if (currentProvider) {
-                if (currentProvider !== window.ethereum) {
-                    console.log(
-                        'Non-Ethereum browser detected. You should consider trying MetaMask!'
-                    )
-                }
-                await currentProvider.request({method: 'eth_requestAccounts'})
-                const web3 = new Web3(currentProvider)
-                const userAccount = await web3.eth.getAccounts()
-                const chainId = await web3.eth.getChainId()
-                const account = userAccount[0]
-                let ethBalance = await web3.eth.getBalance(account) // Get wallet balance
-                ethBalance = web3.utils.fromWei(ethBalance, 'ether') //Convert balance to wei
-                saveUserInfo(ethBalance, account, chainId)
-                if (userAccount.length === 0) {
-                    console.log('Please connect to meta mask')
-                }
+            const provider = window.SubWallet
+            if (!provider) {
+                console.log('SubWallet is not installed')
             }
+            await provider.request({method: 'eth_requestAccounts'})
+            const chainId = await provider.request({method: 'eth_chainId'})
+
+            // await provider.request(WEB3_METHODS.switchToMoonbaseAlphaNetwork)
+            // if (!chainId || chainId.toString() !== MOONBEAM_CHAIN_ID.toString()) {
+            //     console.log("Not Moonbeam Network")
+            //     try {
+            //         await provider.request(WEB3_METHODS.switchToMoonbeamNetwork)
+            //     } catch (e) {
+            //         console.log("Cannot switchToMoonbeamNetwork: ", e.message)
+            //         await provider.request(WEB3_METHODS.addMoonbeamNetwork)
+            //     }
+            // }
+
+            const web3 = new Web3(provider)
+            const userAccount = await web3.eth.getAccounts()
+            const account = userAccount[0]
+            let ethBalance = await web3.eth.getBalance(account) // Get wallet balance
+            ethBalance = web3.utils.fromWei(ethBalance, 'ether') //Convert balance to wei
+            saveUserInfo(ethBalance, account, chainId)
+
+            // const currentProvider = detectCurrentProvider()
+            // if (currentProvider) {
+            //     if (currentProvider !== window.ethereum) {
+            //         console.log(
+            //             'Non-Ethereum browser detected. You should consider trying MetaMask!'
+            //         )
+            //     }
+            //     await currentProvider.request({method: 'eth_requestAccounts'})
+            //     const web3 = new Web3(currentProvider)
+            //     const userAccount = await web3.eth.getAccounts()
+            //     const chainId = await web3.eth.getChainId()
+            //     const account = userAccount[0]
+            //     let ethBalance = await web3.eth.getBalance(account) // Get wallet balance
+            //     ethBalance = web3.utils.fromWei(ethBalance, 'ether') //Convert balance to wei
+            //     saveUserInfo(ethBalance, account, chainId)
+            //     if (userAccount.length === 0) {
+            //         console.log('Please connect to meta mask')
+            //     }
+            // }
         } catch (err) {
             console.log(
-                'There was an error fetching your accounts. Make sure your Ethereum client is configured correctly.'
+                'There was an error fetching your accounts. Make sure your SubWallet is configured correctly.'
             )
         }
     }
