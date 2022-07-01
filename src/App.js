@@ -3,6 +3,7 @@ import Web3 from 'web3'
 import {renderRoutes} from "react-router-config"
 import AuthContext from "./contexts/AuthContext"
 import WebNavigation from "./components/shared/WebNavigation"
+import WebFooter from "./components/shared/WebFooter"
 
 
 function App({route}) {
@@ -94,6 +95,7 @@ function App({route}) {
                 <div id="main-content" className="main-content">
                     {renderRoutes(route.routes)}
                 </div>
+                <WebFooter/>
             </div>
         </AuthContext.Provider>
     )
