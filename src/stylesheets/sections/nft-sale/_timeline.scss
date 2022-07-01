@@ -1,0 +1,295 @@
+.page-nft-sale {
+	.main-content {
+		padding: 198px 0 70px;
+	}
+
+	.footer-social-networks {
+		margin: 101px 0 0;
+	}
+}
+
+.section-nft-sale-timeline {
+	--box-bg: #1c0532;
+	--border-size: 3px;
+
+	.section-content {
+		background: var(--box-bg);
+		padding: 57px 20px 70px;
+		border-radius: 20px;
+
+		position: relative;
+		background: linear-gradient(135deg, #4fa6af 0%, #a43e8c 100%);
+
+		&:after {
+			content: '';
+			position: absolute;
+			top: var(--border-size);
+			right: var(--border-size);
+			bottom: var(--border-size);
+			left: var(--border-size);
+			border-radius: inherit;
+			background: var(--box-bg);
+		}
+	}
+
+	.section-header {
+		margin: 0 0 32px;
+		position: relative;
+		z-index: 1;
+	}
+
+	.section-body {
+		width: 970px;
+		max-width: 100%;
+		margin: 0 auto;
+		position: relative;
+		z-index: 1;
+	}
+
+	.button {
+		width: 100%;
+		margin: 32px 0 0;
+	}
+
+	.image {
+		img {
+			width: 100%;
+			border-radius: 10px;
+		}
+	}
+}
+
+.nft-sale-timeline {
+	padding: 0;
+	margin: 0;
+	list-style-type: none;
+	width: 378px;
+	max-width: 100%;
+
+	> li {
+		position: relative;
+		padding: 0 0 48px 43px;
+		opacity: .5;
+		margin: 0;
+		pointer-events: none;
+
+		&:before {
+			content: '';
+			position: absolute;
+			top: 24px;
+			left: 12px;
+			width: 1px;
+			height: calc(100% - 24px);
+			border-right: 1px dashed $secondary-color;
+		}
+	}
+
+	.stage-dot {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 24px;
+		height: 24px;
+		border-radius: 50%;
+		background: radial-gradient(50% 50% at 50% 50%, rgba(161, 107, 216, 0) 0%, rgba(161, 107, 216, 0.261) 100%);
+
+		&:before {
+			content: '';
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+			width: 14px;
+			height: 14px;
+			background: $secondary-color;
+			border-radius: 50%;
+		}
+	}
+
+	.nft-stage-title {
+		font-size: 20px;
+		line-height: 26px;
+		color: $primary-color;
+		margin: 0 0 3px;
+	}
+
+	.nft-stage-meta {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		justify-content: space-between;
+		font-size: 20px;
+		margin: 0 0 4px;
+	}
+
+	.nft-info {
+		display: flex;
+		align-items: center;
+		line-height: 26px;
+		min-width: 190px;
+
+		> div {
+			+ div {
+				position: relative;
+				padding: 0 0 0 26px;
+
+				&:before {
+					content: '';
+					position: absolute;
+					top: 13px;
+					left: 11px;
+					width: 4px;
+					height: 4px;
+					border-radius: 50%;
+					background: #a8adc3;
+				}
+			}
+		}
+	}
+
+	.nft-quantity {
+		color: #fff;
+	}
+
+	.nft-date {
+		text-transform: none;
+	}
+
+	.prices {
+		display: inline-block;
+		vertical-align: top;
+		margin: 0;
+		padding: 0;
+
+		> li {
+			list-style-type: none;
+			display: inline-block;
+
+			+ li {
+				position: relative;
+				padding: 0 0 0 16px;
+				margin: 0 !important;
+
+				&:before {
+					display: block;
+					content: '+';
+					position: absolute;
+					top: 0;
+					left: 2px;
+					font-size: 20px;
+				}
+			}
+		}
+	}
+
+	.price {
+		color: $primary-color;
+		display: inline-flex;
+		align-items: center;
+	}
+
+	.price-icon {
+		display: inline-block;
+		position: relative;
+		top: 2px;
+		margin: 0 6px 0 0;
+		width: 28px;
+		height: 28px;
+		border-radius: 50%;
+		background-size: cover !important;
+	}
+
+	.price-glmr {
+		background: url(../../../assets/images/wallet-icon.png) no-repeat center;
+	}
+
+	.price-mint-pass {
+		background: url(../../../assets/images/mint-pass.png) no-repeat center;
+	}
+
+	.badge-day-left {
+		display: inline-block;
+		font-size: 16px;
+		font-weight: 800;
+		user-select: none;
+		position: relative;
+		padding: 1px 20px 3px 9px;
+		line-height: 20px;
+		background: var(--badge-bg, #541c8d);
+		color: #fff;
+		opacity: 0;
+
+		&:after {
+			content: '';
+			position: absolute;
+			top: 0;
+			right: 0;
+			border-top: 12px solid transparent;
+			border-bottom: 12px solid transparent;
+			border-right: 12px solid var(--box-bg);
+		}
+	}
+
+	> li {
+		&.active {
+			opacity: 1;
+			pointer-events: auto;
+
+			.stage-dot {
+				&:before {
+					box-shadow: 0 0 14px #e4007b;
+				}
+			}
+
+			.badge-day-left {
+				opacity: 1;
+			}
+		}
+
+		&:last-child {
+			padding-bottom: 0;
+
+			&:before {
+				display: none;
+			}
+		}
+	}
+}
+
+@include media-breakpoint-down(md) {
+	.page-nft-sale {
+		.main-content {
+			padding: 150px 0 70px;
+		}
+	}
+}
+
+@include media-breakpoint-down(sm) {
+	.page-nft-sale {
+		.main-content {
+			padding: 120px 0 70px;
+		}
+	}
+
+	.nft-sale-timeline {
+		margin: 0 0 40px;
+
+		.nft-stage-title {
+			font-size: 16px;
+		}
+	}
+}
+
+@media screen and(max-width: 460px) {
+	.nft-sale-timeline {
+		.nft-info {
+			min-width: 0;
+			width: 100%;
+			margin: 0 0 8px;
+		}
+
+		.prices {
+			margin: 0 0 8px;
+		}
+	}
+}

@@ -1,0 +1,31 @@
+.moonfit-toast {
+	visibility: hidden;
+	width: 250px;
+	max-width: 90vw;
+	position: fixed;
+	z-index: 99;
+	left: 50%;
+	top: 50%;
+	transform: translate(-50%, -50%);
+	background-color: #21063c;
+	color: $primary-color;
+	text-align: center;
+	border-radius: 5px;
+	padding: 16px;
+}
+
+.moonfit-toast.show {
+	visibility: visible;
+	animation: fadein 0.5s;
+}
+
+@keyframes fadein {
+	from {
+		transform: translate(-50%, -50%) translateY(30px);
+		opacity: 0;
+	}
+	to {
+		transform: translate(-50%, -50%);
+		opacity: 1;
+	}
+}

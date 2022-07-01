@@ -1,0 +1,59 @@
+.section-h2p-run-mode {
+	padding: 197px 0 0;
+	background: url(../../../assets/images/how-to-play/run-mode-bg.jpg) no-repeat top 120px center;
+	background-size: 100% auto;
+
+	.section-header-beside {
+		margin: 19px 0 0;
+
+		.section-header-inner {
+			max-width: 570px;
+		}
+	}
+
+	.slider-screenshot {
+		margin: 113px 0 0;
+	}
+}
+
+@media screen and (max-width: 1400px) {
+	.section-h2p-run-mode {
+		padding: 150px 0 0;
+	}
+}
+
+@include media-breakpoint-down(lg) {
+	.section-h2p-run-mode {
+		padding: 110px 0 0;
+
+		.slider-screenshot {
+			margin: 70px 0 0;
+		}
+	}
+}
+
+@include media-breakpoint-down(sm) {
+	.section-h2p-run-mode {
+		padding: 90px 0 0;
+
+		.section-header {
+			margin: 0 0 20px;
+		}
+
+		.section-header-inner {
+			margin: 0 auto;
+
+			.section-title-steps {
+				justify-content: center;
+			}
+		}
+
+		.section-description {
+			text-align: center;
+		}
+
+		.slider-screenshot {
+			margin: 50px 0 0;
+		}
+	}
+}

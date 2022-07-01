@@ -1,0 +1,59 @@
+.section-h2p-earn-coin {
+	.shape-token-mfr {
+		bottom: 30%;
+		left: 12px;
+
+		img {
+			max-width: 7vw;
+		}
+	}
+
+	.shape-token-mfr-2 {
+		z-index: 1;
+		bottom: 46%;
+		right: 5%;
+	}
+
+	.shape-token-mfg {
+		z-index: 1;
+		top: 40%;
+		left: 8%;
+	}
+
+	.section-header-beside {
+		.section-header-inner {
+			max-width: 400px;
+			margin: 0 auto;
+		}
+	}
+
+	.section-shape-radial-circle {
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+	}
+}
+
+@include media-breakpoint-down(sm) {
+	.section-h2p-earn-coin {
+		.image-group {
+			text-align: center;
+		}
+
+		.main-image {
+			max-width: 70%;
+		}
+
+		.shape-token-mfr {
+			display: none;
+		}
+
+		.section-header-beside {
+			text-align: center;
+
+			.section-title-steps {
+				justify-content: center;
+			}
+		}
+	}
+}

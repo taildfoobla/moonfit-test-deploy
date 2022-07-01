@@ -1,0 +1,39 @@
+.section-h2p-connect-wallet {
+	padding: 85px 0 0;
+
+	.section-header {
+		margin: 0 0 70px;
+	}
+
+	.section-shape-radial-circle {
+		left: 0;
+		top: 0;
+		transform: translate(-58%, 30%);
+	}
+}
+
+@include media-breakpoint-up(xl) {
+	.section-h2p-connect-wallet {
+		.section-footer-description {
+			margin: 83px 0 0;
+		}
+	}
+}
+
+@include media-breakpoint-down(sm) {
+	.section-h2p-connect-wallet {
+		.section-footer-description {
+			margin: 38px 0 0;
+		}
+
+		.section-header {
+			margin: 0 0 40px;
+		}
+	}
+}
+
+@include media-breakpoint-down(xs) {
+	.section-h2p-connect-wallet {
+		padding: 60px 0 0;
+	}
+}

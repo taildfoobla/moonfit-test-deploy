@@ -1,0 +1,343 @@
+.page-connect-subwallet {
+	.main-content {
+		padding: 0;
+	}
+}
+
+.page-mint-pass {
+	padding: 120px 0 60px;
+	min-height: 100vh;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+
+	.section-title {
+		font-size: 64px;
+		line-height: 1.125;
+	}
+
+	.connect-image {
+		margin: 0 0 67px;
+
+		img {
+			max-width: 40vw;
+		}
+	}
+
+	.section-description-wrap {
+		margin: 0;
+	}
+
+	.section-description {
+		text-transform: none;
+		color: #fff;
+		font-size: 26px;
+		line-height: 1.25;
+		width: 870px;
+		max-width: 90%;
+		margin: 0 auto;
+	}
+
+	.section-content {
+		position: relative;
+		z-index: 11;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		flex-grow: 1;
+		justify-content: center;
+		text-align: center;
+	}
+
+	.section-call-out-action {
+		margin-top: 54px;
+
+		> .button {
+			min-width: 300px;
+		}
+	}
+
+	.footer-menu {
+		margin: 47px 0 0;
+	}
+
+	.section-shape-promoting-bg {
+		bottom: 10%;
+	}
+
+	.section-shape-satellite-1 {
+		bottom: 5%;
+		left: 0;
+		transform: translate(-50%, 0);
+
+		img {
+			max-width: 12vw;
+		}
+	}
+
+	.section-shape-satellite-2 {
+		top: 10%;
+		right: 0;
+		transform: translate(50%, 0);
+
+		img {
+			max-width: 22vw;
+		}
+	}
+
+	.section-shape-kusama {
+		bottom: 40%;
+		left: 3.5%;
+
+		img {
+			max-width: 13vw;
+		}
+	}
+
+	.section-shape-polkadot {
+		bottom: 12%;
+		right: 4%;
+
+		img {
+			max-width: 12vw;
+		}
+	}
+
+	.shape-token-mfr-1 {
+		left: 20%;
+		bottom: 15%;
+	}
+
+	.shape-token-mfr-2 {
+		right: 5%;
+		bottom: 35%;
+		transform: rotate3d(0, 1, 1, 44deg);
+		filter: blur(3px);
+	}
+
+	.shape-token-mfg-1 {
+		right: 20%;
+		top: 15%;
+	}
+
+	.shape-token-mfg-2 {
+		left: 15%;
+		top: 15%;
+		transform: rotate3d(0, 1, 1, 48deg) skew(15deg);
+		filter: blur(1px);
+	}
+
+	.section-call-out-action {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+
+		.connected-wallet-info-card {
+			background-color: #020722;
+			width: 970px;
+			max-width: 100%;
+			padding: 31px 20px 66px;
+
+			$border: 3px;
+			color: #fff;
+			position: relative;
+			background-clip: padding-box;
+			border: solid $border transparent;
+			border-radius: 10px;
+
+			&:before {
+				content: '';
+				position: absolute;
+				top: 0;
+				right: 0;
+				bottom: 0;
+				left: 0;
+				z-index: -1;
+				margin: -$border;
+				border-radius: inherit;
+				background: linear-gradient(to right, #4ccbc9, #e4007b);
+			}
+
+			.go-to-gleam-competition {
+				display: block;
+				width: 80px;
+				height: 80px;
+				position: absolute;
+				bottom: -3px;
+				left: 50%;
+				transform: translate(-50%, 50%);
+				background: url(../../../assets/images/icons/arrow-down.png) no-repeat center;
+				background-size: 80px;
+			}
+
+			.card-title {
+				font-family: 'Race Sport', serif;
+				color: #4ccbc9;
+				font-size: 18px;
+				font-weight: 400;
+				line-height: 21px;
+				margin-bottom: 25px;
+			}
+
+			.card-body {
+				padding: 0;
+				width: 610px;
+				max-width: 100%;
+				margin: 0 auto;
+				text-align: left;
+
+				.wallet-address-heading {
+					margin: 0 0 9px;
+					font-size: 16px;
+					line-height: 24px;
+				}
+
+				.wallet-address {
+					display: flex;
+					align-items: center;
+					margin: 0 auto 19px;
+				}
+
+				.wallet-icon {
+					flex-shrink: 0;
+					margin: 0 8px 0 0;
+					width: 24px;
+					height: 24px;
+					background: url(../../../assets/images/wallet-icon.png) no-repeat center;
+					background-size: cover;
+				}
+
+				.logout-connect-subwallet {
+					--button-hoz-padding: 16px;
+					flex-shrink: 0;
+					--mg-button-text: #fff;
+					--mg-button-background: transparent;
+					--mg-button-border: rgba(255, 255, 255, .2);
+					font-size: 14px;
+					font-weight: 600;
+					min-height: 28px;
+					line-height: 18px;
+					padding: 0 var(--button-hoz-padding) 2px;
+					margin: 0 0 0 5px;
+				}
+
+				#wallet-account-address {
+					color: #fff;
+					flex-grow: 1;
+					font-size: 20px;
+					line-height: 1;
+					word-break: break-all;
+				}
+
+				#address-copy-btn {
+					--button-hoz-padding: 16px;
+					width: 100%;
+
+					.button-icon {
+						font-size: 16px;
+						display: flex;
+						align-items: center;
+						justify-content: center;
+						background: rgba(33, 6, 60, .3);
+						width: 2em;
+						height: 2em;
+						border-radius: 50%;
+						top: 2px;
+						position: relative;
+					}
+				}
+			}
+		}
+	}
+
+	#gleam-competition {
+		margin-top: 68px;
+
+		.e-widget-wrapper {
+			iframe {
+				border-radius: 8px;
+			}
+		}
+
+		.e-widget-preloader {
+			background: transparent;
+		}
+	}
+
+}
+
+@media screen and (max-width: 1400px) {
+	.page-mint-pass {
+		.section-title {
+			font-size: 58px;
+		}
+	}
+}
+
+@media (min-width: 992px) {
+	.page-mint-pass {
+		#gleam-competition {
+			.e-widget-wrapper {
+				iframe {
+					width: 540px;
+				}
+			}
+		}
+	}
+}
+
+@include media-breakpoint-down(lg) {
+	.page-mint-pass {
+		.section-title {
+			font-size: 50px;
+		}
+	}
+}
+
+@include media-breakpoint-down(md) {
+	.page-mint-pass {
+		.section-title {
+			font-size: 44px;
+		}
+
+		.section-description {
+			font-size: 22px;
+		}
+	}
+}
+
+@include media-breakpoint-down(sm) {
+	.page-mint-pass {
+		.section-title {
+			font-size: 38px;
+		}
+
+		.connect-image {
+			margin: 0 0 30px;
+
+			img {
+				max-width: 56vw;
+			}
+		}
+
+		.section-description {
+			font-size: 20px;
+		}
+
+		.section-call-out-action {
+			margin-top: 35px;
+		}
+	}
+}
+
+@include media-breakpoint-down(xs) {
+	.page-mint-pass {
+		.section-title {
+			font-size: 32px;
+		}
+
+		.section-description {
+			font-size: 18px;
+		}
+	}
+}
