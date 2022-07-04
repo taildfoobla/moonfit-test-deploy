@@ -108,14 +108,17 @@ const MintPassMinting = (props) => {
     const renderAddressLink = (address) => {
         const url = getAddressScanUrl(address)
         return (
-            <a href={url} target={'_blank'} rel={'noreferrer'} className={'text-green-500'}>{address}</a>
+            <a href={url} target={'_blank'} rel={'noreferrer'} className={'text-green-500 text-sm normal-case'}>View on
+                block explorer</a>
         )
     }
 
     const renderNFTLink = (contract, tokenId) => {
         const url = getTokenScanUrl(contract, tokenId)
         return (
-            <a href={url} target={'_blank'} rel={'noreferrer'} className={'text-green-500'}>{tokenId}</a>
+            <a href={url} target={'_blank'} rel={'noreferrer'} className={'text-green-500'}>
+                #{tokenId}
+            </a>
         )
     }
 
@@ -194,7 +197,14 @@ const MintPassMinting = (props) => {
                                 <div className={'mt-8'}>
                                     <div className={'flex justify-between'}>
                                         <div className={'flex'}>Mint Pass contract</div>
-                                        <div className={'flex text-green-500'}>{renderAddressLink(contract)}</div>
+                                        <div className={'flex flex-col'}>
+                                            <div className={'flex text-green-500'}>
+                                                {contract}
+                                            </div>
+                                            <div className={'flex justify-end'}>
+                                                {renderAddressLink(contract)}
+                                            </div>
+                                        </div>
                                     </div>
                                     {/*<div className={'flex justify-between'}>*/}
                                     {/*    <div className={'flex'}>Purchase price</div>*/}
