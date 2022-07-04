@@ -1,11 +1,11 @@
 import React, {useContext, useEffect, useState} from 'react'
 import Web3 from "web3"
-import {getPrivateSaleInfo, getWalletInfo, getWalletMerklePath} from "../services/privateSale"
+import {getPrivateSaleInfo, getWalletInfo, getWalletMerklePath} from "../services/tokenSale"
 import AuthContext from "../contexts/AuthContext"
 import BigNumber from "bignumber.js"
-import contractABI from '../abi/MFGPrivateSale.json'
+import contractABI from '../abis/MFGPrivateSale.json'
 import {getStringOfBigNumber} from "../utils/number"
-import ERC20Balance from "../abi/ERC20Balance.json"
+import ERC20Balance from "../abis/ERC20Balance.json"
 import promotionBg from "../assets/images/promoting-bg.jpg"
 import mediumSatellite1 from "../assets/images/shapes/medium-satellite-1.png"
 import mediumSatellite2 from "../assets/images/shapes/medium-satellite-2.png"
@@ -189,22 +189,11 @@ const PrivateSale = (props) => {
                             {isPSActive ? (
                                 <span
                                     className="bg-green-400 text-green-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-green-500 dark:text-white">
-                                    <svg className="w-4 h-4 inline mr-1" fill="none" stroke="currentColor"
-                                         viewBox="0 0 24 24"
-                                         xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round"
-                                                                                  strokeLinejoin="round"
-                                                                                  strokeWidth={2}
-                                                                                  d="M8 11V7a4 4 0 118 0m-4 8v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2z"/></svg>
                                     Active
                                 </span>
                             ) : (
                                 <span
                                     className="bg-indigo-100 text-indigo-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-indigo-200 dark:text-indigo-900">
-                                    <svg className="w-4 h-4 inline mr-1" fill="none" stroke="currentColor"
-                                         viewBox="0 0 24 24"
-                                         xmlns="http://www.w3.org/2000/svg"><path
-                                        strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
-                                        d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
                                     Inactive
                                 </span>
                             )}
