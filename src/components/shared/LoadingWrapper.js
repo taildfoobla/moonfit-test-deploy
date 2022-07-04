@@ -3,7 +3,7 @@ import React from 'react'
 
 const LoadingWrapper = () => {
     return (
-        <div id="loading-wrapper" className="w-full h-full fixed block top-0 left-0 bg-[#000] z-50" style={{opacity: 0.85}}>
+        <div id="loading-wrapper" className="w-full h-full fixed block top-0 left-0 bg-[#000] opacity-75 z-50">
             <span className="text-green-500 opacity-75 top-1/2 my-0 mx-auto block relative w-0 h-0">
                 <svg role="status"
                      className="inline w-10 h-10 text-blue-500 animate-spin"
