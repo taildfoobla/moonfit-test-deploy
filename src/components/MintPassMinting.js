@@ -14,6 +14,7 @@ import WalletAuthRequired from "./shared/WalletAuthRequired"
 import {notification} from "antd"
 import {getMainMessage} from "../utils/tx-error"
 import {getAddressScanUrl, getTokenScanUrl} from "../utils/blockchain"
+import AppContext from "../contexts/AppContext"
 
 
 const MintPassMinting = (props) => {
@@ -22,8 +23,18 @@ const MintPassMinting = (props) => {
     const [walletInfo, setWalletInfo] = useState({})
 
     const {user, onConnect} = useContext(AuthContext)
+    const {setLoading} = useContext(AppContext)
 
     useEffect(() => {
+        fetchData().then()
+    }, [user.account])
+
+    useEffect(() => {
+        setLoading(true)
+    }, [])
+
+    const fetchData = async () => {
+        setLoading(true)
         const fetchMintPassInfo = async () => {
             const {data, success} = await getMintPassInfo()
             if (data && success) {
@@ -36,9 +47,9 @@ const MintPassMinting = (props) => {
                 setWalletInfo(data.data)
             }
         }
-        fetchMintPassInfo().then()
-        fetchWalletInfo().then()
-    }, [user.account])
+        await Promise.all([fetchMintPassInfo(), fetchWalletInfo()])
+        setLoading(false)
+    }
 
     const handleMintMintPass = async () => {
         setMintLoading(true)
@@ -78,7 +89,7 @@ const MintPassMinting = (props) => {
                     message: `Transaction Successful`,
                     description: `The hash of MFMP minting transaction is: ${txHash}`,
                     placement: 'bottomRight',
-                    duration: 10
+                    duration: 30000
                 })
             } else {
                 notification.error({

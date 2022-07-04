@@ -16,6 +16,7 @@ import tokenMFG from "../assets/images/shapes/token-mfg.png"
 import WalletAuthRequired from "./shared/WalletAuthRequired"
 import {notification} from "antd"
 import {getMainMessage} from "../utils/tx-error"
+import AppContext from "../contexts/AppContext"
 
 const PrivateSale = (props) => {
     const [buyLoading, setBuyLoading] = useState(false)
@@ -24,9 +25,19 @@ const PrivateSale = (props) => {
     const [walletInfo, setWalletInfo] = useState({})
 
     const {user, setUserInfo, onConnect} = useContext(AuthContext)
-    // console.log(user)
+    const {setLoading} = useContext(AppContext)
 
     useEffect(() => {
+        onStart().then()
+    }, [user.account])
+
+
+    useEffect(() => {
+        setLoading(true)
+    }, [])
+
+    const onStart = async () => {
+        setLoading(true)
         const fetchPrivateSaleInfo = async () => {
             const {data, success} = await getPrivateSaleInfo()
             if (data && success) {
@@ -47,9 +58,9 @@ const PrivateSale = (props) => {
                 setWalletInfo(data.data)
             }
         }
-        fetchPrivateSaleInfo().then()
-        fetchWalletInfo().then()
-    }, [user.account])
+        await Promise.all([fetchPrivateSaleInfo(), fetchWalletInfo()])
+        setLoading(false)
+    }
 
     const handleBuyMFG = async () => {
         setBuyLoading(true)
@@ -78,6 +89,12 @@ const PrivateSale = (props) => {
                     ]
                 })
                 console.log("The hash of MFG buying transaction is: ", txHash)
+                notification.success({
+                    message: `Transaction Successful`,
+                    description: `The hash of MFG buying transaction is: ${txHash}`,
+                    placement: 'bottomRight',
+                    duration: 30000
+                })
             } else {
                 notification.error({
                     message: `Transaction Failed`,
@@ -114,6 +131,13 @@ const PrivateSale = (props) => {
                 method: 'eth_sendTransaction', params: [tx]
             })
             console.log("The hash of MFG claiming transaction is: ", txHash)
+            notification.success({
+                message: `Transaction Successful`,
+                description: `The hash of MFG claiming transaction is: ${txHash}`,
+                placement: 'bottomRight',
+                duration: 10
+            })
+            setClaimLoading(false)
         } catch (e) {
             setClaimLoading(false)
             showTxError(e.message)

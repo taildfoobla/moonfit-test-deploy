@@ -2,14 +2,17 @@ import {useEffect, useState} from 'react'
 import Web3 from 'web3'
 import {renderRoutes} from "react-router-config"
 import AuthContext from "./contexts/AuthContext"
+import AppContext from "./contexts/AppContext"
 import WebNavigation from "./components/shared/WebNavigation"
 import WebFooter from "./components/shared/WebFooter"
 import {WEB3_METHODS} from "./constants/blockchain"
+import LoadingWrapper from "./components/shared/LoadingWrapper"
 
 
 const App = ({route}) => {
     const [isConnected, setIsConnected] = useState(false)
     const [userInfo, setUserInfo] = useState({})
+    const [loading, setLoading] = useState(true)
 
     // const history = useHistory()
 
@@ -51,26 +54,6 @@ const App = ({route}) => {
             let ethBalance = await web3.eth.getBalance(account) // Get wallet balance
             ethBalance = web3.utils.fromWei(ethBalance, 'ether') //Convert balance to wei
             saveUserInfo(ethBalance, account, chainId)
-
-            // const currentProvider = detectCurrentProvider()
-            // if (currentProvider) {
-            //     if (currentProvider !== window.ethereum) {
-            //         console.log(
-            //             'Non-Ethereum browser detected. You should consider trying MetaMask!'
-            //         )
-            //     }
-            //     await currentProvider.request({method: 'eth_requestAccounts'})
-            //     const web3 = new Web3(currentProvider)
-            //     const userAccount = await web3.eth.getAccounts()
-            //     const chainId = await web3.eth.getChainId()
-            //     const account = userAccount[0]
-            //     let ethBalance = await web3.eth.getBalance(account) // Get wallet balance
-            //     ethBalance = web3.utils.fromWei(ethBalance, 'ether') //Convert balance to wei
-            //     saveUserInfo(ethBalance, account, chainId)
-            //     if (userAccount.length === 0) {
-            //         console.log('Please connect to meta mask')
-            //     }
-            // }
         } catch (err) {
             console.log(
                 'There was an error fetching your accounts. Make sure your SubWallet is configured correctly.'
@@ -99,16 +82,19 @@ const App = ({route}) => {
 
 
     return (
-        <AuthContext.Provider value={{user: userInfo, setUserInfo, onConnect, onDisconnect}}>
-            <div tabIndex="0" className="page-connect-subwallet">
-                <div className="section-effect-snow site-effect-snow" data-firefly-total="50"></div>
-                <WebNavigation isConnected={isConnected}/>
-                <div id="main-content" className="main-content">
-                    {renderRoutes(route.routes)}
+        <AppContext.Provider value={{loading, setLoading}}>
+            <AuthContext.Provider value={{user: userInfo, setUserInfo, onConnect, onDisconnect}}>
+                <div tabIndex="0" className="page-connect-subwallet">
+                    <div className="section-effect-snow site-effect-snow" data-firefly-total="50"></div>
+                    <WebNavigation isConnected={isConnected}/>
+                    <div id="main-content" className="main-content">
+                        {renderRoutes(route.routes)}
+                        {loading && <LoadingWrapper/>}
+                    </div>
+                    <WebFooter/>
                 </div>
-                <WebFooter/>
-            </div>
-        </AuthContext.Provider>
+            </AuthContext.Provider>
+        </AppContext.Provider>
     )
 }
 
