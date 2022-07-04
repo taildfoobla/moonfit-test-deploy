@@ -30,12 +30,13 @@
     }
 
     .card-title {
+      width: 720px;
       font-family: 'Race Sport', serif;
       color: #4ccbc9;
       font-size: 18px;
       font-weight: 400;
       line-height: 21px;
-      margin-bottom: 25px;
+      margin: 0 auto 45px;
     }
 
     .card-body {
@@ -44,7 +45,6 @@
       max-width: 100%;
       margin: 0 auto;
       text-align: left;
-
     }
   }
 }

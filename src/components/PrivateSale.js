@@ -17,6 +17,7 @@ import WalletAuthRequired from "./shared/WalletAuthRequired"
 import {notification} from "antd"
 import {getMainMessage} from "../utils/tx-error"
 import AppContext from "../contexts/AppContext"
+import {getAddressScanUrl, getTxScanUrl} from "../utils/blockchain"
 
 const PrivateSale = (props) => {
     const [buyLoading, setBuyLoading] = useState(false)
@@ -28,15 +29,17 @@ const PrivateSale = (props) => {
     const {loading, setLoading} = useContext(AppContext)
 
     useEffect(() => {
-        onStart().then()
+        fetchData().then()
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [user.account])
 
 
     useEffect(() => {
         setLoading(true)
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
-    const onStart = async () => {
+    const fetchData = async () => {
         setLoading(true)
         const fetchPrivateSaleInfo = async () => {
             const {data, success} = await getPrivateSaleInfo()
@@ -91,7 +94,14 @@ const PrivateSale = (props) => {
                 console.log("The hash of MFG buying transaction is: ", txHash)
                 notification.success({
                     message: `Transaction Successful`,
-                    description: `The hash of MFG buying transaction is: ${txHash}`,
+                    description: (
+                        <div>
+                            The hash of MFG buying transaction is: <br/>
+                            <a target="_blank" rel="noreferrer"
+                               className={'text-blue-600'}
+                               href={getTxScanUrl(txHash)}>{txHash}</a>
+                        </div>
+                    ),
                     placement: 'bottomRight',
                     duration: 30000
                 })
@@ -133,9 +143,16 @@ const PrivateSale = (props) => {
             console.log("The hash of MFG claiming transaction is: ", txHash)
             notification.success({
                 message: `Transaction Successful`,
-                description: `The hash of MFG claiming transaction is: ${txHash}`,
+                description: (
+                    <div>
+                        The hash of MFG claiming transaction is: <br/>
+                        <a target="_blank" rel="noreferrer"
+                           className={'text-blue-600'}
+                           href={getTxScanUrl(txHash)}>{txHash}</a>
+                    </div>
+                ),
                 placement: 'bottomRight',
-                duration: 10
+                duration: 30000
             })
             setClaimLoading(false)
         } catch (e) {
@@ -152,6 +169,14 @@ const PrivateSale = (props) => {
             placement: 'bottomRight',
             duration: 3
         })
+    }
+
+    const renderAddressLink = (address) => {
+        const url = getAddressScanUrl(address)
+        return (
+            <a href={url} target={'_blank'} rel={'noreferrer'} className={'text-blue-600 text-sm normal-case'}>View on
+                block explorer</a>
+        )
     }
 
     const {contract, rate, purchase, remainingSlot, endTime} = privateSaleInfo
@@ -225,25 +250,44 @@ const PrivateSale = (props) => {
                         </div>
                         <div className="moonfit-card">
                             <div className="moonfit-card-inner">
-                                <div className="card-title">
-                                    Sale information
+                                <div className="card-title flex justify-between">
+                                    <div className={'flex'}>Sale information</div>
+                                    <div className={'flex'}>
+                                        {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
+                                        <a href="#" className={'normal-case text-xs inline'} onClick={() => fetchData()}>
+                                            <svg className="w-5 h-5 inline mr-1" fill="none" stroke="currentColor"
+                                                 viewBox="0 0 24 24"
+                                                 xmlns="http://www.w3.org/2000/svg">
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
+                                                      d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+                                            </svg>
+                                            Refresh
+                                        </a>
+                                    </div>
                                 </div>
                                 <div className="card-body">
                                     <div className={'mt-8'}>
                                         <div className={'flex justify-between'}>
                                             <div className={'flex'}>Sale contract</div>
-                                            <div className={'flex text-green-500'}>{contract}</div>
+                                            <div className={'flex flex-col'}>
+                                                <div className={'flex text-green-500'}>
+                                                    {contract}
+                                                </div>
+                                                <div className={'flex justify-end'}>
+                                                    {renderAddressLink(contract)}
+                                                </div>
+                                            </div>
                                         </div>
-                                        <div className={'flex justify-between'}>
+                                        <div className={'flex justify-between mt-2'}>
                                             <div className={'flex'}>Purchase price</div>
                                             <div className={'flex text-green-500'}>{purchase}</div>
                                         </div>
-                                        <div className={'flex justify-between'}>
+                                        <div className={'flex justify-between mt-2'}>
                                             <div className={'flex'}>Sale rate</div>
                                             <div className={'flex text-green-500'}>{rate} (1 GLMR = {rate} MFG)
                                             </div>
                                         </div>
-                                        <div className={'flex justify-between'}>
+                                        <div className={'flex justify-between mt-2'}>
                                             <div className={'flex'}>Remaining slot</div>
                                             <div className={'flex text-green-500'}>{remainingSlot}</div>
                                         </div>
@@ -252,7 +296,7 @@ const PrivateSale = (props) => {
                                             <div className={'flex'}>Your balance in Private Sale</div>
                                             <div className={'flex text-green-500'}>{realBalance}</div>
                                         </div>
-                                        <div className={'flex justify-between'}>
+                                        <div className={'flex justify-between mt-2'}>
                                             <div className={'flex'}>Last claim time</div>
                                             <div className={'flex text-green-500'}>{lastClaimStr}</div>
                                         </div>

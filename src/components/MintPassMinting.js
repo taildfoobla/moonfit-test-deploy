@@ -13,7 +13,7 @@ import tokenMFG from "../assets/images/shapes/token-mfg.png"
 import WalletAuthRequired from "./shared/WalletAuthRequired"
 import {notification} from "antd"
 import {getMainMessage} from "../utils/tx-error"
-import {getAddressScanUrl, getTokenScanUrl} from "../utils/blockchain"
+import {getAddressScanUrl, getTokenScanUrl, getTxScanUrl} from "../utils/blockchain"
 import AppContext from "../contexts/AppContext"
 
 
@@ -27,10 +27,12 @@ const MintPassMinting = (props) => {
 
     useEffect(() => {
         fetchData().then()
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [user.account])
 
     useEffect(() => {
         setLoading(true)
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     const fetchData = async () => {
@@ -87,7 +89,14 @@ const MintPassMinting = (props) => {
                 console.log("The hash of MFMP minting transaction is: ", txHash)
                 notification.success({
                     message: `Transaction Successful`,
-                    description: `The hash of MFMP minting transaction is: ${txHash}`,
+                    description: (
+                        <div>
+                            The hash of MFMP minting transaction is: <br/>
+                            <a target="_blank" rel="noreferrer"
+                               className={'text-blue-600'}
+                               href={getTxScanUrl(txHash)}>{txHash}</a>
+                        </div>
+                    ),
                     placement: 'bottomRight',
                     duration: 30000
                 })
@@ -119,7 +128,7 @@ const MintPassMinting = (props) => {
     const renderAddressLink = (address) => {
         const url = getAddressScanUrl(address)
         return (
-            <a href={url} target={'_blank'} rel={'noreferrer'} className={'text-green-500 text-sm normal-case'}>View on
+            <a href={url} target={'_blank'} rel={'noreferrer'} className={'text-blue-600 text-sm normal-case'}>View on
                 block explorer</a>
         )
     }
@@ -127,7 +136,7 @@ const MintPassMinting = (props) => {
     const renderNFTLink = (contract, tokenId) => {
         const url = getTokenScanUrl(contract, tokenId)
         return (
-            <a href={url} target={'_blank'} rel={'noreferrer'} className={'text-green-500'}>
+            <a href={url} target={'_blank'} rel={'noreferrer'} className={'text-blue-600'}>
                 #{tokenId}
             </a>
         )
@@ -201,8 +210,20 @@ const MintPassMinting = (props) => {
                         </div>
                         <div className="moonfit-card">
                             <div className="moonfit-card-inner">
-                                <div className="card-title">
-                                    Minting information
+                                <div className="card-title flex justify-between">
+                                    <div className={'flex'}>Minting information</div>
+                                    <div className={'flex'}>
+                                        {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
+                                        <a href="#" className={'normal-case text-xs inline'} onClick={() => fetchData()}>
+                                            <svg className="w-5 h-5 inline mr-1" fill="none" stroke="currentColor"
+                                                 viewBox="0 0 24 24"
+                                                 xmlns="http://www.w3.org/2000/svg">
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
+                                                      d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+                                            </svg>
+                                            Refresh
+                                        </a>
+                                    </div>
                                 </div>
                                 <div className="card-body">
                                     <div className={'mt-8'}>
@@ -235,7 +256,7 @@ const MintPassMinting = (props) => {
                                             <div className={'flex'}>Your Mint Pass Balance</div>
                                             <div className={'flex text-green-500'}>{balance || "0"} NFT</div>
                                         </div>
-                                        <div className={'flex justify-between'}>
+                                        <div className={'flex justify-between mt-2'}>
                                             <div className={'flex'}>Token ID</div>
                                             <div
                                                 className={'flex text-green-500'}>{renderNFTLink(contract, tokenId) || "Empty"}</div>
