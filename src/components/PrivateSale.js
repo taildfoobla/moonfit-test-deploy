@@ -228,7 +228,7 @@ const PrivateSale = (props) => {
                      height="70" className="move-vertical-reversed"/>
             </div>
             {
-                !loading && <div className="section-content">
+                !loading && contract && <div className="section-content">
                     <div className="container">
                         <div className={'flex justify-center items-start'}>
                             <div className={'flex mr-5'}>
