@@ -41,9 +41,9 @@ const WebNavigation = ({isConnected}) => {
                         <nav id="primary-menu" className="primary-menu">
                             <ul className="nav">
                                 <li className="nav-item">
-                                    <a className="nav-link" href="/">
+                                    <Link className="nav-link" to={Paths.Home}>
                                         <span className="nav-text">Home</span>
-                                    </a>
+                                    </Link>
                                 </li>
                                 <li className="nav-item">
                                     <Link className="nav-link" to={Paths.PrivateSale}>
