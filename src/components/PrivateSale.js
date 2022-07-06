@@ -29,15 +29,15 @@ const PrivateSale = (props) => {
     const {loading, setLoading} = useContext(AppContext)
 
     useEffect(() => {
-        fetchData().then()
+        user.account && fetchData().then()
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [user.account])
 
 
-    useEffect(() => {
-        setLoading(true)
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
+    // useEffect(() => {
+    //     !!user.account && setLoading(true)
+    //     // eslint-disable-next-line react-hooks/exhaustive-deps
+    // }, [])
 
     const fetchData = async () => {
         setLoading(true)
