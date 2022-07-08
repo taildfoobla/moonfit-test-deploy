@@ -6,13 +6,6 @@ import BigNumber from "bignumber.js"
 import contractABI from '../abis/MFGPrivateSale.json'
 import {getStringOfBigNumber} from "../utils/number"
 import ERC20Balance from "../abis/ERC20Balance.json"
-import promotionBg from "../assets/images/promoting-bg.jpg"
-import mediumSatellite1 from "../assets/images/shapes/medium-satellite-1.png"
-import mediumSatellite2 from "../assets/images/shapes/medium-satellite-2.png"
-import kusamaV2 from "../assets/images/shapes/kusama-v2.png"
-import polkadot from "../assets/images/shapes/polkadot-v2.png"
-import tokenMFR from "../assets/images/token-mfr.png"
-import tokenMFG from "../assets/images/shapes/token-mfg.png"
 import WalletAuthRequired from "./shared/WalletAuthRequired"
 import {notification} from "antd"
 import {getMainMessage} from "../utils/tx-error"
@@ -46,7 +39,7 @@ const PrivateSale = (props) => {
             if (data && success) {
                 setPrivateSaleInfo(data.data)
                 if (!!data.data.mfgToken) {
-                    const web3 = new Web3(window.web3.currentProvider)
+                    const web3 = new Web3(window.SubWallet)
                     const contract = new web3.eth.Contract(ERC20Balance.abi, data.data.mfgToken)
                     const weiBalance = await contract.methods.balanceOf(user.account).call()
                     const decimals = await contract.methods.decimals().call()
@@ -187,54 +180,14 @@ const PrivateSale = (props) => {
 
     return (
         <WalletAuthRequired isConnected={!!user.account} onConnect={onConnect} className={'section page-mfg-ps'}>
-            <div className="section-shape section-shape-promoting-bg">
-                <img loading="lazy" src={promotionBg} alt="Promoting an active lifestyle"
-                     width="1920"
-                     height="340"/>
-            </div>
-            <div className="section-shape section-shape-satellite-1">
-                <img loading="lazy" src={mediumSatellite1} alt="satellite"
-                     width="229" height="224"/>
-            </div>
-            <div className="section-shape section-shape-satellite-2">
-                <img loading="lazy" src={mediumSatellite2} alt="satellite"
-                     width="407" height="490"/>
-            </div>
-            <div className="section-shape section-shape-kusama move-vertical">
-                <img loading="lazy" src={kusamaV2} alt="Kusama" width="238"
-                     height="237"/>
-            </div>
-            <div className="section-shape section-shape-polkadot move-vertical-reversed">
-                <img loading="lazy" src={polkadot} alt="Polkadot" width="218"
-                     height="223"/>
-            </div>
-            <div className="section-shape shape-token-mfr-1 move-vertical-reversed">
-                <img loading="lazy" src={tokenMFR} alt="shape"
-                     width="70"
-                     height="70"/>
-            </div>
-            <div className="section-shape shape-token-mfr-2">
-                <img loading="lazy" src={tokenMFR} alt="shape" className="move-vertical"
-                     width="70"
-                     height="70"/>
-            </div>
-            <div className="section-shape shape-token-mfg-1">
-                <img loading="lazy" src={tokenMFG} alt="shape" width="71"
-                     height="51" className="move-vertical-reversed"/>
-            </div>
-            <div className="section-shape shape-token-mfg-2">
-                <img loading="lazy" src={tokenMFG} alt="shape"
-                     width="70"
-                     height="70" className="move-vertical-reversed"/>
-            </div>
             {
                 !loading && contract && <div className="section-content">
                     <div className="container">
-                        <div className={'flex justify-center items-start'}>
-                            <div className={'flex mr-5'}>
+                        <div className={'flex flex-col'}>
+                            <div className={'flex justify-center'}>
                                 <h2 className={'font-bold text-3xl secondary-color'}>MFG Private Sale</h2>
                             </div>
-                            <div className={'flex'}>
+                            <div className={'flex justify-center mt-4'}>
                                 {isPSActive ? (
                                     <span
                                         className="bg-green-400 text-green-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-green-500 dark:text-white">
@@ -267,36 +220,36 @@ const PrivateSale = (props) => {
                                 </div>
                                 <div className="card-body">
                                     <div className={'mt-8'}>
-                                        <div className={'flex justify-between'}>
+                                        <div className={'flex flex-col'}>
                                             <div className={'flex'}>Sale contract</div>
                                             <div className={'flex flex-col'}>
                                                 <div className={'flex text-green-500'}>
                                                     {contract}
                                                 </div>
-                                                <div className={'flex justify-end'}>
+                                                <div className={'flex'}>
                                                     {renderAddressLink(contract)}
                                                 </div>
                                             </div>
                                         </div>
-                                        <div className={'flex justify-between mt-2'}>
+                                        <div className={'flex flex-col mt-2'}>
                                             <div className={'flex'}>Purchase price</div>
                                             <div className={'flex text-green-500'}>{purchase}</div>
                                         </div>
-                                        <div className={'flex justify-between mt-2'}>
+                                        <div className={'flex flex-col mt-2'}>
                                             <div className={'flex'}>Sale rate</div>
                                             <div className={'flex text-green-500'}>{rate} (1 GLMR = {rate} MFG)
                                             </div>
                                         </div>
-                                        <div className={'flex justify-between mt-2'}>
+                                        <div className={'flex flex-col mt-2'}>
                                             <div className={'flex'}>Remaining slot</div>
                                             <div className={'flex text-green-500'}>{remainingSlot}</div>
                                         </div>
                                         <hr className={'my-4'}/>
-                                        <div className={'flex justify-between'}>
+                                        <div className={'flex flex-col'}>
                                             <div className={'flex'}>Your balance in Private Sale</div>
                                             <div className={'flex text-green-500'}>{realBalance}</div>
                                         </div>
-                                        <div className={'flex justify-between mt-2'}>
+                                        <div className={'flex flex-col mt-2'}>
                                             <div className={'flex'}>Last claim time</div>
                                             <div className={'flex text-green-500'}>{lastClaimStr}</div>
                                         </div>

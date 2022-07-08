@@ -3,13 +3,6 @@ import Web3 from "web3"
 import {getMintPassInfo, getMintPassWalletInfo, getWalletMerklePath} from "../services/tokenSale"
 import AuthContext from "../contexts/AuthContext"
 import contractABI from '../abis/MintPassNFT.json'
-import promotionBg from "../assets/images/promoting-bg.jpg"
-import mediumSatellite1 from "../assets/images/shapes/medium-satellite-1.png"
-import mediumSatellite2 from "../assets/images/shapes/medium-satellite-2.png"
-import kusamaV2 from "../assets/images/shapes/kusama-v2.png"
-import polkadot from "../assets/images/shapes/polkadot-v2.png"
-import tokenMFR from "../assets/images/token-mfr.png"
-import tokenMFG from "../assets/images/shapes/token-mfg.png"
 import WalletAuthRequired from "./shared/WalletAuthRequired"
 import {notification} from "antd"
 import {getMainMessage} from "../utils/tx-error"
@@ -146,55 +139,15 @@ const MintPassMinting = (props) => {
     const {balance, tokenId} = walletInfo
 
     return (
-        <WalletAuthRequired isConnected={!!user.account} onConnect={onConnect} className={'section page-mfg-ps'}>
-            <div className="section-shape section-shape-promoting-bg">
-                <img loading="lazy" src={promotionBg} alt="Promoting an active lifestyle"
-                     width="1920"
-                     height="340"/>
-            </div>
-            <div className="section-shape section-shape-satellite-1">
-                <img loading="lazy" src={mediumSatellite1} alt="satellite"
-                     width="229" height="224"/>
-            </div>
-            <div className="section-shape section-shape-satellite-2">
-                <img loading="lazy" src={mediumSatellite2} alt="satellite"
-                     width="407" height="490"/>
-            </div>
-            <div className="section-shape section-shape-kusama move-vertical">
-                <img loading="lazy" src={kusamaV2} alt="Kusama" width="238"
-                     height="237"/>
-            </div>
-            <div className="section-shape section-shape-polkadot move-vertical-reversed">
-                <img loading="lazy" src={polkadot} alt="Polkadot" width="218"
-                     height="223"/>
-            </div>
-            <div className="section-shape shape-token-mfr-1 move-vertical-reversed">
-                <img loading="lazy" src={tokenMFR} alt="shape"
-                     width="70"
-                     height="70"/>
-            </div>
-            <div className="section-shape shape-token-mfr-2">
-                <img loading="lazy" src={tokenMFR} alt="shape" className="move-vertical"
-                     width="70"
-                     height="70"/>
-            </div>
-            <div className="section-shape shape-token-mfg-1">
-                <img loading="lazy" src={tokenMFG} alt="shape" width="71"
-                     height="51" className="move-vertical-reversed"/>
-            </div>
-            <div className="section-shape shape-token-mfg-2">
-                <img loading="lazy" src={tokenMFG} alt="shape"
-                     width="70"
-                     height="70" className="move-vertical-reversed"/>
-            </div>
+        <WalletAuthRequired isConnected={!!user.account} onConnect={onConnect} className={'section page-mint-pass'}>
             {
                 !loading && contract && <div className="section-content">
                     <div className="container">
-                        <div className={'flex justify-center items-start'}>
-                            <div className={'flex mr-5'}>
+                        <div className={'flex flex-col'}>
+                            <div className={'flex justify-center'}>
                                 <h2 className={'font-bold text-3xl secondary-color'}>Mint Pass Minting</h2>
                             </div>
-                            <div className={'flex'}>
+                            <div className={'flex justify-center mt-4'}>
                                 {isActive ? (
                                     <span
                                         className="bg-green-400 text-green-800 text-sm font-bold mr-2 px-2.5 py-0.5 rounded dark:bg-green-500 dark:text-white">
@@ -210,12 +163,12 @@ const MintPassMinting = (props) => {
                         </div>
                         <div className="moonfit-card">
                             <div className="moonfit-card-inner">
-                                <div className="card-title flex justify-between">
+                                <div className="card-title flex justify-between items-start">
                                     <div className={'flex'}>Minting information</div>
                                     <div className={'flex'}>
                                         {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
                                         <a href="#" className={'normal-case text-xs inline'} onClick={() => fetchData()}>
-                                            <svg className="w-5 h-5 inline mr-1" fill="none" stroke="currentColor"
+                                            <svg className="w-4 h-4 inline mr-1" fill="none" stroke="currentColor"
                                                  viewBox="0 0 24 24"
                                                  xmlns="http://www.w3.org/2000/svg">
                                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
@@ -227,39 +180,26 @@ const MintPassMinting = (props) => {
                                 </div>
                                 <div className="card-body">
                                     <div className={'mt-8'}>
-                                        <div className={'flex justify-between'}>
+                                        <div className={'flex flex-col'}>
                                             <div className={'flex'}>Mint Pass contract</div>
                                             <div className={'flex flex-col'}>
                                                 <div className={'flex text-green-500'}>
                                                     {contract}
                                                 </div>
-                                                <div className={'flex justify-end'}>
+                                                <div className={'flex'}>
                                                     {renderAddressLink(contract)}
                                                 </div>
                                             </div>
                                         </div>
-                                        {/*<div className={'flex justify-between'}>*/}
-                                        {/*    <div className={'flex'}>Purchase price</div>*/}
-                                        {/*    <div className={'flex text-green-500'}>{1}</div>*/}
-                                        {/*</div>*/}
-                                        {/*<div className={'flex justify-between'}>*/}
-                                        {/*    <div className={'flex'}>Sale rate</div>*/}
-                                        {/*    <div className={'flex text-green-500'}>{1} (1 GLMR = {1} MFG)*/}
-                                        {/*    </div>*/}
-                                        {/*</div>*/}
-                                        {/*<div className={'flex justify-between'}>*/}
-                                        {/*    <div className={'flex'}>Remaining slot</div>*/}
-                                        {/*    <div className={'flex text-green-500'}>{1}</div>*/}
-                                        {/*</div>*/}
                                         <hr className={'my-4'}/>
-                                        <div className={'flex justify-between'}>
+                                        <div className={'flex flex-col'}>
                                             <div className={'flex'}>Your Mint Pass Balance</div>
                                             <div className={'flex text-green-500'}>{balance || "0"} NFT</div>
                                         </div>
-                                        <div className={'flex justify-between mt-2'}>
+                                        <div className={'flex flex-col mt-2'}>
                                             <div className={'flex'}>Token ID</div>
                                             <div
-                                                className={'flex text-green-500'}>{renderNFTLink(contract, tokenId) || "Empty"}</div>
+                                                className={'flex text-green-500'}>{tokenId ? renderNFTLink(contract, tokenId) : "Empty"}</div>
                                         </div>
                                         <div className={'flex flex-row justify-center mt-4'}>
                                             <button type="button"
