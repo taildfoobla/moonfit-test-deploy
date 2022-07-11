@@ -5,7 +5,6 @@ import AuthContext from "../../contexts/AuthContext"
 import {Link} from "react-router-dom"
 import Paths from "../../routes/Paths"
 
-
 const WebNavigation = ({isConnected}) => {
     const [isAccountModalVisible, setIsAccountModalVisible] = useState(false)
 
@@ -138,7 +137,7 @@ const WebNavigation = ({isConnected}) => {
             </div>
             <Modal title="Account Information"
                    visible={isAccountModalVisible}
-                   // centered
+                // centered
                    wrapClassName={'account-modal'}
                    className={'account-modal-content'}
                    width={720}

@@ -208,7 +208,7 @@ const PrivateSale = (props) => {
                                     <div className={'flex'}>
                                         {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
                                         <a href="#" className={'normal-case text-xs inline'} onClick={() => fetchData()}>
-                                            <svg className="w-5 h-5 inline mr-1" fill="none" stroke="currentColor"
+                                            <svg className="w-4 h-4 inline mr-1" fill="none" stroke="currentColor"
                                                  viewBox="0 0 24 24"
                                                  xmlns="http://www.w3.org/2000/svg">
                                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
