@@ -5,7 +5,6 @@ import WalletAuthContext from "./contexts/WalletAuthContext"
 import AppContext from "./contexts/AppContext"
 import WebNavigation from "./components/shared/WebNavigation"
 import WebFooter from "./components/shared/WebFooter"
-import {WEB3_METHODS} from "./constants/blockchain"
 import LoadingWrapper from "./components/shared/LoadingWrapper"
 import promotionBg from "./assets/images/promoting-bg.jpg"
 import mediumSatellite1 from "./assets/images/shapes/medium-satellite-1.png"
@@ -14,7 +13,10 @@ import kusamaV2 from "./assets/images/shapes/kusama-v2.png"
 import polkadot from "./assets/images/shapes/polkadot-v2.png"
 import tokenMFR from "./assets/images/token-mfr.png"
 import tokenMFG from "./assets/images/shapes/token-mfg.png"
+import {getReactEnv} from "./utils/env"
+import {switchNetwork} from "./utils/blockchain"
 
+const ENV = getReactEnv('ENV')
 
 const App = ({route}) => {
     const [isConnected, setIsConnected] = useState(false)
@@ -44,16 +46,7 @@ const App = ({route}) => {
             await provider.request({method: 'eth_requestAccounts'})
             const chainId = await provider.request({method: 'eth_chainId'})
 
-            await provider.request(WEB3_METHODS.switchToMoonbaseAlphaNetwork)
-            // if (!chainId || chainId.toString() !== MOONBEAM_CHAIN_ID.toString()) {
-            //     console.log("Not Moonbeam Network")
-            //     try {
-            //         await provider.request(WEB3_METHODS.switchToMoonbeamNetwork)
-            //     } catch (e) {
-            //         console.log("Cannot switchToMoonbeamNetwork: ", e.message)
-            //         await provider.request(WEB3_METHODS.addMoonbeamNetwork)
-            //     }
-            // }
+            await switchNetwork(provider)
 
             const web3 = new Web3(provider)
             const walletAccount = await web3.eth.getAccounts()
