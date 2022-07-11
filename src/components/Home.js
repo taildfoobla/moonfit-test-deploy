@@ -1,6 +1,6 @@
 import React, {useContext, useEffect} from 'react'
 import connectSW from "../assets/images/connect-subwallet/connect.png"
-import AuthContext from "../contexts/AuthContext"
+import WalletAuthContext from "../contexts/WalletAuthContext"
 import AppContext from "../contexts/AppContext"
 import {getReactEnv} from "../utils/env"
 import Paths from "../routes/Paths"
@@ -10,7 +10,7 @@ const SUBWALLET_EXT_URL = getReactEnv('SUBWALLET_EXT')
 
 
 const Home = (props) => {
-    const {user, onConnect} = useContext(AuthContext)
+    const {wallet, onConnect} = useContext(WalletAuthContext)
     const {setLoading} = useContext(AppContext)
     const history = useHistory()
 
@@ -33,7 +33,7 @@ const Home = (props) => {
                     </button>
                 </div>
             )
-        } else if (!user.account) {
+        } else if (!wallet.account) {
             return (
                 <div className={'mt-12'}>
                     <button type="button"

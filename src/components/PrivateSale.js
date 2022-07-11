@@ -1,7 +1,7 @@
 import React, {useContext, useEffect, useState} from 'react'
 import Web3 from "web3"
 import {getPrivateSaleInfo, getWalletInfo, getWalletMerklePath} from "../services/tokenSale"
-import AuthContext from "../contexts/AuthContext"
+import WalletAuthContext from "../contexts/WalletAuthContext"
 import BigNumber from "bignumber.js"
 import contractABI from '../abis/MFGPrivateSale.json'
 import {getStringOfBigNumber} from "../utils/number"
@@ -18,17 +18,17 @@ const PrivateSale = (props) => {
     const [privateSaleInfo, setPrivateSaleInfo] = useState({})
     const [walletInfo, setWalletInfo] = useState({})
 
-    const {user, setUserInfo, onConnect} = useContext(AuthContext)
+    const {wallet, setWallet, onConnect} = useContext(WalletAuthContext)
     const {loading, setLoading} = useContext(AppContext)
 
     useEffect(() => {
-        user.account && fetchData().then()
+        wallet.account && fetchData().then()
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [user.account])
+    }, [wallet.account])
 
 
     // useEffect(() => {
-    //     !!user.account && setLoading(true)
+    //     !!wallet.account && setLoading(true)
     //     // eslint-disable-next-line react-hooks/exhaustive-deps
     // }, [])
 
@@ -41,15 +41,15 @@ const PrivateSale = (props) => {
                 if (!!data.data.mfgToken) {
                     const web3 = new Web3(window.SubWallet)
                     const contract = new web3.eth.Contract(ERC20Balance.abi, data.data.mfgToken)
-                    const weiBalance = await contract.methods.balanceOf(user.account).call()
+                    const weiBalance = await contract.methods.balanceOf(wallet.account).call()
                     const decimals = await contract.methods.decimals().call()
                     const balance = new BigNumber(weiBalance).div(10 ** decimals)
-                    setUserInfo({...user, mfgBalance: balance.toString()})
+                    setWallet({...wallet, mfgBalance: balance.toString()})
                 }
             }
         }
         const fetchWalletInfo = async () => {
-            const {data, success} = await getWalletInfo(user.account)
+            const {data, success} = await getWalletInfo(wallet.account)
             if (data && success) {
                 setWalletInfo(data.data)
             }
@@ -66,10 +66,10 @@ const PrivateSale = (props) => {
                 console.log('SubWallet is not installed')
             }
             const web3js = new Web3(provider)
-            const nonce = await web3js.eth.getTransactionCount(user.account, 'latest')
+            const nonce = await web3js.eth.getTransactionCount(wallet.account, 'latest')
             const privateSaleContract = new web3js.eth.Contract(contractABI.abi, privateSaleInfo.contract)
 
-            const {data, success} = await getWalletMerklePath(user.account)
+            const {data, success} = await getWalletMerklePath(wallet.account)
             if (success && data.data.path) {
                 const path = data.data.path
                 // console.log(path)
@@ -77,7 +77,7 @@ const PrivateSale = (props) => {
                     method: 'eth_sendTransaction', params: [
                         {
                             to: privateSaleInfo.contract,
-                            from: user.account,
+                            from: wallet.account,
                             nonce: nonce,
                             value: getStringOfBigNumber(10 ** 18),
                             data: privateSaleContract.methods.buyTokens(path).encodeABI()
@@ -122,11 +122,11 @@ const PrivateSale = (props) => {
                 console.log('SubWallet is not installed')
             }
             const web3js = new Web3(provider)
-            const nonce = await web3js.eth.getTransactionCount(user.account, 'latest')
+            const nonce = await web3js.eth.getTransactionCount(wallet.account, 'latest')
             const privateSaleContract = new web3js.eth.Contract(contractABI.abi, privateSaleInfo.contract)
             const tx = {
                 to: privateSaleInfo.contract,
-                from: user.account,
+                from: wallet.account,
                 nonce,
                 data: privateSaleContract.methods.claimTokens().encodeABI()
             }
@@ -179,7 +179,7 @@ const PrivateSale = (props) => {
     const isPSActive = endTime > 0 && remainingSlot > 0
 
     return (
-        <WalletAuthRequired isConnected={!!user.account} onConnect={onConnect} className={'section page-mfg-ps'}>
+        <WalletAuthRequired isConnected={!!wallet.account} onConnect={onConnect} className={'section page-mfg-ps'}>
             {
                 !loading && contract && <div className="section-content">
                     <div className="container">

@@ -1,14 +1,14 @@
 import React, {useContext, useState} from 'react'
 import MFLogoNav from "../../assets/images/logo/logo.png"
 import {Modal} from "antd"
-import AuthContext from "../../contexts/AuthContext"
+import WalletAuthContext from "../../contexts/WalletAuthContext"
 import {Link} from "react-router-dom"
 import Paths from "../../routes/Paths"
 
 const WebNavigation = ({isConnected}) => {
     const [isAccountModalVisible, setIsAccountModalVisible] = useState(false)
 
-    const {user, onConnect, onDisconnect} = useContext(AuthContext)
+    const {wallet, onConnect, onDisconnect} = useContext(WalletAuthContext)
 
     const getShortAddress = (address) => {
         return address.slice(0, 5) + "..." + address.slice(address.length - 5, address.length)
@@ -82,7 +82,7 @@ const WebNavigation = ({isConnected}) => {
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
                                               d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
                                     </svg>
-                                    {getShortAddress(user.account)}
+                                    {getShortAddress(wallet.account)}
                                 </button>
                             ) : (
                                 <button type="button"
@@ -140,7 +140,7 @@ const WebNavigation = ({isConnected}) => {
                 // centered
                    wrapClassName={'account-modal'}
                    className={'account-modal-content'}
-                   width={720}
+                // width={720}
                    footer={[
                        <button type="button"
                                key="1"
@@ -156,21 +156,22 @@ const WebNavigation = ({isConnected}) => {
                        </button>
                    ]}>
                 <div>
-                    <div className="flex justify-between">
+                    <div className="flex flex-col">
                         <div className={'flex'}>Wallet address</div>
-                        <div className={'flex'}>{user.account}</div>
+                        <div className={'flex text-green-500'}>{wallet.account}</div>
                     </div>
-                    <div className="flex justify-between mt-2">
+                    <div className="flex flex-col mt-2">
                         <div className={'flex'}>Balance</div>
-                        <div className={'flex'}>{user.balance} (GLMR)</div>
+                        <div className={'flex text-green-500'}>{wallet.balance} (GLMR)</div>
                     </div>
-                    <div className="flex justify-between mt-2">
+                    <div className="flex flex-col mt-2">
                         <div className={'flex'}>MFG Balance</div>
-                        <div className={'flex'}>{user.mfgBalance ? user.mfgBalance : "Unknown"} (MFG)</div>
+                        <div className={'flex text-green-500'}>{wallet.mfgBalance ? wallet.mfgBalance : "Unknown"} (MFG)
+                        </div>
                     </div>
-                    <div className="flex justify-between mt-2">
+                    <div className="flex flex-col mt-2">
                         <div className={'flex'}>Chain ID</div>
-                        <div className={'flex'}>{user.chainId}</div>
+                        <div className={'flex text-green-500'}>{wallet.chainId}</div>
                     </div>
                 </div>
             </Modal>

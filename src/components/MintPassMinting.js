@@ -1,7 +1,7 @@
 import React, {useContext, useEffect, useState} from 'react'
 import Web3 from "web3"
 import {getMintPassInfo, getMintPassWalletInfo, getWalletMerklePath} from "../services/tokenSale"
-import AuthContext from "../contexts/AuthContext"
+import WalletAuthContext from "../contexts/WalletAuthContext"
 import contractABI from '../abis/MintPassNFT.json'
 import WalletAuthRequired from "./shared/WalletAuthRequired"
 import {notification} from "antd"
@@ -15,13 +15,13 @@ const MintPassMinting = (props) => {
     const [mintPassInfo, setMintPassInfo] = useState({})
     const [walletInfo, setWalletInfo] = useState({})
 
-    const {user, onConnect} = useContext(AuthContext)
+    const {wallet, onConnect} = useContext(WalletAuthContext)
     const {loading, setLoading} = useContext(AppContext)
 
     useEffect(() => {
-        user.account && fetchData().then()
+        wallet.account && fetchData().then()
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [user.account])
+    }, [wallet.account])
 
     // useEffect(() => {
     //     setLoading(true)
@@ -37,7 +37,7 @@ const MintPassMinting = (props) => {
             }
         }
         const fetchWalletInfo = async () => {
-            const {data, success} = await getMintPassWalletInfo(user.account)
+            const {data, success} = await getMintPassWalletInfo(wallet.account)
             if (data && success) {
                 setWalletInfo(data.data)
             }
@@ -62,9 +62,9 @@ const MintPassMinting = (props) => {
                 console.log('SubWallet is not installed')
             }
             const web3js = new Web3(provider)
-            const nonce = await web3js.eth.getTransactionCount(user.account, 'latest')
+            const nonce = await web3js.eth.getTransactionCount(wallet.account, 'latest')
             const mintPassContract = new web3js.eth.Contract(contractABI.abi, mintPassInfo.contract)
-            const {data, success} = await getWalletMerklePath(user.account)
+            const {data, success} = await getWalletMerklePath(wallet.account)
             if (success && data.data.path) {
                 const path = data.data.path
                 // console.log(path)
@@ -72,7 +72,7 @@ const MintPassMinting = (props) => {
                     method: 'eth_sendTransaction', params: [
                         {
                             to: mintPassInfo.contract,
-                            from: user.account,
+                            from: wallet.account,
                             nonce: nonce,
                             // value: getStringOfBigNumber(10 ** 18),
                             data: mintPassContract.methods.mintNFT(path).encodeABI()
@@ -139,7 +139,7 @@ const MintPassMinting = (props) => {
     const {balance, tokenId} = walletInfo
 
     return (
-        <WalletAuthRequired isConnected={!!user.account} onConnect={onConnect} className={'section page-mint-pass'}>
+        <WalletAuthRequired isConnected={!!wallet.account} onConnect={onConnect} className={'section page-mint-pass'}>
             {
                 !loading && contract && <div className="section-content">
                     <div className="container">

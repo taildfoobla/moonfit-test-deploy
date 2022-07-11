@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react'
 import Web3 from 'web3'
 import {renderRoutes} from "react-router-config"
-import AuthContext from "./contexts/AuthContext"
+import WalletAuthContext from "./contexts/WalletAuthContext"
 import AppContext from "./contexts/AppContext"
 import WebNavigation from "./components/shared/WebNavigation"
 import WebFooter from "./components/shared/WebFooter"
@@ -18,7 +18,7 @@ import tokenMFG from "./assets/images/shapes/token-mfg.png"
 
 const App = ({route}) => {
     const [isConnected, setIsConnected] = useState(false)
-    const [userInfo, setUserInfo] = useState({})
+    const [wallet, setWallet] = useState({})
     const [loading, setLoading] = useState(true)
 
     // const history = useHistory()
@@ -27,7 +27,7 @@ const App = ({route}) => {
         function checkConnectedWallet() {
             const userData = JSON.parse(localStorage.getItem('userAccount'))
             if (userData != null) {
-                setUserInfo(userData)
+                setWallet(userData)
                 setIsConnected(true)
             }
         }
@@ -70,7 +70,7 @@ const App = ({route}) => {
 
     const onDisconnect = (callback = null) => {
         window.localStorage.removeItem('userAccount')
-        setUserInfo({})
+        setWallet({})
         setIsConnected(false)
         callback && callback()
     }
@@ -83,14 +83,14 @@ const App = ({route}) => {
         }
         window.localStorage.setItem('userAccount', JSON.stringify(userAccount)) // user persisted data
         const userData = JSON.parse(localStorage.getItem('userAccount'))
-        setUserInfo(userData)
+        setWallet(userData)
         setIsConnected(true)
     }
 
 
     return (
         <AppContext.Provider value={{loading, setLoading}}>
-            <AuthContext.Provider value={{user: userInfo, setUserInfo, onConnect, onDisconnect}}>
+            <WalletAuthContext.Provider value={{wallet, setWallet, onConnect, onDisconnect}}>
                 <div tabIndex="0" className="page-connect-subwallet">
                     <div className="section-effect-snow site-effect-snow" data-firefly-total="50"></div>
                     <WebNavigation isConnected={isConnected}/>
@@ -142,7 +142,7 @@ const App = ({route}) => {
                     </div>
                     <WebFooter/>
                 </div>
-            </AuthContext.Provider>
+            </WalletAuthContext.Provider>
         </AppContext.Provider>
     )
 }
