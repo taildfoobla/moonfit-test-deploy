@@ -25,7 +25,7 @@ const App = ({route}) => {
 
     useEffect(() => {
         function checkConnectedWallet() {
-            const userData = JSON.parse(localStorage.getItem('userAccount'))
+            const userData = JSON.parse(localStorage.getItem('walletAccount'))
             if (userData != null) {
                 setWallet(userData)
                 setIsConnected(true)
@@ -56,11 +56,11 @@ const App = ({route}) => {
             // }
 
             const web3 = new Web3(provider)
-            const userAccount = await web3.eth.getAccounts()
-            const account = userAccount[0]
+            const walletAccount = await web3.eth.getAccounts()
+            const account = walletAccount[0]
             let ethBalance = await web3.eth.getBalance(account) // Get wallet balance
             ethBalance = web3.utils.fromWei(ethBalance, 'ether') //Convert balance to wei
-            saveUserInfo(ethBalance, account, chainId)
+            saveWalletInfo(ethBalance, account, chainId)
         } catch (err) {
             console.log(
                 'There was an error fetching your accounts. Make sure your SubWallet is configured correctly.'
@@ -69,20 +69,20 @@ const App = ({route}) => {
     }
 
     const onDisconnect = (callback = null) => {
-        window.localStorage.removeItem('userAccount')
+        window.localStorage.removeItem('walletAccount')
         setWallet({})
         setIsConnected(false)
         callback && callback()
     }
 
-    const saveUserInfo = (ethBalance, account, chainId) => {
-        const userAccount = {
+    const saveWalletInfo = (ethBalance, account, chainId) => {
+        const walletAccount = {
             account: account,
             balance: ethBalance,
             chainId: chainId,
         }
-        window.localStorage.setItem('userAccount', JSON.stringify(userAccount)) // user persisted data
-        const userData = JSON.parse(localStorage.getItem('userAccount'))
+        window.localStorage.setItem('walletAccount', JSON.stringify(walletAccount)) // user persisted data
+        const userData = JSON.parse(localStorage.getItem('walletAccount'))
         setWallet(userData)
         setIsConnected(true)
     }
