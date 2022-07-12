@@ -6,7 +6,7 @@ import BigNumber from "bignumber.js"
 import contractABI from '../abis/MFGPrivateSale.json'
 import {getStringOfBigNumber} from "../utils/number"
 import ERC20Balance from "../abis/ERC20Balance.json"
-import WalletAuthRequired from "./shared/WalletAuthRequired"
+import WalletAuthRequired from "../components/shared/WalletAuthRequired"
 import {notification} from "antd"
 import {getMainMessage} from "../utils/tx-error"
 import AppContext from "../contexts/AppContext"

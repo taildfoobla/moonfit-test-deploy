@@ -3,7 +3,7 @@ import Web3 from "web3"
 import {getMintPassInfo, getMintPassWalletInfo, getWalletMerklePath} from "../services/tokenSale"
 import WalletAuthContext from "../contexts/WalletAuthContext"
 import contractABI from '../abis/MintPassNFT.json'
-import WalletAuthRequired from "./shared/WalletAuthRequired"
+import WalletAuthRequired from "../components/shared/WalletAuthRequired"
 import {notification} from "antd"
 import {getMainMessage} from "../utils/tx-error"
 import {getAddressScanUrl, getTokenScanUrl, getTxScanUrl} from "../utils/blockchain"

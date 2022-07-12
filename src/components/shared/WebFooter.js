@@ -1,7 +1,7 @@
 import React from 'react'
 
 
-const WebFooter = ({isConnected}) => {
+const WebFooter = (props) => {
     return (
         <div className="section-footer pt-6 pb-8">
             <div className="container">

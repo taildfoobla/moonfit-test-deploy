@@ -2,24 +2,27 @@ import React, {useContext, useState} from 'react'
 import MFLogoNav from "../../assets/images/logo/logo.png"
 import {Modal} from "antd"
 import WalletAuthContext from "../../contexts/WalletAuthContext"
+import MoonFitAuthContext from "../../contexts/MoonFitAuthContext"
 import {Link} from "react-router-dom"
 import Paths from "../../routes/Paths"
+import MFAccountButton from "../MFAccountButton"
 
-const WebNavigation = ({isConnected}) => {
-    const [isAccountModalVisible, setIsAccountModalVisible] = useState(false)
+const WebNavigation = (props) => {
+    const [isWalletModalVisible, setIsWalletModalVisible] = useState(false)
 
-    const {wallet, onConnect, onDisconnect} = useContext(WalletAuthContext)
+    const {wallet, onConnect, onDisconnect, isConnected} = useContext(WalletAuthContext)
+    const {user, isAuthenticated} = useContext(MoonFitAuthContext)
 
     const getShortAddress = (address) => {
-        return address.slice(0, 5) + "..." + address.slice(address.length - 5, address.length)
+        return address.slice(0, 4) + "..." + address.slice(address.length - 4, address.length)
     }
 
-    const showAccountModal = () => {
-        setIsAccountModalVisible(true)
+    const showWalletModal = () => {
+        setIsWalletModalVisible(true)
     }
 
-    const hideAccountModal = () => {
-        setIsAccountModalVisible(false)
+    const hideWalletModal = () => {
+        setIsWalletModalVisible(false)
     }
 
     return (
@@ -75,12 +78,13 @@ const WebNavigation = ({isConnected}) => {
                         {
                             isConnected ? (
                                 <button type="button"
-                                        onClick={showAccountModal}
+                                        onClick={showWalletModal}
                                         className="header-button button button-primary">
-                                    <svg className="inline w-5 h-5 mr-1" fill="none" stroke="currentColor"
-                                         viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <svg className="inline w-5 h-5 mr-1" style={{marginTop: 2}} fill="none"
+                                         stroke="currentColor" viewBox="0 0 24 24"
+                                         xmlns="http://www.w3.org/2000/svg">
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
-                                              d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                              d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/>
                                     </svg>
                                     {getShortAddress(wallet.account)}
                                 </button>
@@ -88,10 +92,17 @@ const WebNavigation = ({isConnected}) => {
                                 <button type="button"
                                         onClick={onConnect}
                                         className="header-button button button-primary">
+                                    <svg className="inline w-5 h-5 mr-1" style={{marginTop: 2}} fill="none"
+                                         stroke="currentColor" viewBox="0 0 24 24"
+                                         xmlns="http://www.w3.org/2000/svg">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
+                                              d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/>
+                                    </svg>
                                     Connect Wallet
                                 </button>
                             )
                         }
+                        <MFAccountButton/>
                         <button className="navbar-toggler collapsed" type="button" data-bs-toggle="collapse"
                                 data-bs-target="#mobile-menu" aria-controls="navbar" aria-expanded="false"
                                 aria-label="Toggle navigation">
@@ -135,8 +146,8 @@ const WebNavigation = ({isConnected}) => {
                     </div>
                 </div>
             </div>
-            <Modal title="Account Information"
-                   visible={isAccountModalVisible}
+            <Modal title="Wallet Information"
+                   visible={isWalletModalVisible}
                 // centered
                    wrapClassName={'account-modal'}
                    className={'account-modal-content'}
@@ -144,13 +155,13 @@ const WebNavigation = ({isConnected}) => {
                    footer={[
                        <button type="button"
                                key="1"
-                               onClick={() => onDisconnect(() => setIsAccountModalVisible(false))}
+                               onClick={() => onDisconnect(() => setIsWalletModalVisible(false))}
                                className="button button-secondary">
                            Disconnect
                        </button>,
                        <button type="button"
                                key="2"
-                               onClick={hideAccountModal}
+                               onClick={hideWalletModal}
                                className="button button-primary">
                            Done
                        </button>

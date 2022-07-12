@@ -1,8 +1,11 @@
-import React from 'react'
+import React, {useContext} from 'react'
+import AppContext from "../../contexts/AppContext"
 
 
 const LoadingWrapper = () => {
-    return (
+    const {loading} = useContext(AppContext)
+
+    return loading ? (
         <div id="loading-wrapper" className="w-full h-full fixed block top-0 left-0 bg-[#000] opacity-75 z-50">
             <span className="text-green-500 opacity-75 top-1/2 my-0 mx-auto block relative w-0 h-0">
                 <svg role="status"
@@ -18,7 +21,7 @@ const LoadingWrapper = () => {
                 </svg>
             </span>
         </div>
-    )
+    ) : <span/>
 }
 
 export default LoadingWrapper

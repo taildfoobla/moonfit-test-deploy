@@ -1,8 +1,8 @@
 import App from "../App"
 import Paths from "./Paths"
-import PrivateSale from "../components/PrivateSale"
-import MintPassMinting from "../components/MintPassMinting"
-import Home from "../components/Home"
+import PrivateSale from "../pages/PrivateSale"
+import MintPassMinting from "../pages/MintPassMinting"
+import Home from "../pages/Home"
 
 const routes = [
     {
