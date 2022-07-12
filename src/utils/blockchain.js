@@ -33,3 +33,7 @@ export const switchNetwork = async (provider) => {
             return provider.request(WEB3_METHODS.switchToMoonbaseAlphaNetwork)
     }
 }
+
+export const getShortAddress = (address, length = 4) => {
+    return address ? address.slice(0, length) + "..." + address.slice(address.length - length, address.length) : ''
+}

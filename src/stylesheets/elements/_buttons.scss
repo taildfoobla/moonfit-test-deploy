@@ -39,10 +39,11 @@ input[type='submit'],
 
   &:focus,
   &:hover {
-    color: var(--mg-button-hover-text, $button-hover-text);
-    border-color: var(--mg-button-hover-border, $button-hover-border);
-    background-color: var(--mg-button-hover-background, $button-hover-background);
-    box-shadow: 0 0 0 0.2rem var(--mg-button-hover-background, $button-hover-background);
+    transform: translate(0px, -2px);
+    //color: var(--mg-button-hover-text, $button-hover-text);
+    //border-color: var(--mg-button-hover-border, $button-hover-border);
+    //background-color: var(--mg-button-hover-background, $button-hover-background);
+    //box-shadow: 0 0 0 0.2rem var(--mg-button-hover-background, $button-hover-background);
   }
 }
 

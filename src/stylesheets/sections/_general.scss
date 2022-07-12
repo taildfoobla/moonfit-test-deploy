@@ -541,10 +541,12 @@
   }
 }
 
-.account-modal {
+.mf-modal {
   background-color: #262c4a96;
 
-  .account-modal-content {
+  .mf-modal-content {
+    width: 500px !important;
+
     .ant-modal-content {
       background: #080e26;
       color: #ffffff;
@@ -566,6 +568,18 @@
         border-top: 1px solid #151A30;
         padding: 15px 20px;
       }
+    }
+  }
+}
+
+.anticon {
+  vertical-align: 0.125em !important
+}
+
+@media screen and (max-width: 600px) {
+  .mf-modal {
+    .mf-modal-content {
+      width: 400px !important;
     }
   }
 }

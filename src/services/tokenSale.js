@@ -2,14 +2,14 @@ import {createApiRequest} from "../utils/api"
 
 export const getPrivateSaleInfo = () => {
     return createApiRequest({
-        url: "/mfg-private-sale",
+        url: "/token-sale/mfg-private-sale",
         method: "GET"
     })
 }
 
 export const getWalletInfo = (address) => {
     return createApiRequest({
-        url: "/mfg-private-sale/wallet",
+        url: "/token-sale/mfg-private-sale/wallet",
         method: "GET",
         params: {address}
     })
@@ -17,7 +17,7 @@ export const getWalletInfo = (address) => {
 
 export const getWalletMerklePath = (address) => {
     return createApiRequest({
-        url: "/merkle-path",
+        url: "/token-sale/merkle-path",
         method: "GET",
         params: {address}
     })
@@ -25,14 +25,14 @@ export const getWalletMerklePath = (address) => {
 
 export const getMintPassInfo = (address) => {
     return createApiRequest({
-        url: "/mint-pass",
+        url: "/token-sale/mint-pass",
         method: "GET",
     })
 }
 
 export const getMintPassWalletInfo = (address) => {
     return createApiRequest({
-        url: "/mint-pass/wallet",
+        url: "/token-sale/mint-pass/wallet",
         method: "GET",
         params: {address}
     })

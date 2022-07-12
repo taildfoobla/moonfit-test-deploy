@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react'
 import WalletAuthContext from "../contexts/WalletAuthContext"
 import {switchNetwork} from "../utils/blockchain"
 import Web3 from "web3"
+import {getLocalStorage, LOCALSTORAGE_KEY, removeLocalStorage, setLocalStorage} from "../utils/storage"
 
 
 const WalletAuthWrapper = ({children}) => {
@@ -10,7 +11,7 @@ const WalletAuthWrapper = ({children}) => {
 
     useEffect(() => {
         function checkConnectedWallet() {
-            const userData = JSON.parse(localStorage.getItem('walletAccount'))
+            const userData = JSON.parse(getLocalStorage(LOCALSTORAGE_KEY.WALLET_ACCOUNT))
             if (userData != null) {
                 setWallet(userData)
                 setIsConnected(true)
@@ -45,7 +46,7 @@ const WalletAuthWrapper = ({children}) => {
     }
 
     const onDisconnect = (callback = null) => {
-        window.localStorage.removeItem('walletAccount')
+        removeLocalStorage(LOCALSTORAGE_KEY.WALLET_ACCOUNT)
         setWallet({})
         setIsConnected(false)
         callback && callback()
@@ -57,8 +58,8 @@ const WalletAuthWrapper = ({children}) => {
             balance: ethBalance,
             chainId: chainId,
         }
-        window.localStorage.setItem('walletAccount', JSON.stringify(walletAccount)) // user persisted data
-        const userData = JSON.parse(localStorage.getItem('walletAccount'))
+        setLocalStorage(LOCALSTORAGE_KEY.WALLET_ACCOUNT, JSON.stringify(walletAccount)) // user persisted data
+        const userData = JSON.parse(getLocalStorage(LOCALSTORAGE_KEY.WALLET_ACCOUNT))
         setWallet(userData)
         setIsConnected(true)
     }
