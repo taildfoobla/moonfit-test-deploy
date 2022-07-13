@@ -67,7 +67,7 @@ const Home = (props) => {
                         <div className="flex justify-center connect-image">
                             <img loading="lazy" src={connectSW}
                                  alt="Moonfit + Subwallet"
-                                 width="659" height="94"/>
+                                 width="550" height="78"/>
                         </div>
                         <h1 className="section-title">Token <br/><span className="secondary-color">Sale Event</span>
                         </h1>

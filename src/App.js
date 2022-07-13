@@ -21,7 +21,7 @@ const App = ({route}) => {
         <AppWrapper>
             <MoonFitAuthWrapper>
                 <WalletAuthWrapper>
-                    <div tabIndex="0" className="page-connect-subwallet">
+                    <div>
                         <div className="section-effect-snow site-effect-snow" data-firefly-total="50"></div>
                         <WebNavigation/>
                         <div id="main-content" className="main-content page-content">

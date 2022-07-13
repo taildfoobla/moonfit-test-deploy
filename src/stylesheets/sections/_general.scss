@@ -576,6 +576,49 @@
   vertical-align: 0.125em !important
 }
 
+.ant-drawer-mask {
+  background-color: #262c4a96;
+}
+
+.ant-drawer-content-wrapper {
+  .ant-drawer-content {
+    .ant-drawer-wrapper-body {
+      .ant-drawer-header {
+        background-color: #080e26;
+        border-bottom: 1px solid #151A30;
+
+        .ant-drawer-header-title {
+          .ant-drawer-title {
+            //text-transform: none;
+            font-weight: bolder;
+            font-size: 20px;
+            color: #ffffff;
+          }
+        }
+      }
+
+      .ant-drawer-body {
+        background-color: #080e26;
+
+        nav.primary-menu {
+          .nav {
+            justify-content: start;
+            flex-direction: column;
+
+            .nav-item {
+              .nav-link {
+                width: fit-content;
+                padding-left: 0;
+              }
+            }
+          }
+        }
+      }
+    }
+
+  }
+}
+
 @media screen and (max-width: 600px) {
   .mf-modal {
     .mf-modal-content {

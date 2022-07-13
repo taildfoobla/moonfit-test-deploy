@@ -1,15 +1,17 @@
 import React, {useContext, useState} from 'react'
 import MFLogoNav from "../../assets/images/logo/logo.png"
-import {Modal} from "antd"
+import {Drawer, Modal} from "antd"
 import WalletAuthContext from "../../contexts/WalletAuthContext"
 import MoonFitAuthContext from "../../contexts/MoonFitAuthContext"
 import {Link} from "react-router-dom"
 import Paths from "../../routes/Paths"
 import MFAccountButton from "../MFAccountButton"
 import {getShortAddress} from "../../utils/blockchain"
+import {MenuOutlined} from "@ant-design/icons"
 
 const WebNavigation = (props) => {
     const [isWalletModalVisible, setIsWalletModalVisible] = useState(false)
+    const [visible, setVisible] = useState(false)
 
     const {wallet, onConnect, onDisconnect, isConnected} = useContext(WalletAuthContext)
     const {user, isAuthenticated} = useContext(MoonFitAuthContext)
@@ -22,54 +24,40 @@ const WebNavigation = (props) => {
         setIsWalletModalVisible(false)
     }
 
+    const mfDrawerLogo = (
+        <div>
+            <img loading="lazy"
+                 alt="MoonFit Whitelist - Web3 & NFT Lifestyle App"
+                 src={MFLogoNav}
+                 width={150}
+            />
+        </div>
+    )
+
     return (
         <header id="header" className="header">
-            <div className="container-full-gap-100">
+            <div className="flex justify-center items-center container-full-gap-100">
                 <div className="header-inner">
-                    <div className="header-left">
+                    <div className="flex items-center header-left">
+                        <div className={'cursor-pointer mr-4'} onClick={() => setVisible(true)}>
+                            <MenuOutlined style={{fontSize: 30, color: "#FFF"}}/>
+                        </div>
                         <div className="site-branding">
                             <a href="/" id="logo">
                                 <img loading="lazy"
                                      alt="MoonFit Whitelist - Web3 & NFT Lifestyle App"
                                      src={MFLogoNav}
                                 />
+                                {/*<svg className="inline" width="50" height="27"*/}
+                                {/*     viewBox="0 0 16 9" fill="none" xmlns="http://www.w3.org/2000/svg">*/}
+                                {/*    <path*/}
+                                {/*        d="M13.3256 3.12612L13.3326 3.02567L13.5598 0.160645H11.0963L8.57798 3.68064L8.81882 0.248042L6.13542 0.162319L3.12149 4.64938C3.12149 4.64938 2.34524 5.87227 1.04333 5.61477L0.197266 8.11681H2.03425C2.03425 8.11681 3.43807 8.09035 4.58012 6.82962C5.71553 5.56856 6.0733 4.79638 6.0733 4.79638V7.81979H8.44116L10.6841 4.79638L10.3951 7.81979H14.9151L15.5894 5.53574H13.1329L13.3256 3.12612Z"*/}
+                                {/*        fill="white"/>*/}
+                                {/*</svg>*/}
                             </a>
                         </div>
                     </div>
                     <div className="header-center">
-                        <nav id="primary-menu" className="primary-menu">
-                            <ul className="nav">
-                                <li className="nav-item">
-                                    <Link className="nav-link" to={Paths.Home}>
-                                        <span className="nav-text">Home</span>
-                                    </Link>
-                                </li>
-                                <li className="nav-item">
-                                    <Link className="nav-link" to={Paths.PrivateSale}>
-                                        <span className="nav-text">MFG Private Sale
-                                        </span>
-                                    </Link>
-                                </li>
-                                <li className="nav-item">
-                                    <Link className="nav-link" to={Paths.MintPassMinting}>
-                                        <span className="nav-text">Mint Pass
-                                        </span>
-                                    </Link>
-                                </li>
-                                <li className="nav-item">
-                                    <a className="nav-link" href="https://whitepaper.moonfit.xyz/" target="_blank"
-                                       rel="noreferrer">
-                                        <span className="nav-text">Whitepaper</span>
-                                    </a>
-                                </li>
-                                <li className="nav-item">
-                                    <a className="nav-link" href="https://litepaper.moonfit.xyz/" target="_blank"
-                                       rel="noreferrer">
-                                        <span className="nav-text">Litepaper</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </nav>
                     </div>
                     <div className="header-right">
                         {
@@ -100,55 +88,55 @@ const WebNavigation = (props) => {
                             )
                         }
                         <MFAccountButton/>
-                        <button className="navbar-toggler collapsed" type="button" data-bs-toggle="collapse"
-                                data-bs-target="#mobile-menu" aria-controls="navbar" aria-expanded="false"
-                                aria-label="Toggle navigation">
-                            <span className="navbar-toggler-icon"></span>
-                        </button>
-                        <nav id="mobile-menu" className="mobile-menu menu_scr collapse">
-                            <ul className="nav">
-                                <li className="nav-item">
-                                    <a className="nav-link" href="/">
-                                        <span className="nav-text">Homepage</span>
-                                    </a>
-                                </li>
-                                <li className="nav-item">
-                                    <a className="nav-link" href="/litepaper/">
-                                        <span className="nav-text">Litepaper</span>
-                                    </a>
-                                </li>
-                                <li className="nav-item">
-                                    <a className="nav-link" href="https://whitepaper.moonfit.xyz/" target="_blank"
-                                       rel="noreferrer">
-                                        <span className="nav-text">Whitepaper</span>
-                                    </a>
-                                </li>
-                                <li className="nav-item">
-                                    <a className="nav-link" href="/whitelist/">
-                                        <span className="nav-text">WhiteList</span>
-                                    </a>
-                                </li>
-                                <li className="nav-item">
-                                    <a className="nav-link" href="/how-to-play/">
-                                        <span className="nav-text">How to play</span>
-                                    </a>
-                                </li>
-                                <li className="nav-item">
-                                    <a className="nav-link" href="/nft-sale/">
-                                        <span className="nav-text">Mint Map</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </nav>
                     </div>
                 </div>
             </div>
+            <Drawer title={mfDrawerLogo}
+                    placement={'left'}
+                    closable={false}
+                    onClose={() => setVisible(false)}
+                    visible={visible}
+                    key="left"
+                    width={350}
+            >
+                <nav className="primary-menu">
+                    <ul className="nav">
+                        <li className="nav-item">
+                            <Link className="nav-link" to={Paths.Home}>
+                                <span className="nav-text">Home</span>
+                            </Link>
+                        </li>
+                        <li className="nav-item">
+                            <Link className="nav-link" to={Paths.PrivateSale}>
+                                        <span className="nav-text">MFG Private Sale
+                                        </span>
+                            </Link>
+                        </li>
+                        <li className="nav-item">
+                            <Link className="nav-link" to={Paths.MintPassMinting}>
+                                        <span className="nav-text">Mint Pass
+                                        </span>
+                            </Link>
+                        </li>
+                        <li className="nav-item">
+                            <a className="nav-link" href="https://whitepaper.moonfit.xyz/" target="_blank"
+                               rel="noreferrer">
+                                <span className="nav-text">Whitepaper</span>
+                            </a>
+                        </li>
+                        <li className="nav-item">
+                            <a className="nav-link" href="https://litepaper.moonfit.xyz/" target="_blank"
+                               rel="noreferrer">
+                                <span className="nav-text">Litepaper</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </Drawer>
             <Modal title="Wallet Information"
                    visible={isWalletModalVisible}
-                // centered
                    wrapClassName={'mf-modal account-modal'}
                    className={'mf-modal-content account-modal-content'}
-                // width={720}
                    footer={[
                        <button type="button"
                                key="1"

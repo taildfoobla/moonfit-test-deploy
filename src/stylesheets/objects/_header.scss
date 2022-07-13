@@ -5,12 +5,14 @@
 	left: 0;
 	width: 100%;
 	z-index: 999;
+	background-color: #020722;
 
 	.header-inner {
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
 		padding: 20px 0;
+		width: 800px;
 	}
 }
 
@@ -42,7 +44,7 @@
 }
 
 .primary-menu {
-	display: none;
+	//display: none;
 
 	ul {
 		margin: 0;
@@ -92,9 +94,9 @@
 	}
 }
 
-.primary-menu {
-	display: none;
-}
+//.primary-menu {
+//	display: none;
+//}
 
 .navbar-toggler {
 	min-height: 0;
