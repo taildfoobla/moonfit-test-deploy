@@ -1,16 +1,12 @@
-import React, {useState} from 'react'
+import React from 'react'
 import AppContext from "../contexts/AppContext"
 
 
 const AppWrapper = ({children}) => {
-    const [loading, setLoading] = useState(true)
-
-    // useEffect(() => {
-    //     setLoading(true)
-    // }, [children])
+    // const [loading, setLoading] = useState(true)
 
     return (
-        <AppContext.Provider value={{loading, setLoading}}>
+        <AppContext.Provider value={{}}>
             {children}
         </AppContext.Provider>
     )

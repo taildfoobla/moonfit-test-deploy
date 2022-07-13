@@ -1,7 +1,6 @@
-import React, {useContext, useEffect} from 'react'
+import React, {useContext} from 'react'
 import mfBrand from "../assets/images/brand.png"
 import WalletAuthContext from "../contexts/WalletAuthContext"
-import AppContext from "../contexts/AppContext"
 import {getReactEnv} from "../utils/env"
 import Paths from "../routes/Paths"
 import {useHistory} from "react-router-dom"
@@ -11,13 +10,7 @@ const SUBWALLET_EXT_URL = getReactEnv('SUBWALLET_EXT')
 
 const Home = (props) => {
     const {wallet, onConnect} = useContext(WalletAuthContext)
-    const {setLoading} = useContext(AppContext)
     const history = useHistory()
-
-    useEffect(() => {
-        setLoading(false)
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
 
     const renderButton = () => {
         const isSubWalletInstalled = Boolean(window?.injectedWeb3 && window?.SubWallet)

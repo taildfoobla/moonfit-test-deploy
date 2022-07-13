@@ -1,18 +1,11 @@
-import React, {useContext, useEffect}from 'react'
+import React from 'react'
 import {getReactEnv} from "../../utils/env"
-import AppContext from "../../contexts/AppContext"
 
 const SUBWALLET_EXT_URL = getReactEnv('SUBWALLET_EXT')
 
 
 const WalletAuthRequired = ({isConnected, onConnect, children, className}) => {
     const isSubWalletInstalled = Boolean(window?.injectedWeb3 && window?.SubWallet)
-    const {setLoading} = useContext(AppContext)
-
-    useEffect(() => {
-        setLoading(false)
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [isConnected])
 
     const renderContent = () => {
         if (!isSubWalletInstalled) {

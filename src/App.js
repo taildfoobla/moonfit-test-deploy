@@ -2,7 +2,6 @@ import React from 'react'
 import {renderRoutes} from "react-router-config"
 import WebNavigation from "./components/shared/WebNavigation"
 import WebFooter from "./components/shared/WebFooter"
-import LoadingWrapper from "./components/shared/LoadingWrapper"
 import promotionBg from "./assets/images/promoting-bg.jpg"
 import mediumSatellite1 from "./assets/images/shapes/medium-satellite-1.png"
 import mediumSatellite2 from "./assets/images/shapes/medium-satellite-2.png"
@@ -67,7 +66,6 @@ const App = ({route}) => {
                             </div>
                             <div className={'page-container'}>
                                 {renderRoutes(route.routes)}
-                                <LoadingWrapper/>
                             </div>
                         </div>
                         <WebFooter/>

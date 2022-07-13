@@ -7,30 +7,24 @@ import WalletAuthRequired from "../components/shared/WalletAuthRequired"
 import {Image, notification, Typography} from "antd"
 import {getMainMessage} from "../utils/tx-error"
 import {getAddressScanUrl, getShortAddress, getTxScanUrl} from "../utils/blockchain"
-import AppContext from "../contexts/AppContext"
 import {BLC_CONFIGS} from '../configs/blockchain'
 import axios from "axios"
+import LoadingWrapper from "../components/shared/LoadingWrapper"
 
 const {MINT_PASS_SC} = BLC_CONFIGS
 const {Paragraph} = Typography
 
 const MintPassMinting = (props) => {
+    const [loading, setLoading] = useState(true)
     const [mintLoading, setMintLoading] = useState(false)
     const [mintPassInfo, setMintPassInfo] = useState({})
 
     const {wallet, onConnect} = useContext(WalletAuthContext)
-    const {loading, setLoading} = useContext(AppContext)
-    console.log(loading)
 
     useEffect(() => {
         !!wallet.account && fetchData().then()
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [wallet.account])
-
-    // useEffect(() => {
-    //     setLoading(true)
-    //     // eslint-disable-next-line react-hooks/exhaustive-deps
-    // }, [])
 
     const fetchData = async () => {
         setLoading(true)
@@ -287,6 +281,7 @@ const MintPassMinting = (props) => {
                     </div>
                 </div>
             }
+            <LoadingWrapper loading={loading}/>
         </WalletAuthRequired>
     )
 }

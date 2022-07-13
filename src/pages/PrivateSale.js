@@ -9,28 +9,22 @@ import ERC20Balance from "../abis/ERC20Balance.json"
 import WalletAuthRequired from "../components/shared/WalletAuthRequired"
 import {notification} from "antd"
 import {getMainMessage} from "../utils/tx-error"
-import AppContext from "../contexts/AppContext"
 import {getAddressScanUrl, getTxScanUrl} from "../utils/blockchain"
+import LoadingWrapper from "../components/shared/LoadingWrapper"
 
 const PrivateSale = (props) => {
+    const [loading, setLoading] = useState(true)
     const [buyLoading, setBuyLoading] = useState(false)
     const [claimLoading, setClaimLoading] = useState(false)
     const [privateSaleInfo, setPrivateSaleInfo] = useState({})
     const [walletInfo, setWalletInfo] = useState({})
 
     const {wallet, setWallet, onConnect} = useContext(WalletAuthContext)
-    const {loading, setLoading} = useContext(AppContext)
 
     useEffect(() => {
         wallet.account && fetchData().then()
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [wallet.account])
-
-
-    // useEffect(() => {
-    //     !!wallet.account && setLoading(true)
-    //     // eslint-disable-next-line react-hooks/exhaustive-deps
-    // }, [])
 
     const fetchData = async () => {
         setLoading(true)
@@ -318,6 +312,7 @@ const PrivateSale = (props) => {
                     </div>
                 </div>
             }
+            <LoadingWrapper loading={loading}/>
         </WalletAuthRequired>
     )
 }

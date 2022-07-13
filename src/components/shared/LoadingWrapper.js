@@ -1,9 +1,8 @@
-import React, {useContext} from 'react'
-import AppContext from "../../contexts/AppContext"
+import React from 'react'
 
 
-const LoadingWrapper = () => {
-    const {loading} = useContext(AppContext)
+const LoadingWrapper = ({loading}) => {
+    // const {loading} = useContext(AppContext)
 
     return loading ? (
         <div id="loading-wrapper" className="w-full h-full fixed block top-0 left-0 bg-[#000] opacity-75 z-50">
