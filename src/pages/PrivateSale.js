@@ -7,10 +7,12 @@ import contractABI from '../abis/MFGPrivateSale.json'
 import {getStringOfBigNumber} from "../utils/number"
 import ERC20Balance from "../abis/ERC20Balance.json"
 import WalletAuthRequired from "../components/shared/WalletAuthRequired"
-import {notification} from "antd"
+import {notification, Typography} from "antd"
 import {getMainMessage} from "../utils/tx-error"
-import {getAddressScanUrl, getTxScanUrl} from "../utils/blockchain"
+import {getAddressScanUrl, getShortAddress, getTxScanUrl} from "../utils/blockchain"
 import LoadingWrapper from "../components/shared/LoadingWrapper"
+
+const {Paragraph} = Typography
 
 const PrivateSale = (props) => {
     const [loading, setLoading] = useState(true)
@@ -217,9 +219,10 @@ const PrivateSale = (props) => {
                                         <div className={'flex flex-col'}>
                                             <div className={'flex'}>Sale contract</div>
                                             <div className={'flex flex-col'}>
-                                                <div className={'flex text-green-500'}>
-                                                    {contract}
-                                                </div>
+                                                <Paragraph className={'flex text-green-500'}
+                                                           copyable={{text: contract, format: 'text/plain'}}>
+                                                    {getShortAddress(contract, 14)}
+                                                </Paragraph>
                                                 <div className={'flex'}>
                                                     {renderAddressLink(contract)}
                                                 </div>

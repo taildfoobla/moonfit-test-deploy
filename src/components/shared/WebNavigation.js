@@ -1,6 +1,6 @@
 import React, {useContext, useState} from 'react'
 import MFLogoNav from "../../assets/images/logo/logo.png"
-import {Drawer, Modal} from "antd"
+import {Drawer, Modal, Typography} from "antd"
 import WalletAuthContext from "../../contexts/WalletAuthContext"
 import MoonFitAuthContext from "../../contexts/MoonFitAuthContext"
 import {Link} from "react-router-dom"
@@ -8,6 +8,8 @@ import Paths from "../../routes/Paths"
 import MFAccountButton from "../MFAccountButton"
 import {getShortAddress} from "../../utils/blockchain"
 import {MenuOutlined} from "@ant-design/icons"
+
+const {Paragraph} = Typography
 
 const WebNavigation = (props) => {
     const [isWalletModalVisible, setIsWalletModalVisible] = useState(false)
@@ -154,7 +156,10 @@ const WebNavigation = (props) => {
                 <div>
                     <div className="flex flex-col">
                         <div className={'flex'}>Wallet address</div>
-                        <div className={'flex text-green-500 normal-case'}>{getShortAddress(wallet.account, 12)}</div>
+                        <Paragraph className={'flex text-green-500'}
+                                   copyable={{text: wallet.account, format: 'text/plain'}}>
+                            {getShortAddress(wallet.account, 14)}
+                        </Paragraph>
                     </div>
                     <div className="flex flex-col mt-2">
                         <div className={'flex'}>Balance</div>
