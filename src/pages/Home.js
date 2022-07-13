@@ -2,10 +2,13 @@ import React, {useContext} from 'react'
 import mfBrand from "../assets/images/brand.png"
 import WalletAuthContext from "../contexts/WalletAuthContext"
 import {getReactEnv} from "../utils/env"
-import Paths from "../routes/Paths"
 import {useHistory} from "react-router-dom"
+import {HomeActions} from "../routes/AppRoutes"
+import EnvWrapper from "../components/shared/EnvWrapper"
+import Paths from "../routes/Paths"
 
 const SUBWALLET_EXT_URL = getReactEnv('SUBWALLET_EXT')
+const ENV = getReactEnv('ENV')
 
 
 const Home = (props) => {
@@ -39,43 +42,53 @@ const Home = (props) => {
         } else {
             return (
                 <div className={'flex mt-12 justify-center items-center'}>
-                    <button type="button"
-                            onClick={() => history.push(Paths.PrivateSale)}
-                            className="button button-primary">MFG Private Sale
-                    </button>
-                    <button type="button"
-                            onClick={() => {
-                                history.push(Paths.MintPassMinting)
-                                // setLoading(true)
-                            }}
-                            className="button button-secondary">Mint Pass
-                    </button>
+                    {renderHomeActions()}
                 </div>
             )
         }
     }
 
+    const renderHomeActions = () => {
+        return HomeActions.map((item, index) => {
+            const isDisabled = !item.env.includes(ENV)
+            const baseClass = index % 2 === 0 ? "button button-primary" : "button button-secondary"
+            const extraClass = isDisabled ? " cursor-not-allowed" : " "
+            const className = baseClass + extraClass
+            return (
+                <button type="button"
+                    // disabled={isDisabled}
+                        onClick={() => !isDisabled && history.push(item.path)}
+                        className={className}>
+                    {item.title} {isDisabled && "(Coming soon)"}
+                </button>
+            )
+        })
+    }
+
     return (
-        <div className="page-home">
-            <div className="section">
-                <div className="section-content">
-                    <div className="container">
-                        <div className="flex justify-center brand-image">
-                            <img loading="lazy" src={mfBrand}
-                                 alt="Moonfit Branding"
-                                 width="520"/>
+        <EnvWrapper routeItem={Paths.Home}>
+            <div className="page-home">
+                <div className="section">
+                    <div className="section-content">
+                        <div className="container">
+                            <div className="flex justify-center brand-image">
+                                <img loading="lazy" src={mfBrand}
+                                     alt="Moonfit Branding"
+                                     width="520"/>
+                            </div>
+                            <h1 className="section-title">WEB3 & NFT <br/><span
+                                className="secondary-color">LIFESTYLE APP</span>
+                            </h1>
+                            <div className="section-description-wrap">
+                                <p className="section-description">That Pays You For Doing Exercises & Burning
+                                    Calories</p>
+                            </div>
+                            {renderButton()}
                         </div>
-                        <h1 className="section-title">WEB3 & NFT <br/><span
-                            className="secondary-color">LIFESTYLE APP</span>
-                        </h1>
-                        <div className="section-description-wrap">
-                            <p className="section-description">That Pays You For Doing Exercises & Burning Calories</p>
-                        </div>
-                        {renderButton()}
                     </div>
                 </div>
             </div>
-        </div>
+        </EnvWrapper>
     )
 }
 

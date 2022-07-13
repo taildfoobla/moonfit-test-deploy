@@ -9,17 +9,17 @@ const routes = [
         component: App,
         routes: [
             {
-                path: Paths.Home,
+                path: Paths.Home.path,
                 exact: true,
                 component: Home
             },
             {
-                path: Paths.PrivateSale,
+                path: Paths.PrivateSale.path,
                 exact: true,
                 component: PrivateSale
             },
             {
-                path: Paths.MintPassMinting,
+                path: Paths.MintPassMinting.path,
                 exact: true,
                 component: MintPassMinting
             }

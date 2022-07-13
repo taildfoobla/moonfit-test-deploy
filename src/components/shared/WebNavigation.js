@@ -7,7 +7,10 @@ import Paths from "../../routes/Paths"
 import MFAccountButton from "../MFAccountButton"
 import {getShortAddress} from "../../utils/blockchain"
 import {MenuOutlined} from "@ant-design/icons"
+import {getReactEnv} from "../../utils/env"
+import {AppRoutes} from "../../routes/AppRoutes"
 
+const ENV = getReactEnv('ENV')
 const {Paragraph} = Typography
 
 const WebNavigation = (props) => {
@@ -35,6 +38,27 @@ const WebNavigation = (props) => {
         </div>
     )
 
+    const renderLinks = () => {
+        return AppRoutes.map((item, index) => {
+            return item.env.includes(ENV) && (
+                <li className="nav-item" key={index}>
+                    {
+                        item.external ? (
+                            <a className="nav-link" href={item.path} target="_blank"
+                               rel="noreferrer">
+                                <span className="nav-text">{item.title}</span>
+                            </a>
+                        ) : (
+                            <Link className="nav-link" to={item.path}>
+                                <span className="nav-text">{item.title}</span>
+                            </Link>
+                        )
+                    }
+                </li>
+            )
+        })
+    }
+
     return (
         <header id="header" className="header">
             <div className="flex justify-center items-center container-full-gap-100">
@@ -44,7 +68,7 @@ const WebNavigation = (props) => {
                             <MenuOutlined style={{fontSize: 30, color: "#FFF"}}/>
                         </div>
                         <div className="site-branding">
-                            <Link to={Paths.Home}>
+                            <Link to={Paths.Home.path}>
                                 <img loading="lazy"
                                      alt="MoonFit Whitelist - Web3 & NFT Lifestyle App"
                                      src={MFLogoNav}
@@ -102,35 +126,7 @@ const WebNavigation = (props) => {
             >
                 <nav className="primary-menu">
                     <ul className="nav">
-                        <li className="nav-item">
-                            <Link className="nav-link" to={Paths.Home}>
-                                <span className="nav-text">Home</span>
-                            </Link>
-                        </li>
-                        <li className="nav-item">
-                            <Link className="nav-link" to={Paths.PrivateSale}>
-                                        <span className="nav-text">MFG Private Sale
-                                        </span>
-                            </Link>
-                        </li>
-                        <li className="nav-item">
-                            <Link className="nav-link" to={Paths.MintPassMinting}>
-                                        <span className="nav-text">Mint Pass
-                                        </span>
-                            </Link>
-                        </li>
-                        <li className="nav-item">
-                            <a className="nav-link" href="https://whitepaper.moonfit.xyz/" target="_blank"
-                               rel="noreferrer">
-                                <span className="nav-text">Whitepaper</span>
-                            </a>
-                        </li>
-                        <li className="nav-item">
-                            <a className="nav-link" href="https://litepaper.moonfit.xyz/" target="_blank"
-                               rel="noreferrer">
-                                <span className="nav-text">Litepaper</span>
-                            </a>
-                        </li>
+                        {renderLinks()}
                     </ul>
                 </nav>
             </Drawer>
