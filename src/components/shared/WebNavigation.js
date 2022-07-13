@@ -2,7 +2,6 @@ import React, {useContext, useState} from 'react'
 import MFLogoNav from "../../assets/images/logo/logo.png"
 import {Drawer, Modal, Typography} from "antd"
 import WalletAuthContext from "../../contexts/WalletAuthContext"
-import MoonFitAuthContext from "../../contexts/MoonFitAuthContext"
 import {Link} from "react-router-dom"
 import Paths from "../../routes/Paths"
 import MFAccountButton from "../MFAccountButton"
@@ -16,7 +15,7 @@ const WebNavigation = (props) => {
     const [visible, setVisible] = useState(false)
 
     const {wallet, onConnect, onDisconnect, isConnected} = useContext(WalletAuthContext)
-    const {user, isAuthenticated} = useContext(MoonFitAuthContext)
+    // const {user, isAuthenticated} = useContext(MoonFitAuthContext)
 
     const showWalletModal = () => {
         setIsWalletModalVisible(true)
