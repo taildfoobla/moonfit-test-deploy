@@ -6,7 +6,7 @@ import contractABI from '../abis/MintPassNFT.json'
 import WalletAuthRequired from "../components/shared/WalletAuthRequired"
 import {Image, notification, Typography} from "antd"
 import {getMainMessage} from "../utils/tx-error"
-import {getAddressScanUrl, getShortAddress, getTokenScanUrl, getTxScanUrl} from "../utils/blockchain"
+import {getAddressScanUrl, getShortAddress, getTxScanUrl} from "../utils/blockchain"
 import AppContext from "../contexts/AppContext"
 import {BLC_CONFIGS} from '../configs/blockchain'
 import axios from "axios"
