@@ -11,13 +11,18 @@
   flex-direction: column;
   justify-content: space-between;
 
+  .container {
+    padding-right: 20px;
+    padding-left: 20px;
+  }
+
   .section-title {
-    font-size: 64px;
+    font-size: 48px;
     line-height: 1.125;
   }
 
-  .connect-image {
-    margin: 0 0 67px;
+  .brand-image {
+    margin: 0 0 30px;
 
     img {
       max-width: 40vw;
@@ -31,7 +36,7 @@
   .section-description {
     text-transform: none;
     color: #fff;
-    font-size: 26px;
+    font-size: 24px;
     line-height: 1.25;
     width: 870px;
     max-width: 90%;

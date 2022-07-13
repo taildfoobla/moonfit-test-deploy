@@ -1,5 +1,5 @@
 import React, {useContext, useEffect} from 'react'
-import connectSW from "../assets/images/connect-subwallet/connect.png"
+import mfBrand from "../assets/images/brand.png"
 import WalletAuthContext from "../contexts/WalletAuthContext"
 import AppContext from "../contexts/AppContext"
 import {getReactEnv} from "../utils/env"
@@ -51,7 +51,10 @@ const Home = (props) => {
                             className="button button-primary">MFG Private Sale
                     </button>
                     <button type="button"
-                            onClick={() => history.push(Paths.MintPassMinting)}
+                            onClick={() => {
+                                history.push(Paths.MintPassMinting)
+                                // setLoading(true)
+                            }}
                             className="button button-secondary">Mint Pass
                     </button>
                 </div>
@@ -64,16 +67,16 @@ const Home = (props) => {
             <div className="section">
                 <div className="section-content">
                     <div className="container">
-                        <div className="flex justify-center connect-image">
-                            <img loading="lazy" src={connectSW}
-                                 alt="Moonfit + Subwallet"
-                                 width="550" height="78"/>
+                        <div className="flex justify-center brand-image">
+                            <img loading="lazy" src={mfBrand}
+                                 alt="Moonfit Branding"
+                                 width="520"/>
                         </div>
-                        <h1 className="section-title">Token <br/><span className="secondary-color">Sale Event</span>
+                        <h1 className="section-title">WEB3 & NFT <br/><span
+                            className="secondary-color">LIFESTYLE APP</span>
                         </h1>
                         <div className="section-description-wrap">
-                            <p className="section-description">Please connect with SubWallet to join our token sale
-                                events.</p>
+                            <p className="section-description">That Pays You For Doing Exercises & Burning Calories</p>
                         </div>
                         {renderButton()}
                     </div>

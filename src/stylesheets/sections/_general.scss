@@ -580,6 +580,16 @@
   background-color: #262c4a96;
 }
 
+.ant-typography {
+  margin-bottom: 0 !important;
+}
+
+.ant-image-preview-content {
+  img {
+    display: inline-block;
+  }
+}
+
 .ant-drawer-content-wrapper {
   .ant-drawer-content {
     .ant-drawer-wrapper-body {

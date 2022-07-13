@@ -1,25 +1,29 @@
 import React, {useContext, useEffect, useState} from 'react'
 import Web3 from "web3"
-import {getMintPassInfo, getMintPassWalletInfo, getWalletMerklePath} from "../services/tokenSale"
+import {getWalletMerklePath} from "../services/tokenSale"
 import WalletAuthContext from "../contexts/WalletAuthContext"
 import contractABI from '../abis/MintPassNFT.json'
 import WalletAuthRequired from "../components/shared/WalletAuthRequired"
-import {notification} from "antd"
+import {Image, notification, Typography} from "antd"
 import {getMainMessage} from "../utils/tx-error"
-import {getAddressScanUrl, getTokenScanUrl, getTxScanUrl} from "../utils/blockchain"
+import {getAddressScanUrl, getShortAddress, getTokenScanUrl, getTxScanUrl} from "../utils/blockchain"
 import AppContext from "../contexts/AppContext"
+import {BLC_CONFIGS} from '../configs/blockchain'
+import axios from "axios"
 
+const {MINT_PASS_SC} = BLC_CONFIGS
+const {Paragraph} = Typography
 
 const MintPassMinting = (props) => {
     const [mintLoading, setMintLoading] = useState(false)
     const [mintPassInfo, setMintPassInfo] = useState({})
-    const [walletInfo, setWalletInfo] = useState({})
 
     const {wallet, onConnect} = useContext(WalletAuthContext)
     const {loading, setLoading} = useContext(AppContext)
+    console.log(loading)
 
     useEffect(() => {
-        wallet.account && fetchData().then()
+        !!wallet.account && fetchData().then()
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [wallet.account])
 
@@ -30,25 +34,42 @@ const MintPassMinting = (props) => {
 
     const fetchData = async () => {
         setLoading(true)
-        const fetchMintPassInfo = async () => {
-            const {data, success} = await getMintPassInfo()
-            if (data && success) {
-                setMintPassInfo(data.data)
-            }
+        const provider = window.SubWallet
+        if (!provider) {
+            console.log('SubWallet is not installed')
+            return
         }
-        const fetchWalletInfo = async () => {
-            const {data, success} = await getMintPassWalletInfo(wallet.account)
-            if (data && success) {
-                setWalletInfo(data.data)
-            }
-        }
-        await Promise.all([fetchMintPassInfo(), fetchWalletInfo()])
+        const web3js = new Web3(provider)
+        const mintPassContract = new web3js.eth.Contract(contractABI.abi, MINT_PASS_SC)
+        const methods = mintPassContract.methods
+        const [isActive, balance] = await Promise.all([
+            methods._isActive().call(),
+            methods.balanceOf(wallet.account).call(),
+        ])
+        const tokenId = parseInt(balance) > 0 ? await methods.tokenOfOwnerByIndex(wallet.account, 0).call() : null
+        const {name, imageUrl} = await getNFTInfo(methods, tokenId)
+        setMintPassInfo({isActive, balance, tokenId, name, imageUrl})
         setLoading(false)
+    }
+
+    const getNFTInfo = async (methods, tokenId) => {
+        if (!tokenId) return {name: null, imageUrl: null}
+        try {
+            const tokenURI = await methods.tokenURI(tokenId).call()
+            const {data} = await axios.get(tokenURI)
+            const {name, image} = data
+            const cid = image.replace('ipfs://', '')
+            const imageUrl = `https://${cid}.ipfs.nftstorage.link/`
+            return {name, imageUrl}
+        } catch (e) {
+            console.log("getNFTInfo Exception", e.message)
+            return {name: null, imageUrl: null}
+        }
     }
 
     const handleMintMintPass = async () => {
         setMintLoading(true)
-        if (walletInfo.balance > 0) {
+        if (mintPassInfo.balance > 0) {
             setMintLoading(false)
             return notification.warn({
                 message: `You already have a mint pass`,
@@ -126,22 +147,37 @@ const MintPassMinting = (props) => {
         )
     }
 
-    const renderNFTLink = (contract, tokenId) => {
-        const url = getTokenScanUrl(contract, tokenId)
-        return (
-            <a href={url} target={'_blank'} rel={'noreferrer'} className={'text-blue-600'}>
-                #{tokenId}
-            </a>
-        )
+    // const renderNFTLink = (contract, tokenId) => {
+    //     const url = getTokenScanUrl(contract, tokenId)
+    //     return (
+    //         <a href={url} target={'_blank'} rel={'noreferrer'} className={'text-blue-600'}>
+    //             #{tokenId}
+    //         </a>
+    //     )
+    // }
+
+    const renderMintPass = () => {
+        return mintPassInfo.name ? (
+            <div className={'flex flex-col justify-center items-center mt-4'}>
+                <div className={'flex'}>
+                    <Image
+                        width={150}
+                        src={mintPassInfo.imageUrl}
+                        alt={mintPassInfo.name}
+                    />
+                    {/*<img src={mintPassInfo.imageUrl} alt={mintPassInfo.name} width={150}/>*/}
+                </div>
+                <div className={'flex normal-case text-green-500 mt-2'}>{mintPassInfo.name}</div>
+            </div>
+        ) : <div className={'flex text-green-500 normal-case'}>You don't own any mint pass yet</div>
     }
 
-    const {contract, isActive} = mintPassInfo
-    const {balance, tokenId} = walletInfo
+    const {isActive} = mintPassInfo
 
     return (
         <WalletAuthRequired isConnected={!!wallet.account} onConnect={onConnect} className={'section page-mint-pass'}>
             {
-                !loading && contract && <div className="section-content">
+                !loading && <div className="section-content">
                     <div className="container">
                         <div className={'flex flex-col'}>
                             <div className={'flex justify-center'}>
@@ -183,24 +219,37 @@ const MintPassMinting = (props) => {
                                         <div className={'flex flex-col'}>
                                             <div className={'flex'}>Mint Pass contract</div>
                                             <div className={'flex flex-col'}>
-                                                <div className={'flex text-green-500'}>
-                                                    {contract}
-                                                </div>
+                                                <Paragraph className={'flex text-green-500'}
+                                                           copyable={{text: MINT_PASS_SC, format: 'text/plain'}}>
+                                                    {getShortAddress(MINT_PASS_SC, 14)}
+                                                </Paragraph>
                                                 <div className={'flex'}>
-                                                    {renderAddressLink(contract)}
+                                                    {renderAddressLink(MINT_PASS_SC)}
                                                 </div>
                                             </div>
                                         </div>
                                         <hr className={'my-4'}/>
-                                        <div className={'flex flex-col'}>
-                                            <div className={'flex'}>Your Mint Pass Balance</div>
-                                            <div className={'flex text-green-500'}>{balance || "0"} NFT</div>
+                                        <div className={'flex flex-col mt-2'}>
+                                            <div className={'flex'}>Your Wallet Address</div>
+                                            <div className={'flex flex-col'}>
+                                                <Paragraph className={'flex text-green-500'}
+                                                           copyable={{text: wallet.account, format: 'text/plain'}}>
+                                                    {getShortAddress(wallet.account, 14)}
+                                                </Paragraph>
+                                                <div className={'flex'}>
+                                                    {renderAddressLink(wallet.account)}
+                                                </div>
+                                            </div>
                                         </div>
                                         <div className={'flex flex-col mt-2'}>
-                                            <div className={'flex'}>Token ID</div>
-                                            <div
-                                                className={'flex text-green-500'}>{tokenId ? renderNFTLink(contract, tokenId) : "Empty"}</div>
+                                            <div className={'flex'}>Your Mint Pass</div>
+                                            {renderMintPass()}
                                         </div>
+                                        {/*<div className={'flex flex-col mt-2'}>*/}
+                                        {/*    <div className={'flex'}>Token ID</div>*/}
+                                        {/*    <div*/}
+                                        {/*        className={'flex text-green-500'}>{tokenId ? renderNFTLink(MINT_PASS_SC, tokenId) : "Empty"}</div>*/}
+                                        {/*</div>*/}
                                         <div className={'flex flex-row justify-center mt-4'}>
                                             <button type="button"
                                                     onClick={handleMintMintPass}
