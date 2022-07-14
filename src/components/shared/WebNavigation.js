@@ -132,6 +132,7 @@ const WebNavigation = (props) => {
             </Drawer>
             <Modal title="Wallet Information"
                    visible={isWalletModalVisible}
+                   onCancel={hideWalletModal}
                    wrapClassName={'mf-modal account-modal'}
                    className={'mf-modal-content account-modal-content'}
                    footer={[

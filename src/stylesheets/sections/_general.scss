@@ -561,6 +561,7 @@
 
         .ant-modal-title {
           color: #ffffff;
+          font-weight: bold;
           font-size: 1.2rem;
         }
       }
@@ -583,6 +584,10 @@
 
 .ant-typography {
   margin-bottom: 0 !important;
+}
+
+.ant-modal-close-x {
+  color: #FFF;
 }
 
 .ant-image-preview-content {

@@ -102,6 +102,7 @@ const MFAccountButton = (props) => {
             </button>
             <Modal title="Account Information"
                    visible={isModalVisible}
+                   onCancel={hideModal}
                    wrapClassName={'mf-modal account-modal'}
                    className={'mf-modal-content account-modal-content'}
                    footer={[

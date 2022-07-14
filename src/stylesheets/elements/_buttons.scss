@@ -5,7 +5,7 @@ input[type='submit'],
 .button {
   @include NormalTransition();
   --button-hoz-padding: 18px;
-  padding: 0 var(--button-hoz-padding) 3px;
+  padding: 0 var(--button-hoz-padding) 2px;
   min-height: 44px;
   line-height: 22px;
   outline: none;
