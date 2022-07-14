@@ -20,6 +20,7 @@ const MintPassMinting = (props) => {
     const [loading, setLoading] = useState(true)
     const [mintLoading, setMintLoading] = useState(false)
     const [mintPassInfo, setMintPassInfo] = useState({})
+    const [txHash, setTxHash] = useState('')
 
     const {wallet, onConnect} = useContext(WalletAuthContext)
 
@@ -99,6 +100,7 @@ const MintPassMinting = (props) => {
                     ]
                 })
                 console.log("The hash of MFMP minting transaction is: ", txHash)
+                setTxHash(txHash)
                 notification.success({
                     message: `Transaction Successful`,
                     description: (
