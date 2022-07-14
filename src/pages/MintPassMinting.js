@@ -52,6 +52,7 @@ const MintPassMinting = (props) => {
         if (!tokenId) return {name: null, imageUrl: null}
         try {
             const tokenURI = await methods.tokenURI(tokenId).call()
+            // console.log(tokenId, tokenURI)
             const {data} = await axios.get(tokenURI)
             const {name, image} = data
             const cid = image.replace('ipfs://', '')
@@ -80,7 +81,8 @@ const MintPassMinting = (props) => {
             }
             const web3js = new Web3(provider)
             const nonce = await web3js.eth.getTransactionCount(wallet.account, 'latest')
-            const mintPassContract = new web3js.eth.Contract(contractABI.abi, mintPassInfo.contract)
+            // console.log(MINT_PASS_SC)
+            const mintPassContract = new web3js.eth.Contract(contractABI.abi, MINT_PASS_SC)
             const {data, success} = await getWalletMerklePath(wallet.account)
             if (success && data.data.path) {
                 const path = data.data.path
@@ -88,7 +90,7 @@ const MintPassMinting = (props) => {
                 const txHash = await provider.request({
                     method: 'eth_sendTransaction', params: [
                         {
-                            to: mintPassInfo.contract,
+                            to: MINT_PASS_SC,
                             from: wallet.account,
                             nonce: nonce,
                             // value: getStringOfBigNumber(10 ** 18),

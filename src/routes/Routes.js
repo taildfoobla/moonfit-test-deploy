@@ -2,7 +2,7 @@ import App from "../App"
 import Paths from "./Paths"
 import PrivateSale from "../pages/PrivateSale"
 import MintPassMinting from "../pages/MintPassMinting"
-import Home from "../pages/Home"
+// import Home from "../pages/Home"
 
 const routes = [
     {
@@ -11,7 +11,7 @@ const routes = [
             {
                 path: Paths.Home.path,
                 exact: true,
-                component: Home
+                component: MintPassMinting
             },
             {
                 path: Paths.PrivateSale.path,

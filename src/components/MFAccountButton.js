@@ -5,8 +5,10 @@ import QRCode from "react-qr-code"
 import {getOrCreateSession, logoutSession, retrieveSessionToken} from "../services/webSession"
 import {LoadingOutlined} from "@ant-design/icons"
 import {getLocalStorage, LOCALSTORAGE_KEY, setLocalStorage} from "../utils/storage"
+import {getReactEnv} from "../utils/env"
 
 const {Paragraph} = Typography
+const ENV = getReactEnv('ENV')
 
 
 const MFAccountButton = (props) => {
@@ -178,9 +180,11 @@ const MFAccountButton = (props) => {
                                 <p className={'normal-case'}>Scan this QR code with the mobile app to sign in
                                     instantly</p>
                                 {/* TODO Only for Develop */}
-                                <Paragraph className={'normal-case text-green-500 flex items-center justify-center'}
+                                {
+                                    ENV === 'development' && <Paragraph className={'normal-case text-green-500 flex items-center justify-center'}
                                            copyable={{text: sessionId, format: 'text/plain'}}>Session
                                     ID: {sessionId}</Paragraph>
+                                }
                             </div>
                         </div>
                     ) : (
