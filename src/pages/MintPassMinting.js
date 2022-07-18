@@ -117,7 +117,7 @@ const MintPassMinting = (props) => {
             } else {
                 notification.error({
                     message: `Transaction Failed`,
-                    description: 'Your wallet is not in white list',
+                    description: 'Your wallet is not whitelisted',
                     placement: 'bottomRight',
                     duration: 3
                 })

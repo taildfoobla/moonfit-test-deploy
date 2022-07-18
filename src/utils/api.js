@@ -1,8 +1,8 @@
 import axios from 'axios'
-import {getReactEnv} from "./env"
 import {getLocalStorage, LOCALSTORAGE_KEY} from "./storage"
+import {COMMON_CONFIGS} from "../configs/common"
 
-const API_URL = getReactEnv('API_URL')
+const {API_URL} = COMMON_CONFIGS
 
 export const createApiRequest = async ({url, method, data, params}) => {
     try {
