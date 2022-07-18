@@ -1,10 +1,10 @@
-import React, {useContext, useEffect, useState} from 'react'
+import React, {useContext, useEffect, useRef, useState} from 'react'
 import Web3 from "web3"
 import {getWalletMerklePath} from "../services/tokenSale"
 import WalletAuthContext from "../contexts/WalletAuthContext"
 import contractABI from '../abis/MintPassNFT.json'
 import WalletAuthRequired from "../components/shared/WalletAuthRequired"
-import {Image, notification, Typography} from "antd"
+import {Image, notification, Spin, Typography} from "antd"
 import {getMainMessage} from "../utils/tx-error"
 import {getAddressScanUrl, getShortAddress, getTxScanUrl} from "../utils/blockchain"
 import {BLC_CONFIGS} from '../configs/blockchain'
@@ -12,6 +12,7 @@ import axios from "axios"
 import LoadingWrapper from "../components/shared/LoadingWrapper"
 import Paths from "../routes/Paths"
 import EnvWrapper from "../components/shared/EnvWrapper"
+import {LoadingOutlined} from "@ant-design/icons"
 
 const {MINT_PASS_SC} = BLC_CONFIGS
 const {Paragraph} = Typography
@@ -20,7 +21,11 @@ const MintPassMinting = (props) => {
     const [loading, setLoading] = useState(true)
     const [mintLoading, setMintLoading] = useState(false)
     const [mintPassInfo, setMintPassInfo] = useState({})
-    const [txHash, setTxHash] = useState('')
+    // const [txHash, setTxHash] = useState('')
+    const [mpLoading, setMpLoading] = useState(false)
+    const [isConfirmedTx, setIsConfirmedTx] = useState(false)
+
+    const mpRetrieverRef = useRef(0)
 
     const {wallet, onConnect} = useContext(WalletAuthContext)
 
@@ -28,6 +33,40 @@ const MintPassMinting = (props) => {
         !!wallet.account && fetchData().then()
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [wallet.account])
+
+    useEffect(() => {
+        if (!!mintPassInfo.name && isConfirmedTx) {
+            clearMpInterval()
+            setMpLoading(false)
+        }
+        return () => clearMpInterval()
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [mintPassInfo.name, isConfirmedTx])
+
+    const clearMpInterval = () => mpRetrieverRef.current && clearInterval(mpRetrieverRef.current)
+
+    const fetchMintPass = async (txHash) => {
+        const provider = window.SubWallet
+        if (!provider) {
+            console.log('SubWallet is not installed')
+            return
+        }
+        const web3js = new Web3(provider)
+        const mintPassContract = new web3js.eth.Contract(contractABI.abi, MINT_PASS_SC)
+        const methods = mintPassContract.methods
+        const balance = await methods.balanceOf(wallet.account).call()
+        const receipt = await web3js.eth.getTransactionReceipt(txHash)
+        // console.log(balance, receipt?.status)
+        if (parseInt(balance) > 0 && receipt?.status === true) {
+            // console.log("Successful !!")
+            const tokenId = parseInt(balance) > 0 ? await methods.tokenOfOwnerByIndex(wallet.account, 0).call() : null
+            const {name, imageUrl} = await getNFTInfo(methods, tokenId)
+            setMintPassInfo({...mintPassInfo, tokenId, name, imageUrl})
+            setIsConfirmedTx(true)
+            return true
+        }
+        return true
+    }
 
     const fetchData = async () => {
         setLoading(true)
@@ -94,15 +133,17 @@ const MintPassMinting = (props) => {
                             to: MINT_PASS_SC,
                             from: wallet.account,
                             nonce: nonce,
-                            // value: getStringOfBigNumber(10 ** 18),
                             data: mintPassContract.methods.mintNFT(path).encodeABI()
                         }
                     ]
                 })
                 console.log("The hash of MFMP minting transaction is: ", txHash)
-                setTxHash(txHash)
+                // setTxHash(txHash)
+                setMpLoading(true)
+                mpRetrieverRef.current = setInterval(() => fetchMintPass(txHash), 3000)
+
                 notification.success({
-                    message: `Transaction Successful`,
+                    message: `Transaction Sent`,
                     description: (
                         <div>
                             The hash of MFMP minting transaction is: <br/>
@@ -157,19 +198,36 @@ const MintPassMinting = (props) => {
     // }
 
     const renderMintPass = () => {
-        return mintPassInfo.name ? (
-            <div className={'flex flex-col justify-center items-center mt-4'}>
-                <div className={'flex'}>
-                    <Image
-                        width={150}
-                        src={mintPassInfo.imageUrl}
-                        alt={mintPassInfo.name}
-                    />
-                    {/*<img src={mintPassInfo.imageUrl} alt={mintPassInfo.name} width={150}/>*/}
+        // if (mpLoading) {
+        //     return (
+        //         <div className="flex justify-center items-center h-[240px]">
+        //             <Spin indicator={<LoadingOutlined style={{fontSize: 24}} spin/>}/>
+        //         </div>
+        //     )
+        // }
+        if (mintPassInfo.name) {
+            return (
+                <div className={'flex flex-col justify-center items-center mt-4'}>
+                    <div className={'flex'}>
+                        <Image
+                            width={150}
+                            src={mintPassInfo.imageUrl}
+                            alt={mintPassInfo.name}
+                        />
+                        {/*<img src={mintPassInfo.imageUrl} alt={mintPassInfo.name} width={150}/>*/}
+                    </div>
+                    <div className={'flex normal-case text-green-500 mt-2'}>{mintPassInfo.name}</div>
                 </div>
-                <div className={'flex normal-case text-green-500 mt-2'}>{mintPassInfo.name}</div>
-            </div>
-        ) : <div className={'flex text-green-500 normal-case'}>You don't own any mint pass yet</div>
+            )
+        }
+        else if (mpLoading) {
+            return (
+                <div className="flex justify-center items-center h-[240px]">
+                    <Spin indicator={<LoadingOutlined style={{fontSize: 24}} spin/>}/>
+                </div>
+            )
+        }
+        else return <div className={'flex text-green-500 normal-case'}>You don't own any mint pass yet</div>
     }
 
     const {isActive} = mintPassInfo
