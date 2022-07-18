@@ -21,7 +21,7 @@ const MFAccountButton = (props) => {
     const tokenRetrieverRef = useRef(0)
 
     useEffect(() => {
-        if(!!user.userId) {
+        if (!!user.userId) {
             clearTokenInterval()
             setIsAuthenticated(true)
             hideModal()
@@ -113,7 +113,8 @@ const MFAccountButton = (props) => {
                                onClick={logout}
                                style={{width: 90}}
                                className="button button-secondary">
-                           {logoutLoading ? <Spin indicator={<LoadingOutlined style={{fontSize: 18}} spin/>}/>: 'Logout'}
+                           {logoutLoading ?
+                               <Spin indicator={<LoadingOutlined style={{fontSize: 18}} spin/>}/> : 'Logout'}
                        </button>,
                        <button type="button"
                                key="2"
@@ -124,7 +125,7 @@ const MFAccountButton = (props) => {
                    ]}>
                 <div>
                     <div className="flex justify-center items-center">
-                        <Avatar size={70} src={user.avatar} />
+                        <Avatar size={70} src={user.avatar}/>
                     </div>
                     <div className="flex flex-col mt-6">
                         <div className={'flex'}>User ID</div>
@@ -181,9 +182,10 @@ const MFAccountButton = (props) => {
                                     instantly</p>
                                 {/* TODO Only for Develop */}
                                 {
-                                    ENV === 'development' && <Paragraph className={'normal-case text-green-500 flex items-center justify-center'}
-                                           copyable={{text: sessionId, format: 'text/plain'}}>Session
-                                    ID: {sessionId}</Paragraph>
+                                    ENV === 'development' &&
+                                    <Paragraph className={'normal-case text-green-500 flex items-center justify-center'}
+                                               copyable={{text: sessionId, format: 'text/plain'}}>Session
+                                        ID: {sessionId}</Paragraph>
                                 }
                             </div>
                         </div>

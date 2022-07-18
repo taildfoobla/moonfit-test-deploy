@@ -27,7 +27,7 @@ const MintPassMinting = (props) => {
 
     const mpRetrieverRef = useRef(0)
 
-    const {wallet, onConnect} = useContext(WalletAuthContext)
+    const {wallet, onConnect, detectProvider} = useContext(WalletAuthContext)
 
     useEffect(() => {
         !!wallet.account && fetchData().then()
@@ -46,7 +46,7 @@ const MintPassMinting = (props) => {
     const clearMpInterval = () => mpRetrieverRef.current && clearInterval(mpRetrieverRef.current)
 
     const fetchMintPass = async (txHash) => {
-        const provider = window.SubWallet
+        const provider = await detectProvider('SubWallet')
         if (!provider) {
             console.log('SubWallet is not installed')
             return
@@ -70,7 +70,7 @@ const MintPassMinting = (props) => {
 
     const fetchData = async () => {
         setLoading(true)
-        const provider = window.SubWallet
+        const provider = await detectProvider('SubWallet')
         if (!provider) {
             console.log('SubWallet is not installed')
             return
@@ -115,7 +115,7 @@ const MintPassMinting = (props) => {
             })
         }
         try {
-            const provider = window.SubWallet
+            const provider = await detectProvider('SubWallet')
             if (!provider) {
                 console.log('SubWallet is not installed')
             }

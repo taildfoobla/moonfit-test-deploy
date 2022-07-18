@@ -3,7 +3,13 @@ import WalletAuthContext from "../contexts/WalletAuthContext"
 import {switchNetwork} from "../utils/blockchain"
 import Web3 from "web3"
 import {getLocalStorage, LOCALSTORAGE_KEY, removeLocalStorage, setLocalStorage} from "../utils/storage"
+import {getReactEnv} from "../utils/env"
 
+const providerReadyEvent = {
+    'ethereum': 'ethereum#initialized', // Metamask ready event
+    'SubWallet': 'subwallet#initialized' // SubWallet ready event
+}
+const SUBWALLET_EXT_URL = getReactEnv('SUBWALLET_EXT')
 
 const WalletAuthWrapper = ({children}) => {
     const [isConnected, setIsConnected] = useState(false)
@@ -21,11 +27,29 @@ const WalletAuthWrapper = ({children}) => {
         checkConnectedWallet()
     }, [])
 
+    const detectProvider = (providerName) => {
+        return new Promise((resolve) => {
+            if (window[providerName]) {
+                resolve(window[providerName])
+            } else {
+                const timeout = setTimeout(() => {
+                    resolve(window[providerName])
+                }, 2000)
+
+                window.addEventListener(providerReadyEvent[providerName] || 'ethereum#initialized', () => {
+                    clearTimeout(timeout)
+                    resolve(window[providerName])
+                })
+            }
+        })
+    }
+
     const onConnect = async () => {
         try {
-            const provider = window.SubWallet
+            const provider = await detectProvider('SubWallet')
             if (!provider) {
                 console.log('SubWallet is not installed')
+                return window.open(SUBWALLET_EXT_URL)
             }
             await provider.request({method: 'eth_requestAccounts'})
             const chainId = await provider.request({method: 'eth_chainId'})
@@ -40,7 +64,7 @@ const WalletAuthWrapper = ({children}) => {
             saveWalletInfo(ethBalance, account, chainId)
         } catch (err) {
             console.log(
-                'There was an error fetching your accounts. Make sure your SubWallet is configured correctly.'
+                'There was an error fetching your accounts. Make sure your SubWallet is configured correctly.', err
             )
         }
     }
@@ -65,7 +89,7 @@ const WalletAuthWrapper = ({children}) => {
     }
 
     return (
-        <WalletAuthContext.Provider value={{wallet, setWallet, onConnect, onDisconnect, isConnected}}>
+        <WalletAuthContext.Provider value={{wallet, setWallet, onConnect, onDisconnect, isConnected, detectProvider}}>
             {children}
         </WalletAuthContext.Provider>
     )
