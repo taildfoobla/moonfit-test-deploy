@@ -4,6 +4,8 @@ import {switchNetwork} from "../utils/blockchain"
 import Web3 from "web3"
 import {getLocalStorage, LOCALSTORAGE_KEY, removeLocalStorage, setLocalStorage} from "../utils/storage"
 import {getReactEnv} from "../utils/env"
+import {useHistory} from "react-router-dom"
+import Paths from "../routes/Paths"
 
 const providerReadyEvent = {
     'ethereum': 'ethereum#initialized', // Metamask ready event
@@ -14,6 +16,8 @@ const SUBWALLET_EXT_URL = getReactEnv('SUBWALLET_EXT')
 const WalletAuthWrapper = ({children}) => {
     const [isConnected, setIsConnected] = useState(false)
     const [wallet, setWallet] = useState({})
+
+    const history = useHistory()
 
     useEffect(() => {
         function checkConnectedWallet() {
@@ -62,6 +66,9 @@ const WalletAuthWrapper = ({children}) => {
             let ethBalance = await web3.eth.getBalance(account) // Get wallet balance
             ethBalance = web3.utils.fromWei(ethBalance, 'ether') //Convert balance to wei
             saveWalletInfo(ethBalance, account, chainId)
+
+            // Go to Mint Pass page
+            history.push(Paths.MintPassMinting.path)
         } catch (err) {
             console.log(
                 'There was an error fetching your accounts. Make sure your SubWallet is configured correctly.', err

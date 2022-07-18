@@ -23,13 +23,13 @@ export const AppRoutes = [
         path: "https://whitepaper.moonfit.xyz/",
         title: "Whitepaper",
         external: true,
-        env: ['development', 'production']
+        env: ['local', 'development', 'production']
     },
     {
         path: "https://litepaper.moonfit.xyz",
         title: "Litepaper",
         external: true,
-        env: ['development', 'production']
+        env: ['local', 'development', 'production']
     },
 ]
 

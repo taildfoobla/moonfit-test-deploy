@@ -1,15 +1,15 @@
 const Paths = {
     Home: {
         path: '/',
-        env: ['development', 'production']
+        env: ['local', 'development', 'production']
     },
     PrivateSale: {
         path: '/private-sale',
-        env: ['development']
+        env: ['local', 'development']
     },
     MintPassMinting: {
         path: '/mint-pass',
-        env: ['development', 'production']
+        env: ['local', 'development', 'production']
     }
 }
 
