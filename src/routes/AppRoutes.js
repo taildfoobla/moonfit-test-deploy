@@ -26,7 +26,7 @@ export const AppRoutes = [
         env: ['local', 'development', 'production']
     },
     {
-        path: "https://litepaper.moonfit.xyz",
+        path: "https://moonfit.xyz/litepaper",
         title: "Litepaper",
         external: true,
         env: ['local', 'development', 'production']

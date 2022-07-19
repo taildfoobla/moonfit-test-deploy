@@ -185,7 +185,7 @@ const MintPassMinting = (props) => {
     const renderAddressLink = (address) => {
         const url = getAddressScanUrl(address)
         return (
-            <a href={url} target={'_blank'} rel={'noreferrer'} className={'text-blue-600 text-sm normal-case mt-2'}>
+            <a href={url} target={'_blank'} rel={'noreferrer'} className={'text-[#A16BD8] text-sm normal-case mt-2'}>
                 View on block explorer
             </a>
         )
@@ -249,7 +249,7 @@ const MintPassMinting = (props) => {
                                     <div className={'flex justify-center mt-4'}>
                                         {isActive ? (
                                             <span
-                                                className="bg-green-400 text-green-800 text-sm font-bold mr-2 px-2.5 py-0.5 rounded dark:bg-green-500 dark:text-white">
+                                                className="bg-[#60B159] text-[#020722] text-sm font-bold mr-2 px-2.5 py-0.5 rounded dark:bg-green-500 dark:text-white">
                                     Active
                                 </span>
                                         ) : (
