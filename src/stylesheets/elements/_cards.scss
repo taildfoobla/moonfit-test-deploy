@@ -2,6 +2,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  margin: 39px auto 0;
 
   .moonfit-card-inner {
     background-color: #020722;
@@ -42,6 +43,16 @@
       max-width: 100%;
       margin: 0 auto;
       text-align: left;
+
+      .card-body-row {
+        padding: 16px 22px;
+        background-color: #2A1143;
+        border-radius: 7px;
+        .card-body-row-title {
+          color: #A8ADC3;
+          font-size: 16px;
+        }
+      }
     }
   }
 }

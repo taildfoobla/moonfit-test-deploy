@@ -157,10 +157,21 @@ input[type='submit'],
   --mg-button-hover-text: #fff;
   --mg-button-hover-border: #004bff;
   --mg-button-hover-background: #004bff;
-  font-family: 'Space Grotesk', sans-serif;
-  font-weight: 500;
-  min-height: 56px;
+  font-family: Darker Grotesque, sans-serif;
+  font-weight: 600;
+  font-size: 18px;
+  //min-height: 56px;
+  text-transform: none;
+  padding: 0 var(--button-hoz-padding) 5px;
+}
+
+.button-dark {
+  --mg-button-text: #fff;
+  --mg-button-hover-text: #fff;
   padding: 0 var(--button-hoz-padding);
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.2);
+
 }
 
 @include media-breakpoint-up(md) {

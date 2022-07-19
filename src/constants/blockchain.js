@@ -130,3 +130,10 @@ export const WEB3_METHODS = {
         params: [{eth_accounts: {}}]
     }
 }
+
+export const CHAIN_ID_MAPPING = {
+    '0x507': 'Moonbase Alpha',
+    '507': 'Moonbase Alpha',
+    '0x504': 'Moonbeam',
+    '504': 'Moonbeam',
+}

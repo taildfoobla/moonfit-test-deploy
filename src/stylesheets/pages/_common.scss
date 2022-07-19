@@ -5,7 +5,7 @@
 }
 
 .page-content {
-  padding: 180px 0 60px;
+  padding: 180px 0 28px;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -16,10 +16,10 @@
     padding-left: 20px;
   }
 
-  .section-title {
-    font-size: 48px;
-    line-height: 1.125;
-  }
+  //.section-title {
+  //  font-size: 48px;
+  //  line-height: 1.125;
+  //}
 
   .brand-image {
     margin: 0 0 30px;
@@ -55,6 +55,7 @@
   }
 
   .moonfit-card {
+    max-width: 600px;
     margin-top: 54px;
 
     > .button {
@@ -91,50 +92,70 @@
   }
 
   .section-shape-kusama {
-    bottom: 40%;
-    left: 3.5%;
+    top: 50%;
+    left: 3%;
 
     img {
-      max-width: 13vw;
+      max-width: 14vw;
     }
   }
 
   .section-shape-polkadot {
-    bottom: 12%;
-    right: 4%;
+    bottom: 7%;
+    right: 9%;
 
     img {
       max-width: 12vw;
     }
   }
 
+  .section-shape-beast {
+    left: 5.7%;
+    top: 24%;
+  }
+
+  .section-shape-beauty {
+    right: 9.1%;
+    top: 14%;
+  }
+
+  .section-shape-beauty-2 {
+    right: 18.6%;
+    bottom: 26.3%;
+  }
+
   .shape-token-mfr-1 {
     left: 20%;
     bottom: 15%;
+
+    img {
+      transform: rotate(25.79deg);
+    }
   }
 
   .shape-token-mfr-2 {
-    right: 5%;
-    bottom: 35%;
-    transform: rotate3d(0, 1, 1, 44deg);
-    filter: blur(3px);
+    right: 26.6%;
+    top: 46.8%;
   }
 
   .shape-token-mfg-1 {
     right: 20%;
-    top: 15%;
+    top: 14%;
   }
 
   .shape-token-mfg-2 {
-    left: 15%;
-    top: 15%;
-    transform: rotate3d(0, 1, 1, 48deg) skew(15deg);
+    right: 45%;
+    top: 14%;
+    transform: rotate(25.79deg);
     filter: blur(1px);
   }
 
   .page-container {
-    width: 600px;
+    width: 52.5%;
     margin: 0 auto;
+    &.not-limit-width {
+      width: unset !important;
+    }
   }
 
 }
