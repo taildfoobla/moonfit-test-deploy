@@ -2,7 +2,7 @@ import React, {useContext, useEffect, useState} from 'react'
 import MFLogoNav from "../../assets/images/logo/logo.png"
 import {Drawer, Modal, Typography} from "antd"
 import WalletAuthContext from "../../contexts/WalletAuthContext"
-import {Link} from "react-router-dom"
+import {Link, withRouter} from "react-router-dom"
 import Paths from "../../routes/Paths"
 import MFAccountButton from "../MFAccountButton"
 import {getShortAddress} from "../../utils/blockchain"
@@ -26,6 +26,7 @@ const WebNavigation = (props) => {
     useEffect(() => {
         // adding the event when scroll change Logo
         window.addEventListener("scroll", changeNavbarColor)
+        return () => window.removeEventListener("scroll", changeNavbarColor)
     }, [])
 
     const showWalletModal = () => {
@@ -58,11 +59,12 @@ const WebNavigation = (props) => {
             setColorChange(false)
         }
     }
-
     const renderLinks = () => {
         return AppRoutes.map((item, index) => {
+            const currentPath = props.location.pathname
+            const isActive = currentPath === item.path
             return item.env.includes(ENV) && (
-                <li className="nav-item" key={index}>
+                <li className={classNames('nav-item', {'active-item': isActive})} key={index}>
                     {
                         item.external ? (
                             <a className="nav-link" href={item.path} target="_blank"
@@ -220,4 +222,4 @@ const WebNavigation = (props) => {
     )
 }
 
-export default WebNavigation
+export default withRouter(WebNavigation)
