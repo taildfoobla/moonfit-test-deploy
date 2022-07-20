@@ -119,7 +119,7 @@ const WebNavigation = (props) => {
                                             fill="#020722"/>
                                     </svg>
 
-                                    {getShortAddress(wallet.account)}
+                                    {getShortAddress(wallet.account, 6)}
                                 </button>
                             ) : (
                                 <button type="button"
@@ -162,7 +162,7 @@ const WebNavigation = (props) => {
                         isConnected ? (
                             <button type="button"
                                     onClick={showWalletModal}
-                                    className="header-button w-1/2 button button-primary">
+                                    className="header-button w-fit button button-primary">
                                 <svg className="inline w-5 h-5 mr-1" style={{marginTop: 2}} width="24" height="24"
                                      viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path
@@ -170,12 +170,12 @@ const WebNavigation = (props) => {
                                         fill="#020722"/>
                                 </svg>
 
-                                {getShortAddress(wallet.account)}
+                                {getShortAddress(wallet.account, 6)}
                             </button>
                         ) : (
                             <button type="button"
                                     onClick={onConnect}
-                                    className="header-button w-1/2 button button-primary">
+                                    className="header-button w-fit button button-primary">
                                 <svg className="inline w-5 h-5 mr-1" style={{marginTop: 2}} width="24" height="24"
                                      viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path
@@ -186,7 +186,7 @@ const WebNavigation = (props) => {
                             </button>
                         )
                     }
-                    <MFAccountButton btnClassName={'w-full'}/>
+                    <MFAccountButton btnClassName={'w-fit'}/>
                 </div>
                 <hr className={'mt-5 mb-3'}/>
                 <nav className="primary-menu">
