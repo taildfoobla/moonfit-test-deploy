@@ -184,12 +184,15 @@ const MFAccountButton = (props) => {
                    className={'mf-modal-content cross-sign-in-modal-content'}
                    onCancel={hideModal}
                    footer={[
-                       <button type="button"
-                               key="2"
-                               onClick={hideModal}
-                               className="button button-primary">
-                           Done
-                       </button>
+                       <div className={'flex w-full'}>
+                           {/*<div className="w-1/2"></div>*/}
+                           <button type="button"
+                                   key="2"
+                                   onClick={hideModal}
+                                   className="w-full button button-secondary">
+                               Done
+                           </button>
+                       </div>
                    ]}>
                 {
                     sessionId ? (

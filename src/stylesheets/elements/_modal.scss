@@ -22,3 +22,94 @@
     font-size: 16px;
   }
 }
+
+.mf-modal {
+  //background-color: #262c4a96;
+  background: rgba(2, 7, 34, 0.8);
+
+  .mf-modal-content {
+    width: 585px !important;
+    padding-right: 15px;
+
+    .ant-modal-content {
+      background: #1C0532;
+      color: #ffffff;
+      //border-radius: 8px;
+      //border: 2px #BC3B99 solid;
+      //border-image-source: linear-gradient(114.16deg, #61AEBE 0%, #BC3B99 98.94%);
+      box-shadow: 0 4px 80px 0 rgba(161, 107, 216, 0.7);
+      //background: linear-gradient(0deg, #1C0532, #1C0532),
+      //linear-gradient(114.16deg, #61AEBE 0%, #BC3B99 98.94%);
+
+      $border: 2px;
+      position: relative;
+      background-clip: padding-box;
+      border: solid $border transparent;
+      border-radius: 10px;
+
+      &:before {
+        content: '';
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        z-index: -1;
+        margin: -$border;
+        border-radius: inherit;
+        background: linear-gradient(to right, #4ccbc9, #e4007b);
+      }
+
+      .ant-modal-close {
+        padding-top: 30px;
+        padding-right: 10px;
+
+        .ant-modal-close-x {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          color: #FFF;
+        }
+      }
+
+      .ant-modal-header {
+        border-top-left-radius: 8px;
+        border-top-right-radius: 8px;
+        background-color: #1C0532;
+        border-bottom: 1px solid #1C0532;
+
+        .ant-modal-title {
+          font-family: 'Race Sport', serif;
+          color: #ffffff;
+          font-weight: bold;
+          font-size: 20px;
+          padding-top: 36px;
+        }
+      }
+
+      .modal-body-row {
+        padding: 16px 22px;
+        background-color: #2A1143;
+        border-radius: 7px;
+        .modal-body-row-title {
+          color: #A8ADC3;
+          font-size: 16px;
+        }
+      }
+
+      .ant-modal-footer {
+        border-top: 1px solid #151A30;
+        padding: 15px 20px;
+      }
+    }
+  }
+}
+
+
+@media screen and (max-width: 600px) {
+  .mf-modal {
+    .mf-modal-content {
+      width: 400px !important;
+    }
+  }
+}
