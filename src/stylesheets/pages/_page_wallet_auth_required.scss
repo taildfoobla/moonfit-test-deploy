@@ -27,3 +27,11 @@
   }
 
 }
+
+@media screen and (max-width: 1600px) {
+  .wallet-auth-required {
+    .landing-right-image-wrap {
+      margin-left: 0;
+    }
+  }
+}
