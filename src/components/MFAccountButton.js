@@ -187,7 +187,7 @@ const MFAccountButton = ({btnClassName = ''}) => {
                        <div className={'flex w-full'}>
                            {/*<div className="w-1/2"></div>*/}
                            <button type="button"
-                                   key="2"
+                                   key="3"
                                    onClick={hideModal}
                                    className="w-full button button-secondary">
                                Done
