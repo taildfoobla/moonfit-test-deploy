@@ -137,3 +137,5 @@ export const CHAIN_ID_MAPPING = {
     '0x504': 'Moonbeam',
     '504': 'Moonbeam',
 }
+
+export const SUBWALLET_EXT_URL = "https://bit.ly/3BGqFt1"

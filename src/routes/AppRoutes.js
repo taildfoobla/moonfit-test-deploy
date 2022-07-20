@@ -1,12 +1,12 @@
 import Paths from "./Paths"
 
 export const AppRoutes = [
-    {
-        path: Paths.Home.path,
-        title: "Home",
-        external: false,
-        env: Paths.Home.env
-    },
+    // {
+    //     path: Paths.Home.path,
+    //     title: "Home",
+    //     external: false,
+    //     env: Paths.Home.env
+    // },
     {
         path: Paths.MintPassMinting.path,
         title: "Mint Pass",

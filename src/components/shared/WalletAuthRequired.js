@@ -1,9 +1,7 @@
 import React from 'react'
-import {getReactEnv} from "../../utils/env"
 import mfBrand from "../../assets/images/brand.png"
 import mpCard from "../../assets/images/mint-pass-landing-card.png"
-
-const SUBWALLET_EXT_URL = getReactEnv('SUBWALLET_EXT')
+import {SUBWALLET_EXT_URL} from "../../constants/blockchain"
 
 
 const WalletAuthRequired = ({isConnected, onConnect, children, className}) => {

@@ -7,17 +7,18 @@ import {HomeActions} from "../routes/AppRoutes"
 import EnvWrapper from "../components/shared/EnvWrapper"
 import Paths from "../routes/Paths"
 import CurveBGWrapper from "../wrappers/CurveBG"
+import {SUBWALLET_EXT_URL} from "../constants/blockchain"
 
-const SUBWALLET_EXT_URL = getReactEnv('SUBWALLET_EXT')
 const ENV = getReactEnv('ENV')
 
 
 const Home = ({redirect = true}) => {
     const {wallet, onConnect} = useContext(WalletAuthContext)
     const history = useHistory()
-    if (redirect) {
-        window.location.href = 'https://moonfit.xyz/'
-    }
+    // if (redirect) {
+    //     history.push(Paths.MintPassMinting)
+    //     // window.location.href = 'https://moonfit.xyz/'
+    // }
     const renderButton = () => {
         const isSubWalletInstalled = Boolean(window?.injectedWeb3 && window?.SubWallet)
         if (!isSubWalletInstalled) {

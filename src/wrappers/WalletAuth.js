@@ -3,15 +3,14 @@ import WalletAuthContext from "../contexts/WalletAuthContext"
 import {switchNetwork} from "../utils/blockchain"
 import Web3 from "web3"
 import {getLocalStorage, LOCALSTORAGE_KEY, removeLocalStorage, setLocalStorage} from "../utils/storage"
-import {getReactEnv} from "../utils/env"
 import {useHistory} from "react-router-dom"
 import Paths from "../routes/Paths"
+import {SUBWALLET_EXT_URL} from "../constants/blockchain"
 
 const providerReadyEvent = {
     'ethereum': 'ethereum#initialized', // Metamask ready event
     'SubWallet': 'subwallet#initialized' // SubWallet ready event
 }
-const SUBWALLET_EXT_URL = getReactEnv('SUBWALLET_EXT')
 
 const WalletAuthWrapper = ({children}) => {
     const [isConnected, setIsConnected] = useState(false)
