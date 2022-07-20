@@ -227,7 +227,7 @@ const MintPassMinting = (props) => {
                             alt={mintPassInfo.name}
                         />
                     </div>
-                    <div className={'flex normal-case text-white mt-2'}>{mintPassInfo.name}</div>
+                    <div className={'flex normal-case race-sport-font text-sm primary-color mt-6'}><span className={'secondary-color'}>MoonFit</span>&nbsp;Mint Pass #{mintPassInfo.tokenId}</div>
                     <div className={'flex normal-case mt-2'}>{renderNFTLink(MINT_PASS_SC, mintPassInfo.tokenId)}</div>
                 </div>
             )
