@@ -331,7 +331,7 @@ const MintPassMinting = (props) => {
                                                 {/*        className={'flex text-green-500'}>{tokenId ? renderNFTLink(MINT_PASS_SC, tokenId) : "Empty"}</div>*/}
                                                 {/*</div>*/}
                                                 {
-                                                    mintPassInfo?.balance > 0 ? (
+                                                    mintPassInfo?.name ? (
                                                         <div/>
                                                     ) : (
                                                         <div className={'flex flex-row justify-center mt-4'}>
