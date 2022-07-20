@@ -262,9 +262,9 @@ const MintPassMinting = (props) => {
                                 </div>
                                 <div className="moonfit-card">
                                     <div className="moonfit-card-inner">
-                                        <div className="card-title flex justify-between items-start">
-                                            <div className={'flex text-white'}>Minting information</div>
-                                            <div className={'flex'}>
+                                        <div className="card-title flex flex-col lg:flex-row justify-center lg:justify-between items-start mx-auto mt-0 mb-6 lg:mb-10">
+                                            <div className={'flex text-white justify-center w-full lg:w-auto justify-center lg:justify-start mt-4 lg:mt-0'}>Minting information</div>
+                                            <div className={'flex w-full lg:w-auto justify-center lg:justify-start mt-4 lg:mt-0'}>
                                                 {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
                                                 <a href="#" className={'normal-case text-xs inline primary-color'}
                                                    onClick={() => fetchData()}>
@@ -279,7 +279,7 @@ const MintPassMinting = (props) => {
                                             </div>
                                         </div>
                                         <div className="card-body">
-                                            <div className={'mt-8'}>
+                                            <div className={'mt-4 lg:mt-8'}>
                                                 <div className={'card-body-row flex flex-col'}>
                                                     <div className={'flex card-body-row-title'}>Mint Pass contract</div>
                                                     <div className={'flex flex-col'}>

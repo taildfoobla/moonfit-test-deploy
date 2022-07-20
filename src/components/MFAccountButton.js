@@ -11,7 +11,7 @@ const {Paragraph} = Typography
 const ENV = getReactEnv('ENV')
 
 
-const MFAccountButton = (props) => {
+const MFAccountButton = ({btnClassName = ''}) => {
     const [isModalVisible, setIsModalVisible] = useState(false)
     const [sessionId, setSessionId] = useState('')
     const [logoutLoading, setLogoutLoading] = useState(false)
@@ -90,10 +90,10 @@ const MFAccountButton = (props) => {
     }
 
     return isAuthenticated ? (
-        <div className={'ml-2'}>
+        <div className={'ml-2 w-full lg:w-auto'}>
             <button type="button"
                     onClick={showModal}
-                    className="header-button button button-secondary">
+                    className={`header-button button button-secondary ${btnClassName}`}>
                 <svg className="inline mr-1" style={{marginTop: 4}} width="24" height="14"
                      viewBox="0 0 16 9" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path
@@ -155,10 +155,10 @@ const MFAccountButton = (props) => {
             </Modal>
         </div>
     ) : (
-        <div className={'ml-2'}>
+        <div className={'ml-2 w-full lg:w-auto'}>
             <button type="button"
                     onClick={onOpenSignInModal}
-                    className="flex items-center header-button button button-secondary">
+                    className={`flex items-center header-button button button-secondary ${btnClassName}`}>
                 <svg className="inline mr-1" style={{marginTop: 4}} width="24" height="14"
                      viewBox="0 0 16 9" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path
