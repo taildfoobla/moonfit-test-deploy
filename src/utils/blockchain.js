@@ -17,6 +17,10 @@ export const getTxScanUrl = (txHash) => {
     return `${MOONBEAM_SCAN_URL}/tx/${txHash}`
 }
 
+export const getNFTScanUrl = (smartContract, tokenId) => {
+    return `https://moonbeam.nftscan.com/${smartContract}/${tokenId}`
+}
+
 export const switchNetwork = async (provider) => {
     switch (ENV) {
         case 'development':

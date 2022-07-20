@@ -6,7 +6,7 @@ import contractABI from '../abis/MintPassNFT.json'
 import WalletAuthRequired from "../components/shared/WalletAuthRequired"
 import {Image, notification, Spin, Typography} from "antd"
 import {getMainMessage} from "../utils/tx-error"
-import {getAddressScanUrl, getShortAddress, getTxScanUrl} from "../utils/blockchain"
+import {getAddressScanUrl, getNFTScanUrl, getShortAddress, getTxScanUrl} from "../utils/blockchain"
 import {BLC_CONFIGS} from '../configs/blockchain'
 import axios from "axios"
 import LoadingWrapper from "../components/shared/LoadingWrapper"
@@ -191,6 +191,15 @@ const MintPassMinting = (props) => {
         )
     }
 
+    const renderNFTLink = (address, tokenId) => {
+        const url = getNFTScanUrl(address.toLowerCase(), tokenId)
+        return (
+            <a href={url} target={'_blank'} rel={'noreferrer'} className={'text-[#A16BD8] text-sm normal-case'}>
+                View on NFTScan
+            </a>
+        )
+    }
+
     // const renderNFTLink = (contract, tokenId) => {
     //     const url = getTokenScanUrl(contract, tokenId)
     //     return (
@@ -217,9 +226,9 @@ const MintPassMinting = (props) => {
                             src={mintPassInfo.imageUrl}
                             alt={mintPassInfo.name}
                         />
-                        {/*<img src={mintPassInfo.imageUrl} alt={mintPassInfo.name} width={150}/>*/}
                     </div>
                     <div className={'flex normal-case text-white mt-2'}>{mintPassInfo.name}</div>
+                    <div className={'flex normal-case mt-2'}>{renderNFTLink(MINT_PASS_SC, mintPassInfo.tokenId)}</div>
                 </div>
             )
         } else if (mpLoading) {
