@@ -29,7 +29,7 @@ const WalletAuthRequired = ({isConnected, onConnect, children, className}) => {
                                     onClick={() => {
                                         window.open(SUBWALLET_EXT_URL)
                                     }}
-                                    className="button button-subwallet">
+                                    className="button button-primary">
                                 Install SubWallet to Start
                             </button>
                         </div>
@@ -58,8 +58,8 @@ const WalletAuthRequired = ({isConnected, onConnect, children, className}) => {
                         <div className={'flex mt-8 justify-center lg:justify-start'}>
                             <button type="button"
                                     onClick={onConnect}
-                                    className="button button-subwallet">
-                                Login with SubWallet
+                                    className="button button-primary">
+                                Connect SubWallet
                             </button>
                         </div>
                     </div>
