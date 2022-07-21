@@ -6,7 +6,7 @@ import contractABI from '../abis/MintPassNFT.json'
 import WalletAuthRequired from "../components/shared/WalletAuthRequired"
 import {Image, notification, Spin, Typography} from "antd"
 import {getMainMessage} from "../utils/tx-error"
-import {getAddressScanUrl, getNFTScanUrl, getShortAddress, getTxScanUrl} from "../utils/blockchain"
+import {getAddressScanUrl, getNFTScanUrl, getShortAddress, getTxScanUrl, switchNetwork} from "../utils/blockchain"
 import {BLC_CONFIGS} from '../configs/blockchain'
 import axios from "axios"
 import LoadingWrapper from "../components/shared/LoadingWrapper"
@@ -77,6 +77,7 @@ const MintPassMinting = (props) => {
             console.log('SubWallet is not installed')
             return
         }
+        await switchNetwork(provider)
         const web3js = new Web3(provider)
         const mintPassContract = new web3js.eth.Contract(contractABI.abi, MINT_PASS_SC)
         const methods = mintPassContract.methods

@@ -21,7 +21,7 @@ const WebNavigation = (props) => {
     const [colorChange, setColorChange] = useState(false)
     // const [isMobileMenuVisible, setIsMobileMenuVisible] = useState(false)
 
-    const {wallet, onConnect, onDisconnect, isConnected} = useContext(WalletAuthContext)
+    const {wallet, onConnect, onDisconnect, isConnected, onAuthorizeMoreWallet} = useContext(WalletAuthContext)
 
     useEffect(() => {
         // adding the event when scroll change Logo
@@ -80,6 +80,10 @@ const WebNavigation = (props) => {
                 </li>
             )
         })
+    }
+
+    const onConnectMoreWallet = () => {
+        onAuthorizeMoreWallet()
     }
 
     return (
@@ -212,15 +216,13 @@ const WebNavigation = (props) => {
                    wrapClassName={'mf-modal account-modal'}
                    className={'mf-modal-content account-modal-content'}
                    footer={[
-                       <div className={'flex w-full'}>
+                       <div className={'flex w-full'} key={'account-modal-footer'}>
                            <button type="button"
-                                   key="1"
                                    onClick={() => onDisconnect(() => setIsWalletModalVisible(false))}
                                    className="w-1/2 button button-dark">
                                Disconnect
                            </button>
                            <button type="button"
-                                   key="2"
                                    onClick={hideWalletModal}
                                    className="w-1/2 button button-secondary">
                                Done
@@ -234,6 +236,10 @@ const WebNavigation = (props) => {
                                    copyable={{text: wallet.account, format: 'text/plain', icon: [<CopyIcon/>]}}>
                             {getShortAddress(wallet.account, 12)}
                         </Paragraph>
+                        <div className={'normal-case mt-2 text-base cursor-pointer text-[#A16BD8] hover:text-blue-600'}
+                            onClick={onConnectMoreWallet}>
+                            Connect more wallets
+                        </div>
                     </div>
                     <div className="flex flex-col modal-body-row mt-3">
                         <div className={'flex modal-body-row-title'}>Balance</div>
