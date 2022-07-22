@@ -90,7 +90,7 @@ const MFAccountButton = ({btnClassName = ''}) => {
     }
 
     return isAuthenticated ? (
-        <div className={'ml-2 w-full lg:w-auto'}>
+        <div className={'ml-2 w-fit lg:w-auto'}>
             <button type="button"
                     onClick={showModal}
                     className={`header-button button button-secondary ${btnClassName}`}>
@@ -155,7 +155,7 @@ const MFAccountButton = ({btnClassName = ''}) => {
             </Modal>
         </div>
     ) : (
-        <div className={'ml-2 w-full lg:w-auto'}>
+        <div className={'ml-2 w-fit lg:w-auto'}>
             <button type="button"
                     onClick={onOpenSignInModal}
                     className={`flex items-center header-button button button-secondary ${btnClassName}`}>

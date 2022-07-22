@@ -9,7 +9,7 @@ import {getShortAddress} from "../../utils/blockchain"
 import {getReactEnv} from "../../utils/env"
 import {AppRoutes} from "../../routes/AppRoutes"
 import CopyIcon from "./CopyIcon"
-import {CHAIN_ID_MAPPING} from "../../constants/blockchain"
+import {CHAIN_ID_MAPPING, EVM_WALLETS} from "../../constants/blockchain"
 import classNames from "classnames"
 import CloseIcon from "./CloseIcon"
 
@@ -22,7 +22,14 @@ const WebNavigation = (props) => {
     const [colorChange, setColorChange] = useState(false)
     // const [isMobileMenuVisible, setIsMobileMenuVisible] = useState(false)
 
-    const {wallet, onConnect, onDisconnect, isConnected, onAuthorizeMoreWallet, showWalletSelectModal} = useContext(WalletAuthContext)
+    const {
+        wallet,
+        walletExtKey,
+        onDisconnect,
+        isConnected,
+        onAuthorizeMoreWallet,
+        showWalletSelectModal
+    } = useContext(WalletAuthContext)
 
     useEffect(() => {
         // adding the event when scroll change Logo
@@ -85,6 +92,23 @@ const WebNavigation = (props) => {
 
     const onConnectMoreWallet = () => {
         onAuthorizeMoreWallet()
+    }
+
+    const renderAccountExtra = () => {
+        if (!walletExtKey) return <div/>
+        const walletExt = EVM_WALLETS.find(w => w.extensionName === walletExtKey)
+        return (
+            <div className={'flex flex-row items-center pt-2 mt-2 justify-between'}>
+                <div className={'mr-3 pr-2 inline-flex normal-case text-base'}>
+                    <span className={'mr-2'}>Connected with</span> <img src={walletExt.logo.src}
+                                                                        alt={walletExt.logo.alt} width={25}/>
+                </div>
+                <div className={'normal-case text-base cursor-pointer text-[#A16BD8] hover:text-blue-600'}
+                     onClick={onConnectMoreWallet}>
+                    Connect more wallets
+                </div>
+            </div>
+        )
     }
 
 
@@ -180,7 +204,7 @@ const WebNavigation = (props) => {
                             </button>
                         ) : (
                             <button type="button"
-                                    onClick={onConnect}
+                                    onClick={showWalletSelectModal}
                                     className="header-button w-fit button button-primary">
                                 <svg className="inline w-5 h-5 mr-1" style={{marginTop: 2}} width="24" height="24"
                                      viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -228,10 +252,7 @@ const WebNavigation = (props) => {
                                    copyable={{text: wallet.account, format: 'text/plain', icon: [<CopyIcon/>]}}>
                             {getShortAddress(wallet.account, 12)}
                         </Paragraph>
-                        <div className={'normal-case mt-2 text-base cursor-pointer text-[#A16BD8] hover:text-blue-600'}
-                             onClick={onConnectMoreWallet}>
-                            Connect more wallets
-                        </div>
+                        {renderAccountExtra()}
                     </div>
                     <div className="flex flex-col modal-body-row mt-3">
                         <div className={'flex modal-body-row-title'}>Balance</div>

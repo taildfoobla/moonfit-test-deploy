@@ -5,15 +5,22 @@ import Web3 from "web3"
 import {getLocalStorage, LOCALSTORAGE_KEY, removeLocalStorage, setLocalStorage} from "../utils/storage"
 import {useHistory} from "react-router-dom"
 import Paths from "../routes/Paths"
-import {EVM_WALLETS, WEB3_METHODS} from "../constants/blockchain"
+import {EVM_WALLETS, PROVIDER_NAME, WEB3_METHODS} from "../constants/blockchain"
 import {Modal} from "antd"
 import CloseIcon from "../components/shared/CloseIcon"
 import {useLocalStorage} from "../hooks/useLocalStorage"
+import {COMMON_CONFIGS} from "../configs/common"
+import {isMobileOrTablet} from "../utils/device"
+
+const {APP_URI} = COMMON_CONFIGS
 
 const providerReadyEvent = {
     'ethereum': 'ethereum#initialized', // Metamask ready event
     'SubWallet': 'subwallet#initialized' // SubWallet ready event
 }
+
+// const deepLink = `https://metamask.app.link/dapp/pancakeswap.finance/`
+const deepLink = `dapp://${APP_URI}`
 
 const WalletAuthWrapper = ({children}) => {
     const [isConnected, setIsConnected] = useState(false)
@@ -25,6 +32,8 @@ const WalletAuthWrapper = ({children}) => {
     const [isAuthModalVisible, setIsAuthModalVisible] = useState(false)
 
     const history = useHistory()
+
+    const isMetaMaskBrowser = isMobileOrTablet() && !!window[PROVIDER_NAME.MetaMask]
 
     useEffect(() => {
         function checkConnectedWallet() {
@@ -159,8 +168,13 @@ const WalletAuthWrapper = ({children}) => {
 
     const hideConnectModal = () => setIsAuthModalVisible(false)
 
-    const onWalletSelect = async (providerName) => {
-        if (!window[providerName]) return false
+    const onWalletSelect = async (wallet) => {
+        const providerName = wallet.extensionName
+        const isInstalled = window[providerName] && window[providerName][wallet.isSetGlobalString]
+        if (isMobileOrTablet() && !isMetaMaskBrowser) {
+            return window.location.href = deepLink
+        }
+        if (!isInstalled) return window.open(wallet.installUrl)
         setWalletExtKey(providerName)
         await onConnect(providerName)
         hideConnectModal()
@@ -171,6 +185,7 @@ const WalletAuthWrapper = ({children}) => {
         <WalletAuthContext.Provider value={{
             wallet,
             setWallet,
+            walletExtKey,
             onConnect,
             onDisconnect,
             isConnected,
@@ -190,21 +205,24 @@ const WalletAuthWrapper = ({children}) => {
                 <div className={'evm-wallet'}>
                     {
                         EVM_WALLETS.map((wallet, index) => {
-                            const isInstalled = window[wallet.extensionName]
+                            const isInstalled = window[wallet.extensionName] && window[wallet.extensionName][wallet.isSetGlobalString]
                             const onClick = (e) => {
                                 e.preventDefault()
                                 window.open(wallet.installUrl)
                             }
-                            return (
+                            const isVisible = isMobileOrTablet() ? wallet.isMobileSupport : true
+                            return isVisible && (
                                 <div key={index} className={'evm-wallet-item'}
-                                     onClick={() => onWalletSelect(wallet.extensionName)}>
+                                     onClick={() => onWalletSelect(wallet)}>
                                     <div className={"wallet-logo"}>
                                         <img src={wallet.logo.src} alt={wallet.logo.alt} width={40}/>
                                     </div>
                                     <div className="wallet-title">{wallet.title}</div>
                                     {
-                                        !isInstalled && <div className="wallet-install-btn text-green-500"
-                                                             onClick={onClick}>Install</div>
+                                        !isInstalled && !isMobileOrTablet() && (
+                                            <div className="wallet-install-btn text-green-500"
+                                                 onClick={onClick}>Install</div>
+                                        )
                                     }
                                 </div>
                             )

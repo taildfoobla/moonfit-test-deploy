@@ -150,24 +150,26 @@ export const EVM_WALLETS = [
     {
         extensionName: 'SubWallet',
         title: 'SubWallet (EVM)',
-        installUrl: 'https://chrome.google.com/webstore/detail/subwallet/onhogfjeacnfoofkfgppdlbmlmnplgbn',
+        installUrl: 'https://subwallet.app/download.html',
         logo: {
             src: SubWalletLogo ,
             alt: 'SubWallet (EVM)'
         },
         isSetGlobalString: 'isSubWallet',
-        initEvent: 'subwallet#initialized'
+        initEvent: 'subwallet#initialized',
+        isMobileSupport: false
     },
     {
         extensionName: 'ethereum',
         title: 'MetaMask',
-        installUrl: 'https://chrome.google.com/webstore/detail/metamask/nkbihfbeogaeaoehlefnkodbefgpgknn',
+        installUrl: 'https://metamask.io/download/',
         logo: {
             src: MetaMaskLogo,
             alt: 'MetaMask Extension'
         },
         isSetGlobalString: 'isMetaMask',
-        initEvent: 'ethereum#initialized'
+        initEvent: 'ethereum#initialized',
+        isMobileSupport: true
     }
 ];
 
