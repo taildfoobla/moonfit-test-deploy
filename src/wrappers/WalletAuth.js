@@ -35,66 +35,8 @@ const WalletAuthWrapper = ({children}) => {
         checkConnectedWallet()
     }, [])
 
-    const saveWalletInfo = useCallback((ethBalance, account, chainId) => {
-        const walletAccount = {
-            account: account,
-            balance: ethBalance,
-            chainId: chainId,
-        }
-        setLocalStorage(LOCALSTORAGE_KEY.WALLET_ACCOUNT, JSON.stringify(walletAccount)) // user persisted data
-        const userData = JSON.parse(getLocalStorage(LOCALSTORAGE_KEY.WALLET_ACCOUNT))
-        setWallet(userData)
-        setIsConnected(true)
-    }, [])
-
-    const retrieveCurrentWalletInfo = useCallback(async () => {
-        const provider = await detectProvider(walletExtKey)
-        const web3 = new Web3(provider)
-        const walletAccount = await web3.eth.getAccounts()
-        const account = walletAccount[0]
-        let ethBalance = await web3.eth.getBalance(account) // Get wallet balance
-        ethBalance = web3.utils.fromWei(ethBalance, 'ether') //Convert balance to wei
-        const chainId = await provider.request({method: 'eth_chainId'})
-        saveWalletInfo(ethBalance, account, chainId)
-    }, [walletExtKey, saveWalletInfo])
-
-    const handleWalletChange = useCallback(async (wallets) => {
-        // console.log(wallets, wallet.account)
-        if (!wallet.account) return false
-
-        const provider = await detectProvider(walletExtKey)
-        if (!provider) {
-            console.log("HandleWalletChange: SubWallet is not installed")
-            return false
-        }
-
-        if (wallets.length === 0) return true
-        else if (wallets.length === 1) {
-            // console.log(wallet.account, wallets[0])
-            setIsModalVisible(false)
-            wallet.account !== wallets[0] && await retrieveCurrentWalletInfo()
-        } else {
-            setIsModalVisible(true)
-        }
-    }, [wallet, walletExtKey, retrieveCurrentWalletInfo])
-
-    useEffect(() => {
-        detectProvider(walletExtKey).then(async provider => {
-            await provider.enable()
-            setProvider(provider)
-            // console.log(provider)
-            provider?.on('accountsChanged', handleWalletChange)
-            // provider?.on('chainChanged', () => {
-            //     console.log('chainChanged')
-            // })
-            // const response = await provider.request(WEB3_METHODS.getPermissions)
-            // const accounts = response[0]?.caveats[0].value || []
-            // console.log(accounts)
-        })
-        return () => provider?.off('accountsChanged', handleWalletChange)
-    }, [provider, walletExtKey, handleWalletChange])
-
-    const detectProvider = (providerName) => {
+    const detectProvider = useCallback(() => {
+        const providerName = walletExtKey
         return new Promise((resolve) => {
             if (window[providerName]) {
                 resolve(window[providerName])
@@ -109,11 +51,70 @@ const WalletAuthWrapper = ({children}) => {
                 })
             }
         })
-    }
+    }, [walletExtKey])
+
+    const saveWalletInfo = useCallback((ethBalance, account, chainId) => {
+        const walletAccount = {
+            account: account,
+            balance: ethBalance,
+            chainId: chainId,
+        }
+        setLocalStorage(LOCALSTORAGE_KEY.WALLET_ACCOUNT, JSON.stringify(walletAccount)) // user persisted data
+        const userData = JSON.parse(getLocalStorage(LOCALSTORAGE_KEY.WALLET_ACCOUNT))
+        setWallet(userData)
+        setIsConnected(true)
+    }, [])
+
+    const retrieveCurrentWalletInfo = useCallback(async () => {
+        const provider = await detectProvider()
+        const web3 = new Web3(provider)
+        const walletAccount = await web3.eth.getAccounts()
+        const account = walletAccount[0]
+        let ethBalance = await web3.eth.getBalance(account) // Get wallet balance
+        ethBalance = web3.utils.fromWei(ethBalance, 'ether') //Convert balance to wei
+        const chainId = await provider.request({method: 'eth_chainId'})
+        saveWalletInfo(ethBalance, account, chainId)
+    }, [saveWalletInfo, detectProvider])
+
+    const handleWalletChange = useCallback(async (wallets) => {
+        // console.log(wallets, wallet.account)
+        if (!wallet.account) return false
+
+        const provider = await detectProvider()
+        if (!provider) {
+            console.log("HandleWalletChange: SubWallet is not installed")
+            return false
+        }
+
+        if (wallets.length === 0) return true
+        else if (wallets.length === 1) {
+            // console.log(wallet.account, wallets[0])
+            setIsModalVisible(false)
+            wallet.account !== wallets[0] && await retrieveCurrentWalletInfo()
+        } else {
+            setIsModalVisible(true)
+        }
+    }, [wallet, retrieveCurrentWalletInfo, detectProvider])
+
+    useEffect(() => {
+        detectProvider().then(async provider => {
+            await provider.enable()
+            setProvider(provider)
+            // console.log(provider)
+            provider?.on('accountsChanged', handleWalletChange)
+            // provider?.on('chainChanged', () => {
+            //     console.log('chainChanged')
+            // })
+            // const response = await provider.request(WEB3_METHODS.getPermissions)
+            // const accounts = response[0]?.caveats[0].value || []
+            // console.log(accounts)
+        })
+        return () => provider?.off('accountsChanged', handleWalletChange)
+    }, [provider, detectProvider, handleWalletChange])
 
     const onConnect = async () => {
         try {
-            const provider = await detectProvider(walletExtKey)
+            const provider = await detectProvider()
             if (!provider) {
                 console.log('SubWallet is not installed')
                 return window.open(SUBWALLET_EXT_URL)
@@ -148,14 +149,14 @@ const WalletAuthWrapper = ({children}) => {
     }
 
     const onAuthorizeNewWallet = async () => {
-        const provider = await detectProvider(walletExtKey)
+        const provider = await detectProvider()
         await provider.request(WEB3_METHODS.requestPermissions)
         setIsModalVisible(false)
         await retrieveCurrentWalletInfo()
     }
 
     const onAuthorizeMoreWallet = async () => {
-        const provider = await detectProvider(walletExtKey)
+        const provider = await detectProvider()
         await provider.request(WEB3_METHODS.requestPermissions)
         await retrieveCurrentWalletInfo()
     }
