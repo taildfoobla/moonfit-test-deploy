@@ -123,7 +123,7 @@ const MintPassMinting = (props) => {
             }
             const web3js = new Web3(provider)
             const nonce = await web3js.eth.getTransactionCount(wallet.account, 'latest')
-            console.log(MINT_PASS_SC, nonce)
+            // console.log(MINT_PASS_SC, nonce)
             const mintPassContract = new web3js.eth.Contract(contractABI.abi, MINT_PASS_SC)
             const gasPrice = await web3js.eth.getGasPrice() // estimate the gas price
 
@@ -139,7 +139,6 @@ const MintPassMinting = (props) => {
                 }
                 const gasLimit = await web3js.eth.estimateGas(tx)
                 tx.gas = `${gasLimit}`
-                console.log(tx)
                 const txHash = await provider.request({
                     method: 'eth_sendTransaction', params: [tx]
                 })
@@ -164,7 +163,7 @@ const MintPassMinting = (props) => {
             } else {
                 notification.error({
                     message: `Transaction Failed`,
-                    description: 'Your wallets is not whitelisted',
+                    description: 'Your wallet is not whitelisted',
                     placement: 'bottomRight',
                     duration: 3
                 })
@@ -173,7 +172,7 @@ const MintPassMinting = (props) => {
         } catch (e) {
             setMintLoading(false)
             showTxError(e.message)
-            console.log("!error", e)
+            console.log("!error", e.message)
         }
     }
 
