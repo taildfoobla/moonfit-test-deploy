@@ -3,6 +3,7 @@ export const LOCALSTORAGE_KEY = {
     MF_ACCOUNT: 'MF_ACCOUNT',
     SESSION_ID: 'SESSION_ID',
     ACCESS_TOKEN: 'ACCESS_TOKEN',
+    WALLET_EXT: 'WALLET_EXT',
 }
 
 export const getLocalStorage = (name, defaultValue = null) => {

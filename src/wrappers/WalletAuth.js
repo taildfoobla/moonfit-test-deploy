@@ -5,8 +5,10 @@ import Web3 from "web3"
 import {getLocalStorage, LOCALSTORAGE_KEY, removeLocalStorage, setLocalStorage} from "../utils/storage"
 import {useHistory} from "react-router-dom"
 import Paths from "../routes/Paths"
-import {SUBWALLET_EXT_URL, WEB3_METHODS} from "../constants/blockchain"
+import {EVM_WALLETS, WEB3_METHODS} from "../constants/blockchain"
 import {Modal} from "antd"
+import CloseIcon from "../components/shared/CloseIcon"
+import {useLocalStorage} from "../hooks/useLocalStorage"
 
 const providerReadyEvent = {
     'ethereum': 'ethereum#initialized', // Metamask ready event
@@ -16,9 +18,11 @@ const providerReadyEvent = {
 const WalletAuthWrapper = ({children}) => {
     const [isConnected, setIsConnected] = useState(false)
     const [wallet, setWallet] = useState({})
-    const [walletExtKey,] = useState('SubWallet')
+    // const [walletExtKey, setWalletExtKey] = useState(null)
+    const [walletExtKey, setWalletExtKey] = useLocalStorage(LOCALSTORAGE_KEY.WALLET_EXT)
     const [provider, setProvider] = useState(null)
     const [isModalVisible, setIsModalVisible] = useState(false)
+    const [isAuthModalVisible, setIsAuthModalVisible] = useState(false)
 
     const history = useHistory()
 
@@ -35,8 +39,8 @@ const WalletAuthWrapper = ({children}) => {
         checkConnectedWallet()
     }, [])
 
-    const detectProvider = useCallback(() => {
-        const providerName = walletExtKey
+    const detectProvider = useCallback((providerNameParam = null) => {
+        const providerName = providerNameParam || walletExtKey
         return new Promise((resolve) => {
             if (window[providerName]) {
                 resolve(window[providerName])
@@ -65,19 +69,17 @@ const WalletAuthWrapper = ({children}) => {
         setIsConnected(true)
     }, [])
 
-    const retrieveCurrentWalletInfo = useCallback(async () => {
-        const provider = await detectProvider()
+    const retrieveCurrentWalletInfo = useCallback(async (provider) => {
         const web3 = new Web3(provider)
         const walletAccount = await web3.eth.getAccounts()
         const account = walletAccount[0]
-        let ethBalance = await web3.eth.getBalance(account) // Get wallet balance
+        let ethBalance = await web3.eth.getBalance(account) // Get wallets balance
         ethBalance = web3.utils.fromWei(ethBalance, 'ether') //Convert balance to wei
         const chainId = await provider.request({method: 'eth_chainId'})
         saveWalletInfo(ethBalance, account, chainId)
-    }, [saveWalletInfo, detectProvider])
+    }, [saveWalletInfo])
 
     const handleWalletChange = useCallback(async (wallets) => {
-        // console.log(wallets, wallet.account)
         if (!wallet.account) return false
 
         const provider = await detectProvider()
@@ -88,17 +90,17 @@ const WalletAuthWrapper = ({children}) => {
 
         if (wallets.length === 0) return true
         else if (wallets.length === 1) {
-            // console.log(wallet.account, wallets[0])
+            // console.log(wallets.account, wallets[0])
             setIsModalVisible(false)
-            wallet.account !== wallets[0] && await retrieveCurrentWalletInfo()
+            wallet.account !== wallets[0] && await retrieveCurrentWalletInfo(provider)
         } else {
             setIsModalVisible(true)
         }
     }, [wallet, retrieveCurrentWalletInfo, detectProvider])
 
     useEffect(() => {
-        detectProvider().then(async provider => {
-            await provider.enable()
+        walletExtKey && detectProvider().then(async provider => {
+            await provider?.enable()
             setProvider(provider)
             // console.log(provider)
             provider?.on('accountsChanged', handleWalletChange)
@@ -109,40 +111,32 @@ const WalletAuthWrapper = ({children}) => {
             // const accounts = response[0]?.caveats[0].value || []
             // console.log(accounts)
         })
-        return () => provider?.off('accountsChanged', handleWalletChange)
-    }, [provider, detectProvider, handleWalletChange])
+        return () => provider?.removeListener('accountsChanged', handleWalletChange)
+    }, [provider, walletExtKey, detectProvider, handleWalletChange])
 
-    const onConnect = async () => {
+    const onConnect = async (providerNameParam = null) => {
         try {
-            const provider = await detectProvider()
+            const provider = await detectProvider(providerNameParam)
             if (!provider) {
-                console.log('SubWallet is not installed')
-                return window.open(SUBWALLET_EXT_URL)
+                console.log('Wallet extension is not installed')
+                return
             }
             await provider.request({method: 'eth_requestAccounts'})
-            // const chainId = await provider.request({method: 'eth_chainId'})
-
             await switchNetwork(provider)
-            await retrieveCurrentWalletInfo()
-
-            // const web3 = new Web3(provider)
-            // const walletAccount = await web3.eth.getAccounts()
-            // const account = walletAccount[0]
-            // let ethBalance = await web3.eth.getBalance(account) // Get wallet balance
-            // ethBalance = web3.utils.fromWei(ethBalance, 'ether') //Convert balance to wei
-            // saveWalletInfo(ethBalance, account, chainId)
+            await retrieveCurrentWalletInfo(provider)
 
             // Go to Mint Pass page
             history.push(Paths.MintPassMinting.path)
         } catch (err) {
             console.log(
-                'There was an error fetching your accounts. Make sure your SubWallet is configured correctly.', err
+                'There was an error fetching your accounts. Make sure your SubWallet or MetaMask is configured correctly.', err
             )
         }
     }
 
     const onDisconnect = (callback = null) => {
         removeLocalStorage(LOCALSTORAGE_KEY.WALLET_ACCOUNT)
+        setWalletExtKey(null)
         setWallet({})
         setIsConnected(false)
         callback && callback()
@@ -152,19 +146,72 @@ const WalletAuthWrapper = ({children}) => {
         const provider = await detectProvider()
         await provider.request(WEB3_METHODS.requestPermissions)
         setIsModalVisible(false)
-        await retrieveCurrentWalletInfo()
+        await retrieveCurrentWalletInfo(provider)
     }
 
     const onAuthorizeMoreWallet = async () => {
         const provider = await detectProvider()
         await provider.request(WEB3_METHODS.requestPermissions)
-        await retrieveCurrentWalletInfo()
+        await retrieveCurrentWalletInfo(provider)
+    }
+
+    const showConnectModal = () => setIsAuthModalVisible(true)
+
+    const hideConnectModal = () => setIsAuthModalVisible(false)
+
+    const onWalletSelect = async (providerName) => {
+        if (!window[providerName]) return false
+        setWalletExtKey(providerName)
+        await onConnect(providerName)
+        hideConnectModal()
+        return true
     }
 
     return (
-        <WalletAuthContext.Provider
-            value={{wallet, setWallet, onConnect, onDisconnect, isConnected, detectProvider, onAuthorizeMoreWallet}}>
+        <WalletAuthContext.Provider value={{
+            wallet,
+            setWallet,
+            onConnect,
+            onDisconnect,
+            isConnected,
+            detectProvider,
+            onAuthorizeMoreWallet,
+            showWalletSelectModal: showConnectModal
+        }}>
             {children}
+            <Modal title={'Choose Wallet'}
+                   visible={isAuthModalVisible}
+                   onCancel={hideConnectModal}
+                   closeIcon={<CloseIcon/>}
+                   wrapClassName={'mf-modal connect-modal'}
+                   className={'mf-modal-content connect-modal-content'}
+                   footer={false}
+            >
+                <div className={'evm-wallet'}>
+                    {
+                        EVM_WALLETS.map((wallet, index) => {
+                            const isInstalled = window[wallet.extensionName]
+                            const onClick = (e) => {
+                                e.preventDefault()
+                                window.open(wallet.installUrl)
+                            }
+                            return (
+                                <div key={index} className={'evm-wallet-item'}
+                                     onClick={() => onWalletSelect(wallet.extensionName)}>
+                                    <div className={"wallet-logo"}>
+                                        <img src={wallet.logo.src} alt={wallet.logo.alt} width={40}/>
+                                    </div>
+                                    <div className="wallet-title">{wallet.title}</div>
+                                    {
+                                        !isInstalled && <div className="wallet-install-btn text-green-500"
+                                                             onClick={onClick}>Install</div>
+                                    }
+                                </div>
+                            )
+                        })
+                    }
+                </div>
+            </Modal>
             <Modal title="Unauthorized Wallet"
                    visible={isModalVisible}
                    closeIcon={(
@@ -178,8 +225,8 @@ const WalletAuthWrapper = ({children}) => {
                                  strokeLinecap="round" strokeLinejoin="round"/>
                        </svg>
                    )}
-                   wrapClassName={'mf-modal unauthorized-wallet-modal z-[9999]'}
-                   className={'mf-modal-content unauthorized-wallet-modal-content'}
+                   wrapClassName={'mf-modal unauthorized-wallets-modal z-[9999]'}
+                   className={'mf-modal-content unauthorized-wallets-modal-content'}
                    onCancel={() => setIsModalVisible(false)}
                    footer={[
                        <div className={'flex flex-col'} key="unauthorized-wallet-modal-footer">

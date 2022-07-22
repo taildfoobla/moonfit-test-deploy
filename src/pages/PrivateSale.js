@@ -24,7 +24,7 @@ const PrivateSale = (props) => {
     const [privateSaleInfo, setPrivateSaleInfo] = useState({})
     const [walletInfo, setWalletInfo] = useState({})
 
-    const {wallet, setWallet, onConnect} = useContext(WalletAuthContext)
+    const {wallet, setWallet} = useContext(WalletAuthContext)
 
     useEffect(() => {
         wallet.account && fetchData().then()
@@ -100,7 +100,7 @@ const PrivateSale = (props) => {
             } else {
                 notification.error({
                     message: `Transaction Failed`,
-                    description: 'Your wallet is not whitelisted',
+                    description: 'Your wallets is not whitelisted',
                     placement: 'bottomRight',
                     duration: 3
                 })
@@ -180,8 +180,7 @@ const PrivateSale = (props) => {
     return (
         <CurveBGWrapper>
             <EnvWrapper routeItem={Paths.PrivateSale}>
-                <WalletAuthRequired isConnected={!!wallet.account} onConnect={onConnect}
-                                    className={'section page-mfg-ps'}>
+                <WalletAuthRequired className={'section page-mfg-ps'}>
                     {
                         !loading && contract && <div className="section-content">
                             <div className="container">

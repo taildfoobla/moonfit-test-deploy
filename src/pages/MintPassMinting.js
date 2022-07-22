@@ -23,13 +23,12 @@ const MintPassMinting = (props) => {
     const [loading, setLoading] = useState(true)
     const [mintLoading, setMintLoading] = useState(false)
     const [mintPassInfo, setMintPassInfo] = useState({})
-    // const [txHash, setTxHash] = useState('')
     const [mpLoading, setMpLoading] = useState(false)
     const [isConfirmedTx, setIsConfirmedTx] = useState(false)
 
     const mpRetrieverRef = useRef(0)
 
-    const {wallet, onConnect, detectProvider} = useContext(WalletAuthContext)
+    const {wallet, detectProvider} = useContext(WalletAuthContext)
 
     useEffect(() => {
         !!wallet.account && fetchData().then()
@@ -124,21 +123,25 @@ const MintPassMinting = (props) => {
             }
             const web3js = new Web3(provider)
             const nonce = await web3js.eth.getTransactionCount(wallet.account, 'latest')
-            // console.log(MINT_PASS_SC)
+            console.log(MINT_PASS_SC, nonce)
             const mintPassContract = new web3js.eth.Contract(contractABI.abi, MINT_PASS_SC)
+            const gasPrice = await web3js.eth.getGasPrice() // estimate the gas price
+
             const {data, success} = await getWalletMerklePath(wallet.account)
             if (success && data.data.path) {
                 const path = data.data.path
-                // console.log(path)
+                const tx = {
+                    to: MINT_PASS_SC,
+                    from: wallet.account,
+                    nonce: `${nonce}`,
+                    gasPrice: `${gasPrice}`,
+                    data: mintPassContract.methods.mintNFT(path).encodeABI()
+                }
+                const gasLimit = await web3js.eth.estimateGas(tx)
+                tx.gas = `${gasLimit}`
+                console.log(tx)
                 const txHash = await provider.request({
-                    method: 'eth_sendTransaction', params: [
-                        {
-                            to: MINT_PASS_SC,
-                            from: wallet.account,
-                            nonce: nonce,
-                            data: mintPassContract.methods.mintNFT(path).encodeABI()
-                        }
-                    ]
+                    method: 'eth_sendTransaction', params: [tx]
                 })
                 console.log("The hash of MFMP minting transaction is: ", txHash)
                 // setTxHash(txHash)
@@ -161,7 +164,7 @@ const MintPassMinting = (props) => {
             } else {
                 notification.error({
                     message: `Transaction Failed`,
-                    description: 'Your wallet is not whitelisted',
+                    description: 'Your wallets is not whitelisted',
                     placement: 'bottomRight',
                     duration: 3
                 })
@@ -228,7 +231,8 @@ const MintPassMinting = (props) => {
                             alt={mintPassInfo.name}
                         />
                     </div>
-                    <div className={'flex normal-case race-sport-font text-sm primary-color mt-6'}><span className={'secondary-color'}>MoonFit</span>&nbsp;Mint Pass #{mintPassInfo.tokenId}</div>
+                    <div className={'flex normal-case race-sport-font text-sm primary-color mt-6'}><span
+                        className={'secondary-color'}>MoonFit</span>&nbsp;Mint Pass #{mintPassInfo.tokenId}</div>
                     <div className={'flex normal-case mt-2'}>{renderNFTLink(MINT_PASS_SC, mintPassInfo.tokenId)}</div>
                 </div>
             )
@@ -246,8 +250,7 @@ const MintPassMinting = (props) => {
     return (
         <CurveBGWrapper>
             <EnvWrapper routeItem={Paths.MintPassMinting}>
-                <WalletAuthRequired isConnected={!!wallet.account} onConnect={onConnect}
-                                    className={'section page-mint-pass'}>
+                <WalletAuthRequired className={'section page-mint-pass'}>
                     {
                         !loading && <div className="section-content">
                             <div className="container">
@@ -272,9 +275,14 @@ const MintPassMinting = (props) => {
                                 </div>
                                 <div className="moonfit-card">
                                     <div className="moonfit-card-inner">
-                                        <div className="card-title flex flex-col lg:flex-row justify-center lg:justify-between items-start mx-auto mt-0 mb-6 lg:mb-10">
-                                            <div className={'flex text-white justify-center w-full lg:w-auto justify-center lg:justify-start mt-4 lg:mt-0'}>Minting information</div>
-                                            <div className={'flex w-full lg:w-auto justify-center lg:justify-start mt-4 lg:mt-0'}>
+                                        <div
+                                            className="card-title flex flex-col lg:flex-row justify-center lg:justify-between items-start mx-auto mt-0 mb-6 lg:mb-10">
+                                            <div
+                                                className={'flex text-white justify-center w-full lg:w-auto justify-center lg:justify-start mt-4 lg:mt-0'}>Minting
+                                                information
+                                            </div>
+                                            <div
+                                                className={'flex w-full lg:w-auto justify-center lg:justify-start mt-4 lg:mt-0'}>
                                                 {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
                                                 <a href="#" className={'normal-case text-xs inline primary-color'}
                                                    onClick={() => fetchData()}>

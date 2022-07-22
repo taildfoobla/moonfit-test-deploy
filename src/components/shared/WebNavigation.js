@@ -11,17 +11,18 @@ import {AppRoutes} from "../../routes/AppRoutes"
 import CopyIcon from "./CopyIcon"
 import {CHAIN_ID_MAPPING} from "../../constants/blockchain"
 import classNames from "classnames"
+import CloseIcon from "./CloseIcon"
 
 const ENV = getReactEnv('ENV')
 const {Paragraph} = Typography
 
 const WebNavigation = (props) => {
     const [isWalletModalVisible, setIsWalletModalVisible] = useState(false)
-    const [visible, setVisible] = useState(false)
+    const [isDrawerVisible, setIsDrawerVisible] = useState(false)
     const [colorChange, setColorChange] = useState(false)
     // const [isMobileMenuVisible, setIsMobileMenuVisible] = useState(false)
 
-    const {wallet, onConnect, onDisconnect, isConnected, onAuthorizeMoreWallet} = useContext(WalletAuthContext)
+    const {wallet, onConnect, onDisconnect, isConnected, onAuthorizeMoreWallet, showWalletSelectModal} = useContext(WalletAuthContext)
 
     useEffect(() => {
         // adding the event when scroll change Logo
@@ -49,7 +50,7 @@ const WebNavigation = (props) => {
 
     const onToggleMobileMenu = () => {
         // setIsMobileMenuVisible(!isMobileMenuVisible)
-        setVisible(true)
+        setIsDrawerVisible(true)
     }
 
     const changeNavbarColor = () => {
@@ -85,6 +86,7 @@ const WebNavigation = (props) => {
     const onConnectMoreWallet = () => {
         onAuthorizeMoreWallet()
     }
+
 
     return (
         <header id="header" className={classNames('header', {'bg-[#120838]': colorChange})}>
@@ -127,7 +129,7 @@ const WebNavigation = (props) => {
                                 </button>
                             ) : (
                                 <button type="button"
-                                        onClick={onConnect}
+                                        onClick={showWalletSelectModal}
                                         className="header-button button button-primary mr-4">
                                     <svg className="inline w-5 h-5 mr-1" style={{marginTop: 2}} width="24" height="24"
                                          viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -156,8 +158,8 @@ const WebNavigation = (props) => {
             <Drawer title={mfDrawerLogo}
                     placement={'left'}
                     closable={false}
-                    onClose={() => setVisible(false)}
-                    visible={visible}
+                    onClose={() => setIsDrawerVisible(false)}
+                    visible={isDrawerVisible}
                     key="left"
                     width={350}
             >
@@ -202,17 +204,7 @@ const WebNavigation = (props) => {
             <Modal title={'Wallet Information'}
                    visible={isWalletModalVisible}
                    onCancel={hideWalletModal}
-                   closeIcon={(
-                       <svg className={'cursor-pointer'} width="32" height="32" viewBox="0 0 32 32" fill="none"
-                            xmlns="http://www.w3.org/2000/svg">
-                           <rect x="1" y="1" width="30" height="30" rx="6" stroke="white" strokeOpacity="0.2"
-                                 strokeWidth="2"/>
-                           <path d="M21.0625 10.9375L10.9375 21.0625" stroke="white" strokeWidth="2"
-                                 strokeLinecap="round" strokeLinejoin="round"/>
-                           <path d="M21.0625 21.0625L10.9375 10.9375" stroke="white" strokeWidth="2"
-                                 strokeLinecap="round" strokeLinejoin="round"/>
-                       </svg>
-                   )}
+                   closeIcon={<CloseIcon/>}
                    wrapClassName={'mf-modal account-modal'}
                    className={'mf-modal-content account-modal-content'}
                    footer={[
@@ -237,7 +229,7 @@ const WebNavigation = (props) => {
                             {getShortAddress(wallet.account, 12)}
                         </Paragraph>
                         <div className={'normal-case mt-2 text-base cursor-pointer text-[#A16BD8] hover:text-blue-600'}
-                            onClick={onConnectMoreWallet}>
+                             onClick={onConnectMoreWallet}>
                             Connect more wallets
                         </div>
                     </div>

@@ -1,0 +1,34 @@
+.connect-modal {
+  .connect-modal-content {
+    .evm-wallet {
+      .evm-wallet-item {
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+        margin: 15px 0;
+        border-radius: 8px;
+        border: 2px #51356e solid;
+        padding: 10px 15px;
+        background-color: #2A1143;
+
+        .wallet-logo {
+          margin-right: 8px;
+        }
+
+        .wallet-title {
+          text-transform: none;
+          display: flex;
+          flex-grow: 1;
+          flex-shrink: 1;
+          flex-basis: 300px;
+          margin-bottom: 4px;
+        }
+        .wallet-install-btn {
+          display: flex;
+          text-transform: none;
+          margin-bottom: 4px;
+        }
+      }
+    }
+  }
+}

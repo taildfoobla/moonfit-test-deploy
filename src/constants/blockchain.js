@@ -1,3 +1,6 @@
+import MetaMaskLogo from '../assets/images/wallets/MetaMaskLogo.svg';
+import SubWalletLogo from '../assets/images/wallets/SubWalletLogo.svg';
+
 export const MOONBEAM_CHAIN_ID = 504
 export const MOONBEAM_CHAIN_ID_HEX = "0x504"
 export const WEB3_METHODS = {
@@ -138,4 +141,36 @@ export const CHAIN_ID_MAPPING = {
     '504': 'Moonbeam',
 }
 
+export const PROVIDER_NAME = {
+    SubWallet: "SubWallet",
+    MetaMask: "ethereum"
+}
+
+export const EVM_WALLETS = [
+    {
+        extensionName: 'SubWallet',
+        title: 'SubWallet (EVM)',
+        installUrl: 'https://chrome.google.com/webstore/detail/subwallet/onhogfjeacnfoofkfgppdlbmlmnplgbn',
+        logo: {
+            src: SubWalletLogo ,
+            alt: 'SubWallet (EVM)'
+        },
+        isSetGlobalString: 'isSubWallet',
+        initEvent: 'subwallet#initialized'
+    },
+    {
+        extensionName: 'ethereum',
+        title: 'MetaMask',
+        installUrl: 'https://chrome.google.com/webstore/detail/metamask/nkbihfbeogaeaoehlefnkodbefgpgknn',
+        logo: {
+            src: MetaMaskLogo,
+            alt: 'MetaMask Extension'
+        },
+        isSetGlobalString: 'isMetaMask',
+        initEvent: 'ethereum#initialized'
+    }
+];
+
+
 export const SUBWALLET_EXT_URL = "https://bit.ly/3BGqFt1"
+export const METAMASK_EXT_URL = "https://chrome.google.com/webstore/detail/metamask/nkbihfbeogaeaoehlefnkodbefgpgknn"

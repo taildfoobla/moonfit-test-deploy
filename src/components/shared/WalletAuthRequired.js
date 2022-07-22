@@ -1,11 +1,14 @@
-import React from 'react'
+import React, {useContext} from 'react'
 import mfBrand from "../../assets/images/brand.png"
 import mpCard from "../../assets/images/mint-pass-landing-card.png"
-import {SUBWALLET_EXT_URL} from "../../constants/blockchain"
+import {PROVIDER_NAME, SUBWALLET_EXT_URL} from "../../constants/blockchain"
+import WalletAuthContext from "../../contexts/WalletAuthContext"
 
 
-const WalletAuthRequired = ({isConnected, onConnect, children, className}) => {
-    const isSubWalletInstalled = Boolean(window?.injectedWeb3 && window?.SubWallet)
+const WalletAuthRequired = ({children, className}) => {
+    const {isConnected, showWalletSelectModal} = useContext(WalletAuthContext)
+
+    const isSubWalletInstalled = Boolean((window?.injectedWeb3 && window[PROVIDER_NAME.SubWallet]) || (window[PROVIDER_NAME.MetaMask]))
 
     const renderContent = () => {
         if (!isSubWalletInstalled) {
@@ -57,9 +60,9 @@ const WalletAuthRequired = ({isConnected, onConnect, children, className}) => {
                         </div>
                         <div className={'flex mt-8 justify-center lg:justify-start'}>
                             <button type="button"
-                                    onClick={onConnect}
+                                    onClick={showWalletSelectModal}
                                     className="button button-primary">
-                                Connect SubWallet
+                                Connect Wallet
                             </button>
                         </div>
                     </div>
