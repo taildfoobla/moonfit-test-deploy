@@ -2,9 +2,7 @@ import React, {useContext} from 'react'
 import mfBrand from "../../assets/images/brand.png"
 import mpCard from "../../assets/images/mint-pass-landing-card.png"
 import WalletAuthContext from "../../contexts/WalletAuthContext"
-import {COMMON_CONFIGS} from "../../configs/common"
 
-const {APP_URI} = COMMON_CONFIGS
 
 const WalletAuthRequired = ({children, className}) => {
     const {isConnected, showWalletSelectModal} = useContext(WalletAuthContext)
