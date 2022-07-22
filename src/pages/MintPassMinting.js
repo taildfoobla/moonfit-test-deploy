@@ -298,22 +298,6 @@ const MintPassMinting = (props) => {
                                         <div className="card-body">
                                             <div className={'mt-4 lg:mt-8'}>
                                                 <div className={'card-body-row flex flex-col'}>
-                                                    <div className={'flex card-body-row-title'}>Mint Pass contract</div>
-                                                    <div className={'flex flex-col'}>
-                                                        <Paragraph className={'flex text-white'}
-                                                                   copyable={{
-                                                                       text: MINT_PASS_SC,
-                                                                       format: 'text/plain',
-                                                                       icon: [<CopyIcon/>]
-                                                                   }}>
-                                                            {getShortAddress(MINT_PASS_SC, 14)}
-                                                        </Paragraph>
-                                                        <div className={'flex'}>
-                                                            {renderAddressLink(MINT_PASS_SC)}
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div className={'card-body-row flex flex-col mt-3'}>
                                                     <div className={'flex card-body-row-title'}>Your Wallet Address</div>
                                                     <div className={'flex flex-col'}>
                                                         <Paragraph className={'flex text-white'}
@@ -326,6 +310,22 @@ const MintPassMinting = (props) => {
                                                         </Paragraph>
                                                         <div className={'flex'}>
                                                             {renderAddressLink(wallet.account)}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div className={'card-body-row flex flex-col mt-3'}>
+                                                    <div className={'flex card-body-row-title'}>Mint Pass contract</div>
+                                                    <div className={'flex flex-col'}>
+                                                        <Paragraph className={'flex text-white'}
+                                                                   copyable={{
+                                                                       text: MINT_PASS_SC,
+                                                                       format: 'text/plain',
+                                                                       icon: [<CopyIcon/>]
+                                                                   }}>
+                                                            {getShortAddress(MINT_PASS_SC, 14)}
+                                                        </Paragraph>
+                                                        <div className={'flex'}>
+                                                            {renderAddressLink(MINT_PASS_SC)}
                                                         </div>
                                                     </div>
                                                 </div>

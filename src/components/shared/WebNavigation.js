@@ -12,6 +12,7 @@ import CopyIcon from "./CopyIcon"
 import {CHAIN_ID_MAPPING, EVM_WALLETS} from "../../constants/blockchain"
 import classNames from "classnames"
 import CloseIcon from "./CloseIcon"
+import {isMobileOrTablet} from "../../utils/device"
 
 const ENV = getReactEnv('ENV')
 const {Paragraph} = Typography
@@ -103,10 +104,14 @@ const WebNavigation = (props) => {
                     <span className={'mr-2'}>Connected with</span> <img src={walletExt.logo.src}
                                                                         alt={walletExt.logo.alt} width={25}/>
                 </div>
-                <div className={'normal-case text-base cursor-pointer text-[#A16BD8] hover:text-blue-600'}
-                     onClick={onConnectMoreWallet}>
-                    Connect more wallets
-                </div>
+                {
+                    !isMobileOrTablet() && (
+                        <div className={'normal-case text-base cursor-pointer text-[#A16BD8] hover:text-blue-600'}
+                             onClick={onConnectMoreWallet}>
+                            Connect more wallets
+                        </div>
+                    )
+                }
             </div>
         )
     }
@@ -114,7 +119,7 @@ const WebNavigation = (props) => {
 
     return (
         <header id="header" className={classNames('header', {'bg-[#120838]': colorChange})}>
-            <div className="flex justify-between items-center px-12">
+            <div className="flex justify-between items-center px-6 lg:px-12">
                 <div className="header-inner w-full">
                     <div className="flex items-center header-left">
                         {/*<div className={'cursor-pointer mr-4'} onClick={() => setVisible(true)}>*/}
