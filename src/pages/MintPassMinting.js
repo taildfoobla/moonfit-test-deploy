@@ -172,7 +172,7 @@ const MintPassMinting = (props) => {
         } catch (e) {
             setMintLoading(false)
             showTxError(e.message)
-            console.log("!error", e.message)
+            console.log("!error", e)
         }
     }
 
