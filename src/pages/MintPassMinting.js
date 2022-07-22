@@ -125,7 +125,7 @@ const MintPassMinting = (props) => {
             const nonce = await web3js.eth.getTransactionCount(wallet.account, 'latest')
             // console.log(MINT_PASS_SC, nonce)
             const mintPassContract = new web3js.eth.Contract(contractABI.abi, MINT_PASS_SC)
-            const gasPrice = await web3js.eth.getGasPrice() // estimate the gas price
+            // const gasPrice = await web3js.eth.getGasPrice() // estimate the gas price
 
             const {data, success} = await getWalletMerklePath(wallet.account)
             if (success && data.data.path) {
@@ -134,11 +134,14 @@ const MintPassMinting = (props) => {
                     to: MINT_PASS_SC,
                     from: wallet.account,
                     nonce: `${nonce}`,
-                    gasPrice: `${gasPrice}`,
+                    // gasPrice: `${gasPrice}`,
+                    maxPriorityFeePerGas: null,
+                    maxFeePerGas: null,
                     data: mintPassContract.methods.mintNFT(path).encodeABI()
                 }
                 const gasLimit = await web3js.eth.estimateGas(tx)
-                tx.gas = `${gasLimit}`
+                // tx.gas = `${gasLimit}`
+                console.log(web3js.utils.hexToNumber(gasLimit))
                 const txHash = await provider.request({
                     method: 'eth_sendTransaction', params: [tx]
                 })

@@ -17,8 +17,8 @@ const getConfigs = () => {
         case 'production':
             return {
                 API_URL: 'https://api-prod.moonfit.xyz/v1',
-                APP_URI: 'moonfit-web.netlify.app',
-                // APP_URI: 'app.moonfit.xyz'
+                // APP_URI: 'moonfit-web.netlify.app',
+                APP_URI: 'app.moonfit.xyz'
             }
         default:
             return {
