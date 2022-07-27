@@ -244,7 +244,12 @@ const MintPassMinting = (props) => {
                     <Spin indicator={<LoadingOutlined style={{fontSize: 24}} spin/>}/>
                 </div>
             )
-        } else return <div className={'flex text-white normal-case'}>You don't own any mint pass yet</div>
+        } else return (
+            <div>
+                <div className={'flex text-white normal-case'}>You don't own any mint pass yet.</div>
+                <div className={'flex text-white normal-case'}>Please click "MINT A PASS" button bellow to mint one.</div>
+            </div>
+        )
     }
 
     const {isActive} = mintPassInfo
