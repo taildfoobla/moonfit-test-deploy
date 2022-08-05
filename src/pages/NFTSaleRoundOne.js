@@ -19,6 +19,7 @@ import {range} from "../utils/array"
 import {NFT_SALE_INFO} from "../constants/blockchain"
 import {getStringOfBigNumber} from "../utils/number"
 import BigNumber from "bignumber.js"
+import classNames from "classnames"
 
 const {MINT_PASS_SC, MOONBEAST_SC, R1_NFT_SALE_SC} = BLC_CONFIGS
 const {Paragraph} = Typography
@@ -98,7 +99,8 @@ const NFTSaleRoundOne = (props) => {
         const mintPasses = await Promise.all(range(0, mpBalance - 1).map(async i => {
             const tokenId = await mintPassContract.methods.tokenOfOwnerByIndex(wallet.account, i).call()
             const {name, imageUrl} = await getNFTInfo(mintPassContract.methods, tokenId)
-            return {name, imageUrl, tokenId}
+            const isUsed = await saleContract.methods.checkMintPass(tokenId).call()
+            return {name, imageUrl, tokenId, isUsed}
         }))
         setMintPasses(mintPasses)
 
@@ -109,8 +111,6 @@ const NFTSaleRoundOne = (props) => {
         }))
         setMoonBeasts(moonBeasts)
 
-        // const tokenId = parseInt(balance) > 0 ? await methods.tokenOfOwnerByIndex(wallet.account, 0).call() : null
-        // const {name, imageUrl} = await getNFTInfo(methods, tokenId)
         setSaleInfo({availableSlots})
         setLoading(false)
     }
@@ -152,20 +152,20 @@ const NFTSaleRoundOne = (props) => {
             const nftSaleContract = new web3js.eth.Contract(nftSaleABI.abi, R1_NFT_SALE_SC)
             // const gasPrice = await web3js.eth.getGasPrice() // estimate the gas price
 
-            const value = new BigNumber(R1.price).multipliedBy(selectedMp.length).multipliedBy(R1.nftPerPass).multipliedBy(1e18)
+            // const value = new BigNumber(R1.price).multipliedBy(selectedMp.length).multipliedBy(R1.nftPerPass).multipliedBy(1e18)
+            const value = new BigNumber(0.01).multipliedBy(selectedMp.length).multipliedBy(R1.nftPerPass).multipliedBy(1e18)
             const tx = {
-                to: MINT_PASS_SC,
+                to: R1_NFT_SALE_SC,
                 from: wallet.account,
                 nonce: `${nonce}`,
                 // gasPrice: `${gasPrice}`,
-                maxPriorityFeePerGas: null,
-                maxFeePerGas: null,
+                // maxPriorityFeePerGas: null,
+                // maxFeePerGas: null,
                 value: getStringOfBigNumber(value),
                 data: nftSaleContract.methods.buyNFT(selectedMp).encodeABI()
             }
-            const gasLimit = await web3js.eth.estimateGas(tx)
+            // const gasLimit = await web3js.eth.estimateGas(tx)
             // tx.gas = `${gasLimit}`
-            console.log(web3js.utils.hexToNumber(gasLimit))
             const txHash = await provider.request({
                 method: 'eth_sendTransaction', params: [tx]
             })
@@ -173,7 +173,7 @@ const NFTSaleRoundOne = (props) => {
             // setTxHash(txHash)
             setMpLoading(true)
             mpRetrieverRef.current = setInterval(() => fetchMintPass(txHash), 3000)
-
+            // setSelectedMp([])
             notification.success({
                 message: `Transaction Sent`,
                 description: (
@@ -252,9 +252,12 @@ const NFTSaleRoundOne = (props) => {
                 {
                     mintPasses.map((mp, idx) => {
                         const isSelected = selectedMp.includes(mp.tokenId)
+                        const onClick = () => !mp.isUsed && onClickMintPass(mp.tokenId)
                         return (
-                            <div className={'flex flex-col justify-center items-center mt-4 mp-item'} key={idx}
-                                 onClick={() => onClickMintPass(mp.tokenId)}>
+                            <div
+                                className={classNames('flex flex-col justify-center items-center mt-4 mp-item', {'cursor-not-allowed mp-used': mp.isUsed})}
+                                key={idx}
+                                onClick={onClick}>
                                 <div className={'flex'}>
                                     <img
                                         width={'100%'}
@@ -266,9 +269,17 @@ const NFTSaleRoundOne = (props) => {
                                     <span className={'secondary-color text-center'}>MoonFit</span>
                                     <span className={'primary-color text-center mt-1'}>Mint Pass #{mp.tokenId}</span>
                                 </div>
-                                <div className={'flex normal-case mt-2'}>{renderNFTLink(MINT_PASS_SC, mp.tokenId)}</div>
+                                <div
+                                    className={'flex normal-case my-2 z-10'}>{renderNFTLink(MINT_PASS_SC, mp.tokenId)}</div>
                                 {
-                                    isSelected && (
+                                    mp.isUsed && (
+                                        <div className={'used-overlay'}>
+                                            <div className={'normal-case used-text'}>Used</div>
+                                        </div>
+                                    )
+                                }
+                                {
+                                    !mp.isUsed && isSelected && (
                                         <div className={'selected-container'}>
                                             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
                                                  xmlns="http://www.w3.org/2000/svg">
@@ -298,7 +309,6 @@ const NFTSaleRoundOne = (props) => {
             <div className={"grid grid-cols-2 lg:grid-cols-3 gap-4"}>
                 {
                     moonBeasts.map((mb, idx) => {
-                        const isSelected = selectedMp.includes(mb.tokenId)
                         return (
                             <div className={'flex flex-col justify-center items-center mt-4 mp-item'} key={idx}>
                                 <div className={'flex'}>
@@ -323,6 +333,8 @@ const NFTSaleRoundOne = (props) => {
 
 
     const {isActive} = saleInfo
+    const unusedPasses = mintPasses.filter(i => i.isUsed === false)
+    const isMintBtnVisible = unusedPasses.length > 0
 
     return (
         <CurveBGWrapper>
@@ -434,34 +446,38 @@ const NFTSaleRoundOne = (props) => {
                                                     {renderMoonBeasts()}
                                                 </div>
                                                 <div className={'flex flex-row justify-center mt-4'}>
-                                                    <button type="button"
-                                                            onClick={handleMintNFT}
-                                                            disabled={mintLoading}
-                                                            className="mt-3 button button-secondary flex items-center">
-                                                        {
-                                                            mintLoading ? (
-                                                                <svg role="status"
-                                                                     className="inline w-4 h-4 mr-3 text-white animate-spin"
-                                                                     viewBox="0 0 100 101" fill="none"
-                                                                     xmlns="http://www.w3.org/2000/svg">
-                                                                    <path
-                                                                        d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
-                                                                        fill="#E5E7EB"/>
-                                                                    <path
-                                                                        d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
-                                                                        fill="currentColor"/>
-                                                                </svg>
-                                                            ) : (
-                                                                <svg className="inline w-6 h-6 mr-2" width="24"
-                                                                     height="18" viewBox="0 0 24 18" fill="none"
-                                                                     xmlns="http://www.w3.org/2000/svg">
-                                                                    <path
-                                                                        d="M4.29736 17.2759L17.9813 13.6093L17.4637 11.6775C17.4067 11.465 17.5413 11.2426 17.7626 11.1833C17.984 11.124 18.2117 11.2493 18.2686 11.4618L18.7862 13.3936L22.8109 12.3152C23.0323 12.2559 23.1668 12.0335 23.1099 11.821L22.057 7.89164C22.0001 7.67913 21.7724 7.5538 21.551 7.61311C20.8869 7.79105 20.2038 7.41503 20.033 6.77752C19.8622 6.14001 20.2658 5.47282 20.9298 5.29489C21.1512 5.23557 21.2857 5.01318 21.2288 4.80067L20.2111 1.00265C20.1542 0.790149 19.9265 0.664811 19.7051 0.724124L15.6804 1.80254L16.1981 3.73439C16.255 3.94689 16.1205 4.16929 15.8991 4.2286C15.6778 4.28791 15.4501 4.16257 15.3931 3.95007L14.8755 2.01822L1.19153 5.68482C0.970174 5.74414 0.83565 5.96653 0.89259 6.17903L1.91027 9.97705C1.96721 10.1896 2.19491 10.3149 2.41626 10.2556C3.08034 10.0776 3.76343 10.4537 3.93425 11.0912C4.10507 11.7287 3.7015 12.3959 3.03743 12.5738C2.81607 12.6331 2.68155 12.8555 2.73849 13.068L3.79136 16.9974C3.8483 17.2099 4.076 17.3352 4.29736 17.2759ZM15.8072 5.49555C15.7503 5.28305 15.8848 5.06065 16.1062 5.00134C16.3275 4.94203 16.5552 5.06737 16.6122 5.27987L17.0263 6.82535C17.0832 7.03785 16.9487 7.26025 16.7273 7.31956C16.506 7.37888 16.2783 7.25354 16.2213 7.04103L15.8072 5.49555ZM16.6354 8.58651C16.5785 8.37401 16.713 8.15162 16.9344 8.0923C17.1557 8.03299 17.3834 8.15833 17.4404 8.37083L17.8545 9.91631C17.9114 10.1288 17.7769 10.3512 17.5556 10.4105C17.3342 10.4698 17.1065 10.3445 17.0496 10.132L16.6354 8.58651ZM6.61016 9.72815C6.62118 9.57612 6.71903 9.44223 6.86173 9.37915L8.26173 8.77626L8.55553 7.26471C8.58668 7.10729 8.70476 6.98454 8.86173 6.94248C9.01869 6.90043 9.18233 6.94768 9.28802 7.06844L10.2982 8.23058L11.8121 8.0527C11.9672 8.03598 12.1189 8.10301 12.2045 8.22916C12.289 8.35145 12.2932 8.51184 12.2165 8.6442L11.4315 9.9809L12.0786 11.3977C12.1461 11.537 12.1211 11.701 12.015 11.8206C11.9591 11.8853 11.8848 11.93 11.8043 11.9516C11.7359 11.9699 11.6673 11.9717 11.5946 11.9581L10.1134 11.6137L9.00274 12.6526C8.88454 12.7588 8.71745 12.7953 8.56991 12.7437C8.41834 12.6932 8.31461 12.5636 8.30344 12.4093L8.15543 10.8587L6.80729 10.0936C6.67469 10.0173 6.5981 9.87632 6.61016 9.72815V9.72815Z"
-                                                                        fill="white"/>
-                                                                </svg>
-                                                            )
-                                                        } Mint NFT
-                                                    </button>
+                                                    {
+                                                        isMintBtnVisible && (
+                                                            <button type="button"
+                                                                    onClick={handleMintNFT}
+                                                                    disabled={mintLoading}
+                                                                    className="mt-3 button button-secondary flex items-center">
+                                                                {
+                                                                    mintLoading ? (
+                                                                        <svg role="status"
+                                                                             className="inline w-4 h-4 mr-3 text-white animate-spin"
+                                                                             viewBox="0 0 100 101" fill="none"
+                                                                             xmlns="http://www.w3.org/2000/svg">
+                                                                            <path
+                                                                                d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
+                                                                                fill="#E5E7EB"/>
+                                                                            <path
+                                                                                d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
+                                                                                fill="currentColor"/>
+                                                                        </svg>
+                                                                    ) : (
+                                                                        <svg className="inline w-6 h-6 mr-2" width="24"
+                                                                             height="18" viewBox="0 0 24 18" fill="none"
+                                                                             xmlns="http://www.w3.org/2000/svg">
+                                                                            <path
+                                                                                d="M4.29736 17.2759L17.9813 13.6093L17.4637 11.6775C17.4067 11.465 17.5413 11.2426 17.7626 11.1833C17.984 11.124 18.2117 11.2493 18.2686 11.4618L18.7862 13.3936L22.8109 12.3152C23.0323 12.2559 23.1668 12.0335 23.1099 11.821L22.057 7.89164C22.0001 7.67913 21.7724 7.5538 21.551 7.61311C20.8869 7.79105 20.2038 7.41503 20.033 6.77752C19.8622 6.14001 20.2658 5.47282 20.9298 5.29489C21.1512 5.23557 21.2857 5.01318 21.2288 4.80067L20.2111 1.00265C20.1542 0.790149 19.9265 0.664811 19.7051 0.724124L15.6804 1.80254L16.1981 3.73439C16.255 3.94689 16.1205 4.16929 15.8991 4.2286C15.6778 4.28791 15.4501 4.16257 15.3931 3.95007L14.8755 2.01822L1.19153 5.68482C0.970174 5.74414 0.83565 5.96653 0.89259 6.17903L1.91027 9.97705C1.96721 10.1896 2.19491 10.3149 2.41626 10.2556C3.08034 10.0776 3.76343 10.4537 3.93425 11.0912C4.10507 11.7287 3.7015 12.3959 3.03743 12.5738C2.81607 12.6331 2.68155 12.8555 2.73849 13.068L3.79136 16.9974C3.8483 17.2099 4.076 17.3352 4.29736 17.2759ZM15.8072 5.49555C15.7503 5.28305 15.8848 5.06065 16.1062 5.00134C16.3275 4.94203 16.5552 5.06737 16.6122 5.27987L17.0263 6.82535C17.0832 7.03785 16.9487 7.26025 16.7273 7.31956C16.506 7.37888 16.2783 7.25354 16.2213 7.04103L15.8072 5.49555ZM16.6354 8.58651C16.5785 8.37401 16.713 8.15162 16.9344 8.0923C17.1557 8.03299 17.3834 8.15833 17.4404 8.37083L17.8545 9.91631C17.9114 10.1288 17.7769 10.3512 17.5556 10.4105C17.3342 10.4698 17.1065 10.3445 17.0496 10.132L16.6354 8.58651ZM6.61016 9.72815C6.62118 9.57612 6.71903 9.44223 6.86173 9.37915L8.26173 8.77626L8.55553 7.26471C8.58668 7.10729 8.70476 6.98454 8.86173 6.94248C9.01869 6.90043 9.18233 6.94768 9.28802 7.06844L10.2982 8.23058L11.8121 8.0527C11.9672 8.03598 12.1189 8.10301 12.2045 8.22916C12.289 8.35145 12.2932 8.51184 12.2165 8.6442L11.4315 9.9809L12.0786 11.3977C12.1461 11.537 12.1211 11.701 12.015 11.8206C11.9591 11.8853 11.8848 11.93 11.8043 11.9516C11.7359 11.9699 11.6673 11.9717 11.5946 11.9581L10.1134 11.6137L9.00274 12.6526C8.88454 12.7588 8.71745 12.7953 8.56991 12.7437C8.41834 12.6932 8.31461 12.5636 8.30344 12.4093L8.15543 10.8587L6.80729 10.0936C6.67469 10.0173 6.5981 9.87632 6.61016 9.72815V9.72815Z"
+                                                                                fill="white"/>
+                                                                        </svg>
+                                                                    )
+                                                                } Mint NFT
+                                                            </button>
+                                                        )
+                                                    }
                                                 </div>
                                             </div>
                                         </div>
