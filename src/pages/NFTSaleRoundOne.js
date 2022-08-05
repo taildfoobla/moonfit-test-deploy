@@ -33,10 +33,10 @@ const NFTSaleRoundOne = (props) => {
     const [moonBeasts, setMoonBeasts] = useState([])
     const [saleInfo, setSaleInfo] = useState({})
     const [selectedMp, setSelectedMp] = useState([])
-    const [mpLoading, setMpLoading] = useState(false)
+    const [mbLoading, setMbLoading] = useState(false)
     const [isConfirmedTx, setIsConfirmedTx] = useState(false)
 
-    const mpRetrieverRef = useRef(0)
+    const mbRetrieverRef = useRef(0)
 
     const {wallet, detectProvider} = useContext(WalletAuthContext)
 
@@ -47,16 +47,16 @@ const NFTSaleRoundOne = (props) => {
 
     useEffect(() => {
         if (isConfirmedTx) {
-            clearMpInterval()
-            setMpLoading(false)
+            clearMbInterval()
+            setMbLoading(false)
         }
-        return () => clearMpInterval()
+        return () => clearMbInterval()
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isConfirmedTx])
 
-    const clearMpInterval = () => mpRetrieverRef.current && clearInterval(mpRetrieverRef.current)
+    const clearMbInterval = () => mbRetrieverRef.current && clearInterval(mbRetrieverRef.current)
 
-    const fetchMintPass = async (txHash) => {
+    const fetchMoonBeasts = async (txHash) => {
         const provider = await detectProvider()
         if (!provider) {
             console.log('SubWallet is not installed')
@@ -64,7 +64,7 @@ const NFTSaleRoundOne = (props) => {
         }
         const web3js = new Web3(provider)
         const receipt = await web3js.eth.getTransactionReceipt(txHash)
-        console.log(receipt?.status)
+        // console.log(receipt?.status)
         if (receipt?.status === true) {
             await fetchData(false)
             setIsConfirmedTx(true)
@@ -74,7 +74,7 @@ const NFTSaleRoundOne = (props) => {
         return true
     }
 
-    const fetchData = async (loading=true) => {
+    const fetchData = async (loading = true) => {
         loading && setLoading(true)
         const provider = await detectProvider()
         if (!provider) {
@@ -86,7 +86,7 @@ const NFTSaleRoundOne = (props) => {
         const mintPassContract = new web3js.eth.Contract(mintPassABI.abi, MINT_PASS_SC)
         const saleContract = new web3js.eth.Contract(nftSaleABI.abi, R1_NFT_SALE_SC)
         const moonBeastContract = new web3js.eth.Contract(moonBeastABI.abi, MOONBEAST_SC)
-        // const methods = mintPassContract.methods
+
         const [mpBalance, availableSlots, mbBalance] = await Promise.all([
             mintPassContract.methods.balanceOf(wallet.account).call(),
             saleContract.methods.getAvailableSlots().call(),
@@ -168,8 +168,8 @@ const NFTSaleRoundOne = (props) => {
             })
             console.log("The hash of MFB minting transaction is: ", txHash)
             // setTxHash(txHash)
-            setMpLoading(true)
-            mpRetrieverRef.current = setInterval(() => fetchMintPass(txHash), 3000)
+            setMbLoading(true)
+            mbRetrieverRef.current = setInterval(() => fetchMoonBeasts(txHash), 3000)
             // setSelectedMp([])
             notification.success({
                 message: `Transaction Sent`,
@@ -286,7 +286,7 @@ const NFTSaleRoundOne = (props) => {
     }
 
     const renderMoonBeasts = () => {
-        if (mpLoading) {
+        if (mbLoading) {
             return (
                 <div className="flex justify-center items-center h-[240px]">
                     <Spin indicator={<LoadingOutlined style={{fontSize: 24}} spin/>}/>
@@ -327,9 +327,9 @@ const NFTSaleRoundOne = (props) => {
     }
 
 
-    const {isActive} = saleInfo
+    const {availableSlots} = saleInfo
     const unusedPasses = mintPasses.filter(i => i.isUsed === false)
-    const isMintBtnVisible = unusedPasses.length > 0
+    const isMintBtnVisible = unusedPasses.length > 0 && availableSlots > 0
     const isMintBtnDisabled = selectedMp.length === 0 || mintLoading
 
     return (
@@ -344,19 +344,38 @@ const NFTSaleRoundOne = (props) => {
                                         <h2 className={'font-bold text-3xl secondary-color'}>NFT Sale <span
                                             className={'text-white'}>Round #1</span></h2>
                                     </div>
-                                    <div className={'flex justify-center mt-4'}>
-                                        {isActive ? (
-                                            <span
-                                                className="bg-[#60B159] text-[#020722] text-sm font-bold mr-2 px-2.5 py-0.5 rounded dark:bg-green-500 dark:text-white">
-                                    Active
-                                </span>
-                                        ) : (
-                                            <span
-                                                className="bg-indigo-100 text-indigo-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-indigo-200 dark:text-indigo-900">
-                                    Inactive
-                                </span>
-                                        )}
+                                    <div className={'flex justify-center mt-6'}>
+                                        <span
+                                            className="bg-blue-100 text-blue-800 normal-case font-bold px-4 pb-1 rounded dark:bg-green-500 dark:text-white">
+                                            22nd August
+                                        </span>
+                                        {
+                                            availableSlots > 0 ? (
+                                                <span
+                                                    className="ml-3 bg-[#60B159] text-[#020722] normal-case font-bold px-4 pb-1 rounded dark:bg-green-500 dark:text-white">
+                                                    {availableSlots} {`NFT${availableSlots > 1 ? 's' : ''}`} left
+                                                </span>
+                                            ) : (
+                                                <span
+                                                    className="ml-3 bg-gray-100 text-gray-800 normal-case font-bold px-4 pb-1 rounded dark:bg-green-500 dark:text-white">
+                                                    Sold out
+                                                </span>
+                                            )
+                                        }
                                     </div>
+                                    {/*    <div className={'flex justify-center mt-4'}>*/}
+                                    {/*        {isActive ? (*/}
+                                    {/*            <span*/}
+                                    {/*                className="bg-[#60B159] text-[#020722] text-sm font-bold mr-2 px-2.5 py-0.5 rounded dark:bg-green-500 dark:text-white">*/}
+                                    {/*    Active*/}
+                                    {/*</span>*/}
+                                    {/*        ) : (*/}
+                                    {/*            <span*/}
+                                    {/*                className="bg-indigo-100 text-indigo-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-indigo-200 dark:text-indigo-900">*/}
+                                    {/*    Inactive*/}
+                                    {/*</span>*/}
+                                    {/*        )}*/}
+                                    {/*    </div>*/}
                                 </div>
                                 <div className="moonfit-card">
                                     <div className="moonfit-card-inner">
@@ -399,7 +418,7 @@ const NFTSaleRoundOne = (props) => {
                                                         </div>
                                                     </div>
                                                     <div className={'flex card-body-row-title mt-3'}>Available Slots</div>
-                                                    <div className={'flex flex-col'}>
+                                                    <div className={'flex flex-col text-green-400'}>
                                                         {saleInfo.availableSlots}
                                                     </div>
                                                 </div>
