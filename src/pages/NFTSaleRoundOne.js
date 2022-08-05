@@ -5,7 +5,7 @@ import nftSaleABI from '../abis/MFNFTSale.json'
 import mintPassABI from '../abis/MintPassNFT.json'
 import moonBeastABI from '../abis/MoonBeastNFT.json'
 import WalletAuthRequired from "../components/shared/WalletAuthRequired"
-import {Image, notification, Spin, Typography} from "antd"
+import {Image, notification, Progress, Spin, Typography} from "antd"
 import {getMainMessage} from "../utils/tx-error"
 import {getAddressScanUrl, getNFTScanUrl, getShortAddress, getTxScanUrl, switchNetwork} from "../utils/blockchain"
 import {BLC_CONFIGS} from '../configs/blockchain'
@@ -87,9 +87,10 @@ const NFTSaleRoundOne = (props) => {
         const saleContract = new web3js.eth.Contract(nftSaleABI.abi, R1_NFT_SALE_SC)
         const moonBeastContract = new web3js.eth.Contract(moonBeastABI.abi, MOONBEAST_SC)
 
-        const [mpBalance, availableSlots, mbBalance] = await Promise.all([
+        const [mpBalance, availableSlots, maxSaleSlots, mbBalance] = await Promise.all([
             mintPassContract.methods.balanceOf(wallet.account).call(),
             saleContract.methods.getAvailableSlots().call(),
+            saleContract.methods._maxSaleAmount().call(),
             moonBeastContract.methods.balanceOf(wallet.account).call(),
         ])
         const mintPasses = await Promise.all(range(0, mpBalance - 1).map(async i => {
@@ -107,7 +108,7 @@ const NFTSaleRoundOne = (props) => {
         }))
         setMoonBeasts(moonBeasts)
 
-        setSaleInfo({availableSlots})
+        setSaleInfo({availableSlots, maxSaleSlots})
         loading && setLoading(false)
     }
 
@@ -327,7 +328,8 @@ const NFTSaleRoundOne = (props) => {
     }
 
 
-    const {availableSlots} = saleInfo
+    const {availableSlots, maxSaleSlots} = saleInfo
+    // const {availableSlots, maxSaleSlots} = {availableSlots: 480, maxSaleSlots: 500}
     const unusedPasses = mintPasses.filter(i => i.isUsed === false)
     const isMintBtnVisible = unusedPasses.length > 0 && availableSlots > 0
     const isMintBtnDisabled = selectedMp.length === 0 || mintLoading
@@ -419,7 +421,24 @@ const NFTSaleRoundOne = (props) => {
                                                     </div>
                                                     <div className={'flex card-body-row-title mt-3'}>Available Slots</div>
                                                     <div className={'flex flex-col text-green-400'}>
-                                                        {saleInfo.availableSlots}
+                                                        {/*<div*/}
+                                                        {/*    className="w-full bg-gray-200 rounded-full h-2 my-2 dark:bg-gray-700">*/}
+                                                        {/*    <div*/}
+                                                        {/*        className="bg-red-600 h-2 rounded-full dark:bg-red-500"*/}
+                                                        {/*        style={{width: "45%"}}></div>*/}
+                                                        {/*</div>*/}
+                                                        <div className="flex justify-between items-center">
+                                                            <div className={'w-[105px]'}>{availableSlots} / {maxSaleSlots}</div>
+                                                            <Progress
+                                                                strokeColor={{
+                                                                    from: '#4ccbc9',
+                                                                    to: '#e4007b',
+                                                                }}
+                                                                percent={Math.floor(availableSlots / maxSaleSlots * 100)}
+                                                                status="active"
+                                                                showInfo={false}
+                                                            />
+                                                        </div>
                                                     </div>
                                                 </div>
                                                 <div className={'card-body-row flex flex-col mt-3'}>
