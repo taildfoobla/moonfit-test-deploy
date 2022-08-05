@@ -166,7 +166,7 @@ const NFTSaleRoundOne = (props) => {
             const txHash = await provider.request({
                 method: 'eth_sendTransaction', params: [tx]
             })
-            console.log("The hash of MFMP minting transaction is: ", txHash)
+            console.log("The hash of MFB minting transaction is: ", txHash)
             // setTxHash(txHash)
             setMpLoading(true)
             mpRetrieverRef.current = setInterval(() => fetchMintPass(txHash), 3000)
@@ -175,7 +175,7 @@ const NFTSaleRoundOne = (props) => {
                 message: `Transaction Sent`,
                 description: (
                     <div>
-                        The hash of MFMP minting transaction is: <br/>
+                        The hash of MFB minting transaction is: <br/>
                         <a target="_blank" rel="noreferrer"
                            className={'text-blue-600'}
                            href={getTxScanUrl(txHash)}>{txHash}</a>
@@ -218,15 +218,6 @@ const NFTSaleRoundOne = (props) => {
             </a>
         )
     }
-
-    // const renderNFTLink = (contract, tokenId) => {
-    //     const url = getTokenScanUrl(contract, tokenId)
-    //     return (
-    //         <a href={url} target={'_blank'} rel={'noreferrer'} className={'text-blue-600'}>
-    //             #{tokenId}
-    //         </a>
-    //     )
-    // }
 
     const onClickMintPass = (tokenId) => {
         if (selectedMp.includes(tokenId)) {
@@ -339,6 +330,7 @@ const NFTSaleRoundOne = (props) => {
     const {isActive} = saleInfo
     const unusedPasses = mintPasses.filter(i => i.isUsed === false)
     const isMintBtnVisible = unusedPasses.length > 0
+    const isMintBtnDisabled = selectedMp.length === 0 || mintLoading
 
     return (
         <CurveBGWrapper>
@@ -454,7 +446,7 @@ const NFTSaleRoundOne = (props) => {
                                                         isMintBtnVisible && (
                                                             <button type="button"
                                                                     onClick={handleMintNFT}
-                                                                    disabled={mintLoading}
+                                                                    disabled={isMintBtnDisabled}
                                                                     className="mt-3 button button-secondary flex items-center">
                                                                 {
                                                                     mintLoading ? (
