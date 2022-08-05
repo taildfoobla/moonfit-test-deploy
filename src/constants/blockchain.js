@@ -176,3 +176,21 @@ export const EVM_WALLETS = [
 
 export const SUBWALLET_EXT_URL = "https://bit.ly/3BGqFt1"
 export const METAMASK_EXT_URL = "https://chrome.google.com/webstore/detail/metamask/nkbihfbeogaeaoehlefnkodbefgpgknn"
+
+export const NFT_SALE_INFO = {
+    R1: {
+        amount: 500,
+        price: 79,
+        nftPerPass: 1,
+    },
+    R2: {
+        amount: 1500,
+        price: 119,
+        nftPerPass: 2,
+    },
+    R3: {
+        amount: 3000,
+        price: 159,
+        nftPerPass: 3,
+    }
+}

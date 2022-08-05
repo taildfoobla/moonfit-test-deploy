@@ -24,7 +24,7 @@ const PrivateSale = (props) => {
     const [privateSaleInfo, setPrivateSaleInfo] = useState({})
     const [walletInfo, setWalletInfo] = useState({})
 
-    const {wallet, setWallet} = useContext(WalletAuthContext)
+    const {wallet, setWallet, detectProvider} = useContext(WalletAuthContext)
 
     useEffect(() => {
         wallet.account && fetchData().then()
@@ -38,7 +38,8 @@ const PrivateSale = (props) => {
             if (data && success) {
                 setPrivateSaleInfo(data.data)
                 if (!!data.data.mfgToken) {
-                    const web3 = new Web3(window.SubWallet)
+                    const provider = await detectProvider()
+                    const web3 = new Web3(provider)
                     const contract = new web3.eth.Contract(ERC20Balance.abi, data.data.mfgToken)
                     const weiBalance = await contract.methods.balanceOf(wallet.account).call()
                     const decimals = await contract.methods.decimals().call()

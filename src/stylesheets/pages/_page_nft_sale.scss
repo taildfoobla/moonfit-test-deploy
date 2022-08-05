@@ -1,0 +1,22 @@
+.page-nft-sale {
+  padding-top: 10px;
+
+  .mp-item {
+    position: relative;
+    cursor: pointer;
+
+    img {
+      border-radius: 8px;
+    }
+
+    .selected-container {
+      position: absolute;
+      top: 0;
+      right: 0;
+      background: #e4007b;
+      padding: 3px 4px;
+      border-bottom-left-radius: 8px;
+      border-top-right-radius: 8px;
+    }
+  }
+}
