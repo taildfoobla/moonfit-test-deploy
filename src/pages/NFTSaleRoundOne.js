@@ -5,7 +5,7 @@ import nftSaleABI from '../abis/MFNFTSale.json'
 import mintPassABI from '../abis/MintPassNFT.json'
 import moonBeastABI from '../abis/MoonBeastNFT.json'
 import WalletAuthRequired from "../components/shared/WalletAuthRequired"
-import {Image, notification, Typography} from "antd"
+import {Image, notification, Spin, Typography} from "antd"
 import {getMainMessage} from "../utils/tx-error"
 import {getAddressScanUrl, getNFTScanUrl, getShortAddress, getTxScanUrl, switchNetwork} from "../utils/blockchain"
 import {BLC_CONFIGS} from '../configs/blockchain'
@@ -20,6 +20,7 @@ import {NFT_SALE_INFO} from "../constants/blockchain"
 import {getStringOfBigNumber} from "../utils/number"
 import BigNumber from "bignumber.js"
 import classNames from "classnames"
+import {LoadingOutlined} from "@ant-design/icons"
 
 const {MINT_PASS_SC, MOONBEAST_SC, R1_NFT_SALE_SC} = BLC_CONFIGS
 const {Paragraph} = Typography
@@ -45,13 +46,13 @@ const NFTSaleRoundOne = (props) => {
     }, [wallet.account])
 
     useEffect(() => {
-        if (!!saleInfo.name && isConfirmedTx) {
+        if (isConfirmedTx) {
             clearMpInterval()
             setMpLoading(false)
         }
         return () => clearMpInterval()
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [saleInfo.name, isConfirmedTx])
+    }, [isConfirmedTx])
 
     const clearMpInterval = () => mpRetrieverRef.current && clearInterval(mpRetrieverRef.current)
 
@@ -62,24 +63,19 @@ const NFTSaleRoundOne = (props) => {
             return
         }
         const web3js = new Web3(provider)
-        const mintPassContract = new web3js.eth.Contract(mintPassABI.abi, MINT_PASS_SC)
-        const methods = mintPassContract.methods
-        const balance = await methods.balanceOf(wallet.account).call()
         const receipt = await web3js.eth.getTransactionReceipt(txHash)
-        // console.log(balance, receipt?.status)
-        if (parseInt(balance) > 0 && receipt?.status === true) {
-            // console.log("Successful !!")
-            const tokenId = parseInt(balance) > 0 ? await methods.tokenOfOwnerByIndex(wallet.account, 0).call() : null
-            const {name, imageUrl} = await getNFTInfo(methods, tokenId)
-            setSaleInfo({...saleInfo, tokenId, name, imageUrl})
+        console.log(receipt?.status)
+        if (receipt?.status === true) {
+            await fetchData(false)
             setIsConfirmedTx(true)
+            setSelectedMp([])
             return true
         }
         return true
     }
 
-    const fetchData = async () => {
-        setLoading(true)
+    const fetchData = async (loading=true) => {
+        loading && setLoading(true)
         const provider = await detectProvider()
         if (!provider) {
             console.log('SubWallet is not installed')
@@ -112,7 +108,7 @@ const NFTSaleRoundOne = (props) => {
         setMoonBeasts(moonBeasts)
 
         setSaleInfo({availableSlots})
-        setLoading(false)
+        loading && setLoading(false)
     }
 
     const getNFTInfo = async (methods, tokenId) => {
@@ -159,13 +155,14 @@ const NFTSaleRoundOne = (props) => {
                 from: wallet.account,
                 nonce: `${nonce}`,
                 // gasPrice: `${gasPrice}`,
-                // maxPriorityFeePerGas: null,
-                // maxFeePerGas: null,
+                maxPriorityFeePerGas: null,
+                maxFeePerGas: null,
                 value: getStringOfBigNumber(value),
                 data: nftSaleContract.methods.buyNFT(selectedMp).encodeABI()
             }
-            // const gasLimit = await web3js.eth.estimateGas(tx)
-            // tx.gas = `${gasLimit}`
+            console.log(tx)
+            const gasLimit = await web3js.eth.estimateGas(tx)
+            tx.gas = `${gasLimit}`
             const txHash = await provider.request({
                 method: 'eth_sendTransaction', params: [tx]
             })
@@ -248,7 +245,7 @@ const NFTSaleRoundOne = (props) => {
                 <div className={'flex text-white normal-case'}>No Mint-Pass = No Beast or Beauty NFT mint.</div>
             </div>
         ) : (
-            <div className={"grid grid-cols-2 lg:grid-cols-3 gap-4"}>
+            <div className={"grid grid-cols-2 lg:grid-cols-3 gap-2 lg:gap-4"}>
                 {
                     mintPasses.map((mp, idx) => {
                         const isSelected = selectedMp.includes(mp.tokenId)
@@ -298,6 +295,13 @@ const NFTSaleRoundOne = (props) => {
     }
 
     const renderMoonBeasts = () => {
+        if (mpLoading) {
+            return (
+                <div className="flex justify-center items-center h-[240px]">
+                    <Spin indicator={<LoadingOutlined style={{fontSize: 24}} spin/>}/>
+                </div>
+            )
+        }
         return moonBeasts.length === 0 ? (
             <div>
                 <div className={'flex text-white normal-case'}>You don't own any beast/beauty yet.</div>
