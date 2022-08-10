@@ -24,7 +24,13 @@ export const getNFTScanUrl = (smartContract, tokenId) => {
 export const switchNetwork = async (provider) => {
     switch (ENV) {
         case 'development':
-            await provider.request(WEB3_METHODS.switchToMoonbaseAlphaNetwork)
+            try {
+                await provider.request(WEB3_METHODS.switchToMoonbaseAlphaNetwork)
+            } catch (e) {
+                console.log("Cannot switchToMoonbaseAlphaNetwork: ", e.message)
+                await provider.request(WEB3_METHODS.addMoonbaseAlphaNetwork)
+            }
+            // await provider.request(WEB3_METHODS.switchToMoonbaseAlphaNetwork)
             break
         case 'production':
             try {
