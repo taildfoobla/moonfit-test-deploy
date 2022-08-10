@@ -161,9 +161,10 @@ const NFTSaleRoundOne = (props) => {
                 value: getStringOfBigNumber(value),
                 data: nftSaleContract.methods.buyNFT(selectedMp).encodeABI()
             }
-            console.log(tx)
+            // console.log(tx)
             const gasLimit = await web3js.eth.estimateGas(tx)
-            tx.gas = `${gasLimit}`
+            // tx.gas = `${gasLimit}`
+            console.log(web3js.utils.hexToNumber(gasLimit))
             const txHash = await provider.request({
                 method: 'eth_sendTransaction', params: [tx]
             })
