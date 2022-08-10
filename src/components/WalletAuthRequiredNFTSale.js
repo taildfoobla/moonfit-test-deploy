@@ -1,0 +1,53 @@
+import React, {useContext} from 'react'
+import mfBrand from "../assets/images/brand.png"
+import nftCard from "../assets/images/universe-image.png"
+import WalletAuthContext from "../contexts/WalletAuthContext"
+
+
+const WalletAuthRequiredNFTSale = ({children, className}) => {
+    const {isConnected, showWalletSelectModal} = useContext(WalletAuthContext)
+
+    // const isSubWalletInstalled = Boolean((window?.injectedWeb3 && window[PROVIDER_NAME.SubWallet]) || (window[PROVIDER_NAME.MetaMask]))
+
+    const renderContent = () => {
+        return !isConnected ? (
+            <div className={'grid grid-cols-1 xl:grid-cols-2 gap-4 items-center z-[99]'}>
+                <div className={'flex flex-col landing-text-wrap xl:justify-start justify-center z-[9]'}>
+                    <div className="flex brand-image justify-center xl:justify-start">
+                        <img loading="lazy" src={mfBrand}
+                             alt="Moonfit Branding"
+                             width="356"/>
+                    </div>
+                    <h1 className="section-title flex flex-col justify-center xl:justify-start">
+                        <span className={'text-center xl:text-left'}>NFT Sale #1&nbsp;</span>
+                        <span className="text-center xl:text-left secondary-color">22nd August</span>
+                    </h1>
+                    <div className="section-description-wrap text-center xl:text-left">
+                        <p className="section-description mx-auto xl:mx-0">
+                            MoonBeast must burn calories to become stronger and more attractive, with the hope of
+                            winning love and bearing offspring, thus populating the universe.
+                        </p>
+                    </div>
+                    <div className={'flex mt-8 justify-center xl:justify-start'}>
+                        <button type="button"
+                                onClick={showWalletSelectModal}
+                                className="button button-primary">
+                            Connect Wallet
+                        </button>
+                    </div>
+                </div>
+                <div className={'flex landing-right-image-wrap justify-center pr-12 xl:pr-0 mt-12 xl:mt-0'}>
+                    <img src={nftCard} alt="NFT Card"/>
+                </div>
+            </div>
+        ) : children
+    }
+
+    return (
+        <div className={`wallet-auth-required-nft-sale ${className || ''}`}>
+            {renderContent()}
+        </div>
+    )
+}
+
+export default WalletAuthRequiredNFTSale

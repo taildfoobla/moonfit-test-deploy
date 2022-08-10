@@ -1,9 +1,9 @@
 import App from "../App"
 import Paths from "./Paths"
-import PrivateSale from "../pages/PrivateSale"
+import MFGPrivateSale from "../pages/MFGPrivateSale"
 import MintPassMinting from "../pages/MintPassMinting"
 import NFTSaleRoundOne from "../pages/NFTSaleRoundOne"
-// import Home from "../pages/Home"
+import Home from "../pages/Home"
 
 const routes = [
     {
@@ -12,7 +12,7 @@ const routes = [
             {
                 path: Paths.Home.path,
                 exact: true,
-                component: MintPassMinting
+                component: Home
             },
             {
                 path: Paths.NFTSaleR1.path,
@@ -22,7 +22,7 @@ const routes = [
             {
                 path: Paths.PrivateSale.path,
                 exact: true,
-                component: PrivateSale
+                component: MFGPrivateSale
             },
             {
                 path: Paths.MintPassMinting.path,

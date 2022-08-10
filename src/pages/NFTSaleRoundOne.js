@@ -4,7 +4,6 @@ import WalletAuthContext from "../contexts/WalletAuthContext"
 import nftSaleABI from '../abis/MFNFTSale.json'
 import mintPassABI from '../abis/MintPassNFT.json'
 import moonBeastABI from '../abis/MoonBeastNFT.json'
-import WalletAuthRequired from "../components/shared/WalletAuthRequired"
 import {Image, notification, Progress, Spin, Typography} from "antd"
 import {getMainMessage} from "../utils/tx-error"
 import {getAddressScanUrl, getNFTScanUrl, getShortAddress, getTxScanUrl, switchNetwork} from "../utils/blockchain"
@@ -21,6 +20,7 @@ import {getStringOfBigNumber} from "../utils/number"
 import BigNumber from "bignumber.js"
 import classNames from "classnames"
 import {LoadingOutlined} from "@ant-design/icons"
+import WalletAuthRequiredNFTSale from "../components/WalletAuthRequiredNFTSale"
 
 const {MINT_PASS_SC, MOONBEAST_SC, R1_NFT_SALE_SC} = BLC_CONFIGS
 const {Paragraph} = Typography
@@ -337,7 +337,7 @@ const NFTSaleRoundOne = (props) => {
     return (
         <CurveBGWrapper>
             <EnvWrapper routeItem={Paths.MintPassMinting}>
-                <WalletAuthRequired className={'section page-nft-sale'}>
+                <WalletAuthRequiredNFTSale className={'section page-nft-sale'}>
                     {
                         !loading && <div className="section-content">
                             <div className="container">
@@ -521,7 +521,7 @@ const NFTSaleRoundOne = (props) => {
                         </div>
                     }
                     <LoadingWrapper loading={loading}/>
-                </WalletAuthRequired>
+                </WalletAuthRequiredNFTSale>
             </EnvWrapper>
         </CurveBGWrapper>
     )

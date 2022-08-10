@@ -17,7 +17,7 @@ import CurveBGWrapper from "../wrappers/CurveBG"
 
 const {Paragraph} = Typography
 
-const PrivateSale = (props) => {
+const MFGPrivateSale = (props) => {
     const [loading, setLoading] = useState(true)
     const [buyLoading, setBuyLoading] = useState(false)
     const [claimLoading, setClaimLoading] = useState(false)
@@ -329,4 +329,4 @@ const PrivateSale = (props) => {
     )
 }
 
-export default PrivateSale
+export default MFGPrivateSale

@@ -3,7 +3,6 @@ import Web3 from "web3"
 import {getWalletMerklePath} from "../services/tokenSale"
 import WalletAuthContext from "../contexts/WalletAuthContext"
 import contractABI from '../abis/MintPassNFT.json'
-import WalletAuthRequired from "../components/shared/WalletAuthRequired"
 import {Image, notification, Spin, Typography} from "antd"
 import {getMainMessage} from "../utils/tx-error"
 import {getAddressScanUrl, getNFTScanUrl, getShortAddress, getTxScanUrl, switchNetwork} from "../utils/blockchain"
@@ -15,6 +14,7 @@ import EnvWrapper from "../components/shared/EnvWrapper"
 import {LoadingOutlined} from "@ant-design/icons"
 import CurveBGWrapper from "../wrappers/CurveBG"
 import CopyIcon from "../components/shared/CopyIcon"
+import WalletAuthRequiredMintPass from "../components/WalletAuthRequiredMintPass"
 
 const {MINT_PASS_SC} = BLC_CONFIGS
 const {Paragraph} = Typography
@@ -247,7 +247,8 @@ const MintPassMinting = (props) => {
         } else return (
             <div>
                 <div className={'flex text-white normal-case'}>You don't own any mint pass yet.</div>
-                <div className={'flex text-white normal-case'}>Please click "MINT A PASS" button bellow to mint one.</div>
+                <div className={'flex text-white normal-case'}>Please click "MINT A PASS" button bellow to mint one.
+                </div>
             </div>
         )
     }
@@ -257,7 +258,7 @@ const MintPassMinting = (props) => {
     return (
         <CurveBGWrapper>
             <EnvWrapper routeItem={Paths.MintPassMinting}>
-                <WalletAuthRequired className={'section page-mint-pass'}>
+                <WalletAuthRequiredMintPass className={'section page-mint-pass'}>
                     {
                         !loading && <div className="section-content">
                             <div className="container">
@@ -390,7 +391,7 @@ const MintPassMinting = (props) => {
                         </div>
                     }
                     <LoadingWrapper loading={loading}/>
-                </WalletAuthRequired>
+                </WalletAuthRequiredMintPass>
             </EnvWrapper>
         </CurveBGWrapper>
     )
