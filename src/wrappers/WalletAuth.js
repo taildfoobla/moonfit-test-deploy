@@ -3,8 +3,8 @@ import WalletAuthContext from "../contexts/WalletAuthContext"
 import {switchNetwork} from "../utils/blockchain"
 import Web3 from "web3"
 import {getLocalStorage, LOCALSTORAGE_KEY, removeLocalStorage, setLocalStorage} from "../utils/storage"
-import {useHistory} from "react-router-dom"
-import Paths from "../routes/Paths"
+// import {useHistory} from "react-router-dom"
+// import Paths from "../routes/Paths"
 import {EVM_WALLETS, PROVIDER_NAME, WEB3_METHODS} from "../constants/blockchain"
 import {Modal} from "antd"
 import CloseIcon from "../components/shared/CloseIcon"
@@ -31,7 +31,7 @@ const WalletAuthWrapper = ({children}) => {
     const [isModalVisible, setIsModalVisible] = useState(false)
     const [isAuthModalVisible, setIsAuthModalVisible] = useState(false)
 
-    const history = useHistory()
+    // const history = useHistory()
 
     const isMetaMaskBrowser = isMobileOrTablet() && !!window[PROVIDER_NAME.MetaMask]
 
