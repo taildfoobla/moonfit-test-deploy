@@ -135,7 +135,7 @@ const WalletAuthWrapper = ({children}) => {
             await retrieveCurrentWalletInfo(provider)
 
             // Go to Mint Pass page
-            history.push(Paths.MintPassMinting.path)
+            // history.push(Paths.MintPassMinting.path)
         } catch (err) {
             console.log(
                 'There was an error fetching your accounts. Make sure your SubWallet or MetaMask is configured correctly.', err
