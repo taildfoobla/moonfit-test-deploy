@@ -423,11 +423,11 @@ const NFTSaleRoundOne = (props) => {
                                                     <div className={'flex card-body-row-title mt-3'}>NFT Price</div>
                                                     <div className={'flex flex-col'}>
                                                         <div className="flex justify-between items-center">
-                                                            <div className={'text-green-400'}>{R1.price} GLMR</div>
+                                                            <div className={'text-[#4ccbc9]'}>{R1.price} GLMR</div>
                                                         </div>
                                                     </div>
                                                     <div className={'flex card-body-row-title mt-3'}>Available Slots</div>
-                                                    <div className={'flex flex-col text-green-400'}>
+                                                    <div className={'flex flex-col text-[#4ccbc9]'}>
                                                         <div className="flex justify-between items-center">
                                                             <div className={'w-[105px]'}>{availableSlots} / {maxSaleSlots}</div>
                                                             <Progress
