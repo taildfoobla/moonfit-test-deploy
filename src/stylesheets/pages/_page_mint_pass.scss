@@ -1,3 +1,18 @@
 .page-mint-pass {
   padding-top: 10px;
+  .mp-image {
+    border-radius: 8px;
+  }
+
+  .mp-item:last-child:nth-child(3n - 1) {
+    grid-column-end: 0;
+  }
+
+  .mp-item:nth-last-child(2):nth-child(3n + 1) {
+    grid-column-end: 4;
+  }
+
+  .mp-item:last-child:nth-child(3n - 2) {
+    grid-column-end: 5;
+  }
 }
