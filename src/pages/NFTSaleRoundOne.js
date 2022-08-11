@@ -238,14 +238,14 @@ const NFTSaleRoundOne = (props) => {
                 <div className={'flex text-white normal-case'}>No Mint-Pass = No Beast or Beauty NFT mint.</div>
             </div>
         ) : (
-            <div className={"grid grid-cols-2 lg:grid-cols-3 gap-2 lg:gap-4"}>
+            <div className={"grid grid-cols-4 lg:grid-cols-6 gap-2 lg:gap-4"}>
                 {
                     mintPasses.map((mp, idx) => {
                         const isSelected = selectedMp.includes(mp.tokenId)
                         const onClick = () => !mp.isUsed && onClickMintPass(mp.tokenId)
                         return (
                             <div
-                                className={classNames('flex flex-col justify-center items-center mt-4 mp-item', {'cursor-not-allowed mp-used': mp.isUsed})}
+                                className={classNames('flex flex-col justify-center items-center mt-4 col-span-2 mp-item', {'cursor-not-allowed mp-used': mp.isUsed})}
                                 key={idx}
                                 onClick={onClick}>
                                 <div className={'flex'}>
@@ -303,11 +303,11 @@ const NFTSaleRoundOne = (props) => {
                 </div>
             </div>
         ) : (
-            <div className={"grid grid-cols-2 lg:grid-cols-3 gap-4"}>
+            <div className={"grid grid-cols-4 lg:grid-cols-6 gap-4"}>
                 {
                     moonBeasts.map((mb, idx) => {
                         return (
-                            <div className={'flex flex-col justify-center items-center mt-4 mp-item'} key={idx}>
+                            <div className={'flex flex-col justify-center items-center mt-4 col-span-2 nft-item'} key={idx}>
                                 <div className={'flex'}>
                                     <Image
                                         width={'100%'}

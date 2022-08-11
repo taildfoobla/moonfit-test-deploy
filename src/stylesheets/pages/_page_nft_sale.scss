@@ -44,5 +44,35 @@
         border-radius: 0 8px;
       }
     }
+
+    &:last-child:nth-child(3n - 1) {
+      grid-column-end: 0;
+    }
+
+    &:nth-last-child(2):nth-child(3n + 1) {
+      grid-column-end: 4;
+    }
+
+    &:last-child:nth-child(3n - 2) {
+      grid-column-end: 5;
+    }
+  }
+
+  .nft-item {
+    img {
+      border-radius: 8px;
+    }
+
+    &:last-child:nth-child(3n - 1) {
+      grid-column-end: 0;
+    }
+
+    &:nth-last-child(2):nth-child(3n + 1) {
+      grid-column-end: 4;
+    }
+
+    &:last-child:nth-child(3n - 2) {
+      grid-column-end: 5;
+    }
   }
 }
