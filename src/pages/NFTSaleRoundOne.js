@@ -420,14 +420,14 @@ const NFTSaleRoundOne = (props) => {
                                                             {renderAddressLink(MOONBEAST_SC)}
                                                         </div>
                                                     </div>
+                                                    <div className={'flex card-body-row-title mt-3'}>NFT Price</div>
+                                                    <div className={'flex flex-col'}>
+                                                        <div className="flex justify-between items-center">
+                                                            <div className={'text-green-400'}>{R1.price} GLMR</div>
+                                                        </div>
+                                                    </div>
                                                     <div className={'flex card-body-row-title mt-3'}>Available Slots</div>
                                                     <div className={'flex flex-col text-green-400'}>
-                                                        {/*<div*/}
-                                                        {/*    className="w-full bg-gray-200 rounded-full h-2 my-2 dark:bg-gray-700">*/}
-                                                        {/*    <div*/}
-                                                        {/*        className="bg-red-600 h-2 rounded-full dark:bg-red-500"*/}
-                                                        {/*        style={{width: "45%"}}></div>*/}
-                                                        {/*</div>*/}
                                                         <div className="flex justify-between items-center">
                                                             <div className={'w-[105px]'}>{availableSlots} / {maxSaleSlots}</div>
                                                             <Progress
