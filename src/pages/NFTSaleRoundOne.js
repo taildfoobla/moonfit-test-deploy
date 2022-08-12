@@ -366,19 +366,6 @@ const NFTSaleRoundOne = (props) => {
                                             )
                                         }
                                     </div>
-                                    {/*    <div className={'flex justify-center mt-4'}>*/}
-                                    {/*        {isActive ? (*/}
-                                    {/*            <span*/}
-                                    {/*                className="bg-[#60B159] text-[#020722] text-sm font-bold mr-2 px-2.5 py-0.5 rounded dark:bg-green-500 dark:text-white">*/}
-                                    {/*    Active*/}
-                                    {/*</span>*/}
-                                    {/*        ) : (*/}
-                                    {/*            <span*/}
-                                    {/*                className="bg-indigo-100 text-indigo-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-indigo-200 dark:text-indigo-900">*/}
-                                    {/*    Inactive*/}
-                                    {/*</span>*/}
-                                    {/*        )}*/}
-                                    {/*    </div>*/}
                                 </div>
                                 <div className="moonfit-card">
                                     <div className="moonfit-card-inner">
