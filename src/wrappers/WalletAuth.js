@@ -5,12 +5,14 @@ import Web3 from "web3"
 import {getLocalStorage, LOCALSTORAGE_KEY, removeLocalStorage, setLocalStorage} from "../utils/storage"
 // import {useHistory} from "react-router-dom"
 // import Paths from "../routes/Paths"
-import {EVM_WALLETS, PROVIDER_NAME, WEB3_METHODS} from "../constants/blockchain"
+import {EVM_WALLETS, PROVIDER_NAME, SUPPORTED_NETWORKS, WALLET_CONNECT, WEB3_METHODS} from "../constants/blockchain"
 import {Modal} from "antd"
 import CloseIcon from "../components/shared/CloseIcon"
 import {useLocalStorage} from "../hooks/useLocalStorage"
 import {COMMON_CONFIGS} from "../configs/common"
 import {isMobileOrTablet} from "../utils/device"
+import WalletConnect from "@walletconnect/client";
+import QRCodeModal from "@walletconnect/qrcode-modal";
 
 const {APP_URI} = COMMON_CONFIGS
 
@@ -30,6 +32,10 @@ const WalletAuthWrapper = ({children}) => {
     const [provider, setProvider] = useState(null)
     const [isModalVisible, setIsModalVisible] = useState(false)
     const [isAuthModalVisible, setIsAuthModalVisible] = useState(false)
+    const [network, setNetWork] = useState({})
+
+    // use Wallet Connect
+    const [connector, setConnector] = useState(null);
 
     // const history = useHistory()
 
@@ -85,7 +91,12 @@ const WalletAuthWrapper = ({children}) => {
         let ethBalance = await web3.eth.getBalance(account) // Get wallets balance
         ethBalance = web3.utils.fromWei(ethBalance, 'ether') //Convert balance to wei
         const chainId = await provider.request({method: 'eth_chainId'})
-        saveWalletInfo(ethBalance, account, chainId)
+        const nChainId = web3.utils.hexToNumber(chainId)
+        const network = SUPPORTED_NETWORKS.filter(
+            (chain) => chain.chain_id === nChainId
+        )[0];
+        setNetWork(network)
+        saveWalletInfo(ethBalance, account, nChainId)
     }, [saveWalletInfo])
 
     const handleWalletChange = useCallback(async (wallets) => {
@@ -109,7 +120,7 @@ const WalletAuthWrapper = ({children}) => {
 
     useEffect(() => {
         walletExtKey && detectProvider().then(async provider => {
-            await provider?.enable()
+            await provider?.request(WEB3_METHODS.requestAccounts)
             setProvider(provider)
             // console.log(provider)
             provider?.on('accountsChanged', handleWalletChange)
@@ -130,6 +141,7 @@ const WalletAuthWrapper = ({children}) => {
                 console.log('Wallet extension is not installed')
                 return
             }
+            setProvider(provider)
             await provider.request({method: 'eth_requestAccounts'})
             await switchNetwork(provider)
             await retrieveCurrentWalletInfo(provider)
@@ -143,7 +155,12 @@ const WalletAuthWrapper = ({children}) => {
         }
     }
 
-    const onDisconnect = (callback = null) => {
+    const onDisconnect = async (callback = null) => {
+        // WalletConnect Session
+        if (connector?.connected) {
+            await connector.killSession();
+        }
+
         removeLocalStorage(LOCALSTORAGE_KEY.WALLET_ACCOUNT)
         setWalletExtKey(null)
         setWallet({})
@@ -181,9 +198,93 @@ const WalletAuthWrapper = ({children}) => {
         return true
     }
 
+    useEffect(() => {
+        const connectWC = async (chainId, connectedAccount) => {
+            const networkData = SUPPORTED_NETWORKS.filter(
+                (chain) => chain.chain_id === chainId
+            )[0];
+
+            if (networkData) {
+                setNetWork(networkData)
+                const web3 = new Web3(networkData.rpc_url)
+                let ethBalance = await web3.eth.getBalance(connectedAccount) // Get wallets balance
+                ethBalance = web3.utils.fromWei(ethBalance, 'ether')
+                saveWalletInfo(ethBalance, connectedAccount, chainId)
+            }
+        };
+
+        if (connector) {
+            connector.on("connect", async (error, payload) => {
+                console.log("payload", payload)
+                const {chainId, accounts} = payload.params[0];
+                await connectWC(chainId, accounts[0]);
+                setIsAuthModalVisible(false)
+
+                // setFetching(false);
+            });
+
+            connector.on("disconnect", async (error, payload) => {
+                if (error) {
+                    throw error;
+                }
+                await onDisconnect();
+            });
+            //
+            // if ((!chainId || !account || !balance) && connector.connected) {
+            //     refreshData();
+            // }
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [connector])
+
+    const onWCConnect = async () => {
+        // return window.location.href = "wc:00e46b69-d0cc-4b3e-b6a2-cee442f97188@1"
+        // return window.open("wc:9f392768-d424-426e-ac58-f203d99de3bf@1?bridge=https%3A%2F%2F0.bridge.walletconnect.org&key=62154ffea49416db6a32f32437b189341a2ab6376fc30f49eb4c2cf344437e85")
+        const bridge = "https://bridge.walletconnect.org";
+
+        // create new connector
+        const connector = new WalletConnect({
+            bridge,
+            // qrcodeModal: QRCodeModal,
+            // storageId: 'WC_CONNECTOR',
+            qrcodeModalOptions: {desktopLinks: []}
+        });
+        setConnector(connector);
+        console.log(connector.connected)
+
+        // check if already connected
+        // WalletConnect Session
+        if (connector.connected) {
+            await connector.killSession();
+        }
+        if (!connector.connected) {
+            // create new session
+            await connector.createSession();
+            // console.log(connector.uri)
+            window.location.href = connector.uri
+        }
+    }
+
+    // const createRequest = (requestInstant) => {
+    //     if (!provider && !connector) {
+    //         // console.log("No provider or connector detected")
+    //         throw new Error("No provider or connector detected")
+    //     } else if (connector.connected) return connector.createInstantRequest(requestInstant)
+    //     else return provider.request(requestInstant)
+    // }
+
+    // const getWalletProvider = (requestInstant) => {
+    //     if (!provider && !connector) {
+    //         // console.log("No provider or connector detected")
+    //         throw new Error("No provider or connector detected")
+    //     } else if (connector.connected) return connector.createInstantRequest(requestInstant)
+    //     else return provider.request(requestInstant)
+    // }
+
     return (
         <WalletAuthContext.Provider value={{
             wallet,
+            network,
             setWallet,
             walletExtKey,
             onConnect,
@@ -191,6 +292,9 @@ const WalletAuthWrapper = ({children}) => {
             isConnected,
             detectProvider,
             onAuthorizeMoreWallet,
+            provider,
+            connector,
+            // createRequest,
             showWalletSelectModal: showConnectModal
         }}>
             {children}
@@ -203,6 +307,19 @@ const WalletAuthWrapper = ({children}) => {
                    footer={false}
             >
                 <div className={'evm-wallet'}>
+                    {
+                        isMobileOrTablet() && (
+                            <div>
+                                <div className={'evm-wallet-item'}
+                                     onClick={onWCConnect}>
+                                    <div className={"wallet-logo"}>
+                                        <img src={WALLET_CONNECT.logo.src} alt={WALLET_CONNECT.logo.alt} width={40}/>
+                                    </div>
+                                    <div className="wallet-title">{WALLET_CONNECT.title} (Recommended on mobile)</div>
+                                </div>
+                            </div>
+                        )
+                    }
                     {
                         EVM_WALLETS.map((wallet, index) => {
                             const isInstalled = window[wallet.extensionName] && window[wallet.extensionName][wallet.isSetGlobalString]

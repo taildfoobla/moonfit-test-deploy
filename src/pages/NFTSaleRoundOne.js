@@ -6,7 +6,14 @@ import mintPassABI from '../abis/MintPassNFT.json'
 import moonBeastABI from '../abis/MoonBeastNFT.json'
 import {Image, notification, Progress, Spin, Typography} from "antd"
 import {getMainMessage} from "../utils/tx-error"
-import {getAddressScanUrl, getNFTScanUrl, getShortAddress, getTxScanUrl, switchNetwork} from "../utils/blockchain"
+import {
+    getAddressScanUrl,
+    getNFTScanUrl,
+    getShortAddress,
+    getTxScanUrl,
+    sendTransaction,
+    switchNetwork
+} from "../utils/blockchain"
 import {BLC_CONFIGS} from '../configs/blockchain'
 import axios from "axios"
 import LoadingWrapper from "../components/shared/LoadingWrapper"
@@ -38,7 +45,7 @@ const NFTSaleRoundOne = (props) => {
 
     const mbRetrieverRef = useRef(0)
 
-    const {wallet, detectProvider} = useContext(WalletAuthContext)
+    const {wallet, network, provider, connector} = useContext(WalletAuthContext)
 
     useEffect(() => {
         !!wallet.account && fetchData().then()
@@ -57,12 +64,12 @@ const NFTSaleRoundOne = (props) => {
     const clearMbInterval = () => mbRetrieverRef.current && clearInterval(mbRetrieverRef.current)
 
     const fetchMoonBeasts = async (txHash) => {
-        const provider = await detectProvider()
-        if (!provider) {
-            console.log('SubWallet is not installed')
-            return
-        }
-        const web3js = new Web3(provider)
+        // const provider = await detectProvider()
+        // if (!provider) {
+        //     console.log('SubWallet is not installed')
+        //     return
+        // }
+        const web3js = new Web3(network.rpc_url)
         const receipt = await web3js.eth.getTransactionReceipt(txHash)
         // console.log(receipt?.status)
         if (receipt?.status === true) {
@@ -76,13 +83,16 @@ const NFTSaleRoundOne = (props) => {
 
     const fetchData = async (loading = true) => {
         loading && setLoading(true)
-        const provider = await detectProvider()
-        if (!provider) {
-            console.log('SubWallet is not installed')
-            return
-        }
-        await switchNetwork(provider)
-        const web3js = new Web3(provider)
+        // const provider = await detectProvider()
+        // if (!provider) {
+        //     console.log('SubWallet is not installed')
+        //     return
+        // }
+
+        // TODO Here
+        provider && await switchNetwork(provider)
+
+        const web3js = new Web3(network.rpc_url)
         const mintPassContract = new web3js.eth.Contract(mintPassABI.abi, MINT_PASS_SC)
         const saleContract = new web3js.eth.Contract(nftSaleABI.abi, R1_NFT_SALE_SC)
         const moonBeastContract = new web3js.eth.Contract(moonBeastABI.abi, MOONBEAST_SC)
@@ -139,11 +149,11 @@ const NFTSaleRoundOne = (props) => {
         //     })
         // }
         try {
-            const provider = await detectProvider()
-            if (!provider) {
-                console.log('SubWallet is not installed')
-            }
-            const web3js = new Web3(provider)
+            // const provider = await detectProvider()
+            // if (!provider) {
+            //     console.log('SubWallet is not installed')
+            // }
+            const web3js = new Web3(network.rpc_url)
             const nonce = await web3js.eth.getTransactionCount(wallet.account, 'latest')
             // console.log(MINT_PASS_SC, nonce)
             const nftSaleContract = new web3js.eth.Contract(nftSaleABI.abi, R1_NFT_SALE_SC)
@@ -165,9 +175,11 @@ const NFTSaleRoundOne = (props) => {
             const gasLimit = await web3js.eth.estimateGas(tx)
             // tx.gas = `${gasLimit}`
             console.log(web3js.utils.hexToNumber(gasLimit))
-            const txHash = await provider.request({
-                method: 'eth_sendTransaction', params: [tx]
-            })
+            // const txHash = await createRequest({
+            //     method: 'eth_sendTransaction', params: [tx]
+            // })
+
+            const txHash = await sendTransaction(provider, connector, tx)
             console.log("The hash of MFB minting transaction is: ", txHash)
             // setTxHash(txHash)
             setMbLoading(true)

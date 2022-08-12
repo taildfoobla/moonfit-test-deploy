@@ -45,6 +45,20 @@ export const switchNetwork = async (provider) => {
     }
 }
 
+export const sendTransaction = async (provider, connector, tx) => {
+    if (!provider && !connector) {
+        // console.log("No provider or connector detected")
+        throw new Error("No provider or connector detected")
+    }
+    if (provider) {
+        return provider.request({
+            method: 'eth_sendTransaction', params: [tx]
+        })
+    } else {
+        return connector.sendTransaction(tx)
+    }
+}
+
 export const getShortAddress = (address, length = 4) => {
     return address ? address.slice(0, length) + "..." + address.slice(address.length - length, address.length) : ''
 }

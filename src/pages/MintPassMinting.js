@@ -5,7 +5,14 @@ import WalletAuthContext from "../contexts/WalletAuthContext"
 import contractABI from '../abis/MintPassNFT.json'
 import {Image, notification, Spin, Typography} from "antd"
 import {getMainMessage} from "../utils/tx-error"
-import {getAddressScanUrl, getNFTScanUrl, getShortAddress, getTxScanUrl, switchNetwork} from "../utils/blockchain"
+import {
+    getAddressScanUrl,
+    getNFTScanUrl,
+    getShortAddress,
+    getTxScanUrl,
+    sendTransaction,
+    switchNetwork
+} from "../utils/blockchain"
 import {BLC_CONFIGS} from '../configs/blockchain'
 import axios from "axios"
 import LoadingWrapper from "../components/shared/LoadingWrapper"
@@ -31,7 +38,7 @@ const MintPassMinting = (props) => {
 
     const mpRetrieverRef = useRef(0)
 
-    const {wallet, detectProvider} = useContext(WalletAuthContext)
+    const {wallet, network, provider, connector} = useContext(WalletAuthContext)
 
     useEffect(() => {
         !!wallet.account && fetchData().then()
@@ -50,12 +57,12 @@ const MintPassMinting = (props) => {
     const clearMpInterval = () => mpRetrieverRef.current && clearInterval(mpRetrieverRef.current)
 
     const fetchMintPass = async (txHash) => {
-        const provider = await detectProvider()
-        if (!provider) {
-            console.log('SubWallet is not installed')
-            return
-        }
-        const web3js = new Web3(provider)
+        // const provider = await detectProvider()
+        // if (!provider) {
+        //     console.log('SubWallet is not installed')
+        //     return
+        // }
+        const web3js = new Web3(network.rpc_url)
         const mintPassContract = new web3js.eth.Contract(contractABI.abi, MINT_PASS_SC)
         const methods = mintPassContract.methods
         const receipt = await web3js.eth.getTransactionReceipt(txHash)
@@ -79,13 +86,13 @@ const MintPassMinting = (props) => {
 
     const fetchData = async () => {
         setLoading(true)
-        const provider = await detectProvider()
-        if (!provider) {
-            console.log('SubWallet is not installed')
-            return
-        }
-        await switchNetwork(provider)
-        const web3js = new Web3(provider)
+        // const provider = await detectProvider()
+        // if (!provider) {
+        //     console.log('SubWallet is not installed')
+        //     return
+        // }
+        provider && await switchNetwork(provider)
+        const web3js = new Web3(network.rpc_url)
         const mintPassContract = new web3js.eth.Contract(contractABI.abi, MINT_PASS_SC)
         const methods = mintPassContract.methods
         const [isActive, balance] = await Promise.all([
@@ -132,11 +139,11 @@ const MintPassMinting = (props) => {
         //     })
         // }
         try {
-            const provider = await detectProvider()
-            if (!provider) {
-                console.log('SubWallet is not installed')
-            }
-            const web3js = new Web3(provider)
+            // const provider = await detectProvider()
+            // if (!provider) {
+            //     console.log('SubWallet is not installed')
+            // }
+            const web3js = new Web3(network.rpc_url)
             const nonce = await web3js.eth.getTransactionCount(wallet.account, 'latest')
             const mintPassContract = new web3js.eth.Contract(contractABI.abi, MINT_PASS_SC)
             // const gasPrice = await web3js.eth.getGasPrice() // estimate the gas price
@@ -156,9 +163,12 @@ const MintPassMinting = (props) => {
                 const gasLimit = await web3js.eth.estimateGas(tx)
                 // tx.gas = `${gasLimit}`
                 console.log(web3js.utils.hexToNumber(gasLimit))
-                const txHash = await provider.request({
-                    method: 'eth_sendTransaction', params: [tx]
-                })
+                // const txHash = await createRequest({
+                //     method: 'eth_sendTransaction', params: [tx]
+                // })
+                // const txHash = await sendTransaction(tx)
+
+                const txHash = await sendTransaction(provider, connector, tx)
                 console.log("The hash of MFMP minting transaction is: ", txHash)
                 // setTxHash(txHash)
                 setMpLoading(true)
