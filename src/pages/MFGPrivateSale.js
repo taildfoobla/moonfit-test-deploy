@@ -24,7 +24,7 @@ const MFGPrivateSale = (props) => {
     const [privateSaleInfo, setPrivateSaleInfo] = useState({})
     const [walletInfo, setWalletInfo] = useState({})
 
-    const {wallet, setWallet, detectProvider, provider} = useContext(WalletAuthContext)
+    const {wallet, setWallet, provider} = useContext(WalletAuthContext)
 
     useEffect(() => {
         wallet.account && fetchData().then()
