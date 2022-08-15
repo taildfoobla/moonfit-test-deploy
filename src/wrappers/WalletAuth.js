@@ -10,7 +10,7 @@ import {useLocalStorage} from "../hooks/useLocalStorage"
 import {COMMON_CONFIGS} from "../configs/common"
 import {isMobileOrTablet} from "../utils/device"
 import WalletConnect from "@walletconnect/client"
-// import QRCodeModal from "@walletconnect/qrcode-modal"
+import QRCodeModal from "@walletconnect/qrcode-modal"
 
 const {APP_URI} = COMMON_CONFIGS
 
@@ -212,11 +212,18 @@ const WalletAuthWrapper = ({children}) => {
 
         if (connector) {
             connector.on("connect", async (error, payload) => {
-                // console.log("payload", payload)
                 const {chainId, accounts} = payload.params[0]
+                // await connector.updateChain({
+                //     chainId: 1287,
+                //     networkId: 1287,
+                //     rpcUrl: "https://rpc.api.moonbase.moonbeam.network",
+                //     nativeCurrency: {
+                //         name: "DEV",
+                //         symbol: "DEV",
+                //     },
+                // })
                 await connectWC(chainId, accounts[0])
                 setIsAuthModalVisible(false)
-
                 // setFetching(false);
             })
 
@@ -246,7 +253,7 @@ const WalletAuthWrapper = ({children}) => {
         // create new connector
         const connector = new WalletConnect({
             bridge: "https://bridge.walletconnect.org",
-            // qrcodeModal: QRCodeModal,
+            qrcodeModal: QRCodeModal,
             storageId: LOCALSTORAGE_KEY.WC_CONNECTOR,
             qrcodeModalOptions: {desktopLinks: []}
         })
@@ -259,7 +266,7 @@ const WalletAuthWrapper = ({children}) => {
         if (!connector.connected) {
             // create new session
             await connector.createSession()
-            window.location.href = connector.uri
+            // window.location.href = connector.uri
         }
     }
 
