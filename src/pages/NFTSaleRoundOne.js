@@ -89,7 +89,7 @@ const NFTSaleRoundOne = (props) => {
         //     return
         // }
 
-        // TODO Here
+        // Switch Network on Desktop Wallet Extension
         provider && await switchNetwork(provider)
 
         const web3js = new Web3(network.rpc_url)
@@ -319,7 +319,8 @@ const NFTSaleRoundOne = (props) => {
                 {
                     moonBeasts.map((mb, idx) => {
                         return (
-                            <div className={'flex flex-col justify-center items-center mt-4 col-span-2 nft-item'} key={idx}>
+                            <div className={'flex flex-col justify-center items-center mt-4 col-span-2 nft-item'}
+                                 key={idx}>
                                 <div className={'flex'}>
                                     <Image
                                         width={'100%'}
@@ -428,7 +429,8 @@ const NFTSaleRoundOne = (props) => {
                                                     <div className={'flex card-body-row-title mt-3'}>Available Slots</div>
                                                     <div className={'flex flex-col text-[#4ccbc9]'}>
                                                         <div className="flex justify-between items-center">
-                                                            <div className={'w-[105px]'}>{availableSlots} / {maxSaleSlots}</div>
+                                                            <div
+                                                                className={'w-[105px]'}>{availableSlots} / {maxSaleSlots}</div>
                                                             <Progress
                                                                 strokeColor={{
                                                                     from: '#4ccbc9',
