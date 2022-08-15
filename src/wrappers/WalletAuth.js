@@ -3,8 +3,6 @@ import WalletAuthContext from "../contexts/WalletAuthContext"
 import {switchNetwork} from "../utils/blockchain"
 import Web3 from "web3"
 import {getLocalStorage, LOCALSTORAGE_KEY, removeLocalStorage, setLocalStorage} from "../utils/storage"
-// import {useHistory} from "react-router-dom"
-// import Paths from "../routes/Paths"
 import {EVM_WALLETS, PROVIDER_NAME, SUPPORTED_NETWORKS, WALLET_CONNECT, WEB3_METHODS} from "../constants/blockchain"
 import {Modal} from "antd"
 import CloseIcon from "../components/shared/CloseIcon"
@@ -12,7 +10,7 @@ import {useLocalStorage} from "../hooks/useLocalStorage"
 import {COMMON_CONFIGS} from "../configs/common"
 import {isMobileOrTablet} from "../utils/device"
 import WalletConnect from "@walletconnect/client"
-import QRCodeModal from "@walletconnect/qrcode-modal"
+// import QRCodeModal from "@walletconnect/qrcode-modal"
 
 const {APP_URI} = COMMON_CONFIGS
 
@@ -36,8 +34,6 @@ const WalletAuthWrapper = ({children}) => {
 
     // use Wallet Connect
     const [connector, setConnector] = useState(null)
-
-    // const history = useHistory()
 
     const isMetaMaskBrowser = isMobileOrTablet() && !!window[PROVIDER_NAME.MetaMask]
 
@@ -250,7 +246,7 @@ const WalletAuthWrapper = ({children}) => {
         // create new connector
         const connector = new WalletConnect({
             bridge: "https://bridge.walletconnect.org",
-            qrcodeModal: QRCodeModal,
+            // qrcodeModal: QRCodeModal,
             storageId: LOCALSTORAGE_KEY.WC_CONNECTOR,
             qrcodeModalOptions: {desktopLinks: []}
         })
@@ -263,7 +259,6 @@ const WalletAuthWrapper = ({children}) => {
         if (!connector.connected) {
             // create new session
             await connector.createSession()
-            // console.log(connector.uri)
             window.location.href = connector.uri
         }
     }
@@ -311,7 +306,7 @@ const WalletAuthWrapper = ({children}) => {
             >
                 <div className={'evm-wallet'}>
                     {
-                        (
+                        isMobileOrTablet() && (
                             <div>
                                 <div className={'evm-wallet-item'}
                                      onClick={onWCConnect}>
