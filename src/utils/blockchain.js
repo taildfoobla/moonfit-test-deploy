@@ -50,12 +50,12 @@ export const sendTransaction = async (provider, connector, tx) => {
         // console.log("No provider or connector detected")
         throw new Error("No provider or connector detected")
     }
-    if (provider) {
+    if (connector) {
+        return connector.sendTransaction(tx)
+    } else {
         return provider.request({
             method: 'eth_sendTransaction', params: [tx]
         })
-    } else {
-        return connector.sendTransaction(tx)
     }
 }
 

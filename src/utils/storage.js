@@ -4,6 +4,8 @@ export const LOCALSTORAGE_KEY = {
     SESSION_ID: 'SESSION_ID',
     ACCESS_TOKEN: 'ACCESS_TOKEN',
     WALLET_EXT: 'WALLET_EXT',
+    NETWORK: 'NETWORK',
+    WC_CONNECTOR: 'WC_CONNECTOR'
 }
 
 export const getLocalStorage = (name, defaultValue = null) => {

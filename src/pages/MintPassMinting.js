@@ -43,7 +43,7 @@ const MintPassMinting = (props) => {
     useEffect(() => {
         !!wallet.account && fetchData().then()
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [wallet.account])
+    }, [wallet.account, provider])
 
     useEffect(() => {
         if (mintPasses.length > 0 && isConfirmedTx) {
