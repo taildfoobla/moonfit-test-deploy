@@ -313,7 +313,7 @@ const WalletAuthWrapper = ({children}) => {
             >
                 <div className={'evm-wallet'}>
                     {
-                        isMobileOrTablet() && (
+                        isMobileOrTablet() && !isMetaMaskBrowser && (
                             <div>
                                 <div className={'evm-wallet-item'}
                                      onClick={onWCConnect}>
