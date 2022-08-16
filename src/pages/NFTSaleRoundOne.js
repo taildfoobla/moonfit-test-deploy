@@ -455,22 +455,22 @@ const NFTSaleRoundOne = (props) => {
                                                     {renderMintPasses()}
                                                 </div>
 
-                                                <div className={'card-body-row flex flex-col mt-3'}>
-                                                    <div className={'flex card-body-row-title'}>Your Wallet Address</div>
-                                                    <div className={'flex flex-col'}>
-                                                        <Paragraph className={'flex text-white'}
-                                                                   copyable={{
-                                                                       text: wallet.account,
-                                                                       format: 'text/plain',
-                                                                       icon: [<CopyIcon/>]
-                                                                   }}>
-                                                            {getShortAddress(wallet.account, 14)}
-                                                        </Paragraph>
-                                                        <div className={'flex'}>
-                                                            {renderAddressLink(wallet.account)}
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                                {/*<div className={'card-body-row flex flex-col mt-3'}>*/}
+                                                {/*    <div className={'flex card-body-row-title'}>Your Wallet Address</div>*/}
+                                                {/*    <div className={'flex flex-col'}>*/}
+                                                {/*        <Paragraph className={'flex text-white'}*/}
+                                                {/*                   copyable={{*/}
+                                                {/*                       text: wallet.account,*/}
+                                                {/*                       format: 'text/plain',*/}
+                                                {/*                       icon: [<CopyIcon/>]*/}
+                                                {/*                   }}>*/}
+                                                {/*            {getShortAddress(wallet.account, 14)}*/}
+                                                {/*        </Paragraph>*/}
+                                                {/*        <div className={'flex'}>*/}
+                                                {/*            {renderAddressLink(wallet.account)}*/}
+                                                {/*        </div>*/}
+                                                {/*    </div>*/}
+                                                {/*</div>*/}
 
                                                 <div className={'card-body-row flex flex-col mt-3'}>
                                                     <div className="flex justify-between">

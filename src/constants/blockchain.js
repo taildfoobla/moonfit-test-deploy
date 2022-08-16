@@ -195,6 +195,7 @@ export const NFT_SALE_INFO = {
         amount: 500,
         // price: 79,
         price: 0.5, // TODO prod
+        // price: 0.01, // TODO prod
         nftPerPass: 1,
     },
     R2: {
