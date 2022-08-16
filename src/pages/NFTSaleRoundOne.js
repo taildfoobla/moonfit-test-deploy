@@ -332,7 +332,7 @@ const NFTSaleRoundOne = (props) => {
                                     <span className={'secondary-color text-center'}>MoonFit</span>
                                     <span className={'primary-color text-center mt-1'}>NFT #{mb.tokenId}</span>
                                 </div>
-                                <div className={'flex normal-case mt-2'}>{renderNFTLink(MINT_PASS_SC, mb.tokenId)}</div>
+                                <div className={'flex normal-case mt-2'}>{renderNFTLink(MOONBEAST_SC, mb.tokenId)}</div>
                             </div>
                         )
                     })
