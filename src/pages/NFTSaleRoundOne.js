@@ -352,7 +352,7 @@ const NFTSaleRoundOne = (props) => {
 
     return (
         <CurveBGWrapper>
-            <EnvWrapper routeItem={Paths.MintPassMinting}>
+            <EnvWrapper routeItem={Paths.NFTSaleR1}>
                 <WalletAuthRequiredNFTSale className={'section page-nft-sale'}>
                     {
                         !loading && <div className="section-content">
