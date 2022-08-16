@@ -49,6 +49,7 @@ const NFTSaleRoundOne = (props) => {
 
     useEffect(() => {
         !!wallet.account && fetchData().then()
+        setSelectedMp([])
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [wallet.account])
 
@@ -57,7 +58,7 @@ const NFTSaleRoundOne = (props) => {
             clearMbInterval()
             setMbLoading(false)
         }
-        return () => clearMbInterval()
+        // return () => clearMbInterval()
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isConfirmedTx])
 
