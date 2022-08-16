@@ -343,6 +343,7 @@ const NFTSaleRoundOne = (props) => {
 
 
     const {availableSlots, maxSaleSlots} = saleInfo
+    const mintedSlots = maxSaleSlots - availableSlots
     // const {availableSlots, maxSaleSlots} = {availableSlots: 480, maxSaleSlots: 500}
     const unusedPasses = mintPasses.filter(i => i.isUsed === false)
     const isMintBtnVisible = unusedPasses.length > 0 && availableSlots > 0
@@ -426,17 +427,17 @@ const NFTSaleRoundOne = (props) => {
                                                             <div className={'text-[#4ccbc9]'}>{R1.price} GLMR</div>
                                                         </div>
                                                     </div>
-                                                    <div className={'flex card-body-row-title mt-3'}>Available Slots</div>
+                                                    <div className={'flex card-body-row-title mt-3'}>Minted Slots</div>
                                                     <div className={'flex flex-col text-[#4ccbc9]'}>
                                                         <div className="flex justify-between items-center">
                                                             <div
-                                                                className={'w-[105px]'}>{availableSlots} / {maxSaleSlots}</div>
+                                                                className={'w-[105px]'}>{mintedSlots} / {maxSaleSlots}</div>
                                                             <Progress
                                                                 strokeColor={{
                                                                     from: '#4ccbc9',
                                                                     to: '#e4007b',
                                                                 }}
-                                                                percent={Math.floor(availableSlots / maxSaleSlots * 100)}
+                                                                percent={Math.floor(mintedSlots / maxSaleSlots * 100)}
                                                                 status="active"
                                                                 showInfo={false}
                                                             />
