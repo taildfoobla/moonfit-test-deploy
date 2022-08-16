@@ -14,8 +14,8 @@ const getConfigs = () => {
             return {
                 MOONBEAM_SCAN_URL: 'https://moonscan.io',
                 MINT_PASS_SC: '0x6758053c0b27E478edE1E4882adFF708Fc4FA72D',
-                R1_NFT_SALE_SC: '0x3F0f0a63D332024682FE06642de31c7016826941',
-                MOONBEAST_SC: '0x21d95dAC89c5665F31777E3f9aF2A997dAc4eCF7',
+                R1_NFT_SALE_SC: '0x9Ea9fff918Fd3f150997A1F53cf407bb2aF844b5',
+                MOONBEAST_SC: '0x837A5E6DCe7B0fcC36DCf03a9b955D02aa856c08',
             }
         default:
             return {

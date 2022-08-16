@@ -193,7 +193,8 @@ export const METAMASK_EXT_URL = "https://chrome.google.com/webstore/detail/metam
 export const NFT_SALE_INFO = {
     R1: {
         amount: 500,
-        price: 79,
+        // price: 79,
+        price: 0.5, // TODO prod
         nftPerPass: 1,
     },
     R2: {

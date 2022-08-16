@@ -159,8 +159,8 @@ const NFTSaleRoundOne = (props) => {
             const nftSaleContract = new web3js.eth.Contract(nftSaleABI.abi, R1_NFT_SALE_SC)
             // const gasPrice = await web3js.eth.getGasPrice() // estimate the gas price
 
-            // const value = new BigNumber(R1.price).multipliedBy(selectedMp.length).multipliedBy(R1.nftPerPass).multipliedBy(1e18)
-            const value = new BigNumber(0.01).multipliedBy(selectedMp.length).multipliedBy(R1.nftPerPass).multipliedBy(1e18)
+            const value = new BigNumber(R1.price).multipliedBy(selectedMp.length).multipliedBy(R1.nftPerPass).multipliedBy(1e18)
+            // const value = new BigNumber(0.01).multipliedBy(selectedMp.length).multipliedBy(R1.nftPerPass).multipliedBy(1e18)
             const tx = {
                 to: R1_NFT_SALE_SC,
                 from: wallet.account,
