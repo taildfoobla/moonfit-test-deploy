@@ -20,6 +20,7 @@ const NFTSkeleton = ({className = '', minHeight = 230}) => {
             {/*</div>*/}
             <div className="h-4 bg-gray-200 rounded dark:bg-gray-700 w-3/4 mt-4"></div>
             <div className="h-4 bg-gray-200 rounded dark:bg-gray-700 w-1/2 mt-2"></div>
+            <div className="h-4 bg-gray-200 rounded dark:bg-gray-700 w-1/2 mt-2"></div>
             <div className="h-2.5 bg-gray-200 rounded dark:bg-gray-700 w-4/5 mt-4"></div>
         </div>
     )

@@ -229,9 +229,9 @@ const NFTSaleRoundOne = (props) => {
 
     const renderMintPasses = () => {
         return mintPasses.length === 0 ? (
-            <div>
-                <div className={'flex text-white normal-case'}>You don't own any mint pass yet.</div>
-                <div className={'flex text-white normal-case'}>No Mint-Pass = No Beast or Beauty NFT mint.</div>
+            <div className={'my-3'}>
+                <div className={'text-center text-white normal-case'}>You don't own any mint pass yet.</div>
+                <div className={'text-center text-white normal-case'}>No Mint-Pass = No Beast or Beauty NFT mint.</div>
             </div>
         ) : (
             <div className={"grid grid-cols-4 lg:grid-cols-6 gap-2 lg:gap-4"}>
@@ -239,6 +239,9 @@ const NFTSaleRoundOne = (props) => {
                     mintPasses.map((mp, idx) => {
                         const isSelected = selectedMp.includes(mp.tokenId)
                         const onClick = () => !mp.isUsed && onClickMintPass(mp.tokenId)
+                        const nameArr = mp.name.split(' ')
+                        const preName = nameArr[0]
+
                         return (
                             <div
                                 className={classNames('flex flex-col justify-center items-center mt-4 col-span-2 mp-item', {
@@ -255,8 +258,9 @@ const NFTSaleRoundOne = (props) => {
                                     />
                                 </div>
                                 <div className={'flex flex-col normal-case race-sport-font text-sm mt-4'}>
-                                    <span className={'secondary-color text-center'}>MoonFit</span>
-                                    <span className={'primary-color text-center mt-1'}>Mint Pass #{mp.tokenId}</span>
+                                    <span className={'secondary-color text-center'}>{preName}</span>
+                                    <span className={'primary-color text-center mt-1'}>Mint Pass</span>
+                                    <span className={'primary-color text-center mt-1'}>#{mp.tokenId}</span>
                                 </div>
                                 <div
                                     className={'flex normal-case my-2 z-10'}>{renderNFTLink(MINT_PASS_SC, mp.tokenId)}</div>
@@ -288,16 +292,21 @@ const NFTSaleRoundOne = (props) => {
 
     const renderMoonBeasts = () => {
         return moonBeasts.length === 0 ? (
-            <div>
-                <div className={'flex text-white normal-case'}>You don't own any beast/beauty yet.</div>
-                <div className={'flex text-white normal-case'}>If you have a pass, please click "MINT NFT" button to
+            <div className={'my-3'}>
+                <div className={'text-center text-white normal-case'}>You don't own any beast/beauty yet.</div>
+                <div className={'text-center text-white normal-case'}>If you have a pass, please click "MINT NFT" button to
                     mint one.
                 </div>
             </div>
         ) : (
             <div className={"grid grid-cols-4 lg:grid-cols-6 gap-4"}>
                 {
-                    [...moonBeasts, moonBeasts[0], moonBeasts[0], moonBeasts[0]].map((mb, idx) => {
+                    moonBeasts.map((mb, idx) => {
+                        const nameArr = mb.name.split(' ')
+                        const preName = nameArr[0]
+                        const typeName = nameArr[1]
+                        const numberName = nameArr[2]
+
                         return (
                             <div className={'flex flex-col justify-center items-center mt-4 col-span-2 nft-item'}
                                  key={idx}>
@@ -309,8 +318,9 @@ const NFTSaleRoundOne = (props) => {
                                     />
                                 </div>
                                 <div className={'flex flex-col normal-case race-sport-font text-sm mt-4'}>
-                                    <span className={'secondary-color text-center'}>MoonFit</span>
-                                    <span className={'primary-color text-center mt-1'}>NFT #{mb.tokenId}</span>
+                                    <span className={'secondary-color text-center'}>{preName}</span>
+                                    <span className={'primary-color text-center mt-1'}>{typeName}</span>
+                                    <span className={'primary-color text-center mt-1'}>{numberName}</span>
                                 </div>
                                 <div className={'flex normal-case mt-2'}>{renderNFTLink(MOONBEAST_SC, mb.tokenId)}</div>
                             </div>
@@ -318,7 +328,7 @@ const NFTSaleRoundOne = (props) => {
                     })
                 }
                 {
-                     mbLoading && range(0, selectedMp.length - 1).map(i =>
+                    mbLoading && range(0, selectedMp.length - 1).map(i =>
                         <NFTSkeleton className={'flex flex-col items-center mt-4 col-span-2 nft-item'}
                                      key={i}/>
                     )
