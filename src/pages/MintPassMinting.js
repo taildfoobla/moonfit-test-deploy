@@ -163,15 +163,14 @@ const MintPassMinting = (props) => {
                 const gasLimit = await web3js.eth.estimateGas(tx)
                 // tx.gas = `${gasLimit}`
                 console.log(web3js.utils.hexToNumber(gasLimit))
-                // const txHash = await createRequest({
-                //     method: 'eth_sendTransaction', params: [tx]
-                // })
-                // const txHash = await sendTransaction(tx)
 
                 const txHash = await sendTransaction(provider, connector, tx)
                 console.log("The hash of MFMP minting transaction is: ", txHash)
-                // setTxHash(txHash)
                 setMpLoading(true)
+                notification.destroy()
+                setIsConfirmedTx(false)
+                clearMpInterval()
+
                 mpRetrieverRef.current = setInterval(() => fetchMintPass(txHash), 3000)
 
                 notification.success({

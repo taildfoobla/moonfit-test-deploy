@@ -167,6 +167,7 @@ const NFTSaleRoundOne = (props) => {
             setIsConfirmedTx(false)
             clearMbInterval()
             notification.destroy()
+
             mbRetrieverRef.current = setInterval(() => fetchMoonBeasts(txHash), 3000)
             notification.success({
                 message: `Transaction Sent`,
@@ -317,7 +318,7 @@ const NFTSaleRoundOne = (props) => {
                     })
                 }
                 {
-                     range(0, selectedMp.length - 1).map(i =>
+                     mbLoading && range(0, selectedMp.length - 1).map(i =>
                         <NFTSkeleton className={'flex flex-col items-center mt-4 col-span-2 nft-item'}
                                      key={i}/>
                     )
