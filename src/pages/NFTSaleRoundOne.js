@@ -4,7 +4,7 @@ import WalletAuthContext from "../contexts/WalletAuthContext"
 import nftSaleABI from '../abis/MFNFTSale.json'
 import mintPassABI from '../abis/MintPassNFT.json'
 import moonBeastABI from '../abis/MoonBeastNFT.json'
-import {Image, notification, Progress, Spin, Typography} from "antd"
+import {Image, notification, Progress, Typography} from "antd"
 import {getMainMessage} from "../utils/tx-error"
 import {
     getAddressScanUrl,
@@ -26,8 +26,8 @@ import {NFT_SALE_INFO} from "../constants/blockchain"
 import {getStringOfBigNumber} from "../utils/number"
 import BigNumber from "bignumber.js"
 import classNames from "classnames"
-import {LoadingOutlined} from "@ant-design/icons"
 import WalletAuthRequiredNFTSale from "../components/WalletAuthRequiredNFTSale"
+import NFTSkeleton from "../components/NFTSkeleton"
 
 const {MINT_PASS_SC, MOONBEAST_SC, R1_NFT_SALE_SC} = BLC_CONFIGS
 const {Paragraph} = Typography
@@ -50,11 +50,13 @@ const NFTSaleRoundOne = (props) => {
     useEffect(() => {
         !!wallet.account && fetchData().then()
         setSelectedMp([])
+        notification.destroy()
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [wallet.account])
 
     useEffect(() => {
         if (isConfirmedTx) {
+            // console.log('Effect isConfirmedTx', isConfirmedTx)
             clearMbInterval()
             setMbLoading(false)
         }
@@ -62,21 +64,21 @@ const NFTSaleRoundOne = (props) => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isConfirmedTx])
 
-    const clearMbInterval = () => mbRetrieverRef.current && clearInterval(mbRetrieverRef.current)
+    const clearMbInterval = () => {
+        mbRetrieverRef.current && clearInterval(mbRetrieverRef.current)
+        mbRetrieverRef.current = 0
+    }
 
     const fetchMoonBeasts = async (txHash) => {
-        // const provider = await detectProvider()
-        // if (!provider) {
-        //     console.log('SubWallet is not installed')
-        //     return
-        // }
         const web3js = new Web3(network.rpc_url)
         const receipt = await web3js.eth.getTransactionReceipt(txHash)
         // console.log(receipt?.status)
         if (receipt?.status === true) {
-            await fetchData(false)
-            setIsConfirmedTx(true)
-            setSelectedMp([])
+            setTimeout(async () => {
+                await fetchData(false)
+                setIsConfirmedTx(true)
+                setSelectedMp([])
+            }, 500)
             return true
         }
         return true
@@ -84,11 +86,6 @@ const NFTSaleRoundOne = (props) => {
 
     const fetchData = async (loading = true) => {
         loading && setLoading(true)
-        // const provider = await detectProvider()
-        // if (!provider) {
-        //     console.log('SubWallet is not installed')
-        //     return
-        // }
 
         // Switch Network on Desktop Wallet Extension
         provider && await switchNetwork(provider)
@@ -141,22 +138,9 @@ const NFTSaleRoundOne = (props) => {
 
     const handleMintNFT = async () => {
         setMintLoading(true)
-        // if (mintPassInfo.balance > 0) {
-        //     setMintLoading(false)
-        //     return notification.warn({
-        //         message: `You already have a mint pass`,
-        //         placement: 'bottomRight',
-        //         duration: 3
-        //     })
-        // }
         try {
-            // const provider = await detectProvider()
-            // if (!provider) {
-            //     console.log('SubWallet is not installed')
-            // }
             const web3js = new Web3(network.rpc_url)
             const nonce = await web3js.eth.getTransactionCount(wallet.account, 'latest')
-            // console.log(MINT_PASS_SC, nonce)
             const nftSaleContract = new web3js.eth.Contract(nftSaleABI.abi, R1_NFT_SALE_SC)
             // const gasPrice = await web3js.eth.getGasPrice() // estimate the gas price
 
@@ -176,16 +160,14 @@ const NFTSaleRoundOne = (props) => {
             const gasLimit = await web3js.eth.estimateGas(tx)
             // tx.gas = `${gasLimit}`
             console.log(web3js.utils.hexToNumber(gasLimit))
-            // const txHash = await createRequest({
-            //     method: 'eth_sendTransaction', params: [tx]
-            // })
 
             const txHash = await sendTransaction(provider, connector, tx)
             console.log("The hash of MFB minting transaction is: ", txHash)
-            // setTxHash(txHash)
             setMbLoading(true)
+            setIsConfirmedTx(false)
+            clearMbInterval()
+            notification.destroy()
             mbRetrieverRef.current = setInterval(() => fetchMoonBeasts(txHash), 3000)
-            // setSelectedMp([])
             notification.success({
                 message: `Transaction Sent`,
                 description: (
@@ -301,13 +283,6 @@ const NFTSaleRoundOne = (props) => {
     }
 
     const renderMoonBeasts = () => {
-        if (mbLoading) {
-            return (
-                <div className="flex justify-center items-center h-[240px]">
-                    <Spin indicator={<LoadingOutlined style={{fontSize: 24}} spin/>}/>
-                </div>
-            )
-        }
         return moonBeasts.length === 0 ? (
             <div>
                 <div className={'flex text-white normal-case'}>You don't own any beast/beauty yet.</div>
@@ -338,6 +313,12 @@ const NFTSaleRoundOne = (props) => {
                         )
                     })
                 }
+                {
+                    mbLoading && range(0, selectedMp.length - 1).map(i =>
+                        <NFTSkeleton className={'flex flex-col items-center mt-4 col-span-2 nft-item'}
+                                     key={i}/>
+                    )
+                }
             </div>
         )
     }
@@ -345,7 +326,6 @@ const NFTSaleRoundOne = (props) => {
 
     const {availableSlots, maxSaleSlots} = saleInfo
     const mintedSlots = maxSaleSlots - availableSlots
-    // const {availableSlots, maxSaleSlots} = {availableSlots: 480, maxSaleSlots: 500}
     const unusedPasses = mintPasses.filter(i => i.isUsed === false)
     const isMintBtnVisible = unusedPasses.length > 0 && availableSlots > 0
     const isMintBtnDisabled = selectedMp.length === 0 || mintLoading
@@ -364,18 +344,18 @@ const NFTSaleRoundOne = (props) => {
                                     </div>
                                     <div className={'flex justify-center mt-6'}>
                                         <span
-                                            className="bg-blue-100 text-blue-800 normal-case font-bold px-4 pb-1 rounded dark:bg-green-500 dark:text-white">
+                                            className="bg-[#A16BD8] text-white normal-case font-bold px-4 pb-1 rounded dark:bg-green-500 dark:text-white">
                                             22nd August
                                         </span>
                                         {
                                             availableSlots > 0 ? (
                                                 <span
-                                                    className="ml-3 bg-[#60B159] text-[#020722] normal-case font-bold px-4 pb-1 rounded dark:bg-green-500 dark:text-white">
+                                                    className="ml-3 bg-[#4CCBC9] text-[#020722] normal-case font-bold px-4 pb-1 rounded dark:bg-green-500 dark:text-white">
                                                     {availableSlots} {`NFT${availableSlots > 1 ? 's' : ''}`} left
                                                 </span>
                                             ) : (
                                                 <span
-                                                    className="ml-3 bg-gray-100 text-gray-800 normal-case font-bold px-4 pb-1 rounded dark:bg-green-500 dark:text-white">
+                                                    className="ml-3 bg-[#EF2763] text-white normal-case font-bold px-4 pb-1 rounded dark:bg-green-500 dark:text-white">
                                                     Sold out
                                                 </span>
                                             )
@@ -408,7 +388,7 @@ const NFTSaleRoundOne = (props) => {
                                         <div className="card-body">
                                             <div className={'mt-4 lg:mt-8'}>
                                                 <div className={'card-body-row flex flex-col'}>
-                                                    <div className={'flex card-body-row-title'}>Moon Beast contract</div>
+                                                    <div className={'flex card-body-row-title'}>NFT contract</div>
                                                     <div className={'flex flex-col'}>
                                                         <Paragraph className={'flex text-white'}
                                                                    copyable={{
@@ -422,17 +402,32 @@ const NFTSaleRoundOne = (props) => {
                                                             {renderAddressLink(MOONBEAST_SC)}
                                                         </div>
                                                     </div>
+                                                    <hr className={'card-body-separator'}/>
                                                     <div className={'flex card-body-row-title mt-3'}>NFT Price</div>
                                                     <div className={'flex flex-col'}>
                                                         <div className="flex justify-between items-center">
                                                             <div className={'text-[#4ccbc9]'}>{R1.price} GLMR</div>
                                                         </div>
                                                     </div>
-                                                    <div className={'flex card-body-row-title mt-3'}>Minted Slots</div>
+                                                    <hr className={'card-body-separator'}/>
+                                                    <div className={'flex justify-between items-center mt-2'}>
+                                                        <div className={'flex card-body-row-title'}>Total Minted</div>
+                                                        {
+                                                            availableSlots > 0 ? (
+                                                                <div
+                                                                    className={'text-[#4ccbc9]'}>{mintedSlots} / {maxSaleSlots}</div>
+                                                            ) : (
+                                                                <div
+                                                                    className="ml-3 bg-[#EF2763] text-white normal-case font-bold px-4 pb-1 rounded dark:bg-green-500 dark:text-white">
+                                                                    Sold out
+                                                                </div>
+                                                            )
+                                                        }
+                                                    </div>
                                                     <div className={'flex flex-col text-[#4ccbc9]'}>
                                                         <div className="flex justify-between items-center">
-                                                            <div
-                                                                className={'w-[105px]'}>{mintedSlots} / {maxSaleSlots}</div>
+                                                            {/*<div*/}
+                                                            {/*    className={'w-[105px]'}>{mintedSlots} / {maxSaleSlots}</div>*/}
                                                             <Progress
                                                                 strokeColor={{
                                                                     from: '#4ccbc9',
@@ -447,7 +442,7 @@ const NFTSaleRoundOne = (props) => {
                                                 </div>
                                                 <div className={'card-body-row flex flex-col mt-3'}>
                                                     <div className="flex justify-between">
-                                                        <div className={'flex card-body-row-title'}>Choose Pass to Mint
+                                                        <div className={'flex card-body-row-title'}>Select A Pass to Mint
                                                         </div>
                                                         <div
                                                             className={'flex card-body-row-title'}>Selected {selectedMp.length}
@@ -475,7 +470,7 @@ const NFTSaleRoundOne = (props) => {
 
                                                 <div className={'card-body-row flex flex-col mt-3'}>
                                                     <div className="flex justify-between">
-                                                        <div className={'flex card-body-row-title'}>Your Moon Beasts
+                                                        <div className={'flex card-body-row-title'}>Your NFTs
                                                         </div>
                                                         <div
                                                             className={'flex card-body-row-title'}>Total {moonBeasts.length}
@@ -504,11 +499,20 @@ const NFTSaleRoundOne = (props) => {
                                                                                 fill="currentColor"/>
                                                                         </svg>
                                                                     ) : (
-                                                                        <svg className="inline w-6 h-6 mr-2" width="24"
-                                                                             height="18" viewBox="0 0 24 18" fill="none"
+                                                                        <svg className="inline w-6 h-6 mr-2" width="22"
+                                                                             height="24" viewBox="0 0 22 24" fill="none"
                                                                              xmlns="http://www.w3.org/2000/svg">
                                                                             <path
-                                                                                d="M4.29736 17.2759L17.9813 13.6093L17.4637 11.6775C17.4067 11.465 17.5413 11.2426 17.7626 11.1833C17.984 11.124 18.2117 11.2493 18.2686 11.4618L18.7862 13.3936L22.8109 12.3152C23.0323 12.2559 23.1668 12.0335 23.1099 11.821L22.057 7.89164C22.0001 7.67913 21.7724 7.5538 21.551 7.61311C20.8869 7.79105 20.2038 7.41503 20.033 6.77752C19.8622 6.14001 20.2658 5.47282 20.9298 5.29489C21.1512 5.23557 21.2857 5.01318 21.2288 4.80067L20.2111 1.00265C20.1542 0.790149 19.9265 0.664811 19.7051 0.724124L15.6804 1.80254L16.1981 3.73439C16.255 3.94689 16.1205 4.16929 15.8991 4.2286C15.6778 4.28791 15.4501 4.16257 15.3931 3.95007L14.8755 2.01822L1.19153 5.68482C0.970174 5.74414 0.83565 5.96653 0.89259 6.17903L1.91027 9.97705C1.96721 10.1896 2.19491 10.3149 2.41626 10.2556C3.08034 10.0776 3.76343 10.4537 3.93425 11.0912C4.10507 11.7287 3.7015 12.3959 3.03743 12.5738C2.81607 12.6331 2.68155 12.8555 2.73849 13.068L3.79136 16.9974C3.8483 17.2099 4.076 17.3352 4.29736 17.2759ZM15.8072 5.49555C15.7503 5.28305 15.8848 5.06065 16.1062 5.00134C16.3275 4.94203 16.5552 5.06737 16.6122 5.27987L17.0263 6.82535C17.0832 7.03785 16.9487 7.26025 16.7273 7.31956C16.506 7.37888 16.2783 7.25354 16.2213 7.04103L15.8072 5.49555ZM16.6354 8.58651C16.5785 8.37401 16.713 8.15162 16.9344 8.0923C17.1557 8.03299 17.3834 8.15833 17.4404 8.37083L17.8545 9.91631C17.9114 10.1288 17.7769 10.3512 17.5556 10.4105C17.3342 10.4698 17.1065 10.3445 17.0496 10.132L16.6354 8.58651ZM6.61016 9.72815C6.62118 9.57612 6.71903 9.44223 6.86173 9.37915L8.26173 8.77626L8.55553 7.26471C8.58668 7.10729 8.70476 6.98454 8.86173 6.94248C9.01869 6.90043 9.18233 6.94768 9.28802 7.06844L10.2982 8.23058L11.8121 8.0527C11.9672 8.03598 12.1189 8.10301 12.2045 8.22916C12.289 8.35145 12.2932 8.51184 12.2165 8.6442L11.4315 9.9809L12.0786 11.3977C12.1461 11.537 12.1211 11.701 12.015 11.8206C11.9591 11.8853 11.8848 11.93 11.8043 11.9516C11.7359 11.9699 11.6673 11.9717 11.5946 11.9581L10.1134 11.6137L9.00274 12.6526C8.88454 12.7588 8.71745 12.7953 8.56991 12.7437C8.41834 12.6932 8.31461 12.5636 8.30344 12.4093L8.15543 10.8587L6.80729 10.0936C6.67469 10.0173 6.5981 9.87632 6.61016 9.72815V9.72815Z"
+                                                                                d="M18.9087 0H6.10555C5.08442 0 4.24161 0.686203 3.98047 1.60627H15.8961C17.8898 1.60627 19.5117 3.22823 19.5117 5.22188V20.904C20.4462 20.6402 21.118 19.7798 21.118 18.7781V2.20936C21.118 0.974719 20.1154 0 18.9087 0V0Z"
+                                                                                fill="white"/>
+                                                                            <path
+                                                                                d="M13.6851 14.4205V9.57979L9.49295 7.1593L5.30078 9.57979V14.4205L9.49295 16.841L13.6851 14.4205ZM8.90791 15.0263L7.15047 12.39C6.99302 12.1538 6.99302 11.8461 7.15047 11.6099L8.90791 8.97397C9.17369 8.55993 9.81222 8.56002 10.078 8.97397L11.8354 11.6099C11.9928 11.8461 11.9928 12.1538 11.8354 12.39L10.078 15.0263C9.81222 15.4404 9.17364 15.4403 8.90791 15.0263Z"
+                                                                                fill="white"/>
+                                                                            <path
+                                                                                d="M15.8953 3.01257H3.09217C1.85767 3.01257 0.882812 4.01523 0.882812 5.22193V21.7907C0.882812 23.0252 1.88547 24.0001 3.09217 24.0001H15.8953C17.13 24.0001 18.1047 22.9973 18.1047 21.7907V5.22193C18.1047 3.98729 17.102 3.01257 15.8953 3.01257ZM3.89533 9.17392C3.89533 8.92271 4.02934 8.69059 4.24689 8.56501L9.14219 5.73854C9.35978 5.61292 9.62776 5.61292 9.84536 5.73854L14.7407 8.56501C14.9582 8.69064 15.0922 8.92271 15.0922 9.17392V14.8265C15.0922 15.0777 14.9582 15.3098 14.7407 15.4354L9.84536 18.2619C9.62776 18.3875 9.35978 18.3875 9.14219 18.2619L4.24689 15.4354C4.02934 15.3098 3.89533 15.0777 3.89533 14.8265V9.17392ZM14.389 20.9875H4.59845C3.66653 20.9529 3.66723 19.6156 4.59845 19.5813H14.389C15.321 19.6159 15.3203 20.9533 14.389 20.9875Z"
+                                                                                fill="white"/>
+                                                                            <path
+                                                                                d="M10.4068 12L9.49441 10.6316L8.58203 12L9.49441 13.3687L10.4068 12Z"
                                                                                 fill="white"/>
                                                                         </svg>
                                                                     )
