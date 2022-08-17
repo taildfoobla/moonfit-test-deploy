@@ -240,14 +240,16 @@ const NFTSaleRoundOne = (props) => {
                         const onClick = () => !mp.isUsed && onClickMintPass(mp.tokenId)
                         return (
                             <div
-                                className={classNames('flex flex-col justify-center items-center mt-4 col-span-2 mp-item', {'cursor-not-allowed mp-used': mp.isUsed})}
+                                className={classNames('flex flex-col justify-center items-center mt-4 col-span-2 mp-item', {
+                                    'cursor-not-allowed mp-used': mp.isUsed,
+                                })}
                                 key={idx}
                                 onClick={onClick}>
-                                <div className={'flex'}>
+                                <div className={classNames('flex justify-center square-img-container', {'mp-selected': isSelected})}>
                                     <img
-                                        width={'100%'}
-                                        src={mp.imageUrl}
-                                        alt={mp.name}
+                                        // width={104}
+                                         src={mp.imageUrl}
+                                         alt={mp.name}
                                     />
                                 </div>
                                 <div className={'flex flex-col normal-case race-sport-font text-sm mt-4'}>
@@ -258,22 +260,22 @@ const NFTSaleRoundOne = (props) => {
                                     className={'flex normal-case my-2 z-10'}>{renderNFTLink(MINT_PASS_SC, mp.tokenId)}</div>
                                 {
                                     mp.isUsed && (
-                                        <div className={'used-overlay'}>
-                                            <div className={'normal-case used-text'}>Used</div>
-                                        </div>
+                                        // <div className={'used-overlay'}>
+                                        <span className={'normal-case used-text'}>Used</span>
+                                        // </div>
                                     )
                                 }
-                                {
-                                    !mp.isUsed && isSelected && (
-                                        <div className={'selected-container'}>
-                                            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                                                 xmlns="http://www.w3.org/2000/svg">
-                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
-                                                      d="M5 13l4 4L19 7"/>
-                                            </svg>
-                                        </div>
-                                    )
-                                }
+                                {/*{*/}
+                                {/*    !mp.isUsed && isSelected && (*/}
+                                {/*        <div className={'selected-container'}>*/}
+                                {/*            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"*/}
+                                {/*                 xmlns="http://www.w3.org/2000/svg">*/}
+                                {/*                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}*/}
+                                {/*                      d="M5 13l4 4L19 7"/>*/}
+                                {/*            </svg>*/}
+                                {/*        </div>*/}
+                                {/*    )*/}
+                                {/*}*/}
                             </div>
                         )
                     })
