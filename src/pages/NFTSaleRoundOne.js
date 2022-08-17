@@ -175,11 +175,11 @@ const NFTSaleRoundOne = (props) => {
                         The hash of MFB minting transaction is: <br/>
                         <a target="_blank" rel="noreferrer"
                            className={'text-blue-600'}
-                           href={getTxScanUrl(txHash)}>{txHash}</a>
+                           href={getTxScanUrl(txHash)}>{getShortAddress(txHash, 8)}</a>
                     </div>
                 ),
                 placement: 'bottomRight',
-                duration: 30000
+                duration: 1800
             })
             setMintLoading(false)
         } catch (e) {
@@ -245,11 +245,12 @@ const NFTSaleRoundOne = (props) => {
                                 })}
                                 key={idx}
                                 onClick={onClick}>
-                                <div className={classNames('flex justify-center square-img-container', {'mp-selected': isSelected})}>
+                                <div
+                                    className={classNames('flex justify-center square-img-container', {'mp-selected': isSelected})}>
                                     <img
                                         // width={104}
-                                         src={mp.imageUrl}
-                                         alt={mp.name}
+                                        src={mp.imageUrl}
+                                        alt={mp.name}
                                     />
                                 </div>
                                 <div className={'flex flex-col normal-case race-sport-font text-sm mt-4'}>
@@ -295,7 +296,7 @@ const NFTSaleRoundOne = (props) => {
         ) : (
             <div className={"grid grid-cols-4 lg:grid-cols-6 gap-4"}>
                 {
-                    moonBeasts.map((mb, idx) => {
+                    [...moonBeasts, moonBeasts[0], moonBeasts[0], moonBeasts[0]].map((mb, idx) => {
                         return (
                             <div className={'flex flex-col justify-center items-center mt-4 col-span-2 nft-item'}
                                  key={idx}>
@@ -316,7 +317,7 @@ const NFTSaleRoundOne = (props) => {
                     })
                 }
                 {
-                    mbLoading && range(0, selectedMp.length - 1).map(i =>
+                     range(0, selectedMp.length - 1).map(i =>
                         <NFTSkeleton className={'flex flex-col items-center mt-4 col-span-2 nft-item'}
                                      key={i}/>
                     )
@@ -480,13 +481,25 @@ const NFTSaleRoundOne = (props) => {
                                                     </div>
                                                     {renderMoonBeasts()}
                                                 </div>
-                                                <div className={'flex flex-row justify-center mt-4'}>
-                                                    {
-                                                        isMintBtnVisible && (
+                                                {
+                                                    isMintBtnVisible && (
+                                                        <div className={classNames('flex flex-row items-center mt-6', {
+                                                            'justify-between': selectedMp.length > 0,
+                                                            'justify-center': selectedMp.length === 0
+                                                        })}>
+                                                            {
+                                                                selectedMp.length > 0 && (
+                                                                    <div className={'normal-case items-center'}>
+                                                                        <span className={'mb-1'}>Total: </span>
+                                                                        <span
+                                                                        className={'race-sport-font primary-color'}>{R1.price * selectedMp.length} GLMR</span>
+                                                                    </div>
+                                                                )
+                                                            }
                                                             <button type="button"
                                                                     onClick={handleMintNFT}
                                                                     disabled={isMintBtnDisabled}
-                                                                    className="mt-3 button button-secondary flex items-center">
+                                                                    className="button button-secondary flex items-center">
                                                                 {
                                                                     mintLoading ? (
                                                                         <svg role="status"
@@ -520,9 +533,9 @@ const NFTSaleRoundOne = (props) => {
                                                                     )
                                                                 } Mint NFT
                                                             </button>
-                                                        )
-                                                    }
-                                                </div>
+                                                        </div>
+                                                    )
+                                                }
                                             </div>
                                         </div>
                                     </div>

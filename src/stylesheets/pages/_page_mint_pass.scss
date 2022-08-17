@@ -1,7 +1,9 @@
 .page-mint-pass {
+  --border-radius: 5px;
   padding-top: 10px;
+
   .mp-image {
-    border-radius: 8px;
+    border-radius: var(--border-radius);
   }
 }
 

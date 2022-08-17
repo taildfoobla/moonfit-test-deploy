@@ -5,10 +5,10 @@ import React from 'react'
 const NFTSkeleton = ({className = '', minHeight = 230}) => {
     return (
         // <div className={`${className}`} style={{backgroundColor: '#4ccbc914', borderRadius: 8, minHeight}}>
-        <div className={`${className} justify-start animate-pulse`} style={{borderRadius: 8, minHeight}}>
+        <div className={`${className} justify-start animate-pulse`}>
             {/*<Spin indicator={<LoadingOutlined style={{fontSize: 24}} spin/>}/>*/}
             <div
-                className="flex justify-center items-center w-full aspect-square bg-gray-300 rounded-lg dark:bg-gray-700">
+                className="flex justify-center items-center w-full aspect-square bg-gray-300 dark:bg-gray-700" style={{borderRadius: 5}}>
                 <svg className="w-12 h-12 text-gray-200 dark:text-gray-600" xmlns="http://www.w3.org/2000/svg"
                      aria-hidden="true" fill="currentColor" viewBox="0 0 640 512">
                     <path
@@ -18,9 +18,9 @@ const NFTSkeleton = ({className = '', minHeight = 230}) => {
             {/*<div className={'flex items-center justify-center mt-8'}>*/}
             {/*    <Spin indicator={<LoadingOutlined style={{fontSize: 24}} spin/>}/>*/}
             {/*</div>*/}
-            <div className="h-4 bg-gray-200 rounded-full dark:bg-gray-700 w-3/4 mt-4"></div>
-            <div className="h-4 bg-gray-200 rounded-full dark:bg-gray-700 w-1/2 mt-2"></div>
-            <div className="h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 w-4/5 mt-4"></div>
+            <div className="h-4 bg-gray-200 rounded dark:bg-gray-700 w-3/4 mt-4"></div>
+            <div className="h-4 bg-gray-200 rounded dark:bg-gray-700 w-1/2 mt-2"></div>
+            <div className="h-2.5 bg-gray-200 rounded dark:bg-gray-700 w-4/5 mt-4"></div>
         </div>
     )
 }
