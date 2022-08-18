@@ -41,7 +41,7 @@ const NFTStages = ({children, round, className = ''}) => {
                             fill="#A8ADC3"/>
                     </svg>
                     <img src={mintPass} alt="Mint Pass"/>
-                    <span className={'race-sport-font primary-color mt-2 ml-3'}>1</span>
+                    <span className={'race-sport-font primary-color mt-2 ml-3'}>{saleObj.mintPass}</span>
                 </div>
             </div>
         )

@@ -195,6 +195,7 @@ export const NFT_SALE_INFO = {
         title: 'Whitelist Sale #1',
         amount: 500,
         price: 79,
+        mintPass: 1,
         // price: 0.5, // TODO prod
         // price: 0.01, // TODO prod
         nftPerPass: 1,
@@ -206,6 +207,7 @@ export const NFT_SALE_INFO = {
         title: 'Whitelist Sale #2',
         amount: 1500,
         price: 119,
+        mintPass: 1,
         nftPerPass: 2,
         time: null
     },
@@ -213,6 +215,7 @@ export const NFT_SALE_INFO = {
         title: 'Whitelist Sale #3',
         amount: 3000,
         price: 159,
+        mintPass: 1,
         nftPerPass: 3,
         time: null
     },
@@ -220,6 +223,7 @@ export const NFT_SALE_INFO = {
         title: 'Public Sale',
         amount: 5000,
         price: "?",
+        mintPass: "?",
         nftPerPass: 3,
         time: null
     }

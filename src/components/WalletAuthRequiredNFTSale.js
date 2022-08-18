@@ -19,13 +19,15 @@ const WalletAuthRequiredNFTSale = ({children, className}) => {
                              width="356"/>
                     </div>
                     <h1 className="section-title flex flex-col justify-center xl:justify-start">
-                        <span className={'text-center xl:text-left secondary-color text-4xl xl:text-5xl'}>NFT Sale #1&nbsp;</span>
+                        <span
+                            className={'text-center xl:text-left secondary-color text-4xl xl:text-5xl'}>NFT Sale #1&nbsp;</span>
                         <span className="text-center xl:text-left text-2xl xl:text-3xl my-2 xl:my-3">22nd August</span>
                     </h1>
                     <div className="section-description-wrap text-center xl:text-left">
                         <p className="section-description mx-auto xl:mx-0">
-                            MoonBeast must burn calories to become stronger and more attractive, with the hope of
-                            winning love and bearing offspring, thus populating the universe.
+                            MoonFit is a Web3Fitness App that promotes active living by rewarding users anytime they
+                            burn calories through physical activities. This Web3Fitness model would an evolution of
+                            nowadays Web2 training Applications.
                         </p>
                     </div>
                     <div className={'flex mt-8 justify-center xl:justify-start'}>
