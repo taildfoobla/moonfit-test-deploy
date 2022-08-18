@@ -4,6 +4,11 @@
 	background: url(../../assets/images/hero-bg.jpg) no-repeat center;
 	background-size: cover;
 
+	&.section-hero-3d-bg {
+		background: url(../../assets/images/nft-sale-bg-2x-tinied.png) no-repeat center;
+		background-size: cover;
+	}
+
 	.button-group {
 		--gutter-x: 20px;
 		margin-top: 57px;

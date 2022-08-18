@@ -7,10 +7,10 @@ const getConfigs = () => {
             return {
                 MOONBEAM_SCAN_URL: 'https://moonbase.moonscan.io',
                 MINT_PASS_SC: '0x7E7d9fee5c5994aA7FC1dAeb231Af015e2FdAD3E',
-                R1_NFT_SALE_SC: '0xcd176d741E211B63Ee6bBB5241FF51a09Dd5FbFC',
-                // R1_NFT_SALE_SC: '0x2c8982E03fc19ef57fbf2c1Ba74f01a3958fA23E',
-                // R1_NFT_SALE_SC: '0x8D9C1cBE7233e25cc7bB42fB1e4a37e9b2AC1bAf',
-                MOONBEAST_SC: '0x86A7f77bFaB7cd5676485D10A7196DEfF453B11b',
+                // R1_NFT_SALE_SC: '0xcd176d741E211B63Ee6bBB5241FF51a09Dd5FbFC',
+                R1_NFT_SALE_SC: '0xB6Ef0349d98E06c56335cBB09f5E75692CCC0e47',
+                // MOONBEAST_SC: '0x86A7f77bFaB7cd5676485D10A7196DEfF453B11b',
+                MOONBEAST_SC: '0xA05E17F0EdbF7b5D2950882c27CA2bFDB9E7dBeD',
             }
         case 'production':
             return {

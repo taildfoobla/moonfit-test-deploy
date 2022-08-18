@@ -291,10 +291,11 @@ const NFTSaleRoundOne = (props) => {
     }
 
     const renderMoonBeasts = () => {
-        return moonBeasts.length === 0 ? (
+        return moonBeasts.length === 0 && !mbLoading ? (
             <div className={'my-3'}>
                 <div className={'text-center text-white normal-case'}>You don't own any beast/beauty yet.</div>
-                <div className={'text-center text-white normal-case'}>If you have a pass, please click "MINT NFT" button to
+                <div className={'text-center text-white normal-case'}>If you have a pass, please click "MINT NFT" button
+                    to
                     mint one.
                 </div>
             </div>
@@ -503,7 +504,7 @@ const NFTSaleRoundOne = (props) => {
                                                                     <div className={'normal-case items-center'}>
                                                                         <span className={'mb-1'}>Total: </span>
                                                                         <span
-                                                                        className={'race-sport-font primary-color'}>{R1.price * selectedMp.length} GLMR</span>
+                                                                            className={'race-sport-font primary-color'}>{R1.price * selectedMp.length} GLMR</span>
                                                                     </div>
                                                                 )
                                                             }
@@ -542,7 +543,7 @@ const NFTSaleRoundOne = (props) => {
                                                                                 fill="white"/>
                                                                         </svg>
                                                                     )
-                                                                } Mint NFT
+                                                                } {selectedMp.length > 0 ? `Mint ${selectedMp.length} NFT${selectedMp.length > 1 ? "s" : ""}` : "Mint NFT"}
                                                             </button>
                                                         </div>
                                                     )
