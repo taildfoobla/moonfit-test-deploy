@@ -194,13 +194,13 @@ export const NFT_SALE_INFO = {
     R1: {
         title: 'Whitelist Sale #1',
         amount: 500,
-        // price: 79,
+        price: 79,
         // price: 0.5, // TODO prod
-        price: 0.01, // TODO prod
+        // price: 0.01, // TODO prod
         nftPerPass: 1,
         // time: new Date().getTime() + 10000,
-        // time: 1660817942296,
-        time: 1661176800000
+        time: 1660817942296,
+        // time: 1661176800000
     },
     R2: {
         title: 'Whitelist Sale #2',

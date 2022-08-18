@@ -5,7 +5,7 @@ const Paths = {
     },
     NFTSaleR1: {
         path: '/nft-sale',
-        env: ['local', 'development']
+        env: ['local', 'development', 'production']
     },
     PrivateSale: {
         path: '/private-sale',
