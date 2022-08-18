@@ -192,21 +192,36 @@ export const METAMASK_EXT_URL = "https://chrome.google.com/webstore/detail/metam
 
 export const NFT_SALE_INFO = {
     R1: {
+        title: 'Whitelist Sale #1',
         amount: 500,
         // price: 79,
         // price: 0.5, // TODO prod
         price: 0.01, // TODO prod
         nftPerPass: 1,
+        // time: new Date().getTime() + 10000,
+        // time: 1660817942296,
+        time: 1661176800000
     },
     R2: {
+        title: 'Whitelist Sale #2',
         amount: 1500,
         price: 119,
         nftPerPass: 2,
+        time: null
     },
     R3: {
+        title: 'Whitelist Sale #3',
         amount: 3000,
         price: 159,
         nftPerPass: 3,
+        time: null
+    },
+    R4: {
+        title: 'Public Sale',
+        amount: 5000,
+        price: "?",
+        nftPerPass: 3,
+        time: null
     }
 }
 
