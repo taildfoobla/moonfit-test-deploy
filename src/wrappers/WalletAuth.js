@@ -308,7 +308,7 @@ const WalletAuthWrapper = ({children}) => {
                    onCancel={hideConnectModal}
                    closeIcon={<CloseIcon/>}
                    wrapClassName={'mf-modal connect-modal'}
-                   className={'mf-modal-content connect-modal-content'}
+                   className={'mf-modal-content connect-modal-content top-32 sm:top-36 md:top-48'}
                    footer={false}
             >
                 <div className={'evm-wallet'}>
@@ -320,7 +320,7 @@ const WalletAuthWrapper = ({children}) => {
                                     <div className={"wallet-logo"}>
                                         <img src={WALLET_CONNECT.logo.src} alt={WALLET_CONNECT.logo.alt} width={40}/>
                                     </div>
-                                    <div className="wallet-title">{WALLET_CONNECT.title} (Recommended on mobile)</div>
+                                    <div className="wallet-title">{WALLET_CONNECT.title}</div>
                                 </div>
                             </div>
                         )

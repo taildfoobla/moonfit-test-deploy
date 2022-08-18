@@ -13,14 +13,14 @@ const WalletAuthRequiredNFTSale = ({children, className}) => {
         return !isConnected ? (
             <div className={'grid grid-cols-1 xl:grid-cols-2 gap-4 items-center z-[99]'}>
                 <div className={'flex flex-col landing-text-wrap xl:justify-start justify-center z-[9]'}>
-                    <div className="flex brand-image justify-center xl:justify-start">
+                    <div className="lg:hidden flex brand-image justify-center xl:justify-start">
                         <img loading="lazy" src={mfBrand}
                              alt="Moonfit Branding"
                              width="356"/>
                     </div>
                     <h1 className="section-title flex flex-col justify-center xl:justify-start">
-                        <span className={'text-center xl:text-left'}>NFT Sale #1&nbsp;</span>
-                        <span className="text-center xl:text-left secondary-color">22nd August</span>
+                        <span className={'text-center xl:text-left secondary-color text-4xl xl:text-5xl'}>NFT Sale #1&nbsp;</span>
+                        <span className="text-center xl:text-left text-2xl xl:text-3xl my-2 xl:my-3">22nd August</span>
                     </h1>
                     <div className="section-description-wrap text-center xl:text-left">
                         <p className="section-description mx-auto xl:mx-0">
