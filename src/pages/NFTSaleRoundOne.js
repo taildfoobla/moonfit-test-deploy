@@ -347,7 +347,7 @@ const NFTSaleRoundOne = (props) => {
     const mintedSlots = maxSaleSlots - availableSlots
     const unusedPasses = mintPasses.filter(i => i.isUsed === false)
     const isMintBtnVisible = unusedPasses.length > 0 && availableSlots > 0
-    const isMintBtnDisabled = selectedMp.length === 0 || mintLoading
+    const isMintBtnDisabled = selectedMp.length === 0 || mintLoading || mbLoading
 
     return (
         <CurveBGWrapper>
@@ -408,7 +408,7 @@ const NFTSaleRoundOne = (props) => {
                                                 </div>
                                             </div>
                                             <div className="card-body">
-                                                <div className={'mt-4 lg:mt-8'}>
+                                                <div className={'mt-4 mb-6 lg:mt-8'}>
                                                     <div className={'card-body-row flex flex-col'}>
                                                         <div className={'flex card-body-row-title'}>NFT contract</div>
                                                         <div className={'flex flex-col'}>

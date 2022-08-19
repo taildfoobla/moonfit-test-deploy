@@ -335,7 +335,7 @@ const MintPassMinting = (props) => {
                                             </div>
                                         </div>
                                         <div className="card-body">
-                                            <div className={'mt-4 lg:mt-8'}>
+                                            <div className={'mt-4 mb-6 lg:mt-8'}>
                                                 <div className={'card-body-row flex flex-col'}>
                                                     <div className={'flex card-body-row-title'}>Your Wallet Address</div>
                                                     <div className={'flex flex-col'}>
@@ -384,7 +384,7 @@ const MintPassMinting = (props) => {
                                                         <div className={'flex flex-row justify-center mt-4'}>
                                                             <button type="button"
                                                                     onClick={handleMintMintPass}
-                                                                    disabled={mintLoading}
+                                                                    disabled={mintLoading || mpLoading}
                                                                     className="mt-3 button button-secondary flex items-center">
                                                                 {
                                                                     mintLoading ? (
