@@ -4,6 +4,17 @@ import {formatZeroNumber} from "../utils/number"
 
 export const CountdownComponent = ({date, completedMessage = 'You are good to go!', completedCallback = null}) => {
 
+    const renderCountdownItem = (time, timeTitle) => {
+        return (
+            <div className={'countdown-item'}>
+                <div className={'countdown race-sport-font secondary-color'}>{formatZeroNumber(time)}</div>
+                <div className={'text-center normal-case text-sm text-white'}>
+                    {`${timeTitle}${time > 1 ? 's' : ''}`}
+                </div>
+            </div>
+        )
+    }
+
     const renderer = ({days, hours, minutes, seconds, completed}) => {
         if (completed) {
             if (completedCallback) {
@@ -15,10 +26,10 @@ export const CountdownComponent = ({date, completedMessage = 'You are good to go
         } else {
             return (
                 <div className={'flex countdown-container text-lg'}>
-                    <div className={'countdown countdown-date race-sport-font secondary-color'}>{formatZeroNumber(days)}</div>
-                    <div className={'countdown countdown-hour race-sport-font secondary-color'}>{formatZeroNumber(hours)}</div>
-                    <div className={'countdown countdown-minute race-sport-font secondary-color'}>{formatZeroNumber(minutes)}</div>
-                    <div className={'countdown countdown-second race-sport-font secondary-color'}>{formatZeroNumber(seconds)}</div>
+                    {renderCountdownItem(days, 'day')}
+                    {renderCountdownItem(hours, 'hour')}
+                    {renderCountdownItem(minutes, 'minute')}
+                    {renderCountdownItem(seconds, 'second')}
                 </div>
             )
         }
