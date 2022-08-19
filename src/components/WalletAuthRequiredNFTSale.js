@@ -2,6 +2,8 @@ import React, {useContext} from 'react'
 import mfBrand from "../assets/images/brand.png"
 import nftCard from "../assets/images/universe-image.png"
 import WalletAuthContext from "../contexts/WalletAuthContext"
+import {CountdownComponent} from "./CountdownComponent"
+import {NFT_SALE_INFO} from "../constants/blockchain"
 
 
 const WalletAuthRequiredNFTSale = ({children, className}) => {
@@ -24,11 +26,22 @@ const WalletAuthRequiredNFTSale = ({children, className}) => {
                         <span className="text-center xl:text-left text-2xl xl:text-3xl my-2 xl:my-3">22nd August</span>
                     </h1>
                     <div className="section-description-wrap text-center xl:text-left">
-                        <p className="section-description mx-auto xl:mx-0">
-                            MoonFit is a Web3Fitness App that promotes active living by rewarding users anytime they
-                            burn calories through physical activities. This Web3Fitness model would an evolution of
-                            nowadays Web2 training Applications.
-                        </p>
+                        {/*<p className="section-description mx-auto xl:mx-0">*/}
+                        {/*    MoonFit is a Web3Fitness App that promotes active living by rewarding users anytime they*/}
+                        {/*    burn calories through physical activities. This Web3Fitness model would an evolution of*/}
+                        {/*    nowadays Web2 training Applications.*/}
+                        {/*</p>*/}
+                        <div className={'flex items-center mt-8 xl:justify-start justify-center'}>
+                            <div
+                                className={'hidden md:block normal-case mr-2 text-white text-base'}>
+                                Start in:
+                            </div>
+                            <div className={'flex justify-center'}>
+                                <CountdownComponent date={NFT_SALE_INFO.R1.time}
+                                                    // completedCallback={() => window.location.reload()}
+                                                    completedMessage={"NFT Sale #1 have been started"}/>
+                            </div>
+                        </div>
                     </div>
                     <div className={'flex mt-8 justify-center xl:justify-start'}>
                         <button type="button"
