@@ -12,9 +12,6 @@ const NFTStages = ({children, round, className = ''}) => {
     const roundKeys = Object.keys(NFT_SALE_INFO)
     const currentSale = NFT_SALE_INFO[`R${round}`]
     const isStarted = currentSale.time && currentSale.time <= new Date().getTime()
-    console.log(currentSale, isStarted)
-
-    // const isSubWalletInstalled = Boolean((window?.injectedWeb3 && window[PROVIDER_NAME.SubWallet]) || (window[PROVIDER_NAME.MetaMask]))
 
     const renderSecondRow = (saleObj) => {
         return (
