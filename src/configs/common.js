@@ -12,15 +12,12 @@ const getConfigs = () => {
             return {
                 API_URL: 'https://api-dev.moonfit.xyz/v1',
                 APP_URI: 'moonfit-web.netlify.app',
-                // APP_URI: 'app-test.moonfit.xyz',
                 // APP_URI: '0293-222-252-31-240.ap.ngrok.io'
             }
         case 'production':
             return {
                 API_URL: 'https://api-prod.moonfit.xyz/v1',
-                // APP_URI: 'moonfit-web.netlify.app',
                 APP_URI: 'app.moonfit.xyz'
-                // APP_URI: 'app-test.moonfit.xyz', // TODO prod
                 // APP_URI: 'moonfit-nft.netlify.app'
             }
         default:

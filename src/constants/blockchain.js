@@ -196,10 +196,8 @@ export const NFT_SALE_INFO = {
         amount: 500,
         price: 79,
         mintPass: 1,
-        // price: 0.5, // TODO prod
-        // price: 0.01, // TODO prod
+        // price: 0.05, // TODO prod
         nftPerPass: 1,
-        // time: new Date().getTime() + 10000,
         // time: 1660817942296,
         time: 1661176800000
     },
