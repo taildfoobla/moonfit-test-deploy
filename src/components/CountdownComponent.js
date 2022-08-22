@@ -25,7 +25,7 @@ export const CountdownComponent = ({date, completedMessage = 'You are good to go
             return <span className={'text-white text-xl'}>{completedMessage}</span>
         } else {
             return (
-                <div className={'grid grid-cols-2 md:grid-cols-4 gap-3 items-center countdown-container text-lg'}>
+                <div className={'grid grid-cols-4 gap-3 items-center countdown-container text-lg'}>
                     {renderCountdownItem(days, 'day')}
                     {renderCountdownItem(hours, 'hour')}
                     {renderCountdownItem(minutes, 'minute')}
