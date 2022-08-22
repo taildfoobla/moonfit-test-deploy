@@ -109,9 +109,9 @@ const NFTSaleRoundOne = (props) => {
             return {name, imageUrl, tokenId, isUsed}
         }))
         setMintPasses(mintPasses)
-        if (mintPasses.length === 1 && !mintPasses[0].isUsed) {
-            setSelectedMp([mintPasses[0].tokenId])
-        }
+        const unusedMp = mintPasses.map(mp => !mp.isUsed ? mp.tokenId : null).filter(i => !!i)
+        // console.log("unusedMp", unusedMp)
+        setSelectedMp(unusedMp)
 
         const moonBeasts = await Promise.all(range(0, mbBalance - 1).map(async i => {
             const tokenId = await moonBeastContract.methods.tokenOfOwnerByIndex(wallet.account, i).call()
