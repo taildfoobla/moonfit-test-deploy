@@ -8,6 +8,7 @@ import {Image, notification, Progress, Typography} from "antd"
 import {getMainMessage} from "../utils/tx-error"
 import {
     getAddressScanUrl,
+    getNFTInfo,
     getNFTScanUrl,
     getShortAddress,
     getTxScanUrl,
@@ -15,7 +16,6 @@ import {
     switchNetwork
 } from "../utils/blockchain"
 import {BLC_CONFIGS} from '../configs/blockchain'
-import axios from "axios"
 import LoadingWrapper from "../components/shared/LoadingWrapper"
 import Paths from "../routes/Paths"
 import EnvWrapper from "../components/shared/EnvWrapper"
@@ -122,22 +122,6 @@ const NFTSaleRoundOne = (props) => {
 
         setSaleInfo({availableSlots, maxSaleSlots})
         loading && setLoading(false)
-    }
-
-    const getNFTInfo = async (methods, tokenId) => {
-        if (!tokenId) return {name: null, imageUrl: null}
-        try {
-            const tokenURI = await methods.tokenURI(tokenId).call()
-            // console.log(tokenId, tokenURI)
-            const {data} = await axios.get(tokenURI)
-            const {name, image} = data
-            const cid = image.replace('ipfs://', '')
-            const imageUrl = `https://${cid}.ipfs.nftstorage.link/`
-            return {name, imageUrl}
-        } catch (e) {
-            console.log("getNFTInfo Exception", e.message)
-            return {name: null, imageUrl: null}
-        }
     }
 
     const handleMintNFT = async () => {

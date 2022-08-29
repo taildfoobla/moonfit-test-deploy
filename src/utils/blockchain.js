@@ -1,6 +1,7 @@
 import {getReactEnv} from "./env"
 import {WEB3_METHODS} from "../constants/blockchain"
 import {BLC_CONFIGS} from '../configs/blockchain'
+import axios from "axios"
 
 const ENV = getReactEnv('ENV')
 const {MOONBEAM_SCAN_URL} = BLC_CONFIGS
@@ -61,4 +62,22 @@ export const sendTransaction = async (provider, connector, tx) => {
 
 export const getShortAddress = (address, length = 4) => {
     return address ? address.slice(0, length) + "..." + address.slice(address.length - length, address.length) : ''
+}
+
+export const getNFTInfo = async (methods, tokenId) => {
+    if (!tokenId) return {name: null, imageUrl: null}
+    try {
+        const tokenURI = await methods.tokenURI(tokenId).call()
+        // console.log(tokenId, tokenURI)
+        const {data} = await axios.get(tokenURI)
+        const {name, image} = data
+        if (image.startsWith('ipfs://')) {
+            const cid = image.replace('ipfs://', '')
+            const imageUrl = `https://${cid}.ipfs.nftstorage.link/`
+            return {name, imageUrl}
+        } else return {name, imageUrl: image}
+    } catch (e) {
+        console.log("getNFTInfo Exception", e.message)
+        return {name: null, imageUrl: null}
+    }
 }
