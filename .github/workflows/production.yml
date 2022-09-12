@@ -18,6 +18,10 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@master
+      - name: Install dependencies
+        run: yarn -i
+      - name: Build dependencies
+        run: REACT_APP_ENV=development DISABLE_ESLINT_PLUGIN=true yarn build
       - name: "Deploy to AWS S3"
         run: aws s3 sync ./build/ s3://${AWS_S3_BUCKET_NAME}${AWS_S3_FODER} --region ${AWS_DEFAULT_REGION}
       - name: "Create AWS Cloudfront Invalidation"
