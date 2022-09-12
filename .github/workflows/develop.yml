@@ -19,6 +19,6 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@master
       - name: "Deploy to AWS S3"
-        run: aws s3 sync ./src/moonfit-landing/ s3://${AWS_S3_BUCKET_NAME}${AWS_S3_FODER} --region ${AWS_DEFAULT_REGION}
+        run: aws s3 sync ./src/build/ s3://${AWS_S3_BUCKET_NAME}${AWS_S3_FODER} --region ${AWS_DEFAULT_REGION}
       - name: "Create AWS Cloudfront Invalidation"
         run: aws cloudfront create-invalidation --distribution-id ${AWS_CLOUDFRONT_DISTRIBUTION_ID} --paths "/*" --region ${AWS_DEFAULT_REGION} --output text
