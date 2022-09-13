@@ -3,9 +3,13 @@ const Paths = {
         path: '/',
         env: ['local', 'development', 'production']
     },
+    NFTSaleR1: {
+        path: '/nft-sale',
+        env: ['local', 'development', 'production']
+    },
     PrivateSale: {
         path: '/private-sale',
-        env: ['local', 'development']
+        env: ['local']
     },
     MintPassMinting: {
         path: '/mint-pass',

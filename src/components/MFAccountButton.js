@@ -11,7 +11,7 @@ const {Paragraph} = Typography
 const ENV = getReactEnv('ENV')
 
 
-const MFAccountButton = ({btnClassName = ''}) => {
+const MFAccountButton = ({containerClassName = '', btnClassName = ''}) => {
     const [isModalVisible, setIsModalVisible] = useState(false)
     const [sessionId, setSessionId] = useState('')
     const [logoutLoading, setLogoutLoading] = useState(false)
@@ -90,7 +90,7 @@ const MFAccountButton = ({btnClassName = ''}) => {
     }
 
     return isAuthenticated ? (
-        <div className={'ml-2 w-fit lg:w-auto mr-6 xl:mr-0'}>
+        <div className={`ml-2 w-fit lg:w-auto mr-6 xl:mr-0 ${containerClassName}`}>
             <button type="button"
                     onClick={showModal}
                     className={`header-button button button-secondary ${btnClassName}`}>
@@ -117,7 +117,7 @@ const MFAccountButton = ({btnClassName = ''}) => {
                        </svg>
                    )}
                    wrapClassName={'mf-modal account-modal'}
-                   className={'mf-modal-content account-modal-content'}
+                   className={'mf-modal-content account-modal-content top-12 sm:top-24 md:top-32'}
                    footer={[
                        <button type="button"
                                key="1"
@@ -155,7 +155,7 @@ const MFAccountButton = ({btnClassName = ''}) => {
             </Modal>
         </div>
     ) : (
-        <div className={'ml-2 w-fit lg:w-auto mr-6 xl:mr-0'}>
+        <div className={`ml-2 w-fit lg:w-auto mr-6 xl:mr-0 ${containerClassName}`}>
             <button type="button"
                     onClick={onOpenSignInModal}
                     className={`flex items-center header-button button button-secondary ${btnClassName}`}>
@@ -181,10 +181,10 @@ const MFAccountButton = ({btnClassName = ''}) => {
                        </svg>
                    )}
                    wrapClassName={'mf-modal cross-sign-in-modal'}
-                   className={'mf-modal-content cross-sign-in-modal-content'}
+                   className={'mf-modal-content cross-sign-in-modal-content top-12 sm:top-24 md:top-32'}
                    onCancel={hideModal}
                    footer={[
-                       <div className={'flex w-full'}>
+                       <div className={'flex w-full'} key={'1'}>
                            {/*<div className="w-1/2"></div>*/}
                            <button type="button"
                                    key="3"

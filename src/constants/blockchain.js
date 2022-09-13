@@ -1,9 +1,13 @@
 import MetaMaskLogo from '../assets/images/wallets/MetaMaskLogo.svg';
 import SubWalletLogo from '../assets/images/wallets/SubWalletLogo.svg';
+import WalletConnectLogo from '../assets/images/wallets/WalletConnectLogo.svg';
 
 export const MOONBEAM_CHAIN_ID = 504
 export const MOONBEAM_CHAIN_ID_HEX = "0x504"
 export const WEB3_METHODS = {
+    requestAccounts: {
+        method: 'eth_requestAccounts'
+    },
     addMoonbeamNetwork: {
         method: 'wallet_addEthereumChain',
         params: [
@@ -137,8 +141,10 @@ export const WEB3_METHODS = {
 export const CHAIN_ID_MAPPING = {
     '0x507': 'Moonbase Alpha',
     '507': 'Moonbase Alpha',
+    '1287': 'Moonbase Alpha',
     '0x504': 'Moonbeam',
     '504': 'Moonbeam',
+    '1284': 'Moonbeam',
 }
 
 export const PROVIDER_NAME = {
@@ -173,6 +179,101 @@ export const EVM_WALLETS = [
     }
 ];
 
+export const WALLET_CONNECT = {
+    title: 'Wallet Connect',
+    logo: {
+        src: WalletConnectLogo,
+        alt: 'Wallet Connect'
+    },
+}
 
 export const SUBWALLET_EXT_URL = "https://bit.ly/3BGqFt1"
 export const METAMASK_EXT_URL = "https://chrome.google.com/webstore/detail/metamask/nkbihfbeogaeaoehlefnkodbefgpgknn"
+
+export const NFT_SALE_INFO = {
+    R1: {
+        title: 'Whitelist Sale #1',
+        amount: 500,
+        price: 79,
+        mintPass: 1,
+        // price: 0.05, // TODO prod
+        nftPerPass: 1,
+        // time: 1660817942296,
+        time: 1661176800000
+    },
+    R2: {
+        title: 'Whitelist Sale #2',
+        amount: 1500,
+        price: 119,
+        mintPass: 1,
+        nftPerPass: 2,
+        time: null
+    },
+    R3: {
+        title: 'Whitelist Sale #3',
+        amount: 3000,
+        price: 159,
+        mintPass: 1,
+        nftPerPass: 3,
+        time: null
+    },
+    R4: {
+        title: 'Public Sale',
+        amount: 5000,
+        price: "?",
+        mintPass: "?",
+        nftPerPass: 3,
+        time: null
+    }
+}
+
+export const SUPPORTED_NETWORKS = [
+    {
+      name: "Moonbeam",
+      short_name: "moonbeam",
+      chain: "Moonbeam",
+      network: "mainnet",
+      chain_id: 1284,
+      network_id: 1284,
+      rpc_url: "https://rpc.api.moonbeam.network",
+      native_currency: {
+        symbol: "GLMR",
+        name: "Glimmer",
+        decimals: "18",
+        contractAddress: "",
+        balance: "",
+      },
+    },
+    {
+      name: "Moonriver",
+      short_name: "moonriver",
+      chain: "Moonriver",
+      network: "mainnet",
+      chain_id: 1285,
+      network_id: 1285,
+      rpc_url: "https://rpc.moonriver.moonbeam.network",
+      native_currency: {
+        symbol: "MOVR",
+        name: "Moonriver",
+        decimals: "18",
+        contractAddress: "",
+        balance: "",
+      },
+    },
+    {
+        name: "Moonbase Alpha",
+        short_name: "moonbase",
+        chain: "Moonbase",
+        network: "testnet",
+        chain_id: 1287,
+        network_id: 1287,
+        rpc_url: "https://rpc.api.moonbase.moonbeam.network",
+        native_currency: {
+            symbol: "DEV",
+            name: "DEV",
+            decimals: "18",
+            contractAddress: "",
+            balance: "",
+        },
+    },
+];
