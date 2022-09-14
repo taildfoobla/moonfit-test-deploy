@@ -34,3 +34,32 @@
     }
   }
 }
+
+.wallet-auth-required-nft-sale {
+  .section-title {
+    font-weight: 400;
+    font-size: 32px;
+    line-height: 48px;
+  }
+
+  .section-description-wrap {
+    .section-description {
+      font-weight: 700;
+      font-size: 24px;
+      line-height: 30px;
+    }
+  }
+
+  .landing-right-image-wrap {
+    z-index: 99;
+    padding-top: 50px;
+  }
+}
+
+@media screen and (max-width: 1600px) {
+  .wallet-auth-required-nft-sale {
+    .landing-right-image-wrap {
+      margin-left: 0;
+    }
+  }
+}

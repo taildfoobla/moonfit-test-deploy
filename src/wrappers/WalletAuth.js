@@ -3,14 +3,14 @@ import WalletAuthContext from "../contexts/WalletAuthContext"
 import {switchNetwork} from "../utils/blockchain"
 import Web3 from "web3"
 import {getLocalStorage, LOCALSTORAGE_KEY, removeLocalStorage, setLocalStorage} from "../utils/storage"
-import {useHistory} from "react-router-dom"
-import Paths from "../routes/Paths"
-import {EVM_WALLETS, PROVIDER_NAME, WEB3_METHODS} from "../constants/blockchain"
+import {EVM_WALLETS, PROVIDER_NAME, SUPPORTED_NETWORKS, WALLET_CONNECT, WEB3_METHODS} from "../constants/blockchain"
 import {Modal} from "antd"
 import CloseIcon from "../components/shared/CloseIcon"
 import {useLocalStorage} from "../hooks/useLocalStorage"
 import {COMMON_CONFIGS} from "../configs/common"
 import {isMobileOrTablet} from "../utils/device"
+import WalletConnect from "@walletconnect/client"
+import QRCodeModal from "@walletconnect/qrcode-modal"
 
 const {APP_URI} = COMMON_CONFIGS
 
@@ -30,8 +30,10 @@ const WalletAuthWrapper = ({children}) => {
     const [provider, setProvider] = useState(null)
     const [isModalVisible, setIsModalVisible] = useState(false)
     const [isAuthModalVisible, setIsAuthModalVisible] = useState(false)
+    const [network, setNetWork] = useLocalStorage(LOCALSTORAGE_KEY.NETWORK)
 
-    const history = useHistory()
+    // use Wallet Connect
+    const [connector, setConnector] = useState(null)
 
     const isMetaMaskBrowser = isMobileOrTablet() && !!window[PROVIDER_NAME.MetaMask]
 
@@ -85,8 +87,13 @@ const WalletAuthWrapper = ({children}) => {
         let ethBalance = await web3.eth.getBalance(account) // Get wallets balance
         ethBalance = web3.utils.fromWei(ethBalance, 'ether') //Convert balance to wei
         const chainId = await provider.request({method: 'eth_chainId'})
-        saveWalletInfo(ethBalance, account, chainId)
-    }, [saveWalletInfo])
+        const nChainId = web3.utils.hexToNumber(chainId)
+        const network = SUPPORTED_NETWORKS.filter(
+            (chain) => chain.chain_id === nChainId
+        )[0]
+        setNetWork(network)
+        saveWalletInfo(ethBalance, account, nChainId)
+    }, [saveWalletInfo, setNetWork])
 
     const handleWalletChange = useCallback(async (wallets) => {
         if (!wallet.account) return false
@@ -109,9 +116,8 @@ const WalletAuthWrapper = ({children}) => {
 
     useEffect(() => {
         walletExtKey && detectProvider().then(async provider => {
-            await provider?.enable()
+            await provider?.request(WEB3_METHODS.requestAccounts)
             setProvider(provider)
-            // console.log(provider)
             provider?.on('accountsChanged', handleWalletChange)
             // provider?.on('chainChanged', () => {
             //     console.log('chainChanged')
@@ -130,12 +136,13 @@ const WalletAuthWrapper = ({children}) => {
                 console.log('Wallet extension is not installed')
                 return
             }
+            setProvider(provider)
             await provider.request({method: 'eth_requestAccounts'})
             await switchNetwork(provider)
             await retrieveCurrentWalletInfo(provider)
 
             // Go to Mint Pass page
-            history.push(Paths.MintPassMinting.path)
+            // history.push(Paths.MintPassMinting.path)
         } catch (err) {
             console.log(
                 'There was an error fetching your accounts. Make sure your SubWallet or MetaMask is configured correctly.', err
@@ -143,8 +150,15 @@ const WalletAuthWrapper = ({children}) => {
         }
     }
 
-    const onDisconnect = (callback = null) => {
+    const onDisconnect = async (callback = null) => {
+        // WalletConnect Session
+        if (connector?.connected) {
+            await connector.killSession()
+            removeLocalStorage(LOCALSTORAGE_KEY.WC_CONNECTOR)
+        }
+
         removeLocalStorage(LOCALSTORAGE_KEY.WALLET_ACCOUNT)
+        removeLocalStorage(LOCALSTORAGE_KEY.NETWORK)
         setWalletExtKey(null)
         setWallet({})
         setIsConnected(false)
@@ -181,9 +195,101 @@ const WalletAuthWrapper = ({children}) => {
         return true
     }
 
+    useEffect(() => {
+        const connectWC = async (chainId, connectedAccount) => {
+            const networkData = SUPPORTED_NETWORKS.filter(
+                (chain) => chain.chain_id === chainId
+            )[0]
+
+            if (networkData) {
+                setNetWork(networkData)
+                const web3 = new Web3(networkData.rpc_url)
+                let ethBalance = await web3.eth.getBalance(connectedAccount) // Get wallets balance
+                ethBalance = web3.utils.fromWei(ethBalance, 'ether')
+                saveWalletInfo(ethBalance, connectedAccount, chainId)
+            }
+        }
+
+        if (connector) {
+            connector.on("connect", async (error, payload) => {
+                const {chainId, accounts} = payload.params[0]
+                // await connector.updateChain({
+                //     chainId: 1287,
+                //     networkId: 1287,
+                //     rpcUrl: "https://rpc.api.moonbase.moonbeam.network",
+                //     nativeCurrency: {
+                //         name: "DEV",
+                //         symbol: "DEV",
+                //     },
+                // })
+                await connectWC(chainId, accounts[0])
+                setIsAuthModalVisible(false)
+                // setFetching(false);
+            })
+
+            connector.on("disconnect", async (error, payload) => {
+                if (error) {
+                    throw error
+                }
+                await onDisconnect()
+            })
+            //
+            // if ((!chainId || !account || !balance) && connector.connected) {
+            //     refreshData();
+            // }
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [connector])
+
+    useEffect(() => {
+        const wc = getLocalStorage(LOCALSTORAGE_KEY.WC_CONNECTOR, null)
+        if (wc && isMobileOrTablet()) {
+            const connector = new WalletConnect({session: JSON.parse(wc)})
+            setConnector(connector)
+        }
+    }, [])
+
+    const onWCConnect = async () => {
+        // create new connector
+        const connector = new WalletConnect({
+            bridge: "https://bridge.walletconnect.org",
+            qrcodeModal: QRCodeModal,
+            storageId: LOCALSTORAGE_KEY.WC_CONNECTOR,
+            qrcodeModalOptions: {desktopLinks: []}
+        })
+        setConnector(connector)
+
+        if (connector.connected) {
+            await connector.killSession()
+        }
+        // check if already connected
+        if (!connector.connected) {
+            // create new session
+            await connector.createSession()
+            // window.location.href = connector.uri
+        }
+    }
+
+    // const createRequest = (requestInstant) => {
+    //     if (!provider && !connector) {
+    //         // console.log("No provider or connector detected")
+    //         throw new Error("No provider or connector detected")
+    //     } else if (connector.connected) return connector.createInstantRequest(requestInstant)
+    //     else return provider.request(requestInstant)
+    // }
+
+    // const getWalletProvider = (requestInstant) => {
+    //     if (!provider && !connector) {
+    //         // console.log("No provider or connector detected")
+    //         throw new Error("No provider or connector detected")
+    //     } else if (connector.connected) return connector.createInstantRequest(requestInstant)
+    //     else return provider.request(requestInstant)
+    // }
+
     return (
         <WalletAuthContext.Provider value={{
             wallet,
+            network,
             setWallet,
             walletExtKey,
             onConnect,
@@ -191,6 +297,9 @@ const WalletAuthWrapper = ({children}) => {
             isConnected,
             detectProvider,
             onAuthorizeMoreWallet,
+            provider,
+            connector,
+            // createRequest,
             showWalletSelectModal: showConnectModal
         }}>
             {children}
@@ -199,10 +308,23 @@ const WalletAuthWrapper = ({children}) => {
                    onCancel={hideConnectModal}
                    closeIcon={<CloseIcon/>}
                    wrapClassName={'mf-modal connect-modal'}
-                   className={'mf-modal-content connect-modal-content'}
+                   className={'mf-modal-content connect-modal-content top-32 sm:top-36 md:top-48'}
                    footer={false}
             >
                 <div className={'evm-wallet'}>
+                    {
+                        isMobileOrTablet() && !isMetaMaskBrowser && (
+                            <div>
+                                <div className={'evm-wallet-item'}
+                                     onClick={onWCConnect}>
+                                    <div className={"wallet-logo"}>
+                                        <img src={WALLET_CONNECT.logo.src} alt={WALLET_CONNECT.logo.alt} width={40}/>
+                                    </div>
+                                    <div className="wallet-title">{WALLET_CONNECT.title}</div>
+                                </div>
+                            </div>
+                        )
+                    }
                     {
                         EVM_WALLETS.map((wallet, index) => {
                             const isInstalled = window[wallet.extensionName] && window[wallet.extensionName][wallet.isSetGlobalString]

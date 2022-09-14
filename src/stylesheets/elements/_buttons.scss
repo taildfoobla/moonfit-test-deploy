@@ -28,14 +28,14 @@ input[type='submit'],
     outline: none;
   }
 
-  &[disabled],
-  &.disabled {
-    cursor: not-allowed;
-    background-color: $button-background !important;
-    border-color: $button-border !important;
-    color: $button-text !important;
-    box-shadow: none !important;
-  }
+  //&[disabled],
+  //&.disabled {
+  //  cursor: not-allowed;
+  //  background-color: $button-background !important;
+  //  border-color: $button-border !important;
+  //  color: $button-text !important;
+  //  box-shadow: none !important;
+  //}
 
   &:focus,
   &:hover {
@@ -148,6 +148,19 @@ input[type='submit'],
   --mg-button-text: #fff;
   --mg-button-border: #{$secondary-color};
   --mg-button-background: #{$secondary-color};
+
+  &[disabled],
+  &.disabled {
+    &:hover {
+      transform: none !important;
+    }
+
+    cursor: not-allowed;
+    background-color: #e4007b9e !important;
+    border-color: $secondary-color !important;
+    color: #FFFFFF !important;
+    box-shadow: none !important;
+  }
 }
 
 .button-subwallet {

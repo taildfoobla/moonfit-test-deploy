@@ -30,6 +30,7 @@
   .mf-modal-content {
     width: 585px !important;
     padding-right: 15px;
+    //top: 20%;
 
     .ant-modal-content {
       background: #1C0532;
@@ -58,6 +59,10 @@
         margin: -$border;
         border-radius: inherit;
         background: linear-gradient(to right, #4ccbc9, #e4007b);
+      }
+
+      .ant-modal-body {
+        padding-bottom: 40px;
       }
 
       .ant-modal-close {
@@ -112,7 +117,7 @@
     .mf-modal-content {
       width: 400px !important;
       padding-right: 0;
-      top: 0;
+      //top: 10%;
 
       .ant-modal-close {
         padding-right: 0 !important;
