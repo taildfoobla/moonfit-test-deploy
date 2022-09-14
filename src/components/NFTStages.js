@@ -1,5 +1,5 @@
 import React from 'react'
-import {NFT_SALE_INFO} from "../constants/blockchain"
+import {NFT_SALE_ROUNDS_INFO, NFT_SALE_CURRENT_INFO} from "../constants/blockchain"
 import moonbeam from '../assets/images/icons/moonbeam.svg'
 import mintPass from '../assets/images/icons/mintpass.svg'
 import {getOrdinalDateMonthFormat} from "../utils/datetime"
@@ -7,10 +7,9 @@ import classNames from "classnames"
 import {Timeline} from "antd"
 import {CountdownComponent} from "./CountdownComponent"
 
-
-const NFTStages = ({children, round, className = ''}) => {
-    const roundKeys = Object.keys(NFT_SALE_INFO)
-    const currentSale = NFT_SALE_INFO[`R${round}`]
+const NFTStages = ({children, className = ''}) => {
+    const roundKeys = Object.keys(NFT_SALE_ROUNDS_INFO)
+    const currentSale = NFT_SALE_CURRENT_INFO
     const isStarted = currentSale.time && currentSale.time <= new Date().getTime()
 
     const renderSecondRow = (saleObj) => {
@@ -44,6 +43,41 @@ const NFTStages = ({children, round, className = ''}) => {
         )
     }
 
+    const getTimelines = () => {
+        return roundKeys.map((key, index) => {
+            const saleObj = NFT_SALE_ROUNDS_INFO[key]
+            const isCurrentRound = saleObj.number === currentSale.number
+            return (
+                <Timeline.Item
+                    className={classNames("pb-10", {'opacity-50': saleObj.number > currentSale.number})}
+                    dot={(
+                        <div className="marker absolute w-3 h-3 rounded-full mt-1.5 -left-1.5" />
+                    )}
+                    key={key}>
+                    <div className="mb-1 text-lg race-sport-font primary-color">
+                        {saleObj.title}
+                    </div>
+                    {renderSecondRow(saleObj)}
+                    {
+                        isCurrentRound && (
+                            <div className={'flex items-center mt-8'}>
+                                <div
+                                    className={'hidden md:block normal-case mr-2 text-white text-base'}>
+                                    Start in:
+                                </div>
+                                <div>
+                                    <CountdownComponent date={saleObj.time}
+                                                        completedCallback={() => window.location.reload()}
+                                                        completedMessage={`NFT Sale #${saleObj.number} have been started`}/>
+                                </div>
+                            </div>
+                        )
+                    }
+                </Timeline.Item>
+            )
+        })
+    }
+
     return isStarted ? (
         <div className={`nft-stages ${className || ''}`}>
             {children}
@@ -65,71 +99,8 @@ const NFTStages = ({children, round, className = ''}) => {
                                 <div className={'grid grid-cols-1 mt-4 lg:mt-8 gap-4'}>
                                     <div className={'nft-timeline'}>
                                         <Timeline className="nft-timeline-ul relative">
-                                            {
-                                                roundKeys.map((key, index) => {
-                                                    const saleObj = NFT_SALE_INFO[key]
-                                                    const isCurrentRound = round === index + 1
-                                                    return (
-                                                        <Timeline.Item
-                                                            className={classNames("pb-10", {'opacity-50': !isCurrentRound})}
-                                                            dot={(
-                                                                <div
-                                                                    className="marker absolute w-3 h-3 rounded-full mt-1.5 -left-1.5"></div>
-                                                            )}
-                                                            key={key}>
-                                                            <div className="mb-1 text-lg race-sport-font primary-color">
-                                                                {saleObj.title}
-                                                            </div>
-                                                            {renderSecondRow(saleObj)}
-                                                            {
-                                                                isCurrentRound && (
-                                                                    <div className={'flex items-center mt-8'}>
-                                                                        <div
-                                                                            className={'hidden md:block normal-case mr-2 text-white text-base'}>
-                                                                            Start in:
-                                                                        </div>
-                                                                        <div>
-                                                                            <CountdownComponent date={saleObj.time}
-                                                                                                completedCallback={() => window.location.reload()}
-                                                                                                completedMessage={`NFT Sale #${round} have been started`}/>
-                                                                        </div>
-                                                                    </div>
-                                                                )
-                                                            }
-                                                        </Timeline.Item>
-                                                    )
-                                                })
-                                            }
+                                            {getTimelines()}
                                         </Timeline>
-                                        {/*<ul className="nft-timeline-ul relative">*/}
-                                        {/*    {*/}
-                                        {/*        roundKeys.map((key, index) => {*/}
-                                        {/*            const saleObj = NFT_SALE_INFO[key]*/}
-                                        {/*            const isCurrentRound = round === index + 1*/}
-                                        {/*            return (*/}
-                                        {/*                <li className={classNames("mb-12 ml-4", {'opacity-50': !isCurrentRound})}*/}
-                                        {/*                    key={key}>*/}
-                                        {/*                    <div*/}
-                                        {/*                        className="marker absolute w-3 h-3 rounded-full mt-1.5 -left-1.5"></div>*/}
-                                        {/*                    <div className="mb-1 text-normal race-sport-font primary-color">*/}
-                                        {/*                        {saleObj.title}*/}
-                                        {/*                    </div>*/}
-                                        {/*                    {renderSecondRow(saleObj)}*/}
-                                        {/*                    {*/}
-                                        {/*                        isCurrentRound && (*/}
-                                        {/*                            <div className={'flex mt-4'}>*/}
-                                        {/*                                <div className={'normal-case mr-4'}>Start in:</div>*/}
-                                        {/*                                <div>*/}
-                                        {/*                                    <CountdownComponent date={saleObj.time}/>*/}
-                                        {/*                                </div>*/}
-                                        {/*                            </div>*/}
-                                        {/*                        )*/}
-                                        {/*                    }*/}
-                                        {/*                </li>*/}
-                                        {/*            )*/}
-                                        {/*        })*/}
-                                        {/*    }*/}
-                                        {/*</ul>*/}
                                     </div>
                                 </div>
                             </div>

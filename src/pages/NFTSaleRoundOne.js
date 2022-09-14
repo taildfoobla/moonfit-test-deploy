@@ -22,7 +22,7 @@ import EnvWrapper from "../components/shared/EnvWrapper"
 import CurveBGWrapper from "../wrappers/CurveBG"
 import CopyIcon from "../components/shared/CopyIcon"
 import {range} from "../utils/array"
-import {NFT_SALE_INFO} from "../constants/blockchain"
+import {NFT_SALE_ROUNDS_INFO} from "../constants/blockchain"
 import {getStringOfBigNumber} from "../utils/number"
 import BigNumber from "bignumber.js"
 import classNames from "classnames"
@@ -32,7 +32,7 @@ import NFTStages from "../components/NFTStages"
 
 const {MINT_PASS_SC, MOONBEAST_SC, R1_NFT_SALE_SC} = BLC_CONFIGS
 const {Paragraph} = Typography
-const {R1} = NFT_SALE_INFO
+const {R1} = NFT_SALE_ROUNDS_INFO
 
 const NFTSaleRoundOne = (props) => {
     const [loading, setLoading] = useState(true)

@@ -190,8 +190,9 @@ export const WALLET_CONNECT = {
 export const SUBWALLET_EXT_URL = "https://bit.ly/3BGqFt1"
 export const METAMASK_EXT_URL = "https://chrome.google.com/webstore/detail/metamask/nkbihfbeogaeaoehlefnkodbefgpgknn"
 
-export const NFT_SALE_INFO = {
+export const NFT_SALE_ROUNDS_INFO = {
     R1: {
+        number: 1,
         title: 'Whitelist Sale #1',
         amount: 500,
         price: 79,
@@ -199,17 +200,19 @@ export const NFT_SALE_INFO = {
         // price: 0.05, // TODO prod
         nftPerPass: 1,
         // time: 1660817942296,
-        time: 1661176800000
+        time: 1661176800000 // Date and time (GMT): Monday, August 22, 2022 2:00:00 PM
     },
     R2: {
+        number: 2,
         title: 'Whitelist Sale #2',
         amount: 1500,
         price: 119,
         mintPass: 1,
         nftPerPass: 2,
-        time: 1663984800000 // Saturday, September 24, 2022 2:00:00 AM
+        time: 1664028000000 // Date and time (GMT): Saturday, September 24, 2022 2:00:00 PM
     },
     R3: {
+        number: 3,
         title: 'Whitelist Sale #3',
         amount: 3000,
         price: 159,
@@ -218,6 +221,7 @@ export const NFT_SALE_INFO = {
         time: null
     },
     R4: {
+        number: 4,
         title: 'Public Sale',
         amount: 5000,
         price: "?",
@@ -225,6 +229,12 @@ export const NFT_SALE_INFO = {
         nftPerPass: 3,
         time: null
     }
+}
+
+export const NFT_SALE_CURRENT_INFO = {
+    ...NFT_SALE_ROUNDS_INFO.R2,
+    title: 'NFT Sale 2',
+    dateMsg: '24nd September'
 }
 
 export const SUPPORTED_NETWORKS = [

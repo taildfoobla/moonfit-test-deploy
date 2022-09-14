@@ -22,7 +22,7 @@ import EnvWrapper from "../components/shared/EnvWrapper"
 import CurveBGWrapper from "../wrappers/CurveBG"
 import CopyIcon from "../components/shared/CopyIcon"
 import {range} from "../utils/array"
-import {NFT_SALE_INFO} from "../constants/blockchain"
+import {NFT_SALE_ROUNDS_INFO} from "../constants/blockchain"
 import {getStringOfBigNumber} from "../utils/number"
 import BigNumber from "bignumber.js"
 import classNames from "classnames"
@@ -32,7 +32,7 @@ import NFTStages from "../components/NFTStages"
 
 const {MINT_PASS_SC, MOONBEAST_SC, R2_NFT_SALE_SC} = BLC_CONFIGS
 const {Paragraph} = Typography
-const {R2} = NFT_SALE_INFO
+const {R2} = NFT_SALE_ROUNDS_INFO
 
 const NFTSaleRoundTwo = (props) => {
     const [loading, setLoading] = useState(true)
@@ -336,7 +336,7 @@ const NFTSaleRoundTwo = (props) => {
     return (
         <CurveBGWrapper>
             <EnvWrapper routeItem={Paths.NFTSale}>
-                <WalletAuthRequiredNFTSale className={'section page-nft-sale'} round={2}>
+                <WalletAuthRequiredNFTSale className={'section page-nft-sale'}>
                     <NFTStages round={2}>
                         {
                             !loading && <div className="section-content">
@@ -349,7 +349,7 @@ const NFTSaleRoundTwo = (props) => {
                                         <div className={'flex justify-center mt-6'}>
                                         <span
                                             className="bg-[#A16BD8] text-white normal-case font-bold px-4 pb-1 rounded dark:bg-green-500 dark:text-white">
-                                            22nd August
+                                            24nd September
                                         </span>
                                             {
                                                 availableSlots > 0 ? (
