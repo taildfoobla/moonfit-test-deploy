@@ -91,7 +91,7 @@ const NFTStages = ({children, round, className = ''}) => {
                                                                         <div>
                                                                             <CountdownComponent date={saleObj.time}
                                                                                                 completedCallback={() => window.location.reload()}
-                                                                                                completedMessage={"NFT Sale #1 have been started"}/>
+                                                                                                completedMessage={`NFT Sale #${round} have been started`}/>
                                                                         </div>
                                                                     </div>
                                                                 )

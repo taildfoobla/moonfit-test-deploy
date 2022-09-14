@@ -30,11 +30,11 @@ import WalletAuthRequiredNFTSale from "../components/WalletAuthRequiredNFTSale"
 import NFTSkeleton from "../components/NFTSkeleton"
 import NFTStages from "../components/NFTStages"
 
-const {MINT_PASS_SC, MOONBEAST_SC, R1_NFT_SALE_SC} = BLC_CONFIGS
+const {MINT_PASS_SC, MOONBEAST_SC, R2_NFT_SALE_SC} = BLC_CONFIGS
 const {Paragraph} = Typography
-const {R1} = NFT_SALE_INFO
+const {R2} = NFT_SALE_INFO
 
-const NFTSaleRoundOne = (props) => {
+const NFTSaleRoundTwo = (props) => {
     const [loading, setLoading] = useState(true)
     const [mintLoading, setMintLoading] = useState(false)
     const [mintPasses, setMintPasses] = useState([])
@@ -93,7 +93,7 @@ const NFTSaleRoundOne = (props) => {
 
         const web3js = new Web3(network.rpc_url)
         const mintPassContract = new web3js.eth.Contract(mintPassABI.abi, MINT_PASS_SC)
-        const saleContract = new web3js.eth.Contract(nftSaleABI.abi, R1_NFT_SALE_SC)
+        const saleContract = new web3js.eth.Contract(nftSaleABI.abi, R2_NFT_SALE_SC)
         const moonBeastContract = new web3js.eth.Contract(moonBeastABI.abi, MOONBEAST_SC)
 
         const [mpBalance, availableSlots, maxSaleSlots, mbBalance] = await Promise.all([
@@ -129,13 +129,13 @@ const NFTSaleRoundOne = (props) => {
         try {
             const web3js = new Web3(network.rpc_url)
             const nonce = await web3js.eth.getTransactionCount(wallet.account, 'latest')
-            const nftSaleContract = new web3js.eth.Contract(nftSaleABI.abi, R1_NFT_SALE_SC)
+            const nftSaleContract = new web3js.eth.Contract(nftSaleABI.abi, R2_NFT_SALE_SC)
             // const gasPrice = await web3js.eth.getGasPrice() // estimate the gas price
 
-            const value = new BigNumber(R1.price).multipliedBy(selectedMp.length).multipliedBy(R1.nftPerPass).multipliedBy(1e18)
-            // const value = new BigNumber(0.01).multipliedBy(selectedMp.length).multipliedBy(R1.nftPerPass).multipliedBy(1e18)
+            const value = new BigNumber(R2.price).multipliedBy(selectedMp.length).multipliedBy(R2.nftPerPass).multipliedBy(1e18)
+            // const value = new BigNumber(0.01).multipliedBy(selectedMp.length).multipliedBy(R2.nftPerPass).multipliedBy(1e18)
             const tx = {
-                to: R1_NFT_SALE_SC,
+                to: R2_NFT_SALE_SC,
                 from: wallet.account,
                 nonce: `${nonce}`,
                 // gasPrice: `${gasPrice}`,
@@ -336,8 +336,8 @@ const NFTSaleRoundOne = (props) => {
     return (
         <CurveBGWrapper>
             <EnvWrapper routeItem={Paths.NFTSale}>
-                <WalletAuthRequiredNFTSale className={'section page-nft-sale'}>
-                    <NFTStages round={1}>
+                <WalletAuthRequiredNFTSale className={'section page-nft-sale'} round={2}>
+                    <NFTStages round={2}>
                         {
                             !loading && <div className="section-content">
                                 <div className="container">
@@ -412,7 +412,7 @@ const NFTSaleRoundOne = (props) => {
                                                         <div className={'flex card-body-row-title mt-3'}>NFT Price</div>
                                                         <div className={'flex flex-col'}>
                                                             <div className="flex justify-between items-center">
-                                                                <div className={'text-[#4ccbc9]'}>{R1.price} GLMR</div>
+                                                                <div className={'text-[#4ccbc9]'}>{R2.price} GLMR</div>
                                                             </div>
                                                         </div>
                                                         <hr className={'card-body-separator'}/>
@@ -496,7 +496,7 @@ const NFTSaleRoundOne = (props) => {
                                                                         <div className={'normal-case items-center'}>
                                                                             <span className={'mb-1'}>Total: </span>
                                                                             <span
-                                                                                className={'race-sport-font primary-color'}>{R1.price * selectedMp.length} GLMR</span>
+                                                                                className={'race-sport-font primary-color'}>{R2.price * selectedMp.length} GLMR</span>
                                                                         </div>
                                                                     )
                                                                 }
@@ -555,4 +555,4 @@ const NFTSaleRoundOne = (props) => {
     )
 }
 
-export default NFTSaleRoundOne
+export default NFTSaleRoundTwo

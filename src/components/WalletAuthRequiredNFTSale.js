@@ -6,7 +6,7 @@ import {CountdownComponent} from "./CountdownComponent"
 import {NFT_SALE_INFO} from "../constants/blockchain"
 
 
-const WalletAuthRequiredNFTSale = ({children, className}) => {
+const WalletAuthRequiredNFTSale = ({children, className, round = 1}) => {
     const {isConnected, showWalletSelectModal} = useContext(WalletAuthContext)
 
     // const isSubWalletInstalled = Boolean((window?.injectedWeb3 && window[PROVIDER_NAME.SubWallet]) || (window[PROVIDER_NAME.MetaMask]))
@@ -21,25 +21,19 @@ const WalletAuthRequiredNFTSale = ({children, className}) => {
                              width="356"/>
                     </div>
                     <h1 className="section-title flex flex-col justify-center xl:justify-start">
-                        <span
-                            className={'text-center xl:text-left secondary-color text-4xl xl:text-5xl'}>NFT Sale #1&nbsp;</span>
+                        <span className={'text-center xl:text-left secondary-color text-4xl xl:text-5xl'}>NFT Sale #{round}&nbsp;</span>
                         <span className="text-center xl:text-left text-2xl xl:text-3xl my-2 xl:my-3">22nd August</span>
                     </h1>
                     <div className="section-description-wrap text-center xl:text-left">
-                        {/*<p className="section-description mx-auto xl:mx-0">*/}
-                        {/*    MoonFit is a Web3Fitness App that promotes active living by rewarding users anytime they*/}
-                        {/*    burn calories through physical activities. This Web3Fitness model would an evolution of*/}
-                        {/*    nowadays Web2 training Applications.*/}
-                        {/*</p>*/}
                         <div className={'flex items-center mt-8 xl:justify-start justify-center'}>
                             <div
                                 className={'hidden md:block normal-case mr-2 text-white text-base'}>
                                 Start in:
                             </div>
                             <div className={'flex justify-center'}>
-                                <CountdownComponent date={NFT_SALE_INFO.R1.time}
+                                <CountdownComponent date={NFT_SALE_INFO[`R${round}`].time}
                                                     // completedCallback={() => window.location.reload()}
-                                                    completedMessage={"NFT Sale #1 have been started"}/>
+                                                    completedMessage={`NFT Sale #${round} have been started`}/>
                             </div>
                         </div>
                     </div>

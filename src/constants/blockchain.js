@@ -207,7 +207,7 @@ export const NFT_SALE_INFO = {
         price: 119,
         mintPass: 1,
         nftPerPass: 2,
-        time: null
+        time: 1663984800000 // Saturday, September 24, 2022 2:00:00 AM
     },
     R3: {
         title: 'Whitelist Sale #3',
