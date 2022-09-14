@@ -61,9 +61,9 @@ const NFTStages = ({children, className = ''}) => {
                     </div>
                     {renderSecondRow(saleObj)}
                     {isSoldOut && (
-                        <div className={'flex items-center mt-3'}>
+                        <div className={'flex items-center mt-4'}>
                             <div className={'hidden md:block normal-case mr-2 text-white text-base'}>
-                                Sold out
+                                <span className="countdown race-sport-font secondary-color">Sold out</span>
                             </div>
                         </div>
                     )}
