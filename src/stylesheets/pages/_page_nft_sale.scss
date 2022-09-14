@@ -13,6 +13,9 @@
           border-left: 1px dashed #e4007b;
         }
 
+        .is-sold-out .ant-timeline-item-tail {
+          border-left-style: solid;
+        }
         .ant-timeline-item-head-custom {
           top: 0;
           padding: 0;

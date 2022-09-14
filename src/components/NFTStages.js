@@ -47,9 +47,11 @@ const NFTStages = ({children, className = ''}) => {
         return roundKeys.map((key, index) => {
             const saleObj = NFT_SALE_ROUNDS_INFO[key]
             const isCurrentRound = saleObj.number === currentSale.number
+            const isSoldOut = saleObj.number < currentSale.number
+
             return (
                 <Timeline.Item
-                    className={classNames("pb-10", {'opacity-50': saleObj.number > currentSale.number})}
+                    className={classNames("pb-10", {'opacity-50': saleObj.number > currentSale.number, 'is-sold-out': isSoldOut})}
                     dot={(
                         <div className="marker absolute w-3 h-3 rounded-full mt-1.5 -left-1.5" />
                     )}
@@ -58,6 +60,13 @@ const NFTStages = ({children, className = ''}) => {
                         {saleObj.title}
                     </div>
                     {renderSecondRow(saleObj)}
+                    {isSoldOut && (
+                        <div className={'flex items-center mt-3'}>
+                            <div className={'hidden md:block normal-case mr-2 text-white text-base'}>
+                                Sold out
+                            </div>
+                        </div>
+                    )}
                     {
                         isCurrentRound && (
                             <div className={'flex items-center mt-8'}>
