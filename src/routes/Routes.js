@@ -5,6 +5,7 @@ import MintPassMinting from "../pages/MintPassMinting"
 // import NFTSale from "../pages/NFTSaleRoundOne"
 import NFTSale from "../pages/NFTSaleRoundTwo"
 import Home from "../pages/Home"
+import NotFound from "../pages/NotFound"
 
 const routes = [
     {
@@ -29,7 +30,12 @@ const routes = [
                 path: Paths.MintPassMinting.path,
                 exact: true,
                 component: MintPassMinting
-            }
+            },
+            {
+                path: '*',
+                exact: true,
+                component: NotFound
+            },
         ]
     }
 ]
