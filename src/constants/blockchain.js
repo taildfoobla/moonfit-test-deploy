@@ -1,6 +1,10 @@
+import {BLC_CONFIGS} from '../configs/blockchain'
 import MetaMaskLogo from '../assets/images/wallets/MetaMaskLogo.svg';
 import SubWalletLogo from '../assets/images/wallets/SubWalletLogo.svg';
 import WalletConnectLogo from '../assets/images/wallets/WalletConnectLogo.svg';
+import {getReactEnv} from "../utils/env";
+
+const ENV = getReactEnv('ENV')
 
 export const MOONBEAM_CHAIN_ID = 504
 export const MOONBEAM_CHAIN_ID_HEX = "0x504"
@@ -193,28 +197,43 @@ export const METAMASK_EXT_URL = "https://chrome.google.com/webstore/detail/metam
 export const NFT_SALE_ROUNDS_INFO = {
     R1: {
         number: 1,
-        title: 'Whitelist Sale #1',
+        title: 'NFT Sale 1',
+        timelineTitle: 'Whitelist Sale #1',
+        NFT_SALE_SC: BLC_CONFIGS.R1_NFT_SALE_SC,
+        fromTokenID: 1,
         amount: 500,
         price: 79,
         mintPass: 1,
-        // price: 0.05, // TODO prod
         nftPerPass: 1,
-        // time: 1660817942296,
+        dateMsg: '22nd August',
         time: 1661176800000 // Date and time (GMT): Monday, August 22, 2022 2:00:00 PM
     },
     R2: {
         number: 2,
-        title: 'Whitelist Sale #2',
+        title: 'NFT Sale 2',
+        timelineTitle: 'Whitelist Sale #2',
+        NFT_SALE_SC: BLC_CONFIGS.R2_NFT_SALE_SC,
         amount: 1500,
+        fromTokenID: 501,
         price: 119,
         mintPass: 1,
         nftPerPass: 2,
-        time: 1664028000000 // Date and time (GMT): Saturday, September 24, 2022 2:00:00 PM
+        dateMsg: '24nd September',
+        time: 1664028000000, // Date and time (GMT): Saturday, September 24, 2022 2:00:00 PM,
+        ...(ENV === 'development' ? {
+            time: 1661176800000,
+            price: 0.119,
+            fromTokenID: 143,
+        } : {})
     },
     R3: {
         number: 3,
-        title: 'Whitelist Sale #3',
+        title: 'NFT Sale 3',
+        timelineTitle: 'Whitelist Sale #3',
+        NFT_SALE_SC: BLC_CONFIGS.R3_NFT_SALE_SC,
+        dateMsg: '',
         amount: 3000,
+        fromTokenID: 2001,
         price: 159,
         mintPass: 1,
         nftPerPass: 3,
@@ -222,8 +241,11 @@ export const NFT_SALE_ROUNDS_INFO = {
     },
     R4: {
         number: 4,
-        title: 'Public Sale',
+        title: 'NFT Sale 4',
+        timelineTitle: 'Public Sale',
+        NFT_SALE_SC: BLC_CONFIGS.R4_NFT_SALE_SC,
         amount: 5000,
+        fromTokenID: 50001,
         price: "?",
         mintPass: "?",
         nftPerPass: 3,
@@ -233,8 +255,6 @@ export const NFT_SALE_ROUNDS_INFO = {
 
 export const NFT_SALE_CURRENT_INFO = {
     ...NFT_SALE_ROUNDS_INFO.R2,
-    title: 'NFT Sale 2',
-    dateMsg: '24nd September'
 }
 
 export const SUPPORTED_NETWORKS = [

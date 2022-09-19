@@ -3,7 +3,7 @@ import Paths from "./Paths"
 import MFGPrivateSale from "../pages/MFGPrivateSale"
 import MintPassMinting from "../pages/MintPassMinting"
 // import NFTSale from "../pages/NFTSaleRoundOne"
-import NFTSale from "../pages/NFTSaleRoundTwo"
+import NFTSale from "../pages/NFTSaleCurrentRound"
 import Home from "../pages/Home"
 import NotFound from "../pages/NotFound"
 
