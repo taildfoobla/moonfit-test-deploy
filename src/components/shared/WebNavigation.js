@@ -4,7 +4,7 @@ import {Drawer, Modal, Typography} from "antd"
 import WalletAuthContext from "../../contexts/WalletAuthContext"
 import {Link, withRouter} from "react-router-dom"
 import Paths from "../../routes/Paths"
-import MFAccountButton from "../MFAccountButton"
+// import MFAccountButton from "../MFAccountButton"
 import {getShortAddress} from "../../utils/blockchain"
 import {getReactEnv} from "../../utils/env"
 import {AppRoutes} from "../../routes/AppRoutes"
@@ -173,7 +173,7 @@ const WebNavigation = (props) => {
                                     </button>
                                 )
                             }
-                            <MFAccountButton/>
+                            {/*<MFAccountButton/>*/}
                         </div>
                         <button className="navbar-toggler collapsed" type="button" data-bs-toggle="collapse"
                                 data-bs-target="#mobile-menu" aria-controls="navbar" aria-expanded="false"
@@ -225,7 +225,7 @@ const WebNavigation = (props) => {
                             </button>
                         )
                     }
-                    <MFAccountButton containerClassName={'ml-0 mt-2 w-full'} btnClassName={'w-full'}/>
+                    {/*<MFAccountButton containerClassName={'ml-0 mt-2 w-full'} btnClassName={'w-full'}/>*/}
                 </div>
                 <hr className={'block md:hidden mt-5 mb-3'}/>
                 <nav className="primary-menu">
