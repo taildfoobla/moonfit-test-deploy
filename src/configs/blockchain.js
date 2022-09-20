@@ -5,6 +5,7 @@ const getConfigs = () => {
     switch (env) {
         case 'production':
             return {
+                MOONBEAST_NETWORK: 'https://rpc.api.moonbeam.network/',
                 MOONBEAM_SCAN_URL: 'https://moonscan.io',
                 MINT_PASS_SC: '0x6758053c0b27E478edE1E4882adFF708Fc4FA72D',
                 R1_NFT_SALE_SC: '0x1Cc5d866BdbD9b3Fd9d22493D29Da3D5cA97b174',
@@ -16,6 +17,7 @@ const getConfigs = () => {
         case 'development':
         default:
             return {
+                MOONBEAST_NETWORK: 'https://rpc.api.moonbase.moonbeam.network/',
                 MOONBEAM_SCAN_URL: 'https://moonbase.moonscan.io',
                 MINT_PASS_SC: '0x7E7d9fee5c5994aA7FC1dAeb231Af015e2FdAD3E',
                 // R1_NFT_SALE_SC: '0xcd176d741E211B63Ee6bBB5241FF51a09Dd5FbFC',

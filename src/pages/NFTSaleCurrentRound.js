@@ -43,6 +43,8 @@ const NFTSaleCurrentRound = (props) => {
     const [selectedMp, setSelectedMp] = useState([])
     const [mbLoading, setMbLoading] = useState(false)
     const [isConfirmedTx, setIsConfirmedTx] = useState(false)
+    const [mintAmount, setMintAmount] = useState(0)
+    const [maxMintAmount, setMaxMintAmount] = useState(0)
 
     const mbRetrieverRef = useRef(0)
 
@@ -85,6 +87,24 @@ const NFTSaleCurrentRound = (props) => {
         return true
     }
 
+    const _updateMintAmount = (value, checkMaxMintAmount = false) => {
+        if (value === '') {
+            setMintAmount('')
+
+            return
+        }
+
+        let amount = parseInt(value, 10)
+        console.log(amount, maxMintAmount, '22');
+        amount = amount > 0 ? amount : 0
+
+        if(checkMaxMintAmount) {
+            amount = amount > maxMintAmount ? maxMintAmount : amount
+        }
+
+        setMintAmount(amount)
+    }
+
     const fetchData = async (loading = true) => {
         loading && setLoading(true)
 
@@ -113,10 +133,11 @@ const NFTSaleCurrentRound = (props) => {
             return {name, imageUrl, tokenId, isUsed: !!bought, availableSlots, bought, outOfSlot}
         }))
         setMintPasses(mintPasses)
-        console.log(mintPasses);
         const unusedMp = mintPasses.map(mp => !mp.outOfSlot && mp.tokenId)
-        // console.log("unusedMp", unusedMp)
         setSelectedMp(unusedMp)
+        const _maxMintAmount = mintPasses.map(item => item.availableSlots).reduce((a, b) => a + b, 0)
+        setMaxMintAmount(_maxMintAmount)
+        _updateMintAmount(_maxMintAmount)
 
         const moonBeasts = await Promise.all(range(0, mbBalance - 1).map(async i => {
             const tokenId = await moonBeastContract.methods.tokenOfOwnerByIndex(wallet.account, i).call()
@@ -128,15 +149,38 @@ const NFTSaleCurrentRound = (props) => {
             return {name, imageUrl, tokenId, isCurrentRound}
         }))
 
-        console.log(moonBeasts.filter(item => parseInt(item.tokenId, 10) >= NFT_SALE_CURRENT_INFO.fromTokenID));
-
         setMoonBeasts(moonBeasts.filter(item => item.isCurrentRound))
 
         setSaleInfo({availableSlots, maxSaleSlots})
         loading && setLoading(false)
     }
 
+    const onClickMintPass = (tokenId) => {
+        let newList
+        if (selectedMp.includes(tokenId)) {
+            newList = selectedMp.filter(i => i !== tokenId)
+        } else {
+            newList = [...selectedMp, tokenId]
+        }
+
+        setSelectedMp(newList)
+
+        const _maxMintAmount = mintPasses
+            .filter(item => newList.includes(item.tokenId))
+            .map(item => item.availableSlots)
+            .reduce((a, b) => a + b, 0)
+
+        console.log(_maxMintAmount);
+
+        setMaxMintAmount(_maxMintAmount)
+        _updateMintAmount(_maxMintAmount)
+    }
+
     const handleMintNFT = async () => {
+        if (mintAmount <= 0) {
+            return
+        }
+
         setMintLoading(true)
         try {
             const web3js = new Web3(network.rpc_url)
@@ -149,18 +193,18 @@ const NFTSaleCurrentRound = (props) => {
             console.log('Value', await nftSaleContract.methods._price().call());
             let value = await nftSaleContract.methods._price().call()
             console.log(web3js.utils.fromWei(getStringOfBigNumber(value), 'ether'));
-            value = value * 1
-            console.log('value x2 ', web3js.utils.fromWei(getStringOfBigNumber(value), 'ether'));
+            value = value * mintAmount
+
             // const value = new BigNumber(0.01).multipliedBy(selectedMp.length).multipliedBy(NFT_SALE_CURRENT_INFO.nftPerPass).multipliedBy(1e18)
             const tx = {
                 to: NFT_SALE_SC,
                 from: wallet.account,
                 nonce: `${nonce}`,
                 // gasPrice: `${gasPrice}`,
-                // maxPriorityFeePerGas: null,
-                // maxFeePerGas: null,
+                maxPriorityFeePerGas: null,
+                maxFeePerGas: null,
                 value: value.toString(),
-                data: nftSaleContract.methods.buyNFT(selectedMp, 1).encodeABI()
+                data: nftSaleContract.methods.buyNFT(selectedMp, mintAmount).encodeABI()
             }
             console.log(tx)
             // console.log(tx)
@@ -223,16 +267,6 @@ const NFTSaleCurrentRound = (props) => {
                 View on NFTScan
             </a>
         )
-    }
-
-    const onClickMintPass = (tokenId) => {
-        if (selectedMp.includes(tokenId)) {
-            const newList = selectedMp.filter(i => i !== tokenId)
-            setSelectedMp(newList)
-        } else {
-            const newList = [...selectedMp, tokenId]
-            setSelectedMp(newList)
-        }
     }
 
     const renderMintPasses = () => {
@@ -344,8 +378,7 @@ const NFTSaleCurrentRound = (props) => {
                 }
                 {
                     mbLoading && range(0, selectedMp.length - 1).map(i =>
-                        <NFTSkeleton className={'flex flex-col items-center mt-4 col-span-2 nft-item'}
-                                     key={i}/>
+                        <NFTSkeleton className={'flex flex-col items-center mt-4 col-span-2 nft-item'} key={i}/>
                     )
                 }
             </div>
@@ -512,14 +545,14 @@ const NFTSaleCurrentRound = (props) => {
                                                     selectedMp.length > 0 && (
                                                         <div className={'normal-case items-center'}>
                                                             <span className={'mb-1'}>Total: </span>
-                                                            <span
-                                                                className={'race-sport-font primary-color'}>{NFT_SALE_CURRENT_INFO.price * selectedMp.length} GLMR</span>
+                                                            <span className={'race-sport-font primary-color'}>{NFT_SALE_CURRENT_INFO.price * mintAmount} GLMR</span>
+                                                            <input onChange={(e) => _updateMintAmount(e.target.value, true)} value={mintAmount} type="number" min={0}/>
                                                         </div>
                                                     )
                                                 }
                                                 <button type="button"
                                                         onClick={handleMintNFT}
-                                                        disabled={isMintBtnDisabled}
+                                                        disabled={isMintBtnDisabled || !mintAmount}
                                                         className="button button-secondary flex items-center">
                                                     {
                                                         mintLoading ? (
@@ -554,7 +587,7 @@ const NFTSaleCurrentRound = (props) => {
                                                                     fill="white"/>
                                                             </svg>
                                                         )
-                                                    } {selectedMp.length > 0 ? `Mint ${selectedMp.length} NFT${selectedMp.length > 1 ? "s" : ""}` : "Mint NFT"}
+                                                    } {mintAmount > 0 ? `Mint ${mintAmount} NFT${mintAmount > 1 ? "s" : ""}` : "Mint NFT"}
                                                 </button>
                                             </div>
                                         )
