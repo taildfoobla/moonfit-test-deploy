@@ -16,6 +16,7 @@
         .is-sold-out .ant-timeline-item-tail {
           border-left-style: solid;
         }
+
         .ant-timeline-item-head-custom {
           top: 0;
           padding: 0;
@@ -39,6 +40,7 @@
           font-size: 20px;
         }
       }
+
       //.nft-timeline-ul {
       //  border-left-color: #F0489F;
       //  border-left-width: 1px;
@@ -87,30 +89,19 @@
         opacity: 0.4;
       }
 
-      &:after {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 0;
-        height: 0;
-        display: block;
-        border-right: 65px solid transparent;
-        border-bottom: 65px solid transparent;
-        border-top: 65px solid #5D5FEF;
-        z-index: 0;
-        opacity: unset;
-      }
-
       .used-text {
         position: absolute;
+        display: inline-block;
+        border-radius: 5px;
         left: 5px;
         top: 7px;
         color: white;
         z-index: 1;
-        margin: 0;
-        padding: 0;
-        transform: rotate(315deg);
+        margin: 4px;
+        background-color: #5D5FEF;
+        text-transform: uppercase;
+        padding: 2px 9px;
+        font-size: 16px;
       }
     }
 
@@ -143,28 +134,6 @@
       border-bottom-left-radius: var(--border-radius);
       border-top-right-radius: var(--border-radius);
     }
-
-    //.used-overlay {
-    //  position: absolute;
-    //  top: 0;
-    //  right: 0;
-    //  bottom: 0;
-    //  left: 0;
-    //  //background-color: #99999b;
-    //  //opacity: 0.2;
-    //  border-radius: var(--border-radius);
-    //
-    //  .used-text {
-    //    position: absolute;
-    //    top: 0;
-    //    right: 0;
-    //    padding: 3px 8px 6px;
-    //    background-color: #1a073eab;
-    //    opacity: 1;
-    //    color: white;
-    //    border-radius: 0 var(--border-radius);
-    //  }
-    //}
   }
 
   .nft-item {
@@ -209,3 +178,44 @@
     }
   }
 }
+
+
+.mp-verify {
+  &__input {
+    background-color: #1C0532 !important;
+    color: #A8ADC3 !important;
+    border-right: 0 !important;
+
+
+    &::placeholder {
+      color: #A8ADC3;
+    }
+  }
+
+  &__btn {
+    color: white !important;
+    background-color: #E4007B !important;
+  }
+
+  &__msg {
+    text-transform: none;
+    color: #EFAA5D;
+
+    svg {
+      display: inline-block;
+    }
+
+    &.warning {
+      color: #EFAA5D;
+    }
+
+    &.success {
+      color: #A5D990;
+    }
+
+    &.error {
+      color: #EF2763;
+    }
+  }
+}
+
