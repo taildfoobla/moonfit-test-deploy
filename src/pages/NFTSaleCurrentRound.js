@@ -80,10 +80,6 @@ const NFTSaleCurrentRound = (props) => {
     }
 
     const _getAvailableSlots = async () => {
-        if (!chainNetwork) {
-            return
-        }
-
         const web3js = new Web3(network.rpc_url)
         const saleContract = new web3js.eth.Contract(nftSaleABI.abi, NFT_SALE_SC)
         const [saleAvailableSlots, maxSaleSlots] = await Promise.all([
@@ -185,9 +181,6 @@ const NFTSaleCurrentRound = (props) => {
                 isSelected,
             }
         })
-        console.log('-------');
-        _mintPasses.forEach(item => console.log({...item, imageUrl: undefined}))
-        console.log('-------');
 
         setMintPasses(_mintPasses)
     }
