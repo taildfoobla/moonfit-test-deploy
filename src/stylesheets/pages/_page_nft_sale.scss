@@ -85,24 +85,28 @@
       position: relative;
       overflow: hidden;
 
-      & > div {
-        opacity: 0.4;
-      }
+      &.is-out-of-slot {
+        cursor: not-allowed;
 
-      .used-text {
-        position: absolute;
-        display: inline-block;
-        border-radius: 5px;
-        left: 5px;
-        top: 7px;
-        color: white;
-        z-index: 1;
-        margin: 4px;
-        background-color: #5D5FEF;
-        text-transform: uppercase;
-        padding: 2px 9px;
-        font-size: 16px;
+        > div {
+          opacity: 0.4;
+        }
       }
+    }
+
+    .used-text {
+      position: absolute;
+      display: inline-block;
+      border-radius: 5px;
+      left: 5px;
+      top: 7px;
+      color: white;
+      z-index: 2;
+      margin: 4px;
+      background-color: #5D5FEF;
+      text-transform: uppercase;
+      padding: 2px 9px;
+      font-size: 16px;
     }
 
     .mp-selected {
@@ -181,6 +185,30 @@
 
 
 .mp-verify {
+  &__title {
+    svg {
+      display: inline-block;
+      margin-left: 5px;
+      margin-top: -3px;
+      cursor: pointer;
+    }
+  }
+
+  &__header {
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 22px;
+    margin-bottom: 13px;
+    text-transform: uppercase;
+    color: #A8ADC3;
+  }
+
+  &__body {
+    background: #2A1143;
+    border-radius: 7px;
+    padding: 14px 22px;
+  }
+
   &__input {
     background-color: #1C0532 !important;
     color: #A8ADC3 !important;
@@ -198,11 +226,17 @@
   }
 
   &__msg {
+    margin-top: 8px;
     text-transform: none;
+    font-weight: 600;
+    font-size: 18px;
+    line-height: 28px;
     color: #EFAA5D;
 
     svg {
       display: inline-block;
+      margin-right: 5px;
+      margin-bottom: 5px;
     }
 
     &.warning {
@@ -216,6 +250,25 @@
     &.error {
       color: #EF2763;
     }
+  }
+}
+
+
+@media screen and (max-width: 1600px) {
+  .page-nft-sale {
+    min-width: 700px;
+  }
+}
+
+@media screen and (max-width: 800px) {
+  .page-nft-sale {
+    min-width: 95%;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .page-nft-sale {
+    min-width: 100%;
   }
 }
 

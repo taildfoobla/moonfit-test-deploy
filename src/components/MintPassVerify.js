@@ -80,6 +80,10 @@ const MintPassVerify = () => {
         }, 350)
     }
 
+    const handleShowInfo = () => {
+        alert('Mint Pass verify info')
+    }
+
     const icons = {
         warning: (<svg width="18" height="17" viewBox="0 0 18 17" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path
@@ -111,6 +115,13 @@ const MintPassVerify = () => {
                     </svg>
                 </span>
             </span>
+        ),
+        info: (
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" onClick={handleShowInfo}>
+                <path d="M10 20C15.5228 20 20 15.5228 20 10C20 4.47715 15.5228 0 10 0C4.47715 0 0 4.47715 0 10C0 15.5228 4.47715 20 10 20Z" fill="#583877"/>
+                <path d="M10 15C10.5523 15 11 14.5523 11 14C11 13.4477 10.5523 13 10 13C9.44772 13 9 13.4477 9 14C9 14.5523 9.44772 15 10 15Z" fill="white"/>
+                <path d="M10 11V10.375C10.3956 10.375 10.7822 10.2467 11.1111 10.0063C11.44 9.76597 11.6964 9.42433 11.8478 9.02462C11.9991 8.62491 12.0387 8.18507 11.9616 7.76074C11.8844 7.33641 11.6939 6.94663 11.4142 6.64071C11.1345 6.33478 10.7781 6.12644 10.3902 6.04203C10.0022 5.95763 9.60009 6.00095 9.23463 6.16651C8.86918 6.33208 8.55682 6.61246 8.33706 6.97219C8.1173 7.33192 8 7.75485 8 8.1875" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
         )
     }
 
@@ -119,35 +130,40 @@ const MintPassVerify = () => {
             <div className="container">
                 <div className="moonfit-card">
                     <div className="moonfit-card-inner">
-                        <div
-                            className="card-title flex flex-col lg:flex-row lg:justify-between items-start mx-auto mt-0 mb-6 lg:mb-10">
-                            <div
-                                className={'flex text-white w-full lg:w-auto lg:justify-start mt-0'}>
-                                mint pass VERIFY
+                        <div className="card-title flex flex-col lg:flex-row lg:justify-between items-start mx-auto mt-0 mb-6 lg:mb-10">
+                            <div className={'flex text-white w-full lg:w-auto lg:justify-start mt-0 mp-verify__title'}>
+                                Mint pass VERIFY
+                                {icons.info}
                             </div>
                         </div>
                         <form className="card-body" onSubmit={handleSubmit}>
                             <div className={'mt-4 mb-6 lg:mt-8'}>
-                                <div className="flex justify-between">
-                                    <div className="w-full">
-                                        <input
-                                            onChange={(e) => setName(e.target.value)} value={name}
-                                            placeholder={placeholderInput}
-                                            className="ant-input mp-verify__input"
-                                            type="text"/>
+                                <div className="mp-verify__body">
+                                    <div className="mp-verify__header">
+                                        Enter the MINTPASS LINK on NFT Marketplace
                                     </div>
-                                    <div>
-                                        <button type="submit"
-                                                className={`ant-btn mp-verify__btn ${isLoading ? 'ant-btn-loading' : ''}`}>
-                                            {isLoading && icons['spin']}
-                                            VERIFY
-                                        </button>
+                                    <div className="flex justify-between">
+                                        <div className="w-full">
+                                            <input
+                                                onChange={(e) => setName(e.target.value)} value={name}
+                                                placeholder={placeholderInput}
+                                                className="ant-input mp-verify__input"
+                                                type="text"/>
+                                        </div>
+                                        <div>
+                                            <button type="submit"
+                                                    className={`ant-btn mp-verify__btn ${isLoading ? 'ant-btn-loading' : ''}`}>
+                                                {isLoading && icons.spin}
+                                                VERIFY
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                    <div className={`mp-verify__msg ${type}`}>
+                                        {icons[type]}
+                                        {message}
                                     </div>
                                 </div>
-                            </div>
-                            <div className={`mp-verify__msg ${type}`}>
-                                {icons[type]}
-                                {message}
                             </div>
                         </form>
                     </div>
