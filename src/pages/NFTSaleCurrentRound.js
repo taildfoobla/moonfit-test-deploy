@@ -34,10 +34,11 @@ const NFTSaleCurrentRound = (props) => {
     const [mintPasses, setMintPasses] = useState([])
     const [moonBeasts, setMoonBeasts] = useState([])
     const [saleInfo, setSaleInfo] = useState({})
-    const [mbLoading, setMbLoading] = useState(false)
+    const [moonBeastMinting, setMoonBeastMinting] = useState(0)
     const [isConfirmedTx, setIsConfirmedTx] = useState(false)
     const [mintAmount, setMintAmount] = useState(0)
     const [maxMintAmount, setMaxMintAmount] = useState(0)
+    const [chainNetwork, setChainNetwork] = useState('')
 
     const mbRetrieverRef = useRef(0)
 
@@ -53,7 +54,7 @@ const NFTSaleCurrentRound = (props) => {
         if (isConfirmedTx) {
             // console.log('Effect isConfirmedTx', isConfirmedTx)
             clearMbInterval()
-            setMbLoading(false)
+            setMoonBeastMinting(0)
         }
         // return () => clearMbInterval()
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -78,23 +79,39 @@ const NFTSaleCurrentRound = (props) => {
         return true
     }
 
+    const _getAvailableSlots = async () => {
+        if (!chainNetwork) {
+            return
+        }
+
+        const web3js = new Web3(network.rpc_url)
+        const saleContract = new web3js.eth.Contract(nftSaleABI.abi, NFT_SALE_SC)
+        const [saleAvailableSlots, maxSaleSlots] = await Promise.all([
+            saleContract.methods.getAvailableSlots().call(),
+            saleContract.methods._maxSaleAmount().call(),
+        ])
+
+        setSaleInfo({availableSlots: saleAvailableSlots, maxSaleSlots})
+    }
+
     const fetchData = async (loading = true) => {
         loading && setLoading(true)
 
         // Switch Network on Desktop Wallet Extension
         provider && await switchNetwork(provider)
+        setChainNetwork(network.rpc_url)
 
         const web3js = new Web3(network.rpc_url)
         const mintPassContract = new web3js.eth.Contract(mintPassABI.abi, MINT_PASS_SC)
         const saleContract = new web3js.eth.Contract(nftSaleABI.abi, NFT_SALE_SC)
         const moonBeastContract = new web3js.eth.Contract(moonBeastABI.abi, MOONBEAST_SC)
+        await _getAvailableSlots()
 
-        const [mpBalance, saleAvailableSlots, maxSaleSlots, mbBalance] = await Promise.all([
+        const [mpBalance, mbBalance] = await Promise.all([
             mintPassContract.methods.balanceOf(wallet.account).call(),
-            saleContract.methods.getAvailableSlots().call(),
-            saleContract.methods._maxSaleAmount().call(),
             moonBeastContract.methods.balanceOf(wallet.account).call(),
         ])
+
         const mintPasses = await Promise.all(range(0, mpBalance - 1).map(async i => {
             const tokenId = await mintPassContract.methods.tokenOfOwnerByIndex(wallet.account, i).call()
             const {name, imageUrl} = await getNFTInfo(mintPassContract.methods, tokenId)
@@ -131,7 +148,6 @@ const NFTSaleCurrentRound = (props) => {
 
         setMoonBeasts(moonBeasts.filter(item => item.isCurrentRound))
 
-        setSaleInfo({availableSlots: saleAvailableSlots, maxSaleSlots})
         loading && setLoading(false)
     }
 
@@ -245,7 +261,7 @@ const NFTSaleCurrentRound = (props) => {
                 data: nftSaleContract.methods.buyNFT(mintPassTokenIds, mintAmount).encodeABI()
             }
             const gasLimit = await web3js.eth.estimateGas(tx)
-            tx.gas = gasLimit
+            tx.gas = gasLimit.toString()
 
             console.log(tx)
             console.log('GLMR',  web3js.utils.fromWei(getStringOfBigNumber(value), 'ether'))
@@ -253,7 +269,7 @@ const NFTSaleCurrentRound = (props) => {
 
             const txHash = await sendTransaction(provider, connector, tx)
             console.log("The hash of MFB minting transaction is: ", txHash)
-            setMbLoading(true)
+            setMoonBeastMinting(mintAmount)
             setIsConfirmedTx(false)
             clearMbInterval()
             notification.destroy()
@@ -277,7 +293,7 @@ const NFTSaleCurrentRound = (props) => {
         }
 
         const _totalMintPassSelected = totalMintPassSelected()
-        const isMintBtnDisabled = totalMintPassSelected() === 0 || mintLoading || mbLoading || !mintAmount
+        const isMintBtnDisabled = totalMintPassSelected() === 0 || mintLoading || moonBeastMinting || !mintAmount
 
         return (
             <div
@@ -337,7 +353,7 @@ const NFTSaleCurrentRound = (props) => {
                                         <MintPass mintPasses={mintPasses} onSelect={onClickMintPass} />
                                     </div>
 
-                                    <MoonBeasts moonBeasts={moonBeasts} isLoading={mbLoading} mintPassSelectNumber={totalMintPassSelected()}/>
+                                    <MoonBeasts moonBeasts={moonBeasts} moonBeastMinting={moonBeastMinting}/>
                                     {_renderFoot()}
                                 </div>
                             </div>

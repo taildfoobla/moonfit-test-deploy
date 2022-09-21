@@ -6,9 +6,9 @@ import NFTLink from '../NFTLink'
 import {BLC_CONFIGS} from "../../configs/blockchain";
 const {MOONBEAST_SC} = BLC_CONFIGS
 
-const MoonBeasts = ({moonBeasts, isLoading= false, mintPassSelectNumber = 0}) => {
+const MoonBeasts = ({moonBeasts, moonBeastMinting= 0}) => {
     const renderMoonBeasts = () => {
-        if (moonBeasts.length === 0 && !isLoading) {
+        if (moonBeasts.length === 0 && !moonBeastMinting) {
             return (
                 <div className={'my-3'}>
                     <div className={'text-center text-white normal-case'}>You don't own any beast/beauty yet.</div>
@@ -52,7 +52,7 @@ const MoonBeasts = ({moonBeasts, isLoading= false, mintPassSelectNumber = 0}) =>
                     })
                 }
                 {
-                    isLoading && range(0, mintPassSelectNumber).map(i =>
+                    moonBeastMinting && range(0, moonBeastMinting).map(i =>
                         <NFTSkeleton className={'flex flex-col items-center mt-4 col-span-2 nft-item'} key={i}/>
                     )
                 }
