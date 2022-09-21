@@ -1,9 +1,6 @@
 import React from 'react'
 import {Progress, Typography} from "antd"
-import {
-    getAddressScanUrl,
-    getShortAddress,
-} from "../../utils/blockchain"
+import {getAddressScanUrl, getShortAddress,} from "../../utils/blockchain"
 import CopyIcon from "../shared/CopyIcon"
 import {NFT_SALE_CURRENT_INFO} from "../../constants/blockchain"
 import {BLC_CONFIGS} from "../../configs/blockchain";
@@ -12,7 +9,7 @@ const {MOONBEAST_SC} = BLC_CONFIGS
 
 const {Paragraph} = Typography
 
-const NFTSaleInfo = ({availableSlots, maxSaleSlots}) => {
+const NFTSaleInfo = ({availableSlots, maxSaleSlots, handleGetMinted = () => {}}) => {
     const mintedSlots = maxSaleSlots - availableSlots
 
     const renderAddressLink = (address) => {
@@ -50,31 +47,30 @@ const NFTSaleInfo = ({availableSlots, maxSaleSlots}) => {
                 </div>
             </div>
             <hr className={'card-body-separator'}/>
-            <div className={'flex justify-between items-center mt-2'}>
-                <div className={'flex card-body-row-title'}>
-                    Total Minted
+            <div onClick={handleGetMinted}>
+                <div className={'flex justify-between items-center mt-2'}>
+                    <div className={'flex card-body-row-title'}>
+                        Total Minted
+                    </div>
+                    {
+                        availableSlots > 0 ? (
+                            <div className={'text-[#4ccbc9]'}>{mintedSlots} / {maxSaleSlots}</div>
+                        ) : (
+                            <div className="ml-3 bg-[#EF2763] text-white normal-case font-bold px-4 pb-1 rounded dark:bg-green-500 dark:text-white">
+                                Sold out
+                            </div>
+                        )
+                    }
                 </div>
-                {
-                    availableSlots > 0 ? (
-                        <div className={'text-[#4ccbc9]'}>{mintedSlots} / {maxSaleSlots}</div>
-                    ) : (
-                        <div className="ml-3 bg-[#EF2763] text-white normal-case font-bold px-4 pb-1 rounded dark:bg-green-500 dark:text-white">
-                            Sold out
-                        </div>
-                    )
-                }
-            </div>
-            <div className={'flex flex-col text-[#4ccbc9]'}>
-                <div className="flex justify-between items-center">
-                    <Progress
-                        strokeColor={{
-                            from: '#4ccbc9',
-                            to: '#e4007b',
-                        }}
-                        percent={Math.floor(mintedSlots / maxSaleSlots * 100)}
-                        status="active"
-                        showInfo={false}
-                    />
+                <div className={'flex flex-col text-[#4ccbc9]'}>
+                    <div className="flex justify-between items-center">
+                        <Progress
+                            strokeColor={{from: '#4ccbc9', to: '#e4007b'}}
+                            percent={Math.floor(mintedSlots / maxSaleSlots * 100)}
+                            status="active"
+                            showInfo={false}
+                        />
+                    </div>
                 </div>
             </div>
         </div>

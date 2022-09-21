@@ -81,12 +81,20 @@ const NFTSaleCurrentRound = (props) => {
     const _getAvailableSlots = async () => {
         const web3js = new Web3(network.rpc_url)
         const saleContract = new web3js.eth.Contract(nftSaleABI.abi, NFT_SALE_SC)
-        const [saleAvailableSlots, maxSaleSlots] = await Promise.all([
+        const [availableSlots, maxSaleSlots] = await Promise.all([
             saleContract.methods.getAvailableSlots().call(),
             saleContract.methods._maxSaleAmount().call(),
         ])
 
-        setSaleInfo({availableSlots: saleAvailableSlots, maxSaleSlots})
+        setSaleInfo({availableSlots, maxSaleSlots})
+    }
+
+    const handleGetMinted = async () => {
+        const web3js = new Web3(network.rpc_url)
+        const saleContract = new web3js.eth.Contract(nftSaleABI.abi, NFT_SALE_SC)
+        const availableSlots = await saleContract.methods.getAvailableSlots().call()
+        console.log(saleInfo, availableSlots);
+        setSaleInfo({availableSlots, maxSaleSlots: saleInfo.maxSaleSlots})
     }
 
     const fetchData = async (loading = true) => {
@@ -255,8 +263,8 @@ const NFTSaleCurrentRound = (props) => {
             tx.gas = gasLimit.toString()
 
             console.log(tx)
-            console.log('GLMR',  web3js.utils.fromWei(getStringOfBigNumber(value), 'ether'))
-            console.log('GAS',  web3js.utils.hexToNumber(gasLimit))
+            console.log('GLMR', web3js.utils.fromWei(getStringOfBigNumber(value), 'ether'))
+            console.log('GAS', web3js.utils.hexToNumber(gasLimit))
 
             const txHash = await sendTransaction(provider, connector, tx)
             console.log("The hash of MFB minting transaction is: ", txHash)
@@ -297,7 +305,8 @@ const NFTSaleCurrentRound = (props) => {
                     <span className={'race-sport-font primary-color'}>
                         {NFT_SALE_CURRENT_INFO.price * mintAmount} GLMR
                     </span>
-                    <input onChange={(e) => _updateMintAmount(e.target.value, true)} value={mintAmount} type="number" min={0}/>
+                    <input onChange={(e) => _updateMintAmount(e.target.value, true)} value={mintAmount} type="number"
+                           min={0}/>
                 </div>
                 <ButtonMintNFT isDisabled={isMintBtnDisabled} isLoading={mintLoading} handleMintNFT={handleMintNFT}>
                     {mintAmount > 0 ? `Mint ${mintAmount} NFT${mintAmount > 1 ? "s" : ""}` : "Mint NFT"}
@@ -312,8 +321,10 @@ const NFTSaleCurrentRound = (props) => {
                 <div className="container">
                     <div className="moonfit-card">
                         <div className="moonfit-card-inner">
-                            <div className="card-title flex flex-col lg:flex-row justify-center lg:justify-between items-start mx-auto mt-0 mb-6 lg:mb-10">
-                                <div className={'flex text-white justify-center w-full lg:w-auto justify-center lg:justify-start mt-4 lg:mt-0'}>
+                            <div
+                                className="card-title flex flex-col lg:flex-row justify-center lg:justify-between items-start mx-auto mt-0 mb-6 lg:mb-10">
+                                <div
+                                    className={'flex text-white justify-center w-full lg:w-auto justify-center lg:justify-start mt-4 lg:mt-0'}>
                                     Mint with Mint Pass
                                 </div>
                                 <div
@@ -321,8 +332,10 @@ const NFTSaleCurrentRound = (props) => {
                                     {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
                                     <a href="#" className={'normal-case text-xs inline primary-color'}
                                        onClick={() => fetchData()}>
-                                        <svg className="w-4 h-4 inline mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+                                        <svg className="w-4 h-4 inline mr-1" fill="none" stroke="currentColor"
+                                             viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
+                                                  d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
                                         </svg>
                                         Refresh
                                     </a>
@@ -330,7 +343,11 @@ const NFTSaleCurrentRound = (props) => {
                             </div>
                             <div className="card-body">
                                 <div className={'mt-4 mb-6 lg:mt-8'}>
-                                    <NFTSaleInfo availableSlots={saleInfo.availableSlots} maxSaleSlots={saleInfo.maxSaleSlots}/>
+                                    <NFTSaleInfo
+                                        availableSlots={saleInfo.availableSlots}
+                                        maxSaleSlots={saleInfo.maxSaleSlots}
+                                        handleGetMinted={handleGetMinted}
+                                    />
 
                                     <div className={'card-body-row flex flex-col mt-3'}>
                                         <div className="flex justify-between">
@@ -341,7 +358,7 @@ const NFTSaleCurrentRound = (props) => {
                                                 className={'flex card-body-row-title'}>Selected {totalMintPassSelected()}
                                             </div>
                                         </div>
-                                        <MintPass mintPasses={mintPasses} onSelect={onClickMintPass} />
+                                        <MintPass mintPasses={mintPasses} onSelect={onClickMintPass}/>
                                     </div>
 
                                     <MoonBeasts moonBeasts={moonBeasts} moonBeastMinting={moonBeastMinting}/>
