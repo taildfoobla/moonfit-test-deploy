@@ -224,7 +224,6 @@ export const NFT_SALE_ROUNDS_INFO = {
             time: 1661176800000,
             price: 0.119,
             fromTokenID: 203,
-            NFT_SALE_SC: '0x67191ed7594dB7C23879EBA2F8E0817203cc2657'
         } : {})
     },
     R3: {

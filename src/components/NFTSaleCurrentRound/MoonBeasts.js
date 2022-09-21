@@ -7,6 +7,15 @@ import {BLC_CONFIGS} from "../../configs/blockchain";
 const {MOONBEAST_SC} = BLC_CONFIGS
 
 const MoonBeasts = ({moonBeasts, moonBeastMinting= 0}) => {
+    const _renderMinting = () => {
+        if (!moonBeastMinting) {
+            return null
+        }
+
+        return range(1, moonBeastMinting).map(i =>
+            <NFTSkeleton className={'flex flex-col items-center mt-4 col-span-2 nft-item'} key={i}/>
+        )
+    }
     const renderMoonBeasts = () => {
         if (moonBeasts.length === 0 && !moonBeastMinting) {
             return (
@@ -51,11 +60,7 @@ const MoonBeasts = ({moonBeasts, moonBeastMinting= 0}) => {
                         )
                     })
                 }
-                {
-                    moonBeastMinting && range(0, moonBeastMinting).map(i =>
-                        <NFTSkeleton className={'flex flex-col items-center mt-4 col-span-2 nft-item'} key={i}/>
-                    )
-                }
+                {_renderMinting()}
             </div>
         )
     }

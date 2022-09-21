@@ -90,11 +90,6 @@ const NFTSaleCurrentRound = (props) => {
     }
 
     const fetchData = async (loading = true) => {
-        if (!window.setIntervalAvailableSlots) {
-            window.setIntervalAvailableSlots = {
-                setInterval: setInterval(_getAvailableSlots, 15000)
-            }
-        }
         loading && setLoading(true)
 
         // Switch Network on Desktop Wallet Extension
