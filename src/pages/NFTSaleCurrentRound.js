@@ -38,7 +38,7 @@ const NFTSaleCurrentRound = (props) => {
     const [isConfirmedTx, setIsConfirmedTx] = useState(false)
     const [mintAmount, setMintAmount] = useState(0)
     const [maxMintAmount, setMaxMintAmount] = useState(0)
-    const [chainNetwork, setChainNetwork] = useState('')
+    const [intervalAvailableSlots, setIntervalAvailableSlots] = useState(0)
 
     const mbRetrieverRef = useRef(0)
 
@@ -80,6 +80,10 @@ const NFTSaleCurrentRound = (props) => {
     }
 
     const _getAvailableSlots = async () => {
+        if (!intervalAvailableSlots) {
+            setIntervalAvailableSlots(setInterval(_getAvailableSlots, 15000))
+        }
+
         const web3js = new Web3(network.rpc_url)
         const saleContract = new web3js.eth.Contract(nftSaleABI.abi, NFT_SALE_SC)
         const [saleAvailableSlots, maxSaleSlots] = await Promise.all([
@@ -95,7 +99,6 @@ const NFTSaleCurrentRound = (props) => {
 
         // Switch Network on Desktop Wallet Extension
         provider && await switchNetwork(provider)
-        setChainNetwork(network.rpc_url)
 
         const web3js = new Web3(network.rpc_url)
         const mintPassContract = new web3js.eth.Contract(mintPassABI.abi, MINT_PASS_SC)
