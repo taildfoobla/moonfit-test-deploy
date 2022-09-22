@@ -1,12 +1,12 @@
 import React from 'react'
-import {BLC_CONFIGS} from '../../configs/blockchain'
+import configs from '../../configs'
 import {NFT_SALE_CURRENT_INFO} from "../../constants/blockchain"
 import classNames from "classnames"
 import NFTLink from '../NFTLink'
 import LoadingOutlined from "../../components/shared/LoadingOutlined";
 import mintPassUrl from '../../assets/images/mint-pass.jpeg'
 
-const {MINT_PASS_SC} = BLC_CONFIGS
+const {MINT_PASS_SC} = configs
 const {nftPerPass} = NFT_SALE_CURRENT_INFO
 
 const MintPass = ({isLoading, mintPasses, onSelect, onSelectAll, children}) => {

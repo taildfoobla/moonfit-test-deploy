@@ -1,6 +1,6 @@
 import axios from 'axios'
 import {getLocalStorage, LOCALSTORAGE_KEY} from "./storage"
-import {COMMON_CONFIGS} from "../configs/common"
+import COMMON_CONFIGS from "../configs"
 
 const {API_URL} = COMMON_CONFIGS
 

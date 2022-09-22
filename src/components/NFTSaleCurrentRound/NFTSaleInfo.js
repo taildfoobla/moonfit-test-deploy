@@ -3,10 +3,10 @@ import {Progress, Typography} from "antd"
 import {getAddressScanUrl, getShortAddress,} from "../../utils/blockchain"
 import CopyIcon from "../shared/CopyIcon"
 import {NFT_SALE_CURRENT_INFO} from "../../constants/blockchain"
-import {BLC_CONFIGS} from "../../configs/blockchain";
+import configs from "../../configs";
 import LoadingOutlined from "../../components/shared/LoadingOutlined";
 
-const {MOONBEAST_SC} = BLC_CONFIGS
+const {MOONBEAST_SC} = configs
 
 const {Paragraph} = Typography
 

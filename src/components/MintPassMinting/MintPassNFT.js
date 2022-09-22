@@ -1,10 +1,10 @@
 import React from 'react'
 import {Image} from 'antd'
 import {getNFTScanUrl} from '../../utils/blockchain'
-import {BLC_CONFIGS} from '../../configs/blockchain'
+import configs from '../../configs'
 import classNames from 'classnames'
 
-const {MINT_PASS_SC} = BLC_CONFIGS
+const {MINT_PASS_SC} = configs
 
 const MintPassNFT = ({tokenId, name, imageUrl}) => {
     const renderNFTLink = (address, tokenId) => {

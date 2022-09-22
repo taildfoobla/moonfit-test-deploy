@@ -1,5 +1,5 @@
 import React, {useState} from 'react'
-import {BLC_CONFIGS} from "../configs/blockchain";
+import configs from "../configs";
 import {NFT_SALE_CURRENT_INFO} from "../constants/blockchain";
 import nftSaleABI from '../abis/MFNFTSale.json'
 import mintPassABI from "../abis/MintPassNFT.json";
@@ -8,7 +8,7 @@ import {getNFTInfo} from "../utils/blockchain"
 import LoadingOutlined from './shared/LoadingOutlined'
 const imageExample = require('../assets/images/tofunft.png')
 
-const {MOONBEAST_NETWORK, MINT_PASS_SC} = BLC_CONFIGS
+const {MOONBEAST_NETWORK, MINT_PASS_SC} = configs
 const {NFT_SALE_SC} = NFT_SALE_CURRENT_INFO
 
 const MintPassVerify = () => {

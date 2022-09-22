@@ -3,8 +3,26 @@ import {getReactEnv} from "../utils/env"
 const getConfigs = () => {
     const env = getReactEnv('ENV')
     switch (env) {
+        case 'local':
+            return {
+                API_URL: 'http://0.0.0.0:8081/v1',
+                APP_URI: 'localhost:3000',
+
+                MOONBEAST_NETWORK: 'https://rpc.api.moonbase.moonbeam.network/',
+                MOONBEAM_SCAN_URL: 'https://moonbase.moonscan.io',
+                MINT_PASS_SC: '0x7E7d9fee5c5994aA7FC1dAeb231Af015e2FdAD3E',
+                // R1_NFT_SALE_SC: '0xcd176d741E211B63Ee6bBB5241FF51a09Dd5FbFC',
+                R1_NFT_SALE_SC: '0xdfE0a818579B1e5271c0E3597E1D79E83690d3D6',
+                R2_NFT_SALE_SC: '0x4E21cfb92C697993D3c2a37f187636e08Af2B242',
+                R3_NFT_SALE_SC: '',
+                R4_NFT_SALE_SC: '',
+                MOONBEAST_SC: '0x368a1BBED5Ca2984b0867109e0aeB2B6fAD3B17A',
+            }
         case 'production':
             return {
+                API_URL: 'https://api-prod.moonfit.xyz/v1',
+                APP_URI: 'app.moonfit.xyz',
+
                 MOONBEAST_NETWORK: 'https://rpc.api.moonbeam.network/',
                 MOONBEAM_SCAN_URL: 'https://moonscan.io',
                 MINT_PASS_SC: '0x6758053c0b27E478edE1E4882adFF708Fc4FA72D',
@@ -17,6 +35,9 @@ const getConfigs = () => {
         case 'development':
         default:
             return {
+                API_URL: 'https://api-dev.moonfit.xyz/v1',
+                APP_URI: 'dev-app.moonfit.xyz',
+
                 MOONBEAST_NETWORK: 'https://rpc.api.moonbase.moonbeam.network/',
                 MOONBEAM_SCAN_URL: 'https://moonbase.moonscan.io',
                 MINT_PASS_SC: '0x7E7d9fee5c5994aA7FC1dAeb231Af015e2FdAD3E',
@@ -30,4 +51,4 @@ const getConfigs = () => {
     }
 }
 
-export const BLC_CONFIGS = getConfigs()
+export default getConfigs()

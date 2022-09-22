@@ -3,9 +3,9 @@ import {Image} from "antd"
 import {range} from "../../utils/array"
 import NFTSkeleton from "../NFTSkeleton"
 import NFTLink from '../NFTLink'
-import {BLC_CONFIGS} from "../../configs/blockchain";
+import configs from "../../configs";
 import LoadingOutlined from "../../components/shared/LoadingOutlined";
-const {MOONBEAST_SC} = BLC_CONFIGS
+const {MOONBEAST_SC} = configs
 
 const MoonBeasts = ({moonBeasts, isLoading, moonBeastMinting= 0}) => {
     const _renderMinting = () => {
