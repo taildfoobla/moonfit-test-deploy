@@ -72,7 +72,6 @@ const MintPassVerify = () => {
             const mintPassContract = new web3js.eth.Contract(mintPassABI.abi, MINT_PASS_SC)
 
             const {isError} = await getNFTInfo(mintPassContract.methods, tokenId)
-            console.log({isError});
             if (isError) {
                 setType('error')
                 setMessage(`MoonFit Mint Pass #${tokenId} not found!`)
@@ -80,7 +79,6 @@ const MintPassVerify = () => {
                 const slot = await saleContract.methods.getMintPassAvailableSlots(tokenId).call()
                 _displayMessage(parseInt(slot, 10))
             }
-
         } catch (error) {
             console.error(error);
             setType('error')
