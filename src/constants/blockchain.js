@@ -1,4 +1,4 @@
-import {BLC_CONFIGS} from '../configs/blockchain'
+import configs from '../configs'
 import MetaMaskLogo from '../assets/images/wallets/MetaMaskLogo.svg';
 import SubWalletLogo from '../assets/images/wallets/SubWalletLogo.svg';
 import WalletConnectLogo from '../assets/images/wallets/WalletConnectLogo.svg';
@@ -6,8 +6,6 @@ import {getReactEnv} from "../utils/env";
 
 const ENV = getReactEnv('ENV')
 
-export const MOONBEAM_CHAIN_ID = 504
-export const MOONBEAM_CHAIN_ID_HEX = "0x504"
 export const WEB3_METHODS = {
     requestAccounts: {
         method: 'eth_requestAccounts'
@@ -191,15 +189,12 @@ export const WALLET_CONNECT = {
     },
 }
 
-export const SUBWALLET_EXT_URL = "https://bit.ly/3BGqFt1"
-export const METAMASK_EXT_URL = "https://chrome.google.com/webstore/detail/metamask/nkbihfbeogaeaoehlefnkodbefgpgknn"
-
 export const NFT_SALE_ROUNDS_INFO = {
     R1: {
         number: 1,
         title: 'NFT Sale 1',
         timelineTitle: 'Whitelist Sale #1',
-        NFT_SALE_SC: BLC_CONFIGS.R1_NFT_SALE_SC,
+        NFT_SALE_SC: configs.R1_NFT_SALE_SC,
         fromTokenID: 1,
         amount: 500,
         price: 79,
@@ -212,7 +207,7 @@ export const NFT_SALE_ROUNDS_INFO = {
         number: 2,
         title: 'NFT Sale 2',
         timelineTitle: 'Whitelist Sale #2',
-        NFT_SALE_SC: BLC_CONFIGS.R2_NFT_SALE_SC,
+        NFT_SALE_SC: configs.R2_NFT_SALE_SC,
         amount: 1500,
         fromTokenID: 501,
         price: 119,
@@ -230,7 +225,7 @@ export const NFT_SALE_ROUNDS_INFO = {
         number: 3,
         title: 'NFT Sale 3',
         timelineTitle: 'Whitelist Sale #3',
-        NFT_SALE_SC: BLC_CONFIGS.R3_NFT_SALE_SC,
+        NFT_SALE_SC: configs.R3_NFT_SALE_SC,
         dateMsg: '',
         amount: 3000,
         fromTokenID: 2001,
@@ -243,7 +238,7 @@ export const NFT_SALE_ROUNDS_INFO = {
         number: 4,
         title: 'NFT Sale 4',
         timelineTitle: 'Public Sale',
-        NFT_SALE_SC: BLC_CONFIGS.R4_NFT_SALE_SC,
+        NFT_SALE_SC: configs.R4_NFT_SALE_SC,
         amount: 5000,
         fromTokenID: 50001,
         price: "?",

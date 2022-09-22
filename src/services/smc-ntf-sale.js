@@ -1,9 +1,9 @@
 import {NFT_SALE_CURRENT_INFO} from "../constants/blockchain"
-import {BLC_CONFIGS} from '../configs/blockchain'
+import configs from '../configs'
 import Web3 from "web3";
 import nftSaleABI from "../abis/MFNFTSale.json";
 
-const {MOONBEAST_NETWORK} = BLC_CONFIGS
+const {MOONBEAST_NETWORK} = configs
 const {NFT_SALE_SC} = NFT_SALE_CURRENT_INFO
 
 const web3js = new Web3(MOONBEAST_NETWORK)

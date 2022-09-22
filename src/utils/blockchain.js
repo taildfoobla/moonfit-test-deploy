@@ -1,10 +1,10 @@
 import {getReactEnv} from "./env"
 import {WEB3_METHODS} from "../constants/blockchain"
-import {BLC_CONFIGS} from '../configs/blockchain'
+import configs from '../configs'
 import axios from "axios"
 
 const ENV = getReactEnv('ENV')
-const {MOONBEAM_SCAN_URL} = BLC_CONFIGS
+const {MOONBEAM_SCAN_URL} = configs
 
 export const getAddressScanUrl = (address) => {
     return `${MOONBEAM_SCAN_URL}/address/${address}`

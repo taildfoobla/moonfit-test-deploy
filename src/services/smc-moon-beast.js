@@ -1,4 +1,4 @@
-import {BLC_CONFIGS} from '../configs/blockchain'
+import configs from '../configs'
 import Web3 from "web3";
 import moonBeastABI from "../abis/MoonBeastNFT.json";
 import {range} from "../utils/array";
@@ -7,7 +7,7 @@ import {NFT_SALE_CURRENT_INFO} from '../constants/blockchain'
 import {getNFTInfo} from "../utils/blockchain";
 import Bluebird from "bluebird";
 
-const {MOONBEAST_NETWORK, MOONBEAST_SC} = BLC_CONFIGS
+const {MOONBEAST_NETWORK, MOONBEAST_SC} = configs
 
 const web3js = new Web3(MOONBEAST_NETWORK)
 const moonBeastContract = new web3js.eth.Contract(moonBeastABI.abi, MOONBEAST_SC)

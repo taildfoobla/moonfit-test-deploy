@@ -1,13 +1,13 @@
 import Web3 from 'web3'
 import Bluebird from 'bluebird'
-import {BLC_CONFIGS} from '../configs/blockchain'
+import configs from '../configs'
 import {NFT_SALE_CURRENT_INFO} from '../constants/blockchain'
 import mintPassABI from "../abis/MintPassNFT.json"
 import {range} from '../utils/array'
 import {balanceOfAccount, tokenOfOwnerByIndex} from './smc-common'
 import {getMintPassAvailableSlots} from './smc-ntf-sale'
 
-const {MOONBEAST_NETWORK, MINT_PASS_SC} = BLC_CONFIGS
+const {MOONBEAST_NETWORK, MINT_PASS_SC} = configs
 
 const web3js = new Web3(MOONBEAST_NETWORK)
 const mintPassContract = new web3js.eth.Contract(mintPassABI.abi, MINT_PASS_SC)
