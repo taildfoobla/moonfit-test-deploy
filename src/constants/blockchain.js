@@ -234,7 +234,7 @@ export const NFT_SALE_ROUNDS_INFO = {
 export const NFT_SALE_CURRENT_INFO = {
     ...NFT_SALE_ROUNDS_INFO.R2,
     title: 'NFT Sale 2',
-    dateMsg: '24nd September'
+    dateMsg: '24th September'
 }
 
 export const SUPPORTED_NETWORKS = [
