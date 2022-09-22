@@ -3,7 +3,7 @@ import Web3 from "web3"
 import {getWalletMerklePath} from "../services/tokenSale"
 import WalletAuthContext from "../contexts/WalletAuthContext"
 import contractABI from '../abis/MintPassNFT.json'
-import {Skeleton, notification, Spin, Typography} from "antd"
+import {notification, Spin, Typography} from "antd"
 import {getMainMessage} from "../utils/tx-error"
 import {
     getAddressScanUrl,

@@ -4,9 +4,10 @@ import {range} from "../../utils/array"
 import NFTSkeleton from "../NFTSkeleton"
 import NFTLink from '../NFTLink'
 import {BLC_CONFIGS} from "../../configs/blockchain";
+import LoadingOutlined from "../../components/shared/LoadingOutlined";
 const {MOONBEAST_SC} = BLC_CONFIGS
 
-const MoonBeasts = ({moonBeasts, moonBeastMinting= 0}) => {
+const MoonBeasts = ({moonBeasts, isLoading, moonBeastMinting= 0}) => {
     const _renderMinting = () => {
         if (!moonBeastMinting) {
             return null
@@ -43,6 +44,7 @@ const MoonBeasts = ({moonBeasts, moonBeastMinting= 0}) => {
                                  key={idx}>
                                 <div className={'flex'}>
                                     <Image
+                                        className="nft-wrap-img"
                                         width={'100%'}
                                         src={mb.imageUrl}
                                         alt={mb.name}
@@ -65,7 +67,7 @@ const MoonBeasts = ({moonBeasts, moonBeastMinting= 0}) => {
         )
     }
 
-    return (
+    const _render = () => (
         <div className={'card-body-row flex flex-col mt-3'}>
             <div className="flex justify-between">
                 <div className={'flex card-body-row-title'}>
@@ -78,6 +80,14 @@ const MoonBeasts = ({moonBeasts, moonBeastMinting= 0}) => {
             {renderMoonBeasts()}
         </div>
     )
+
+    if (isLoading) {
+        return <LoadingOutlined>
+            {_render()}
+        </LoadingOutlined>
+    }
+
+    return _render()
 }
 
 export default MoonBeasts

@@ -2,6 +2,10 @@
   --border-radius: 5px;
   padding-top: 10px;
 
+  .count-minted {
+    min-height: 30px;
+  }
+
   .nft-stages {
     .nft-timeline {
       .nft-timeline-ul {
@@ -40,26 +44,6 @@
           font-size: 20px;
         }
       }
-
-      //.nft-timeline-ul {
-      //  border-left-color: #F0489F;
-      //  border-left-width: 1px;
-      //  border-left-style: dashed;
-      //
-      //
-      //  .marker {
-      //    background: #E4007B;
-      //    box-shadow: 0px 0px 14px #E4007B;
-      //
-      //    //&:after {
-      //    //  background: radial-gradient(50% 50% at 50% 50%, rgba(161, 107, 216, 0) 0%, rgba(161, 107, 216, 0.261) 100%);
-      //    //}
-      //  }
-      //
-      //  .sale-title {
-      //    font-size: 20px;
-      //  }
-      //}
     }
   }
 

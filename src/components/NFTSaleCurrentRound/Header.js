@@ -1,8 +1,13 @@
 import React from 'react'
 import {NFT_SALE_CURRENT_INFO} from "../../constants/blockchain"
+import LoadingOutlined from "../../components/shared/LoadingOutlined";
 
-const Header = ({availableSlots}) => {
+const Header = ({availableSlots, isLoading=true}) => {
     const _renderProgress = () => {
+        if (isLoading) {
+            return <LoadingOutlined className="ml-3" />
+        }
+
         if (availableSlots > 0 ) {
             const nft = availableSlots > 1 ? 'NFTs' : 'NFT'
 

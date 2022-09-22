@@ -4,14 +4,13 @@ import {getAddressScanUrl, getShortAddress,} from "../../utils/blockchain"
 import CopyIcon from "../shared/CopyIcon"
 import {NFT_SALE_CURRENT_INFO} from "../../constants/blockchain"
 import {BLC_CONFIGS} from "../../configs/blockchain";
+import LoadingOutlined from "../../components/shared/LoadingOutlined";
 
 const {MOONBEAST_SC} = BLC_CONFIGS
 
 const {Paragraph} = Typography
 
-const NFTSaleInfo = ({availableSlots, maxSaleSlots, handleGetMinted = () => {}}) => {
-    const mintedSlots = maxSaleSlots - availableSlots
-
+const LineContract = (props) => {
     const renderAddressLink = (address) => {
         const url = getAddressScanUrl(address)
         return (
@@ -22,22 +21,24 @@ const NFTSaleInfo = ({availableSlots, maxSaleSlots, handleGetMinted = () => {}})
     }
 
     return (
-        <div className={'card-body-row flex flex-col'}>
+        <>
             <div className={'flex card-body-row-title'}>NFT contract</div>
             <div className={'flex flex-col'}>
-                <Paragraph className={'flex text-white'}
-                           copyable={{
-                               text: MOONBEAST_SC,
-                               format: 'text/plain',
-                               icon: [<CopyIcon/>]
-                           }}>
+                <Paragraph className={'flex text-white'} copyable={{text: MOONBEAST_SC, format: 'text/plain', icon: [<CopyIcon/>]}}>
                     {getShortAddress(MOONBEAST_SC, 14)}
                 </Paragraph>
                 <div className={'flex'}>
                     {renderAddressLink(MOONBEAST_SC)}
                 </div>
             </div>
-            <hr className={'card-body-separator'}/>
+        </>
+    )
+}
+
+
+const LinePrice = (props) => {
+    return (
+        <>
             <div className={'flex card-body-row-title mt-3'}>NFT Price</div>
             <div className={'flex flex-col'}>
                 <div className="flex justify-between items-center">
@@ -46,27 +47,53 @@ const NFTSaleInfo = ({availableSlots, maxSaleSlots, handleGetMinted = () => {}})
                     </div>
                 </div>
             </div>
+        </>
+    )
+}
+
+const NFTSaleInfo = ({availableSlots, maxSaleSlots, isLoading, handleGetMinted = () => {}}) => {
+    const mintedSlots = maxSaleSlots - availableSlots
+
+    const renderMinted = () => {
+        if (isLoading) {
+            return <LoadingOutlined size={24} />
+        }
+
+        if (availableSlots < 1) {
+            return (
+                <div className="ml-3 bg-[#EF2763] text-white normal-case font-bold px-4 pb-1 rounded dark:bg-green-500 dark:text-white">
+                    Sold out
+                </div>
+            )
+        }
+
+        return <div className={'text-[#4ccbc9]'}>{mintedSlots} / {maxSaleSlots}</div>
+    }
+
+    const getProgressPercent = () => {
+        return Math.floor(mintedSlots / maxSaleSlots * 100)
+    }
+
+
+    return (
+        <div className={'card-body-row flex flex-col'}>
+            <LineContract />
             <hr className={'card-body-separator'}/>
-            <div onClick={handleGetMinted}>
-                <div className={'flex justify-between items-center mt-2'}>
+            <LinePrice />
+            <hr className={'card-body-separator'}/>
+            <div className="cursor-pointer" onClick={handleGetMinted}>
+                <div className={'flex justify-between items-center mt-2 count-minted'}>
                     <div className={'flex card-body-row-title'}>
                         Total Minted
                     </div>
-                    {
-                        availableSlots > 0 ? (
-                            <div className={'text-[#4ccbc9]'}>{mintedSlots} / {maxSaleSlots}</div>
-                        ) : (
-                            <div className="ml-3 bg-[#EF2763] text-white normal-case font-bold px-4 pb-1 rounded dark:bg-green-500 dark:text-white">
-                                Sold out
-                            </div>
-                        )
-                    }
+                    {renderMinted()}
                 </div>
+
                 <div className={'flex flex-col text-[#4ccbc9]'}>
                     <div className="flex justify-between items-center">
                         <Progress
                             strokeColor={{from: '#4ccbc9', to: '#e4007b'}}
-                            percent={Math.floor(mintedSlots / maxSaleSlots * 100)}
+                            percent={getProgressPercent()}
                             status="active"
                             showInfo={false}
                         />

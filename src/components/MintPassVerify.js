@@ -2,6 +2,7 @@ import React, {useState} from 'react'
 import {BLC_CONFIGS} from "../configs/blockchain";
 import {NFT_SALE_CURRENT_INFO} from "../constants/blockchain";
 import nftSaleABI from '../abis/MFNFTSale.json'
+import { Popover } from 'antd';
 import Web3 from "web3";
 
 const {MINT_PASS_SC, MOONBEAST_NETWORK} = BLC_CONFIGS
@@ -124,6 +125,12 @@ const MintPassVerify = () => {
         )
     }
 
+    const content = (
+        <div>
+            A MoonFit MintPass can be used only once in each Sale Round. Please verify the MintPass by enter it’s name to below box to verify before purchasing.
+        </div>
+    )
+
     return (
         <div className="section-content">
             <div className="container">
@@ -132,7 +139,9 @@ const MintPassVerify = () => {
                         <div className="card-title flex flex-col lg:flex-row lg:justify-between items-start mx-auto mt-0 mb-6 lg:mb-10">
                             <div className={'flex text-white w-full lg:w-auto lg:justify-start mt-0 mp-verify__title'}>
                                 Mint pass VERIFY
-                                {icons.info}
+                                <Popover content={content} trigger="hover">
+                                    {icons.info}
+                                </Popover>
                             </div>
                         </div>
                         <form className="card-body" onSubmit={handleSubmit}>
