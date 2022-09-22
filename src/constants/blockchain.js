@@ -218,7 +218,7 @@ export const NFT_SALE_ROUNDS_INFO = {
         price: 119,
         mintPass: 1,
         nftPerPass: 2,
-        dateMsg: '24nd September',
+        dateMsg: '24th September',
         time: 1664028000000, // Date and time (GMT): Saturday, September 24, 2022 2:00:00 PM,
         ...(ENV === 'development' ? {
             time: 1661176800000,

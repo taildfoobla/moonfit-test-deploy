@@ -349,7 +349,7 @@ const NFTSaleRoundTwo = (props) => {
                                         <div className={'flex justify-center mt-6'}>
                                         <span
                                             className="bg-[#A16BD8] text-white normal-case font-bold px-4 pb-1 rounded dark:bg-green-500 dark:text-white">
-                                            24nd September
+                                            24th September
                                         </span>
                                             {
                                                 availableSlots > 0 ? (
