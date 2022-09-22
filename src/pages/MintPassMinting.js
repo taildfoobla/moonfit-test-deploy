@@ -33,7 +33,7 @@ const MintPassMinting = (props) => {
     const [mintLoading, setMintLoading] = useState(false)
     const [mintPassInfo, setMintPassInfo] = useState({})
     const [mintPasses, setMintPasses] = useState([])
-    const [mpLoading, setMpLoading] = useState(true)
+    const [mpLoading, setMpLoading] = useState(false)
     const [isConfirmedTx, setIsConfirmedTx] = useState(false)
 
     const mpRetrieverRef = useRef(0)
