@@ -1,5 +1,5 @@
 import React, {useContext, useEffect, useState} from 'react'
-import MFLogoNav from "../../assets/images/logo/logo.png"
+import MFLogoNav from "../../assets/images/logo/logo2.png"
 import {Drawer, Modal, Typography} from "antd"
 import WalletAuthContext from "../../contexts/WalletAuthContext"
 import {Link, withRouter} from "react-router-dom"
