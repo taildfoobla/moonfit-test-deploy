@@ -30,7 +30,7 @@ const MintPassVerify = () => {
         if (!_isNumeric(tokenId)) {
             let m;
             // eslint-disable-next-line
-            const regex = new RegExp(`(MoonFit Mint Pass #)\s*(\\d+).?`, 'gmi');
+            const regex = new RegExp(`(MoonFit Mint Pass #)?\s*(\\d+).?`, 'gmi');
 
             while ((m = regex.exec(tokenId)) !== null) {
                 // This is necessary to avoid infinite loops with zero-width matches
