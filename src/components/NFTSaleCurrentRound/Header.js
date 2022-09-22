@@ -29,8 +29,9 @@ const Header = ({availableSlots, isLoading=true}) => {
         <div className="container" key={'_renderHead'}>
             <div className={'flex flex-col'}>
                 <div className={'flex justify-center'}>
-                    <h2 className={'font-bold text-3xl secondary-color'}>NFT Sale <span
-                        className={'text-white'}>Round #{NFT_SALE_CURRENT_INFO.number}</span></h2>
+                    <h2 className={'font-bold text-3xl secondary-color'}>
+                        NFT Sale <span className={'text-white'}>Round #{NFT_SALE_CURRENT_INFO.number}</span>
+                    </h2>
                 </div>
                 <div className={'flex justify-center mt-6'}>
                         <span

@@ -5,9 +5,10 @@ import WalletAuthContext from "../contexts/WalletAuthContext"
 import {CountdownComponent} from "./CountdownComponent"
 import {NFT_SALE_CURRENT_INFO} from "../constants/blockchain"
 
-
 const WalletAuthRequiredNFTSale = ({children, className}) => {
     const {isConnected, showWalletSelectModal} = useContext(WalletAuthContext)
+    const currentSale = NFT_SALE_CURRENT_INFO
+    const isStarted = currentSale.time && currentSale.time <= new Date().getTime()
 
     // const isSubWalletInstalled = Boolean((window?.injectedWeb3 && window[PROVIDER_NAME.SubWallet]) || (window[PROVIDER_NAME.MetaMask]))
 
@@ -28,10 +29,7 @@ const WalletAuthRequiredNFTSale = ({children, className}) => {
                     </h1>
                     <div className="section-description-wrap text-center xl:text-left">
                         <div className={'flex items-center mt-8 xl:justify-start justify-center'}>
-                            <div
-                                className={'hidden md:block normal-case mr-2 text-white text-base'}>
-                                Start in:
-                            </div>
+                            {isStarted ? null : (<div className={'hidden md:block normal-case mr-2 text-white text-base'}>Start in:</div>)}
                             <div className={'flex justify-center'}>
                                 <CountdownComponent
                                     date={NFT_SALE_CURRENT_INFO.time}

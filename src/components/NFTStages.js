@@ -75,6 +75,7 @@ const NFTStages = ({children, className = ''}) => {
                                     className={'hidden md:block normal-case mr-2 text-white text-base'}>
                                     Start in:
                                 </div>
+
                                 <div>
                                     <CountdownComponent date={saleObj.time}
                                                         completedCallback={() => window.location.reload()}

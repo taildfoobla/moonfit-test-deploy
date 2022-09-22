@@ -35,10 +35,6 @@ export const CountdownComponent = ({date, completedMessage = 'You are good to go
         }
     }
     return (
-        <Countdown date={date}
-                   renderer={renderer}
-                   // zeroPadTime={2}
-                   // zeroPadDays={2}
-        />
+        <Countdown date={date} renderer={renderer}/>
     )
 }

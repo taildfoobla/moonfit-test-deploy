@@ -4,7 +4,8 @@ import {NFT_SALE_CURRENT_INFO} from "../constants/blockchain";
 import nftSaleABI from '../abis/MFNFTSale.json'
 import { Popover } from 'antd';
 import Web3 from "web3";
-
+import LoadingOutlined from './shared/LoadingOutlined'
+const imageExample = require('../assets/images/tofunft.png')
 
 const {MOONBEAST_NETWORK} = BLC_CONFIGS
 const {NFT_SALE_SC} = NFT_SALE_CURRENT_INFO
@@ -103,14 +104,7 @@ const MintPassVerify = () => {
             </svg>
         ),
         spin: (
-            <span className="ant-btn-loading-icon">
-                <span role="img" aria-label="loading" className="anticon anticon-loading anticon-spin">
-                    <svg viewBox="0 0 1024 1024" focusable="false" data-icon="loading" width="1em" height="1em"
-                         fill="currentColor" aria-hidden="true">
-                        <path d="M988 548c-19.9 0-36-16.1-36-36 0-59.4-11.6-117-34.6-171.3a440.45 440.45 0 00-94.3-139.9 437.71 437.71 0 00-139.9-94.3C629 83.6 571.4 72 512 72c-19.9 0-36-16.1-36-36s16.1-36 36-36c69.1 0 136.2 13.5 199.3 40.3C772.3 66 827 103 874 150c47 47 83.9 101.8 109.7 162.7 26.7 63.1 40.2 130.2 40.2 199.3.1 19.9-16 36-35.9 36z"></path>
-                    </svg>
-                </span>
-            </span>
+            <LoadingOutlined size={16} className="mp-verify__loading" />
         ),
         info: (
             <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -134,19 +128,23 @@ const MintPassVerify = () => {
             <div className="container">
                 <div className="moonfit-card">
                     <div className="moonfit-card-inner">
-                        <div className="card-title flex flex-col lg:flex-row lg:justify-between items-start mx-auto mt-0 mb-6 lg:mb-10">
+                        <div className="card-title flex flex-col lg:flex-row lg:justify-between items-start mx-auto mt-0">
                             <div className={'flex text-white w-full lg:w-auto lg:justify-start mt-0 mp-verify__title'}>
                                 Mint pass VERIFY
-                                <Popover overlayClassName="mp-verify__info" color="#2A1143" content={content} trigger="hover">
-                                    {icons.info}
-                                </Popover>
                             </div>
+                        </div>
+                        <div className="mp-verify__info">
+                            A MoonFit MintPass can be used only once in each Sale Round.
+                            Please verify the MintPass number to below box to verify before purchasing.
+                        </div>
+                        <div>
+                            <img src={imageExample} alt=""/>
                         </div>
                         <form className="card-body" onSubmit={handleSubmit}>
                             <div className={'mt-4 mb-6 lg:mt-8'}>
                                 <div className="mp-verify__body">
                                     <div className="mp-verify__header">
-                                        Enter the MINTPASS NAME
+                                        PLEASE Enter the MINTPASS NUMBER
                                     </div>
                                     <div className="flex justify-between">
                                         <div className="w-full">
@@ -157,8 +155,7 @@ const MintPassVerify = () => {
                                                 type="text"/>
                                         </div>
                                         <div>
-                                            <button type="submit"
-                                                    className={`ant-btn mp-verify__btn ${isLoading ? 'ant-btn-loading' : ''}`}>
+                                            <button type="submit"  disabled={isLoading} className={`ant-btn mp-verify__btn ${isLoading ? 'ant-btn-loading' : ''}`}>
                                                 {isLoading && icons.spin}
                                                 VERIFY
                                             </button>

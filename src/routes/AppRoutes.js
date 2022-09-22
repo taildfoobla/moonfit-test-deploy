@@ -20,6 +20,12 @@ export const AppRoutes = [
         env: Paths.NFTSale.env
     },
     {
+        path: Paths.MintPassVerify.path,
+        title: "Mint Pass Verify",
+        external: false,
+        env: Paths.MintPassVerify.env
+    },
+    {
         path: Paths.PrivateSale.path,
         title: "MFG Private Sale",
         external: false,

@@ -74,7 +74,6 @@ const NFTSaleInfo = ({availableSlots, maxSaleSlots, isLoading, handleGetMinted =
         return Math.floor(mintedSlots / maxSaleSlots * 100)
     }
 
-
     return (
         <div className={'card-body-row flex flex-col'}>
             <LineContract />

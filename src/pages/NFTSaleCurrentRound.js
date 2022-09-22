@@ -8,6 +8,7 @@ import {notification} from "antd"
 import {getMainMessage} from "../utils/tx-error"
 import {getNFTInfo, getShortAddress, getTxScanUrl, sendTransaction, switchNetwork} from "../utils/blockchain"
 import {BLC_CONFIGS} from '../configs/blockchain'
+import {MinusOutlined, PlusOutlined} from '@ant-design/icons';
 import LoadingWrapper from "../components/shared/LoadingWrapper"
 import Paths from "../routes/Paths"
 import EnvWrapper from "../components/shared/EnvWrapper"
@@ -17,13 +18,13 @@ import {NFT_SALE_CURRENT_INFO} from "../constants/blockchain"
 import {getStringOfBigNumber} from "../utils/number"
 import classNames from "classnames"
 import WalletAuthRequiredNFTSale from "../components/WalletAuthRequiredNFTSale"
-import MintPassVerify from "../components/MintPassVerify"
 import NFTStages from "../components/NFTStages"
 import Header from '../components/NFTSaleCurrentRound/Header'
 import ButtonMintNFT from '../components/NFTSaleCurrentRound/ButtonMintNFT'
 import NFTSaleInfo from '../components/NFTSaleCurrentRound/NFTSaleInfo'
 import MoonBeasts from '../components/NFTSaleCurrentRound/MoonBeasts'
 import MintPass from '../components/NFTSaleCurrentRound/MintPass'
+import BigNumber from "bignumber.js";
 
 const {MINT_PASS_SC, MOONBEAST_SC} = BLC_CONFIGS
 const {NFT_SALE_SC, nftPerPass} = NFT_SALE_CURRENT_INFO
@@ -129,7 +130,26 @@ const NFTSaleCurrentRound = (props) => {
             }
         }))
 
-        console.log(mintPasses);
+        mintPasses.sort((a, b) => {
+            if (a.isOutOfSlot && b.isOutOfSlot) {
+                return 0
+            }
+
+            if (a.isOutOfSlot) {
+                return 1
+            }
+
+            if (b.isOutOfSlot) {
+                return -1
+            }
+
+            if (a.availableSlots === b.availableSlots) {
+                return 0
+            }
+
+            return a.availableSlots - b.availableSlots
+        })
+
 
         setMintPasses(mintPasses)
         const _maxMintAmount = mintPasses.map(item => item.availableSlots).reduce((a, b) => a + b, 0)
@@ -318,6 +338,10 @@ const NFTSaleCurrentRound = (props) => {
         }
     }
 
+    const getTotalFee = () => {
+        return new BigNumber(NFT_SALE_CURRENT_INFO.price).multipliedBy(parseInt(mintAmount, 10), 10).toString()
+    }
+
     const totalMintPassSelected = () => mintPasses.filter(item => item.isSelected).length
 
     const _renderFoot = () => {
@@ -325,22 +349,26 @@ const NFTSaleCurrentRound = (props) => {
             return
         }
 
-        const _totalMintPassSelected = totalMintPassSelected()
         const isMintBtnDisabled = totalMintPassSelected() === 0 || mintLoading || moonBeastMinting || !mintAmount
 
         return (
-            <div
-                className={classNames('flex flex-row items-center mt-6', {
-                    'justify-between': _totalMintPassSelected > 0,
-                    'justify-center': _totalMintPassSelected === 0
-                })}>
-                <div className={'normal-case items-center'}>
-                    <span className={'mb-1'}>Total: </span>
-                    <span className={'race-sport-font primary-color'}>
-                        {NFT_SALE_CURRENT_INFO.price * mintAmount} GLMR
+            <div className="flex flex-row items-center mt-6 form-mint justify-between">
+                <div className="form-mint__fee normal-case items-center">
+                    <span className="mb-1 form-mint__fee-label">Fee: </span>
+                    <span className={'race-sport-font primary-color form-mint__fee-value'}>
+                        {getTotalFee()} GLMR
                     </span>
-                    <input onChange={(e) => _updateMintAmount(e.target.value, true)} value={mintAmount} type="number"
-                           min={0}/>
+                </div>
+                <div className="form-mint__warp-input">
+                    <span className="form-mint__input-icon icon-minus" onClick={() => _updateMintAmount(mintAmount - 1, true)}>
+                        <MinusOutlined size={24} />
+                    </span>
+                    <span className="form-mint__input-value">
+                        {mintAmount}
+                    </span>
+                    <span className="form-mint__input-icon icon-plus" onClick={() => _updateMintAmount(mintAmount + 1, true)}>
+                        <PlusOutlined size={24} />
+                    </span>
                 </div>
                 <ButtonMintNFT isDisabled={isMintBtnDisabled} isLoading={mintLoading} handleMintNFT={handleMintNFT}>
                     {mintAmount > 0 ? `Mint ${mintAmount} NFT${mintAmount > 1 ? "s" : ""}` : "Mint NFT"}
@@ -384,11 +412,12 @@ const NFTSaleCurrentRound = (props) => {
                                         handleGetMinted={handleGetMinted}
                                     />
 
-                                    <MintPass isLoading={mintPassLoading} mintPasses={mintPasses} onSelect={onClickMintPass}/>
+                                    <MintPass isLoading={mintPassLoading} mintPasses={mintPasses} onSelect={onClickMintPass}>
+                                        <hr className={'card-body-separator'}/>
+                                        {_renderFoot()}
+                                    </MintPass>
 
                                     <MoonBeasts isLoading={moonBeastLoading} moonBeasts={moonBeasts} moonBeastMinting={moonBeastMinting}/>
-
-                                    {_renderFoot()}
                                 </div>
                             </div>
                         </div>
@@ -407,7 +436,6 @@ const NFTSaleCurrentRound = (props) => {
                             !loading && (
                                 [
                                     <Header availableSlots={saleInfo.availableSlots} isLoading={saleInfoLoading} key="Header"/>,
-                                    <MintPassVerify key="MintPassVerify"/>,
                                     _renderContainer()
                                 ]
                             )
