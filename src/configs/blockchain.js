@@ -22,7 +22,7 @@ const getConfigs = () => {
                 MINT_PASS_SC: '0x7E7d9fee5c5994aA7FC1dAeb231Af015e2FdAD3E',
                 // R1_NFT_SALE_SC: '0xcd176d741E211B63Ee6bBB5241FF51a09Dd5FbFC',
                 R1_NFT_SALE_SC: '0xdfE0a818579B1e5271c0E3597E1D79E83690d3D6',
-                R2_NFT_SALE_SC: '0xd8Ff746414f878c8Ac16D79cCe045ffFb3Ace0fA',
+                R2_NFT_SALE_SC: '0x4E21cfb92C697993D3c2a37f187636e08Af2B242',
                 R3_NFT_SALE_SC: '',
                 R4_NFT_SALE_SC: '',
                 MOONBEAST_SC: '0x368a1BBED5Ca2984b0867109e0aeB2B6fAD3B17A',
