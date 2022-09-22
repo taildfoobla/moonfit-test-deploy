@@ -5,7 +5,8 @@ import nftSaleABI from '../abis/MFNFTSale.json'
 import { Popover } from 'antd';
 import Web3 from "web3";
 
-const {MINT_PASS_SC, MOONBEAST_NETWORK} = BLC_CONFIGS
+
+const {MOONBEAST_NETWORK} = BLC_CONFIGS
 const {NFT_SALE_SC} = NFT_SALE_CURRENT_INFO
 
 const MintPassVerify = () => {
@@ -14,8 +15,6 @@ const MintPassVerify = () => {
     const [type, setType] = useState('warning');
     const [isLoading, setIsLoading] = useState(false);
     const [message, setMessage] = useState(defaultMessage);
-
-    const placeholderInput = 'https://tofunft.com/nft/moonbeam/... OR https://moonbeam.nftscan.com/... OR TokenID'
 
     const _isNumeric = (value) => /^\d+$/.test(value);
 
@@ -31,13 +30,14 @@ const MintPassVerify = () => {
         if (!_isNumeric(tokenId)) {
             let m;
             // eslint-disable-next-line
-            const regex = new RegExp(`(.*tofunft\.com\/nft\/moonbeam|.*moonbeam\.nftscan\.com)\/${MINT_PASS_SC}\/(\\d+).?`, 'gmi');
+            const regex = new RegExp(`(MoonFit Mint Pass #)\s*(\\d+).?`, 'gmi');
 
             while ((m = regex.exec(tokenId)) !== null) {
                 // This is necessary to avoid infinite loops with zero-width matches
                 if (m.index === regex.lastIndex) {
                     regex.lastIndex++;
                 }
+                console.log(m);
 
                 if (m && m[2]) {
                     tokenId = m[2]
@@ -45,9 +45,9 @@ const MintPassVerify = () => {
             }
         }
 
-        if (!_isNumeric(tokenId)) {
-            setType('error')
-            setMessage('Can\'t find MintPassNFT')
+        if (!_isNumeric(tokenId) || tokenId < 1) {
+            setType('warning')
+            setMessage('Invalid name. Please enter the MintPass name in the correct format!')
             return
         }
 
@@ -79,10 +79,6 @@ const MintPassVerify = () => {
         setTimeout( () => {
             setIsLoading(false)
         }, 350)
-    }
-
-    const handleShowInfo = () => {
-        alert('Mint Pass verify info')
     }
 
     const icons = {
@@ -117,7 +113,7 @@ const MintPassVerify = () => {
             </span>
         ),
         info: (
-            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" onClick={handleShowInfo}>
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M10 20C15.5228 20 20 15.5228 20 10C20 4.47715 15.5228 0 10 0C4.47715 0 0 4.47715 0 10C0 15.5228 4.47715 20 10 20Z" fill="#583877"/>
                 <path d="M10 15C10.5523 15 11 14.5523 11 14C11 13.4477 10.5523 13 10 13C9.44772 13 9 13.4477 9 14C9 14.5523 9.44772 15 10 15Z" fill="white"/>
                 <path d="M10 11V10.375C10.3956 10.375 10.7822 10.2467 11.1111 10.0063C11.44 9.76597 11.6964 9.42433 11.8478 9.02462C11.9991 8.62491 12.0387 8.18507 11.9616 7.76074C11.8844 7.33641 11.6939 6.94663 11.4142 6.64071C11.1345 6.33478 10.7781 6.12644 10.3902 6.04203C10.0022 5.95763 9.60009 6.00095 9.23463 6.16651C8.86918 6.33208 8.55682 6.61246 8.33706 6.97219C8.1173 7.33192 8 7.75485 8 8.1875" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
@@ -127,7 +123,9 @@ const MintPassVerify = () => {
 
     const content = (
         <div>
-            A MoonFit MintPass can be used only once in each Sale Round. Please verify the MintPass by enter it’s name to below box to verify before purchasing.
+            A MoonFit MintPass can be used only once in each Sale Round.
+            <br/>
+            Please verify the MintPass by enter it’s name to below box to verify before purchasing.
         </div>
     )
 
@@ -139,7 +137,7 @@ const MintPassVerify = () => {
                         <div className="card-title flex flex-col lg:flex-row lg:justify-between items-start mx-auto mt-0 mb-6 lg:mb-10">
                             <div className={'flex text-white w-full lg:w-auto lg:justify-start mt-0 mp-verify__title'}>
                                 Mint pass VERIFY
-                                <Popover content={content} trigger="hover">
+                                <Popover overlayClassName="mp-verify__info" color="#2A1143" content={content} trigger="hover">
                                     {icons.info}
                                 </Popover>
                             </div>
@@ -148,13 +146,13 @@ const MintPassVerify = () => {
                             <div className={'mt-4 mb-6 lg:mt-8'}>
                                 <div className="mp-verify__body">
                                     <div className="mp-verify__header">
-                                        Enter the MINTPASS LINK on NFT Marketplace
+                                        Enter the MINTPASS NAME
                                     </div>
                                     <div className="flex justify-between">
                                         <div className="w-full">
                                             <input
                                                 onChange={(e) => setName(e.target.value)} value={name}
-                                                placeholder={placeholderInput}
+                                                placeholder="MoonFit Mint Pass #1"
                                                 className="ant-input mp-verify__input"
                                                 type="text"/>
                                         </div>

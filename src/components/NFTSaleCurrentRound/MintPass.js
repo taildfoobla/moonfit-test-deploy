@@ -10,15 +10,13 @@ const {MINT_PASS_SC} = BLC_CONFIGS
 const {nftPerPass} = NFT_SALE_CURRENT_INFO
 
 const MintPass = ({isLoading, mintPasses, onSelect}) => {
-    if (!mintPasses.length) {
-        return (
-            <div className={'my-3'}>
-                <div className={'text-center text-white normal-case'}>You don't own any mint pass yet.</div>
-                <div className={'text-center text-white normal-case'}>No Mint-Pass = No Beast or Beauty NFT mint.
-                </div>
+    const noMintPass = (
+        <div className={'my-3'}>
+            <div className={'text-center text-white normal-case'}>You don't own any mint pass yet.</div>
+            <div className={'text-center text-white normal-case'}>No Mint-Pass = No Beast or Beauty NFT mint.
             </div>
-        )
-    }
+        </div>
+    )
 
     const renderBadge = (mintPass) => {
         if (!mintPass.bought) {
@@ -38,10 +36,13 @@ const MintPass = ({isLoading, mintPasses, onSelect}) => {
 
         return (
             <div className={_className}
-                key={idx}
-                onClick={() => onSelect(item.tokenId)}>
+                 key={idx}
+                 onClick={() => onSelect(item.tokenId)}>
                 {renderBadge(item)}
-                <div className={classNames('flex justify-center square-img-container nft-wrap-img', {'mp-selected': item.isSelected, 'mp-out-of-slot': item.isOutOfSlot})}>
+                <div className={classNames('flex justify-center square-img-container nft-wrap-img', {
+                    'mp-selected': item.isSelected,
+                    'mp-out-of-slot': item.isOutOfSlot
+                })}>
                     <img src={item.imageUrl || mintPassUrl} alt={item.name}/>
                 </div>
                 <div className={'flex flex-col normal-case race-sport-font text-sm mt-4'}>
@@ -68,10 +69,13 @@ const MintPass = ({isLoading, mintPasses, onSelect}) => {
                     Selected {totalMintPassSelected()}
                 </div>
             </div>
-
-            <div className={"grid grid-cols-4 lg:grid-cols-6 gap-2 lg:gap-4"}>
-                {_renderMinPass}
-            </div>
+            {
+                mintPasses.length ? (
+                    <div className={"grid grid-cols-4 lg:grid-cols-6 gap-2 lg:gap-4"}>
+                        {_renderMinPass}
+                    </div>
+                ) : noMintPass
+            }
         </div>
     )
 

@@ -193,6 +193,22 @@
     padding: 14px 22px;
   }
 
+  &__info {
+    text-transform: none;
+
+    .ant-popover-inner-content {
+      color: white;
+    }
+
+    .ant-popover-arrow-content {
+      background: #2A1143;
+
+      &:before {
+        background: #2A1143;
+      }
+    }
+  }
+
   &__input {
     background-color: #1C0532 !important;
     color: #A8ADC3 !important;
@@ -200,7 +216,7 @@
 
 
     &::placeholder {
-      color: #A8ADC3;
+      color: rgb(168 173 195 / 71%);
     }
   }
 
