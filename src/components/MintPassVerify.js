@@ -2,12 +2,14 @@ import React, {useState} from 'react'
 import {BLC_CONFIGS} from "../configs/blockchain";
 import {NFT_SALE_CURRENT_INFO} from "../constants/blockchain";
 import nftSaleABI from '../abis/MFNFTSale.json'
-import { Popover } from 'antd';
+import nftMintPassABI from '../abis/MintPassNFT.json'
 import Web3 from "web3";
+import {getNFTInfo} from "../utils/blockchain"
 import LoadingOutlined from './shared/LoadingOutlined'
+import mintPassABI from "../abis/MintPassNFT.json";
 const imageExample = require('../assets/images/tofunft.png')
 
-const {MOONBEAST_NETWORK} = BLC_CONFIGS
+const {MOONBEAST_NETWORK, MINT_PASS_SC} = BLC_CONFIGS
 const {NFT_SALE_SC} = NFT_SALE_CURRENT_INFO
 
 const MintPassVerify = () => {
@@ -38,7 +40,6 @@ const MintPassVerify = () => {
                 if (m.index === regex.lastIndex) {
                     regex.lastIndex++;
                 }
-                console.log(m);
 
                 if (m && m[2]) {
                     tokenId = m[2]
@@ -68,18 +69,27 @@ const MintPassVerify = () => {
         try {
             const web3js = new Web3(MOONBEAST_NETWORK)
             const saleContract = new web3js.eth.Contract(nftSaleABI.abi, NFT_SALE_SC)
+            const mintPassContract = new web3js.eth.Contract(mintPassABI.abi, MINT_PASS_SC)
 
-            const slot = await saleContract.methods.getMintPassAvailableSlots(tokenId).call()
+            const {isError} = await getNFTInfo(mintPassContract.methods, tokenId)
+            console.log({isError});
+            if (isError) {
+                setType('error')
+                setMessage(`MoonFit Mint Pass #${tokenId} not found!`)
+            } else {
+                const slot = await saleContract.methods.getMintPassAvailableSlots(tokenId).call()
+                _displayMessage(parseInt(slot, 10))
+            }
 
-            _displayMessage(parseInt(slot, 10))
         } catch (error) {
             console.error(error);
+            setType('error')
             setMessage('Can\'t verify MintPassNFT. Please try again')
         }
 
         setTimeout( () => {
             setIsLoading(false)
-        }, 350)
+        }, 250)
     }
 
     const icons = {
@@ -114,14 +124,6 @@ const MintPassVerify = () => {
             </svg>
         )
     }
-
-    const content = (
-        <div>
-            A MoonFit MintPass can be used only once in each Sale Round.
-            <br/>
-            Please verify the MintPass by enter it’s name to below box to verify before purchasing.
-        </div>
-    )
 
     return (
         <div className="section-content">

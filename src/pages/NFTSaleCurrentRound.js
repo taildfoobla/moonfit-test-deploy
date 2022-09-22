@@ -16,7 +16,6 @@ import CurveBGWrapper from "../wrappers/CurveBG"
 import {range} from "../utils/array"
 import {NFT_SALE_CURRENT_INFO} from "../constants/blockchain"
 import {getStringOfBigNumber} from "../utils/number"
-import classNames from "classnames"
 import WalletAuthRequiredNFTSale from "../components/WalletAuthRequiredNFTSale"
 import NFTStages from "../components/NFTStages"
 import Header from '../components/NFTSaleCurrentRound/Header'
@@ -90,6 +89,9 @@ const NFTSaleCurrentRound = (props) => {
             saleContract.methods.getAvailableSlots().call(),
             saleContract.methods._maxSaleAmount().call(),
         ])
+
+
+        console.log(await saleContract.methods.getReadySale().call())
 
         setSaleInfo({availableSlots, maxSaleSlots})
         setSaleInfoLoading(false)

@@ -80,9 +80,11 @@ export const getNFTInfo = async (methods, tokenId) => {
             const cid = image.replace('ipfs://', '')
             const imageUrl = `https://${cid}.ipfs.nftstorage.link/`
             return {name, imageUrl}
-        } else return {name, imageUrl: image}
+        }
+
+        return {name, imageUrl: image}
     } catch (e) {
-        console.log("getNFTInfo Exception", e.message)
-        return {name: null, imageUrl: null}
+        console.log("getNFTInfo Exception: ", e.message)
+        return {name: null, imageUrl: null, isError: true}
     }
 }
