@@ -3,12 +3,11 @@ import Web3 from "web3"
 import {getWalletMerklePath} from "../services/tokenSale"
 import WalletAuthContext from "../contexts/WalletAuthContext"
 import contractABI from '../abis/MintPassNFT.json'
-import {Image, notification, Spin, Typography} from "antd"
+import {Skeleton, notification, Spin, Typography} from "antd"
 import {getMainMessage} from "../utils/tx-error"
 import {
     getAddressScanUrl,
     getNFTInfo,
-    getNFTScanUrl,
     getShortAddress,
     getTxScanUrl,
     sendTransaction,
@@ -22,8 +21,9 @@ import {LoadingOutlined} from "@ant-design/icons"
 import CurveBGWrapper from "../wrappers/CurveBG"
 import CopyIcon from "../components/shared/CopyIcon"
 import WalletAuthRequiredMintPass from "../components/WalletAuthRequiredMintPass"
+import MintPassNFT from "../components/MintPassMinting/MintPassNFT";
 import {range} from "../utils/array"
-import classNames from "classnames"
+import classNames from "classnames";
 
 const {MINT_PASS_SC} = BLC_CONFIGS
 const {Paragraph} = Typography
@@ -33,7 +33,7 @@ const MintPassMinting = (props) => {
     const [mintLoading, setMintLoading] = useState(false)
     const [mintPassInfo, setMintPassInfo] = useState({})
     const [mintPasses, setMintPasses] = useState([])
-    const [mpLoading, setMpLoading] = useState(false)
+    const [mpLoading, setMpLoading] = useState(true)
     const [isConfirmedTx, setIsConfirmedTx] = useState(false)
 
     const mpRetrieverRef = useRef(0)
@@ -50,83 +50,58 @@ const MintPassMinting = (props) => {
             clearMpInterval()
             setMpLoading(false)
         }
-        return () => clearMpInterval()
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [mintPasses, isConfirmedTx])
 
     const clearMpInterval = () => mpRetrieverRef.current && clearInterval(mpRetrieverRef.current)
 
-    const fetchMintPass = async (txHash) => {
-        // const provider = await detectProvider()
-        // if (!provider) {
-        //     console.log('SubWallet is not installed')
-        //     return
-        // }
+    const _fetchMintPass = async () => {
         const web3js = new Web3(network.rpc_url)
         const mintPassContract = new web3js.eth.Contract(contractABI.abi, MINT_PASS_SC)
         const methods = mintPassContract.methods
-        const receipt = await web3js.eth.getTransactionReceipt(txHash)
 
-        if (receipt?.status === true) {
-            const mpBalance = await methods.balanceOf(wallet.account).call()
-            const mintPasses = await Promise.all(range(0, mpBalance - 1).map(async i => {
-                const tokenId = await mintPassContract.methods.tokenOfOwnerByIndex(wallet.account, i).call()
-                const {name, imageUrl} = await getNFTInfo(mintPassContract.methods, tokenId)
-                return {name, imageUrl, tokenId}
-            }))
-            setMintPasses(mintPasses)
-            // const tokenId = parseInt(balance) > 0 ? await methods.tokenOfOwnerByIndex(wallet.account, 0).call() : null
-            // const {name, imageUrl} = await getNFTInfo(methods, tokenId)
-            setMintPassInfo({...mintPassInfo, balance: mpBalance})
-            setIsConfirmedTx(true)
-            return true
-        }
-        return true
-    }
-
-    const fetchData = async () => {
-        setLoading(true)
-        // const provider = await detectProvider()
-        // if (!provider) {
-        //     console.log('SubWallet is not installed')
-        //     return
-        // }
-        provider && await switchNetwork(provider)
-        const web3js = new Web3(network.rpc_url)
-        const mintPassContract = new web3js.eth.Contract(contractABI.abi, MINT_PASS_SC)
-        const methods = mintPassContract.methods
-        const [isActive, balance] = await Promise.all([
-            methods._isActive().call(),
-            methods.balanceOf(wallet.account).call(),
-        ])
-
-        const mintPasses = await Promise.all(range(0, balance - 1).map(async i => {
+        const mpBalance = await methods.balanceOf(wallet.account).call()
+        const mintPasses = await Promise.all(range(0, mpBalance - 1).map(async i => {
             const tokenId = await mintPassContract.methods.tokenOfOwnerByIndex(wallet.account, i).call()
             const {name, imageUrl} = await getNFTInfo(mintPassContract.methods, tokenId)
             return {name, imageUrl, tokenId}
         }))
+
         setMintPasses(mintPasses)
-        // const tokenId = parseInt(balance) > 0 ? await methods.tokenOfOwnerByIndex(wallet.account, 0).call() : null
-        // const {name, imageUrl} = await getNFTInfo(methods, tokenId)
+        return parseInt(mpBalance, 10) || 0
+    }
+
+    const fetchTransaction = async (txHash) => {
+        const web3js = new Web3(network.rpc_url)
+        const receipt = await web3js.eth.getTransactionReceipt(txHash)
+
+        if (receipt?.status === true) {
+            const balance = await _fetchMintPass()
+            setMintPassInfo({...mintPassInfo, balance})
+            if (balance) {
+                setIsConfirmedTx(true)
+                setMpLoading(false)
+                clearMpInterval()
+            }
+        }
+    }
+
+    const fetchData = async () => {
+        setLoading(true)
+        provider && await switchNetwork(provider)
+        const web3js = new Web3(network.rpc_url)
+        const mintPassContract = new web3js.eth.Contract(contractABI.abi, MINT_PASS_SC)
+        const methods = mintPassContract.methods
+        const isActive = await methods._isActive().call()
+        const balance = await _fetchMintPass()
+
         setMintPassInfo({isActive, balance})
         setLoading(false)
     }
 
     const handleMintMintPass = async () => {
         setMintLoading(true)
-        // if (mintPassInfo.balance > 0) {
-        //     setMintLoading(false)
-        //     return notification.warn({
-        //         message: `You already have a mint pass`,
-        //         placement: 'bottomRight',
-        //         duration: 3
-        //     })
-        // }
         try {
-            // const provider = await detectProvider()
-            // if (!provider) {
-            //     console.log('SubWallet is not installed')
-            // }
             const web3js = new Web3(network.rpc_url)
             const nonce = await web3js.eth.getTransactionCount(wallet.account, 'latest')
             const mintPassContract = new web3js.eth.Contract(contractABI.abi, MINT_PASS_SC)
@@ -146,7 +121,7 @@ const MintPassMinting = (props) => {
                 }
                 const gasLimit = await web3js.eth.estimateGas(tx)
                 // tx.gas = `${gasLimit}`
-                console.log(web3js.utils.hexToNumber(gasLimit))
+                console.log('Gas', web3js.utils.hexToNumber(gasLimit))
 
                 const txHash = await sendTransaction(provider, connector, tx)
                 console.log("The hash of MFMP minting transaction is: ", txHash)
@@ -155,7 +130,7 @@ const MintPassMinting = (props) => {
                 setIsConfirmedTx(false)
                 clearMpInterval()
 
-                mpRetrieverRef.current = setInterval(() => fetchMintPass(txHash), 3000)
+                mpRetrieverRef.current = setInterval(() => fetchTransaction(txHash), 5000)
 
                 notification.success({
                     message: `Transaction Sent`,
@@ -204,61 +179,52 @@ const MintPassMinting = (props) => {
         )
     }
 
-    const renderNFTLink = (address, tokenId) => {
-        const url = getNFTScanUrl(address.toLowerCase(), tokenId)
+    const listMintPass = () => {
+        if (!mintPasses.length) {
+            return null
+        }
+
+        const _render = mintPasses.map((mp, idx) => <MintPassNFT tokenId={mp.tokenId} imageUrl={mp.imageUrl} name={mp.name} key={idx} />)
+
+        if (mpLoading) {
+            _render.unshift(
+                <div key="mpLoading" className={classNames('flex flex-col justify-center items-center mt-4 col-span-2 mp-item')}>
+                    <div className={'flex h-[80px]'}>
+                        <Spin indicator={<LoadingOutlined style={{fontSize: 24}} spin/>}/>
+                    </div>
+                    <div className={'flex flex-col normal-case race-sport-font text-sm mt-4'}>
+                        <span className={'secondary-color text-center'}>MoonFit</span>
+                        <span className={'primary-color text-center mt-1'}>Mint Pass</span>
+                        <span className={'primary-color text-center mt-1'}>Minting</span>
+                    </div>
+                    <div className={'flex normal-case my-2 z-10'}>
+
+                    </div>
+                </div>
+            )
+        }
+
         return (
-            <a href={url} target={'_blank'} rel={'noreferrer'} className={'text-[#A16BD8] text-sm normal-case'}>
-                View on NFTScan
-            </a>
+            <div className={"grid grid-cols-4 lg:grid-cols-6 gap-2 lg:gap-4"}>
+                {_render}
+            </div>
         )
     }
 
-    // const renderNFTLink = (contract, tokenId) => {
-    //     const url = getTokenScanUrl(contract, tokenId)
-    //     return (
-    //         <a href={url} target={'_blank'} rel={'noreferrer'} className={'text-blue-600'}>
-    //             #{tokenId}
-    //         </a>
-    //     )
-    // }
-
     const renderMintPass = () => {
-        if (mpLoading) {
+        if (mpLoading && !mintPasses.length) {
             return (
                 <div className="flex justify-center items-center h-[240px]">
                     <Spin indicator={<LoadingOutlined style={{fontSize: 24}} spin/>}/>
                 </div>
             )
-        } else if (mintPasses.length > 0) {
-            return (
-                <div className={"grid grid-cols-4 lg:grid-cols-6 gap-2 lg:gap-4"}>
-                    {
-                        mintPasses.map((mp, idx) => {
-                            return (
-                                <div
-                                    className={classNames('flex flex-col justify-center items-center mt-4 col-span-2 mp-item')}
-                                    key={idx}>
-                                    <div className={'flex'}>
-                                        <Image width={'100%'}
-                                               className={'mp-image'}
-                                               src={mp.imageUrl}
-                                               alt={mp.name}
-                                        />
-                                    </div>
-                                    <div className={'flex flex-col normal-case race-sport-font text-sm mt-4'}>
-                                        <span className={'secondary-color text-center'}>MoonFit</span>
-                                        <span className={'primary-color text-center mt-1'}>Mint Pass</span>
-                                        <span className={'primary-color text-center mt-1'}>#{mp.tokenId}</span>
-                                    </div>
-                                    <div
-                                        className={'flex normal-case my-2 z-10'}>{renderNFTLink(MINT_PASS_SC, mp.tokenId)}</div>
-                                </div>
-                            )
-                        })
-                    }
-                </div>
-            )
-        } else return (
+        }
+
+        if (mintPasses.length > 0) {
+            return listMintPass()
+        }
+
+        return (
             <div>
                 <div className={'flex text-white normal-case'}>You don't own any mint pass yet.</div>
                 <div className={'flex text-white normal-case'}>Please click "MINT A PASS" button bellow to mint one.
@@ -356,11 +322,6 @@ const MintPassMinting = (props) => {
                                                     <div className={'flex card-body-row-title'}>Your Mint Passes</div>
                                                     {renderMintPass()}
                                                 </div>
-                                                {/*<div className={'flex flex-col mt-2'}>*/}
-                                                {/*    <div className={'flex'}>Token ID</div>*/}
-                                                {/*    <div*/}
-                                                {/*        className={'flex text-green-500'}>{tokenId ? renderNFTLink(MINT_PASS_SC, tokenId) : "Empty"}</div>*/}
-                                                {/*</div>*/}
                                                 {
                                                     mintPassInfo?.name ? (
                                                         <div/>
