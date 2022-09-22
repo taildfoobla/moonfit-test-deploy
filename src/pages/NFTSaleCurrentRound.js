@@ -1,19 +1,16 @@
 import React, {useContext, useEffect, useRef, useState} from 'react'
 import Web3 from "web3"
+import BigNumber from 'bignumber.js'
 import WalletAuthContext from "../contexts/WalletAuthContext"
 import nftSaleABI from '../abis/MFNFTSale.json'
-import mintPassABI from '../abis/MintPassNFT.json'
-import moonBeastABI from '../abis/MoonBeastNFT.json'
 import {notification} from "antd"
 import {getMainMessage} from "../utils/tx-error"
-import {getNFTInfo, getShortAddress, getTxScanUrl, sendTransaction, switchNetwork} from "../utils/blockchain"
-import {BLC_CONFIGS} from '../configs/blockchain'
+import {getShortAddress, getTxScanUrl, sendTransaction, switchNetwork} from "../utils/blockchain"
 import {MinusOutlined, PlusOutlined} from '@ant-design/icons';
 import LoadingWrapper from "../components/shared/LoadingWrapper"
 import Paths from "../routes/Paths"
 import EnvWrapper from "../components/shared/EnvWrapper"
 import CurveBGWrapper from "../wrappers/CurveBG"
-import {range} from "../utils/array"
 import {NFT_SALE_CURRENT_INFO} from "../constants/blockchain"
 import {getStringOfBigNumber} from "../utils/number"
 import WalletAuthRequiredNFTSale from "../components/WalletAuthRequiredNFTSale"
@@ -23,10 +20,12 @@ import ButtonMintNFT from '../components/NFTSaleCurrentRound/ButtonMintNFT'
 import NFTSaleInfo from '../components/NFTSaleCurrentRound/NFTSaleInfo'
 import MoonBeasts from '../components/NFTSaleCurrentRound/MoonBeasts'
 import MintPass from '../components/NFTSaleCurrentRound/MintPass'
-import BigNumber from "bignumber.js";
 
-const {MINT_PASS_SC, MOONBEAST_SC} = BLC_CONFIGS
-const {NFT_SALE_SC, nftPerPass} = NFT_SALE_CURRENT_INFO
+import {getAvailableSlots, getSaleMaxAmount} from '../services/smc-ntf-sale'
+import {fetchMoonBeastsByAccount}  from '../services/smc-moon-beast'
+import {fetchMintPassByAccount, addAvailableSlotForCurrenSale} from '../services/smc-mint-pass'
+
+const {NFT_SALE_SC} = NFT_SALE_CURRENT_INFO
 
 const NFTSaleCurrentRound = (props) => {
     const [loading, setLoading] = useState(true)
@@ -83,15 +82,10 @@ const NFTSaleCurrentRound = (props) => {
 
     const _getAvailableSlots = async () => {
         setSaleInfoLoading(true)
-        const web3js = new Web3(network.rpc_url)
-        const saleContract = new web3js.eth.Contract(nftSaleABI.abi, NFT_SALE_SC)
         const [availableSlots, maxSaleSlots] = await Promise.all([
-            saleContract.methods.getAvailableSlots().call(),
-            saleContract.methods._maxSaleAmount().call(),
+            getAvailableSlots(),
+            getSaleMaxAmount(),
         ])
-
-
-        console.log(await saleContract.methods.getReadySale().call())
 
         setSaleInfo({availableSlots, maxSaleSlots})
         setSaleInfoLoading(false)
@@ -103,58 +97,11 @@ const NFTSaleCurrentRound = (props) => {
 
     const _fetchMintPass = async (isSetLoading = true) => {
         isSetLoading && setMintPassLoading(true)
-        const web3js = new Web3(network.rpc_url)
-        const mintPassContract = new web3js.eth.Contract(mintPassABI.abi, MINT_PASS_SC)
-        const saleContract = new web3js.eth.Contract(nftSaleABI.abi, NFT_SALE_SC)
+        let _mintPasses = await fetchMintPassByAccount(wallet.account)
+        _mintPasses = await addAvailableSlotForCurrenSale(_mintPasses)
 
-        const mpBalance = await mintPassContract.methods.balanceOf(wallet.account).call()
-
-        const mintPasses = await Promise.all(range(0, mpBalance - 1).map(async i => {
-            const tokenId = await mintPassContract.methods.tokenOfOwnerByIndex(wallet.account, i).call()
-            // const {name, imageUrl} = await getNFTInfo(mintPassContract.methods, tokenId)
-            // const imageUrl = 'https://bafybeidedg4erz6vvoywe26obvqty5aiovsxzjrvakjsciusigdct2hoqy.ipfs.nftstorage.link/'
-            const imageUrl = ''
-            const name = `MoonFit Mint Pass #${tokenId}`
-            let availableSlots = await saleContract.methods.getMintPassAvailableSlots(tokenId).call()
-            availableSlots = parseInt(availableSlots, 10)
-            const bought = nftPerPass - availableSlots
-            const isOutOfSlot = availableSlots <= 0
-
-            return {
-                name,
-                imageUrl,
-                tokenId,
-                isUsed: !!bought,
-                availableSlots,
-                bought,
-                isOutOfSlot,
-                isSelected: !isOutOfSlot
-            }
-        }))
-
-        mintPasses.sort((a, b) => {
-            if (a.isOutOfSlot && b.isOutOfSlot) {
-                return 0
-            }
-
-            if (a.isOutOfSlot) {
-                return 1
-            }
-
-            if (b.isOutOfSlot) {
-                return -1
-            }
-
-            if (a.availableSlots === b.availableSlots) {
-                return 0
-            }
-
-            return a.availableSlots - b.availableSlots
-        })
-
-
-        setMintPasses(mintPasses)
-        const _maxMintAmount = mintPasses.map(item => item.availableSlots).reduce((a, b) => a + b, 0)
+        setMintPasses(_mintPasses)
+        const _maxMintAmount = _mintPasses.map(item => item.availableSlots).reduce((a, b) => a + b, 0)
         setMaxMintAmount(_maxMintAmount)
         _updateMintAmount(_maxMintAmount, false, _maxMintAmount)
 
@@ -163,23 +110,7 @@ const NFTSaleCurrentRound = (props) => {
 
     const _fetchMoonBeasts = async (isSetLoading = true) => {
         isSetLoading && setMoonBeastLoading(true)
-
-        // Switch Network on Desktop Wallet Extension
-        provider && await switchNetwork(provider)
-        const web3js = new Web3(network.rpc_url)
-        const moonBeastContract = new web3js.eth.Contract(moonBeastABI.abi, MOONBEAST_SC)
-
-        const mbBalance = await moonBeastContract.methods.balanceOf(wallet.account).call()
-
-        const moonBeasts = await Promise.all(range(0, mbBalance - 1).map(async i => {
-            const tokenId = await moonBeastContract.methods.tokenOfOwnerByIndex(wallet.account, i).call()
-            const isCurrentRound = parseInt(tokenId, 10) >= NFT_SALE_CURRENT_INFO.fromTokenID
-            if (!isCurrentRound) {
-                return {tokenId, isCurrentRound}
-            }
-            const {name, imageUrl} = await getNFTInfo(moonBeastContract.methods, tokenId)
-            return {name, imageUrl, tokenId, isCurrentRound}
-        }))
+        const moonBeasts = await fetchMoonBeastsByAccount(wallet.account)
 
         setMoonBeasts(moonBeasts.filter(item => item.isCurrentRound))
         setMoonBeastLoading(false)
@@ -205,6 +136,16 @@ const NFTSaleCurrentRound = (props) => {
         await _fetchMoonBeasts(true)
     }
 
+    const _updateMintPass = (_mintPasses) => {
+        const _maxMintAmount = _mintPasses
+            .filter(item => item.isSelected)
+            .map(item => item.availableSlots)
+            .reduce((a, b) => a + b, 0)
+
+        setMintPasses(_mintPasses)
+        _updateMintAmount(_maxMintAmount)
+    }
+
     const onClickMintPass = (tokenId) => {
         const _mintPasses = mintPasses.map(item => {
             let {isSelected} = item
@@ -218,14 +159,7 @@ const NFTSaleCurrentRound = (props) => {
             }
         })
 
-
-        const _maxMintAmount = _mintPasses
-            .filter(item => item.isSelected)
-            .map(item => item.availableSlots)
-            .reduce((a, b) => a + b, 0)
-
-        setMintPasses(_mintPasses)
-        _updateMintAmount(_maxMintAmount)
+        _updateMintPass(_mintPasses)
     }
 
     const _calculateSelectedMintPasses = (amount) => {
@@ -274,7 +208,7 @@ const NFTSaleCurrentRound = (props) => {
                 </div>
             ),
             placement: 'bottomRight',
-            duration: 1800
+            duration: 60
         })
     }
 
@@ -283,7 +217,7 @@ const NFTSaleCurrentRound = (props) => {
             message: `Transaction Failed`,
             description: getMainMessage(message),
             placement: 'bottomRight',
-            duration: 3
+            duration: 10
         })
     }
 
@@ -345,6 +279,19 @@ const NFTSaleCurrentRound = (props) => {
     }
 
     const totalMintPassSelected = () => mintPasses.filter(item => item.isSelected).length
+
+    const onSelectAll = () => {
+        const isSelected =  totalMintPassSelected()  === 0
+
+        const _mintPasses = mintPasses.map(item => {
+            return {
+                ...item,
+                isSelected: isSelected && !item.isOutOfSlot,
+            }
+        })
+
+        _updateMintPass(_mintPasses)
+    }
 
     const _renderFoot = () => {
         if (maxMintAmount === 0) {
@@ -414,7 +361,7 @@ const NFTSaleCurrentRound = (props) => {
                                         handleGetMinted={handleGetMinted}
                                     />
 
-                                    <MintPass isLoading={mintPassLoading} mintPasses={mintPasses} onSelect={onClickMintPass}>
+                                    <MintPass isLoading={mintPassLoading} mintPasses={mintPasses} onSelect={onClickMintPass} onSelectAll={onSelectAll}>
                                         <hr className={'card-body-separator'}/>
                                         {_renderFoot()}
                                     </MintPass>

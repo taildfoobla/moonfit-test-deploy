@@ -9,7 +9,7 @@ import mintPassUrl from '../../assets/images/mint-pass.jpeg'
 const {MINT_PASS_SC} = BLC_CONFIGS
 const {nftPerPass} = NFT_SALE_CURRENT_INFO
 
-const MintPass = ({isLoading, mintPasses, onSelect, children}) => {
+const MintPass = ({isLoading, mintPasses, onSelect, onSelectAll, children}) => {
     const noMintPass = (
         <div className={'my-3'}>
             <div className={'text-center text-white normal-case'}>You don't own any mint pass yet.</div>
@@ -65,7 +65,7 @@ const MintPass = ({isLoading, mintPasses, onSelect, children}) => {
                 <div className={'flex card-body-row-title'}>
                     Select A Pass to Mint
                 </div>
-                <div className={'flex card-body-row-title'}>
+                <div className={'flex card-body-row-title cursor-pointer'} onClick={onSelectAll}>
                     Selected {totalMintPassSelected()}
                 </div>
             </div>

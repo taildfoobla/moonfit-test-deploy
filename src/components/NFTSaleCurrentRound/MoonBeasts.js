@@ -31,6 +31,7 @@ const MoonBeasts = ({moonBeasts, isLoading, moonBeastMinting= 0}) => {
 
         return (
             <div className={"grid grid-cols-4 lg:grid-cols-6 gap-4"}>
+                {_renderMinting()}
                 {
                     moonBeasts.map((mb, idx) => {
                         const nameArr = String(mb.name || '').split(' ')
@@ -62,7 +63,6 @@ const MoonBeasts = ({moonBeasts, isLoading, moonBeastMinting= 0}) => {
                         )
                     })
                 }
-                {_renderMinting()}
             </div>
         )
     }
