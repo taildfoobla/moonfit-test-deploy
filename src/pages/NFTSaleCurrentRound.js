@@ -1,18 +1,18 @@
-import React, {useContext, useEffect, useRef, useState} from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import Web3 from "web3"
 import BigNumber from 'bignumber.js'
 import WalletAuthContext from "../contexts/WalletAuthContext"
 import nftSaleABI from '../abis/MFNFTSale.json'
-import {notification} from "antd"
-import {getMainMessage} from "../utils/tx-error"
-import {getShortAddress, getTxScanUrl, sendTransaction, switchNetwork} from "../utils/blockchain"
-import {MinusOutlined, PlusOutlined} from '@ant-design/icons';
+import { notification } from "antd"
+import { getMainMessage } from "../utils/tx-error"
+import { getShortAddress, getTxScanUrl, sendTransaction, switchNetwork } from "../utils/blockchain"
+import { MinusOutlined, PlusOutlined } from '@ant-design/icons';
 import LoadingWrapper from "../components/shared/LoadingWrapper"
 import Paths from "../routes/Paths"
 import EnvWrapper from "../components/shared/EnvWrapper"
 import CurveBGWrapper from "../wrappers/CurveBG"
-import {NFT_SALE_CURRENT_INFO} from "../constants/blockchain"
-import {getStringOfBigNumber} from "../utils/number"
+import { NFT_SALE_CURRENT_INFO } from "../constants/blockchain"
+import { getStringOfBigNumber } from "../utils/number"
 import WalletAuthRequiredNFTSale from "../components/WalletAuthRequiredNFTSale"
 import NFTStages from "../components/NFTStages"
 import Header from '../components/NFTSaleCurrentRound/Header'
@@ -21,11 +21,14 @@ import NFTSaleInfo from '../components/NFTSaleCurrentRound/NFTSaleInfo'
 import MoonBeasts from '../components/NFTSaleCurrentRound/MoonBeasts'
 import MintPass from '../components/NFTSaleCurrentRound/MintPass'
 
-import {getAvailableSlots, getSaleMaxAmount} from '../services/smc-ntf-sale'
-import {fetchMoonBeastsByAccount}  from '../services/smc-moon-beast'
-import {fetchMintPassByAccount, addAvailableSlotForCurrenSale} from '../services/smc-mint-pass'
+import { getAvailableSlots, getSaleMaxAmount } from '../services/smc-ntf-sale'
+import { fetchMoonBeastsByAccount } from '../services/smc-moon-beast'
+import { fetchMintPassByAccount, addAvailableSlotForCurrenSale } from '../services/smc-mint-pass'
+import MFStory from '../components/MFStory'
+import MFUtilities from '../components/MFUtilities'
+import MFWeb3Fitness from '../components/MFWeb3Fitness'
 
-const {NFT_SALE_SC} = NFT_SALE_CURRENT_INFO
+const { NFT_SALE_SC } = NFT_SALE_CURRENT_INFO
 
 const NFTSaleCurrentRound = (props) => {
     const [loading, setLoading] = useState(true)
@@ -43,7 +46,7 @@ const NFTSaleCurrentRound = (props) => {
 
     const mbRetrieverRef = useRef(0)
 
-    const {wallet, network, provider, connector} = useContext(WalletAuthContext)
+    const { wallet, network, provider, connector } = useContext(WalletAuthContext)
 
     useEffect(() => {
         !!wallet.account && fetchData().then()
@@ -87,7 +90,7 @@ const NFTSaleCurrentRound = (props) => {
             getSaleMaxAmount(),
         ])
 
-        setSaleInfo({availableSlots, maxSaleSlots})
+        setSaleInfo({ availableSlots, maxSaleSlots })
         setSaleInfoLoading(false)
     }
 
@@ -150,7 +153,7 @@ const NFTSaleCurrentRound = (props) => {
 
     const onClickMintPass = (tokenId) => {
         const _mintPasses = mintPasses.map(item => {
-            let {isSelected} = item
+            let { isSelected } = item
             if (!item.isOutOfSlot && item.tokenId === tokenId) {
                 isSelected = !isSelected
             }
@@ -185,7 +188,7 @@ const NFTSaleCurrentRound = (props) => {
         if (value !== '') {
             amount = parseInt(value, 10)
             amount = amount > 0 ? amount : 0
-            if(maxValue) {
+            if (maxValue) {
                 amount = amount < maxValue ? amount : maxValue
             } else {
                 amount = amount < maxMintAmount ? amount : maxMintAmount
@@ -203,10 +206,10 @@ const NFTSaleCurrentRound = (props) => {
             message: `Transaction Sent`,
             description: (
                 <div>
-                    The hash of MFB minting transaction is: <br/>
+                    The hash of MFB minting transaction is: <br />
                     <a target="_blank" rel="noreferrer"
-                       className={'text-blue-600'}
-                       href={getTxScanUrl(txHash)}>{getShortAddress(txHash, 8)}</a>
+                        className={'text-blue-600'}
+                        href={getTxScanUrl(txHash)}>{getShortAddress(txHash, 8)}</a>
                 </div>
             ),
             placement: 'bottomRight',
@@ -283,7 +286,7 @@ const NFTSaleCurrentRound = (props) => {
     const totalMintPassSelected = () => mintPasses.filter(item => item.isSelected).length
 
     const onSelectAll = () => {
-        const isSelected =  totalMintPassSelected()  === 0
+        const isSelected = totalMintPassSelected() === 0
 
         const _mintPasses = mintPasses.map(item => {
             return {
@@ -344,11 +347,11 @@ const NFTSaleCurrentRound = (props) => {
                                     className={'flex w-full lg:w-auto justify-center lg:justify-start mt-4 lg:mt-0'}>
                                     {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
                                     <a href="#" className={'normal-case text-xs inline primary-color'}
-                                       onClick={(e) => handleRefresh(e)}>
+                                        onClick={(e) => handleRefresh(e)}>
                                         <svg className="w-4 h-4 inline mr-1" fill="none" stroke="currentColor"
-                                             viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                            viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
-                                                  d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+                                                d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
                                         </svg>
                                         Refresh
                                     </a>
@@ -364,11 +367,11 @@ const NFTSaleCurrentRound = (props) => {
                                     />
 
                                     <MintPass isLoading={mintPassLoading} mintPasses={mintPasses} onSelect={onClickMintPass} onSelectAll={onSelectAll}>
-                                        <hr className={'card-body-separator'}/>
+                                        <hr className={'card-body-separator'} />
                                         {_renderFoot()}
                                     </MintPass>
 
-                                    <MoonBeasts isLoading={moonBeastLoading} moonBeasts={moonBeasts} moonBeastMinting={moonBeastMinting}/>
+                                    <MoonBeasts isLoading={moonBeastLoading} moonBeasts={moonBeasts} moonBeastMinting={moonBeastMinting} />
                                 </div>
                             </div>
                         </div>
@@ -386,14 +389,17 @@ const NFTSaleCurrentRound = (props) => {
                         {
                             !loading && (
                                 [
-                                    <Header availableSlots={saleInfo.availableSlots} isLoading={saleInfoLoading} key="Header"/>,
+                                    <Header availableSlots={saleInfo.availableSlots} isLoading={saleInfoLoading} key="Header" />,
                                     _renderContainer()
                                 ]
                             )
                         }
-                        <LoadingWrapper loading={loading}/>
+                        <LoadingWrapper loading={loading} />
                     </NFTStages>
                 </WalletAuthRequiredNFTSale>
+                <MFStory />
+                <MFUtilities />
+                <MFWeb3Fitness />
             </EnvWrapper>
         </CurveBGWrapper>
     )

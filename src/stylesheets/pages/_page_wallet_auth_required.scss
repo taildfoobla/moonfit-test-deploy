@@ -3,6 +3,10 @@
     font-weight: 400;
     font-size: 32px;
     line-height: 48px;
+    text-transform: initial;
+    .current-title {
+      background-image: linear-gradient(to right bottom, #4cbfcb, #E4007B);
+    }
   }
 
   .section-description-wrap {
@@ -62,4 +66,39 @@
       margin-left: 0;
     }
   }
+}
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-content {
+  width: 100%;
+  margin-top: 2px;
+  border-radius: 5px;
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+.dropdown-content a {
+  color: #222;
+  padding: 10px;
+  text-decoration: none;
+  display: flex;
+  text-transform: initial;
+  font-size: 14px;
+  img {
+    width: 25px;
+  }
+}
+
+.dropdown-content a:hover {background-color: #f1f1f1}
+
+.dropdown:hover .dropdown-content, .toggle-calendar {
+  display: block;
 }
