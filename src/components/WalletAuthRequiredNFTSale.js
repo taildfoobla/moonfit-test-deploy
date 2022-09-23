@@ -8,6 +8,8 @@ import calendar from "../assets/images/icons/calendar.svg"
 import outlook from "../assets/images/icons/outlook.svg"
 import yahoo from "../assets/images/icons/yahoo.svg"
 import office365 from "../assets/images/icons/office365.svg"
+import wallet from "../assets/images/icons/Wallet.svg"
+import calendarCheck from "../assets/images/icons/CalendarCheck.svg"
 
 
 const WalletAuthRequiredNFTSale = ({ children, className }) => {
@@ -70,8 +72,8 @@ const WalletAuthRequiredNFTSale = ({ children, className }) => {
                     <div className="btn-connect">
                         <button type="button"
                             onClick={showWalletSelectModal}
-                            className="button button-primary">
-                            Connect Wallet
+                            className="button button-secondary">
+                            <img className="mr-1" src={wallet} /> Connect Wallet
                         </button>
                     </div>
 
@@ -82,11 +84,11 @@ const WalletAuthRequiredNFTSale = ({ children, className }) => {
                             onBlur={() => setToggleCalendar(false)}
                             className="button button-default dropbtn"
                         >
-                            Add to Calendar
+                            <img className="mr-1" src={calendarCheck} /> Add to Calendar
                         </button>
                         <div class={`dropdown-content${toggleCalendar ? " toggle-calendar" : ""}`}>
-                            <a href="https://calendar.google.com/calendar/render?action=TEMPLATE&dates=20220923T111500Z%2F20220923T114500Z" target="_blank"><img src={calendar} alt="Google calendar"/> Google calendar</a>
-                            <a href="https://outlook.live.com/calendar/0/deeplink/compose?allday=false&enddt=2022-09-23T11%3A45%3A00%2B00%3A00&path=%2Fcalendar%2Faction%2Fcompose&rru=addevent&startdt=2022-09-23T11%3A15%3A00%2B00%3A00" target="_blank"><img src={outlook} alt="Microsoft Outlook"/> Microsoft Outlook</a>
+                            <a href="https://calendar.google.com/calendar/render?action=TEMPLATE&dates=20220923T111500Z%2F20220923T114500Z" target="_blank"><img src={calendar} alt="Google calendar" /> Google Calendar</a>
+                            <a href="https://outlook.live.com/calendar/0/deeplink/compose?allday=false&enddt=2022-09-23T11%3A45%3A00%2B00%3A00&path=%2Fcalendar%2Faction%2Fcompose&rru=addevent&startdt=2022-09-23T11%3A15%3A00%2B00%3A00" target="_blank"><img src={outlook} alt="Microsoft Outlook" /> Microsoft Outlook</a>
                             <a href="https://outlook.office.com/calendar/0/deeplink/compose?allday=false&enddt=2022-09-23T11%3A45%3A00%2B00%3A00&path=%2Fcalendar%2Faction%2Fcompose&rru=addevent&startdt=2022-09-23T11%3A15%3A00%2B00%3A00" target="_blank"><img src={office365} alt="Office 365" /> Office 365</a>
                             <a href="https://calendar.yahoo.com/?dur=&et=20220923T114500Z&st=20220923T111500Z&v=60" target="_blank"><img src={yahoo} alt="Yahoo" />Yahoo! Calendar</a>
                         </div>

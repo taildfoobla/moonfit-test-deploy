@@ -16,7 +16,7 @@ const MFStory = () => {
 
     return (
         <div className="story-section">
-            <div className="grid xl:grid-cols-2 md:grid-cols-1 sm:grid-cols-1 gap-8">
+            <div className="grid xl:grid-cols-2 md:grid-cols-1 sm:grid-cols-1 gap-24">
                 <div className="moonfit-info">
                     <div className="youtube-video">
                         <video poster={videoPreview} controls>
@@ -35,7 +35,7 @@ const MFStory = () => {
                 </div>
                 <div className="what-is-moonfit">
                     <div className="moonfit-description">
-                        <h3 className="description-title">WHAT IS MOONFIT?</h3>
+                        <h3 className="description-title mb-5">WHAT IS MOONFIT?</h3>
                         <p>MoonFit is a Web3 & NFT Lifestyle App that promotes active living by rewarding users anytime they burn calories through physical activities.</p>
                         <p>We believe our real-life lifestyle & fitness application benefit and the proper rewarding system will inspire people to take one more step every day while helping us get one step closer to our goal.</p>
                     </div>
