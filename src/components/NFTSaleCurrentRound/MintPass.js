@@ -9,7 +9,7 @@ import mintPassUrl from '../../assets/images/mint-pass.jpeg'
 const {MINT_PASS_SC} = configs
 const {nftPerPass} = NFT_SALE_CURRENT_INFO
 
-const MintPass = ({isLoading, mintPasses, onSelect, onSelectAll, children}) => {
+const MintPass = ({isLoading, mintPasses, isMinting, onSelect, onSelectAll, children}) => {
     const noMintPass = (
         <div className={'my-3'}>
             <div className={'text-center text-white normal-case'}>You don't own any mint pass yet.</div>
@@ -26,6 +26,14 @@ const MintPass = ({isLoading, mintPasses, onSelect, onSelectAll, children}) => {
         return (<span className={'normal-case used-text'}>Used {`${mintPass.bought}/${nftPerPass}`}</span>)
     }
 
+    const handleClick = (item) => {
+        if (isMinting) {
+            return
+        }
+
+        return onSelect(item.tokenId)
+    }
+
     const _renderMinPass = mintPasses.map((item, idx) => {
         const nameArr = item.name.split(' ')
         const preName = nameArr[0]
@@ -37,7 +45,7 @@ const MintPass = ({isLoading, mintPasses, onSelect, onSelectAll, children}) => {
         return (
             <div className={_className}
                  key={idx}
-                 onClick={() => onSelect(item.tokenId)}>
+                 onClick={() => handleClick(item)}>
                 {renderBadge(item)}
                 <div className={classNames('flex justify-center square-img-container nft-wrap-img', {
                     'mp-selected': item.isSelected,

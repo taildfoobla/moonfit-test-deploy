@@ -122,8 +122,17 @@ const NFTSaleCurrentRound = (props) => {
 
     const _fetchMintPass = async (isSetLoading = true) => {
         isSetLoading && setMintPassLoading(true)
-        let _mintPasses = await fetchMintPassByAccount(wallet.account)
-        _mintPasses = await addAvailableSlotForCurrenSale(_mintPasses)
+        let _mintPasses
+
+        try {
+            _mintPasses = await fetchMintPassByAccount(wallet.account)
+            _mintPasses = await addAvailableSlotForCurrenSale(_mintPasses)
+        } catch (e) {
+            console.log('fetch MintPass error', e.message)
+
+            await Bluebird.delay(5000)
+            return _fetchMintPass(isSetLoading)
+        }
 
         setMintPasses(_mintPasses)
         const _maxMintAmount = _mintPasses.map(item => item.availableSlots).reduce((a, b) => a + b, 0)
@@ -135,9 +144,17 @@ const NFTSaleCurrentRound = (props) => {
 
     const _fetchMoonBeasts = async (isSetLoading = true) => {
         isSetLoading && setMoonBeastLoading(true)
-        const moonBeasts = await fetchMoonBeastsByAccount(wallet.account)
+        try {
+            const moonBeasts = await fetchMoonBeastsByAccount(wallet.account)
 
-        setMoonBeasts(moonBeasts.filter(item => item.isCurrentRound))
+            setMoonBeasts(moonBeasts.filter(item => item.isCurrentRound))
+        } catch (e) {
+            console.log('fetch MoonBeasts error', e.message)
+
+            await Bluebird.delay(5000)
+            return _fetchMoonBeasts(isSetLoading)
+        }
+
         setMoonBeastLoading(false)
     }
 
@@ -221,7 +238,7 @@ const NFTSaleCurrentRound = (props) => {
             _calculateSelectedMintPasses(parseInt(value, 10) || 0)
         }
 
-        setMintAmount(amount)
+        setMintAmount(amount || 0)
     }
 
     const _handleChangeAmountInput = (value) => {
@@ -399,13 +416,17 @@ const NFTSaleCurrentRound = (props) => {
                                         handleGetMinted={handleGetMinted}
                                     />
 
-                                    <MintPass isLoading={mintPassLoading} mintPasses={mintPasses}
-                                              onSelect={onClickMintPass} onSelectAll={onSelectAll}>
+                                    <MintPass isLoading={mintPassLoading}
+                                              mintPasses={mintPasses}
+                                              isMinting={!!moonBeastMinting}
+                                              onSelect={onClickMintPass}
+                                              onSelectAll={onSelectAll}>
                                         <hr className={'card-body-separator'}/>
                                         {_renderFoot()}
                                     </MintPass>
 
-                                    <MoonBeasts isLoading={moonBeastLoading} moonBeasts={moonBeasts}
+                                    <MoonBeasts isLoading={moonBeastLoading}
+                                                moonBeasts={moonBeasts}
                                                 moonBeastMinting={moonBeastMinting}/>
                                 </div>
                             </div>
