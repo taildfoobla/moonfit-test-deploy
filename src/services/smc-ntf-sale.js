@@ -6,8 +6,8 @@ import nftSaleABI from "../abis/MFNFTSale.json";
 const {MOONBEAST_NETWORK} = configs
 const {NFT_SALE_SC} = NFT_SALE_CURRENT_INFO
 
-const web3js = new Web3(MOONBEAST_NETWORK)
-const saleContract = new web3js.eth.Contract(nftSaleABI.abi, NFT_SALE_SC)
+const web3 = new Web3(MOONBEAST_NETWORK)
+const saleContract = new web3.eth.Contract(nftSaleABI.abi, NFT_SALE_SC)
 
 export const getMintPassAvailableSlots = async (tokenId) => {
     let availableSlots

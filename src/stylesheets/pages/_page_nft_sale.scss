@@ -291,6 +291,11 @@
 @media screen and (max-width: 600px) {
   .page-nft-sale {
     min-width: 100%;
+
+    .container {
+      padding-left: 5px;
+      padding-right: 5px;
+    }
   }
 }
 

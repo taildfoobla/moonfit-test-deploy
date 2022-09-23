@@ -21,7 +21,7 @@ import NFTSaleInfo from '../components/NFTSaleCurrentRound/NFTSaleInfo'
 import MoonBeasts from '../components/NFTSaleCurrentRound/MoonBeasts'
 import MintPass from '../components/NFTSaleCurrentRound/MintPass'
 
-import {getTransactionReceipt, estimateGas, fromWeiToEther} from "../services/smc-common";
+import {getTransactionReceipt, estimateGas, fromWeiToEther, getGasNetwork} from "../services/smc-common";
 import {getAvailableSlots, getSaleMaxAmount, buyNFTData} from '../services/smc-ntf-sale'
 import {fetchMoonBeastsByAccount} from '../services/smc-moon-beast'
 import {addAvailableSlotForCurrenSale, fetchMintPassByAccount} from '../services/smc-mint-pass'
@@ -297,9 +297,9 @@ const NFTSaleCurrentRound = (props) => {
             const nftSaleContract = new web3js.eth.Contract(nftSaleABI.abi, NFT_SALE_SC)
 
             let value = await nftSaleContract.methods._price().call()
-            console.log('Price for one NFT', fromWeiToEther(value));
+            console.log('Price for one NFT:', fromWeiToEther(value), 'GLMR');
             value = value * mintAmount
-            console.log('Value for transaction', fromWeiToEther(value));
+            console.log('Value for transaction:', fromWeiToEther(value), 'GLMR');
 
             const tx = {
                 to: NFT_SALE_SC,
@@ -318,6 +318,28 @@ const NFTSaleCurrentRound = (props) => {
             console.log('GAS', web3js.utils.hexToNumber(gasLimit))
             console.log(fromWeiToEther(web3js.utils.hexToNumber(gasLimit)));
             // tx.gas = gasLimit.toString()
+
+            if (!'') {
+                // console.log(tx)
+                // const gasNetwork = await getGasNetwork()
+                // console.log('gasNetwork', gasNetwork, fromWeiToEther(gasNetwork));
+                //
+                // // let x = await getGasAmountForBuyNFT(mintPassTokenIds, mintAmount, wallet.account)
+                // // console.log({x});
+                //
+                // const gasLimit = await estimateGas(tx)
+                // console.log('gasLimit', gasLimit);
+                // const gasNumber = gasLimit // web3js.utils.hexToNumber(gasLimit)
+                // console.log('gasNumber', gasNumber)
+                //
+                //
+                // const gas = gasNumber // parseInt(gasNumber, 10) + parseInt(gasNetwork, 10)
+                // console.log('GAS', gas);
+                // console.log('GAS2', web3js.utils.numberToHex(gas).toString());
+                //
+                // tx.gas = web3js.utils.numberToHex(gas).toString()
+
+            }
 
             console.log(tx)
 
