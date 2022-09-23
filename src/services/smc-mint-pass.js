@@ -35,8 +35,8 @@ export const addAvailableSlotForCurrenSale = async (mintPasses) => {
     const {nftPerPass} = NFT_SALE_CURRENT_INFO
 
     const _mintPasses = await Bluebird.map(mintPasses, async (item) => {
-        let availableSlots = await getMintPassAvailableSlots(item.tokenId)
-        availableSlots = parseInt(availableSlots, 10)
+        let availableSlots = await getMintPassAvailableSlots(item.tokenId, true)
+        availableSlots = availableSlots || 0
         const bought = nftPerPass - availableSlots
         const isOutOfSlot = availableSlots <= 0
 

@@ -54,10 +54,14 @@ const NFTSaleCurrentRound = (props) => {
     }, [wallet.account])
 
     useEffect(() => {
-        const interval = setInterval(_getAvailableSlots, 30000);
+        let interval
+
+        if (wallet.account) {
+            interval = setInterval(_getAvailableSlots, 30000);
+        }
 
         return () => clearInterval(interval);
-    }, [saleInfoLoading]);
+    }, [saleInfoLoading, wallet.account]);
 
     useEffect(() => {
         if (isConfirmedTx) {
@@ -143,7 +147,7 @@ const NFTSaleCurrentRound = (props) => {
         }
 
         setMintPasses(_mintPasses)
-        const _maxMintAmount = _mintPasses.map(item => item.availableSlots).reduce((a, b) => a + b, 0)
+        const _maxMintAmount = _mintPasses.map(item => item.availableSlots || 0).reduce((a, b) => a + b, 0)
         setMaxMintAmount(_maxMintAmount)
         _updateMintAmount(_maxMintAmount, false, _maxMintAmount)
 
@@ -191,7 +195,7 @@ const NFTSaleCurrentRound = (props) => {
     const _updateMintPass = (_mintPasses) => {
         const _maxMintAmount = _mintPasses
             .filter(item => item.isSelected)
-            .map(item => item.availableSlots)
+            .map(item => item.availableSlots || 0)
             .reduce((a, b) => a + b, 0)
 
         setMintPasses(_mintPasses)
@@ -218,7 +222,7 @@ const NFTSaleCurrentRound = (props) => {
         let _tmpAmount = 0
         const _mintPasses = mintPasses.map(item => {
             const isSelected = !item.isOutOfSlot && _tmpAmount < amount
-            _tmpAmount += item.availableSlots
+            _tmpAmount += (item.availableSlots || 0)
 
             return {
                 ...item,
@@ -292,54 +296,31 @@ const NFTSaleCurrentRound = (props) => {
 
         setMintLoading(true)
         try {
-            const web3js = new Web3(network.rpc_url)
-            const nonce = await web3js.eth.getTransactionCount(wallet.account, 'latest')
-            const nftSaleContract = new web3js.eth.Contract(nftSaleABI.abi, NFT_SALE_SC)
+            const web3 = new Web3(network.rpc_url)
+            const nonce = await web3.eth.getTransactionCount(wallet.account, 'latest')
+            const nftSaleContract = new web3.eth.Contract(nftSaleABI.abi, NFT_SALE_SC)
 
             let value = await nftSaleContract.methods._price().call()
             console.log('Price for one NFT:', fromWeiToEther(value), 'GLMR');
             value = value * mintAmount
             console.log('Value for transaction:', fromWeiToEther(value), 'GLMR');
+            const gasPrice = await web3.eth.getGasPrice()
 
             const tx = {
                 to: NFT_SALE_SC,
                 from: wallet.account,
                 nonce: `${nonce}`,
-                // gasPrice: `${gasPrice}`,
-                maxPriorityFeePerGas: null,
                 maxFeePerGas: null,
                 value: value.toString(),
                 data: nftSaleContract.methods.buyNFT(mintPassTokenIds, mintAmount).encodeABI()
             }
 
-            const gasLimit = await web3js.eth.estimateGas(tx)
+            const gasLimit = await web3.eth.estimateGas(tx)
             tx.gas = gasLimit.toString()
 
-            console.log('GAS', web3js.utils.hexToNumber(gasLimit))
-            console.log(fromWeiToEther(web3js.utils.hexToNumber(gasLimit)));
+            console.log('GAS', web3.utils.hexToNumber(gasLimit))
+            console.log(fromWeiToEther(web3.utils.hexToNumber(gasLimit)));
             // tx.gas = gasLimit.toString()
-
-            if (!'') {
-                // console.log(tx)
-                // const gasNetwork = await getGasNetwork()
-                // console.log('gasNetwork', gasNetwork, fromWeiToEther(gasNetwork));
-                //
-                // // let x = await getGasAmountForBuyNFT(mintPassTokenIds, mintAmount, wallet.account)
-                // // console.log({x});
-                //
-                // const gasLimit = await estimateGas(tx)
-                // console.log('gasLimit', gasLimit);
-                // const gasNumber = gasLimit // web3js.utils.hexToNumber(gasLimit)
-                // console.log('gasNumber', gasNumber)
-                //
-                //
-                // const gas = gasNumber // parseInt(gasNumber, 10) + parseInt(gasNetwork, 10)
-                // console.log('GAS', gas);
-                // console.log('GAS2', web3js.utils.numberToHex(gas).toString());
-                //
-                // tx.gas = web3js.utils.numberToHex(gas).toString()
-
-            }
 
             console.log(tx)
 

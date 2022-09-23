@@ -19,16 +19,16 @@ const MFStory = () => {
             <div className="grid xl:grid-cols-2 md:grid-cols-1 sm:grid-cols-1 gap-24">
                 <div className="moonfit-info">
                     <div className="youtube-video">
-                        <video poster={videoPreview} controls>
+                        <video poster={videoPreview} controls preload="none">
                             <source src={video} type="video/mp4" />
                             Your browser does not support HTML video.
                         </video>
                     </div>
                     <div className="flex justify-center list-store">
-                        <a href="https://play.google.com/apps/testing/xyz.moonfit.app" target="_blank">
+                        <a href="https://play.google.com/apps/testing/xyz.moonfit.app" rel="noreferrer" target="_blank">
                             <img src={chPlay} alt="Chplay" />
                         </a>
-                        <a href="https://testflight.apple.com/join/lfXF5Lbd" target="_blank">
+                        <a href="https://testflight.apple.com/join/lfXF5Lbd" rel="noreferrer" target="_blank">
                             <img src={appStore} alt="AppStore" />
                         </a>
                     </div>
