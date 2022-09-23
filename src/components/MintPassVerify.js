@@ -33,7 +33,7 @@ const MintPassVerify = () => {
         if (!_isNumeric(tokenId)) {
             let m;
             // eslint-disable-next-line
-            const regex = new RegExp(`(MoonFit Mint Pass #)?\s*(\\d+).?`, 'gmi');
+            const regex = new RegExp(`(MoonFit Mint Pass #)?\s*(\\d+)$`, 'gmi');
 
             while ((m = regex.exec(tokenId)) !== null) {
                 // This is necessary to avoid infinite loops with zero-width matches
@@ -138,7 +138,7 @@ const MintPassVerify = () => {
                             Please enter the MintPass number to below box to verify before purchasing.
                         </div>
                         <form className="card-body" onSubmit={handleSubmit}>
-                            <div className={'mt-4 mb-6 lg:mt-8'}>
+                            <div className={'mt-4 mb-6'}>
                                 <div className="mp-verify__body">
                                     <div className="mp-verify__header">
                                         PLEASE Enter the MINTPASS NUMBER
@@ -169,7 +169,6 @@ const MintPassVerify = () => {
 
                         <div className="mp-verify__img">
                             <Image src={imageExample} />
-                            {/*<img src={imageExample} alt=""/>*/}
                         </div>
                     </div>
                 </div>

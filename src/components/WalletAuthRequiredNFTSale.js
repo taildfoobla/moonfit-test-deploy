@@ -1,4 +1,4 @@
-import React, {useContext} from 'react'
+import React, {useContext, useState} from 'react'
 import mfBrand from "../assets/images/brand.png"
 import nftCard from "../assets/images/universe-image.png"
 import WalletAuthContext from "../contexts/WalletAuthContext"
@@ -8,9 +8,27 @@ import {NFT_SALE_CURRENT_INFO} from "../constants/blockchain"
 const WalletAuthRequiredNFTSale = ({children, className}) => {
     const {isConnected, showWalletSelectModal} = useContext(WalletAuthContext)
     const currentSale = NFT_SALE_CURRENT_INFO
-    const isStarted = currentSale.time && currentSale.time <= new Date().getTime()
+    const [isStarted, setIsStarted] = useState(currentSale.time && currentSale.time <= new Date().getTime())
 
     // const isSubWalletInstalled = Boolean((window?.injectedWeb3 && window[PROVIDER_NAME.SubWallet]) || (window[PROVIDER_NAME.MetaMask]))
+
+    const _renderCountdown = () => {
+        if (isStarted) {
+            return `NFT Sale #${NFT_SALE_CURRENT_INFO.number} have been started`
+        }
+
+        return <>
+            <div className={'hidden md:block normal-case mr-2 text-white text-base'}>
+                Start in:
+            </div>
+            <div className={'flex justify-center'}>
+                <CountdownComponent
+                    date={NFT_SALE_CURRENT_INFO.time}
+                    completedCallback={() => setIsStarted(true)}
+                />
+            </div>
+        </>
+    }
 
     const renderContent = () => {
         return !isConnected ? (
@@ -29,13 +47,7 @@ const WalletAuthRequiredNFTSale = ({children, className}) => {
                     </h1>
                     <div className="section-description-wrap text-center xl:text-left">
                         <div className={'flex items-center mt-8 xl:justify-start justify-center'}>
-                            {isStarted ? null : (<div className={'hidden md:block normal-case mr-2 text-white text-base'}>Start in:</div>)}
-                            <div className={'flex justify-center'}>
-                                <CountdownComponent
-                                    date={NFT_SALE_CURRENT_INFO.time}
-                                    // completedCallback={() => window.location.reload()}
-                                    completedMessage={`NFT Sale #${NFT_SALE_CURRENT_INFO.number} have been started`}/>
-                            </div>
+                            {_renderCountdown()}
                         </div>
                     </div>
                     <div className={'flex mt-8 justify-center xl:justify-start'}>

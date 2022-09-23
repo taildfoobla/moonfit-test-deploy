@@ -2,7 +2,7 @@ import React from 'react'
 import Countdown from "react-countdown"
 import {formatZeroNumber} from "../utils/number"
 
-export const CountdownComponent = ({date, completedMessage = 'You are good to go!', completedCallback = null}) => {
+export const CountdownComponent = ({date, completedCallback = null}) => {
 
     const renderCountdownItem = (time, timeTitle) => {
         return (
@@ -16,23 +16,18 @@ export const CountdownComponent = ({date, completedMessage = 'You are good to go
     }
 
     const renderer = ({days, hours, minutes, seconds, completed}) => {
-        if (completed) {
-            if (completedCallback) {
-                setTimeout(() => {
-                    completedCallback()
-                }, 1000)
-            }
-            return <span className={'text-white text-xl'}>{completedMessage}</span>
-        } else {
-            return (
-                <div className={'grid grid-cols-4 gap-3 items-center countdown-container text-lg'}>
-                    {renderCountdownItem(days, 'day')}
-                    {renderCountdownItem(hours, 'hour')}
-                    {renderCountdownItem(minutes, 'minute')}
-                    {renderCountdownItem(seconds, 'second')}
-                </div>
-            )
+        if (completed && typeof completedCallback === 'function') {
+            setTimeout(completedCallback, 350)
         }
+
+        return (
+            <div className={'grid grid-cols-4 gap-3 items-center countdown-container text-lg'}>
+                {renderCountdownItem(days, 'day')}
+                {renderCountdownItem(hours, 'hour')}
+                {renderCountdownItem(minutes, 'minute')}
+                {renderCountdownItem(seconds, 'second')}
+            </div>
+        )
     }
     return (
         <Countdown date={date} renderer={renderer}/>

@@ -1,6 +1,7 @@
 .page-nft-sale {
   --border-radius: 5px;
   padding-top: 10px;
+  z-index: 1;
 
   .count-minted {
     min-height: 30px;
@@ -229,7 +230,7 @@
     background-color: #E4007B !important;
     border: none !important;
     outline: none !important;
-    border-radius: 0 10px 10px 0 !important;
+    border-radius: 5px !important;
     min-width: 125px;
     text-align: center;
 

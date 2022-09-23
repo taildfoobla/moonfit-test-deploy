@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useState} from 'react'
 import {NFT_SALE_CURRENT_INFO, NFT_SALE_ROUNDS_INFO} from "../constants/blockchain"
 import moonbeam from '../assets/images/icons/moonbeam.svg'
 import mintPass from '../assets/images/icons/mintpass.svg'
@@ -9,7 +9,7 @@ import {CountdownComponent} from "./CountdownComponent"
 
 const NFTStages = ({children, className = ''}) => {
     const currentSale = NFT_SALE_CURRENT_INFO
-    const isStarted = currentSale.time && currentSale.time <= new Date().getTime()
+    const [isStarted, setIsStarted] = useState(currentSale.time && currentSale.time <= new Date().getTime())
 
     const renderSecondRow = (saleObj) => {
         return (
@@ -77,9 +77,7 @@ const NFTStages = ({children, className = ''}) => {
                                 </div>
 
                                 <div>
-                                    <CountdownComponent date={saleObj.time}
-                                                        completedCallback={() => window.location.reload()}
-                                                        completedMessage={`NFT Sale #${saleObj.number} have been started`}/>
+                                    <CountdownComponent date={saleObj.time} completedCallback={() => setIsStarted(true)} />
                                 </div>
                             </div>
                         )

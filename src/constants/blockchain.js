@@ -188,10 +188,11 @@ export const WALLET_CONNECT = {
 
 let forDevelopment = {}
 if (configs.env === 'development') {
-    const key = 'time_round2'
+    const key = 'time_round_2_' + configs.R2_NFT_SALE_SC
+    const now = Date.now()
     let timeRound2 = parseInt(localStorage.getItem(key), 10)
-    if (!timeRound2) {
-        timeRound2 = Date.now() + 15000
+    if (!timeRound2 || timeRound2 < now - 10 * 60 * 1000) {
+        timeRound2 = now + 10000
     }
 
     localStorage.setItem(key, timeRound2.toString())
