@@ -22,8 +22,9 @@ import MoonBeasts from '../components/NFTSaleCurrentRound/MoonBeasts'
 import MintPass from '../components/NFTSaleCurrentRound/MintPass'
 
 import {getAvailableSlots, getSaleMaxAmount} from '../services/smc-ntf-sale'
-import {fetchMoonBeastsByAccount}  from '../services/smc-moon-beast'
-import {fetchMintPassByAccount, addAvailableSlotForCurrenSale} from '../services/smc-mint-pass'
+import {fetchMoonBeastsByAccount} from '../services/smc-moon-beast'
+import {addAvailableSlotForCurrenSale, fetchMintPassByAccount} from '../services/smc-mint-pass'
+import {getTransactionReceipt} from "../services/smc-common";
 
 const {NFT_SALE_SC} = NFT_SALE_CURRENT_INFO
 
@@ -52,6 +53,16 @@ const NFTSaleCurrentRound = (props) => {
     }, [wallet.account])
 
     useEffect(() => {
+        const interval = setInterval(async () => {
+            const availableSlots = await getAvailableSlots()
+            console.log({availableSlots})
+
+            setSaleInfo({availableSlots, maxSaleSlots: saleInfo.maxSaleSlots})
+        }, 15000);
+        return () => clearInterval(interval);
+    }, []);
+
+    useEffect(() => {
         if (isConfirmedTx) {
             // console.log('Effect isConfirmedTx', isConfirmedTx)
             clearMbInterval()
@@ -67,9 +78,8 @@ const NFTSaleCurrentRound = (props) => {
     }
 
     const confirmTransaction = async (txHash) => {
-        const web3js = new Web3(network.rpc_url)
-        const receipt = await web3js.eth.getTransactionReceipt(txHash)
-        // console.log(receipt?.status)
+        const receipt = await getTransactionReceipt(txHash)
+
         if (receipt?.status === true) {
             setTimeout(async () => {
                 await fetchData(false)
@@ -185,7 +195,7 @@ const NFTSaleCurrentRound = (props) => {
         if (value !== '') {
             amount = parseInt(value, 10)
             amount = amount > 0 ? amount : 0
-            if(maxValue) {
+            if (maxValue) {
                 amount = amount < maxValue ? amount : maxValue
             } else {
                 amount = amount < maxMintAmount ? amount : maxMintAmount
@@ -283,7 +293,7 @@ const NFTSaleCurrentRound = (props) => {
     const totalMintPassSelected = () => mintPasses.filter(item => item.isSelected).length
 
     const onSelectAll = () => {
-        const isSelected =  totalMintPassSelected()  === 0
+        const isSelected = totalMintPassSelected() === 0
 
         const _mintPasses = mintPasses.map(item => {
             return {
@@ -311,14 +321,16 @@ const NFTSaleCurrentRound = (props) => {
                     </span>
                 </div>
                 <div className="form-mint__warp-input">
-                    <span className="form-mint__input-icon icon-minus" onClick={() => _updateMintAmount(mintAmount - 1, true)}>
-                        <MinusOutlined size={24} />
+                    <span className="form-mint__input-icon icon-minus"
+                          onClick={() => _updateMintAmount(mintAmount - 1, true)}>
+                        <MinusOutlined size={24}/>
                     </span>
                     <span className="form-mint__input-value">
                         {mintAmount}
                     </span>
-                    <span className="form-mint__input-icon icon-plus" onClick={() => _updateMintAmount(mintAmount + 1, true)}>
-                        <PlusOutlined size={24} />
+                    <span className="form-mint__input-icon icon-plus"
+                          onClick={() => _updateMintAmount(mintAmount + 1, true)}>
+                        <PlusOutlined size={24}/>
                     </span>
                 </div>
                 <ButtonMintNFT isDisabled={isMintBtnDisabled} isLoading={mintLoading} handleMintNFT={handleMintNFT}>
@@ -363,12 +375,14 @@ const NFTSaleCurrentRound = (props) => {
                                         handleGetMinted={handleGetMinted}
                                     />
 
-                                    <MintPass isLoading={mintPassLoading} mintPasses={mintPasses} onSelect={onClickMintPass} onSelectAll={onSelectAll}>
+                                    <MintPass isLoading={mintPassLoading} mintPasses={mintPasses}
+                                              onSelect={onClickMintPass} onSelectAll={onSelectAll}>
                                         <hr className={'card-body-separator'}/>
                                         {_renderFoot()}
                                     </MintPass>
 
-                                    <MoonBeasts isLoading={moonBeastLoading} moonBeasts={moonBeasts} moonBeastMinting={moonBeastMinting}/>
+                                    <MoonBeasts isLoading={moonBeastLoading} moonBeasts={moonBeasts}
+                                                moonBeastMinting={moonBeastMinting}/>
                                 </div>
                             </div>
                         </div>
@@ -386,7 +400,8 @@ const NFTSaleCurrentRound = (props) => {
                         {
                             !loading && (
                                 [
-                                    <Header availableSlots={saleInfo.availableSlots} isLoading={saleInfoLoading} key="Header"/>,
+                                    <Header availableSlots={saleInfo.availableSlots} isLoading={saleInfoLoading}
+                                            key="Header"/>,
                                     _renderContainer()
                                 ]
                             )
