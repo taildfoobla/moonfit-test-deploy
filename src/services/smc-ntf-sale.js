@@ -22,10 +22,14 @@ export const getMintPassAvailableSlots = async (tokenId) => {
     return availableSlots
 }
 
-export const getAvailableSlots = () => {
-    return saleContract.methods.getAvailableSlots().call()
+export const getAvailableSlots = async () => {
+    const value = await saleContract.methods.getAvailableSlots().call()
+
+    return parseInt(value)
 }
 
-export const getSaleMaxAmount = () => {
-    return saleContract.methods._maxSaleAmount().call()
+export const getSaleMaxAmount = async () => {
+    const value = await saleContract.methods._maxSaleAmount().call()
+
+    return parseInt(value)
 }

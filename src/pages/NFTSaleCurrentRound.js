@@ -1,6 +1,7 @@
 import React, {useContext, useEffect, useRef, useState} from 'react'
 import Web3 from "web3"
 import BigNumber from 'bignumber.js'
+import Bluebird from 'bluebird'
 import WalletAuthContext from "../contexts/WalletAuthContext"
 import nftSaleABI from '../abis/MFNFTSale.json'
 import {notification} from "antd"
@@ -36,7 +37,8 @@ const NFTSaleCurrentRound = (props) => {
     const [mintLoading, setMintLoading] = useState(false)
     const [mintPasses, setMintPasses] = useState([])
     const [moonBeasts, setMoonBeasts] = useState([])
-    const [saleInfo, setSaleInfo] = useState({})
+    const [nftSaleQuantity, setNftSaleQuantity] = useState(NFT_SALE_CURRENT_INFO.amount)
+    const [nftSaleAvailableQuantity, setNftSaleAvailableQuantity] = useState(NaN)
     const [moonBeastMinting, setMoonBeastMinting] = useState(0)
     const [isConfirmedTx, setIsConfirmedTx] = useState(false)
     const [mintAmount, setMintAmount] = useState(0)
@@ -53,13 +55,17 @@ const NFTSaleCurrentRound = (props) => {
     }, [wallet.account])
 
     useEffect(() => {
-        const interval = setInterval(async () => {
-            const availableSlots = await getAvailableSlots()
-            console.log({availableSlots})
+        const interval = setInterval(_getAvailableSlots, 30000);
 
-            setSaleInfo({availableSlots, maxSaleSlots: saleInfo.maxSaleSlots})
-        }, 15000);
         return () => clearInterval(interval);
+    }, [saleInfoLoading]);
+
+    useEffect(() => {
+        getSaleMaxAmount().then(value => {
+            if (!Number.isNaN(value)) {
+                setNftSaleQuantity(value)
+            }
+        })
     }, []);
 
     useEffect(() => {
@@ -90,19 +96,28 @@ const NFTSaleCurrentRound = (props) => {
         return true
     }
 
-    const _getAvailableSlots = async () => {
-        setSaleInfoLoading(true)
-        const [availableSlots, maxSaleSlots] = await Promise.all([
-            getAvailableSlots(),
-            getSaleMaxAmount(),
-        ])
+    const _getAvailableSlots = async (isSetLoading = false) => {
+        isSetLoading && setSaleInfoLoading(true)
 
-        setSaleInfo({availableSlots, maxSaleSlots})
-        setSaleInfoLoading(false)
+        try {
+            const value = await getAvailableSlots()
+            console.log({getAvailableSlots: value})
+
+            if (!Number.isNaN(value)) {
+                setNftSaleAvailableQuantity(value)
+            } else {
+                await Bluebird.delay(3000)
+                return _getAvailableSlots(isSetLoading)
+            }
+        } catch (e) {
+            //
+        }
+
+        isSetLoading && setSaleInfoLoading(false)
     }
 
     const handleGetMinted = async () => {
-        await _getAvailableSlots()
+        await _getAvailableSlots(true)
     }
 
     const _fetchMintPass = async (isSetLoading = true) => {
@@ -131,7 +146,7 @@ const NFTSaleCurrentRound = (props) => {
         // Switch Network on Desktop Wallet Extension
         provider && await switchNetwork(provider)
 
-        await _getAvailableSlots()
+        await _getAvailableSlots(true)
         loading && setLoading(false)
         await _fetchMintPass(loading)
         loading && setLoading(false)
@@ -143,7 +158,7 @@ const NFTSaleCurrentRound = (props) => {
     const handleRefresh = async (e) => {
         e.preventDefault()
 
-        await _getAvailableSlots()
+        await _getAvailableSlots(true)
         await _fetchMintPass(true)
         await _fetchMoonBeasts(true)
     }
@@ -208,6 +223,11 @@ const NFTSaleCurrentRound = (props) => {
 
         setMintAmount(amount)
     }
+
+    const _handleChangeAmountInput = (value) => {
+        _updateMintAmount(value, true)
+    }
+
     const _transactionSuccess = (txHash) => {
         notification.success({
             message: `Transaction Sent`,
@@ -326,7 +346,10 @@ const NFTSaleCurrentRound = (props) => {
                         <MinusOutlined size={24}/>
                     </span>
                     <span className="form-mint__input-value">
-                        {mintAmount}
+                        <input
+                            onChange={(e) => _handleChangeAmountInput(e.target.value)}
+                            value={mintAmount}
+                            type="number"/>
                     </span>
                     <span className="form-mint__input-icon icon-plus"
                           onClick={() => _updateMintAmount(mintAmount + 1, true)}>
@@ -369,8 +392,8 @@ const NFTSaleCurrentRound = (props) => {
                             <div className="card-body">
                                 <div className={'mt-4 mb-6 lg:mt-8'}>
                                     <NFTSaleInfo
-                                        availableSlots={saleInfo.availableSlots}
-                                        maxSaleSlots={saleInfo.maxSaleSlots}
+                                        availableSlots={nftSaleAvailableQuantity}
+                                        maxSaleSlots={nftSaleQuantity}
                                         isLoading={saleInfoLoading}
                                         handleGetMinted={handleGetMinted}
                                     />
@@ -400,8 +423,7 @@ const NFTSaleCurrentRound = (props) => {
                         {
                             !loading && (
                                 [
-                                    <Header availableSlots={saleInfo.availableSlots} isLoading={saleInfoLoading}
-                                            key="Header"/>,
+                                    <Header availableSlots={nftSaleAvailableQuantity} isLoading={saleInfoLoading}  key="Header"/>,
                                     _renderContainer()
                                 ]
                             )

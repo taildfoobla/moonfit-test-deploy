@@ -64,7 +64,9 @@ const NFTStages = ({children, className = ''}) => {
                     {isSoldOut && (
                         <div className={'flex items-center mt-4'}>
                             <div className={'hidden md:block normal-case mr-2 text-white text-base'}>
-                                <span className="countdown race-sport-font secondary-color">Sold out</span>
+                                <span className="countdown race-sport-font secondary-color">
+                                    {saleObj.soldOutMsg || 'Sold out' }
+                                </span>
                             </div>
                         </div>
                     )}

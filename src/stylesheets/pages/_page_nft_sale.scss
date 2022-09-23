@@ -329,6 +329,30 @@
     font-weight: 800;
     font-size: 18px;
     line-height: 24px;
+
+    input {
+      text-align: center;
+      background: transparent !important;
+      border: none !important;
+      color: #fff !important;
+      outline: none !important;
+      max-width: 50px;
+      padding-left: 0 !important;
+      padding-right: 0 !important;
+      -moz-appearance: textfield;
+
+      &:hover,
+      &:focus {
+        background: transparent !important;
+        border: none !important;
+      }
+
+      &::-webkit-outer-spin-button,
+      &::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+      }
+    }
   }
 }
 
