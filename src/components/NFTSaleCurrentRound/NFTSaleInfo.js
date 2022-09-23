@@ -71,7 +71,7 @@ const NFTSaleInfo = ({availableSlots, maxSaleSlots, isLoading, handleGetMinted =
     }
 
     const getProgressPercent = () => {
-        return Math.floor(mintedSlots || 0 / maxSaleSlots * 100)
+        return Math.floor((mintedSlots || 0) / maxSaleSlots * 100)
     }
 
     return (

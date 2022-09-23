@@ -22,7 +22,7 @@ const providerReadyEvent = {
 // const deepLink = `https://metamask.app.link/dapp/pancakeswap.finance/`
 // const deepLink = `dapp://${APP_URI}`
 // eslint-disable-next-line no-restricted-globals
-const deepLink = `dapp://${location.origin}`
+const deepLink = `dapp://${location.host}`
 
 const WalletAuthWrapper = ({children}) => {
     const [isConnected, setIsConnected] = useState(false)

@@ -33,3 +33,7 @@ export const getSaleMaxAmount = async () => {
 
     return parseInt(value)
 }
+
+export const buyNFTData = (mintPassTokenIds, mintAmount) => {
+    return saleContract.methods.buyNFT(mintPassTokenIds, mintAmount).encodeABI()
+}

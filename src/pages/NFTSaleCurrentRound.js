@@ -13,7 +13,6 @@ import Paths from "../routes/Paths"
 import EnvWrapper from "../components/shared/EnvWrapper"
 import CurveBGWrapper from "../wrappers/CurveBG"
 import {NFT_SALE_CURRENT_INFO} from "../constants/blockchain"
-import {getStringOfBigNumber} from "../utils/number"
 import WalletAuthRequiredNFTSale from "../components/WalletAuthRequiredNFTSale"
 import NFTStages from "../components/NFTStages"
 import Header from '../components/NFTSaleCurrentRound/Header'
@@ -22,10 +21,10 @@ import NFTSaleInfo from '../components/NFTSaleCurrentRound/NFTSaleInfo'
 import MoonBeasts from '../components/NFTSaleCurrentRound/MoonBeasts'
 import MintPass from '../components/NFTSaleCurrentRound/MintPass'
 
-import {getAvailableSlots, getSaleMaxAmount} from '../services/smc-ntf-sale'
+import {getTransactionReceipt, estimateGas, fromWeiToEther} from "../services/smc-common";
+import {getAvailableSlots, getSaleMaxAmount, buyNFTData} from '../services/smc-ntf-sale'
 import {fetchMoonBeastsByAccount} from '../services/smc-moon-beast'
 import {addAvailableSlotForCurrenSale, fetchMintPassByAccount} from '../services/smc-mint-pass'
-import {getTransactionReceipt} from "../services/smc-common";
 
 const {NFT_SALE_SC} = NFT_SALE_CURRENT_INFO
 
@@ -61,14 +60,6 @@ const NFTSaleCurrentRound = (props) => {
     }, [saleInfoLoading]);
 
     useEffect(() => {
-        getSaleMaxAmount().then(value => {
-            if (!Number.isNaN(value)) {
-                setNftSaleQuantity(value)
-            }
-        })
-    }, []);
-
-    useEffect(() => {
         if (isConfirmedTx) {
             // console.log('Effect isConfirmedTx', isConfirmedTx)
             clearMbInterval()
@@ -82,6 +73,23 @@ const NFTSaleCurrentRound = (props) => {
         mbRetrieverRef.current && clearInterval(mbRetrieverRef.current)
         mbRetrieverRef.current = 0
     }
+
+    const _getSaleMaxAmount = async () => {
+        try {
+            const value = await getSaleMaxAmount()
+
+            if (!Number.isNaN(value)) {
+                return setNftSaleQuantity(value)
+            }
+        }catch (e) {
+            //
+        }
+
+        await Bluebird.delay(3000)
+        return _getSaleMaxAmount()
+    }
+
+    setTimeout(_getSaleMaxAmount, 0)
 
     const confirmTransaction = async (txHash) => {
         const receipt = await getTransactionReceipt(txHash)
@@ -221,7 +229,6 @@ const NFTSaleCurrentRound = (props) => {
         setMintPasses(_mintPasses)
     }
 
-
     const _updateMintAmount = (value, checkSelected = false, maxValue) => {
         let amount = value
         if (value !== '') {
@@ -231,6 +238,11 @@ const NFTSaleCurrentRound = (props) => {
                 amount = amount < maxValue ? amount : maxValue
             } else {
                 amount = amount < maxMintAmount ? amount : maxMintAmount
+            }
+
+            if (!amount) {
+                console.log({amount, maxMintAmount, maxValue})
+                console.log({mintPasses})
             }
         }
 
@@ -285,8 +297,9 @@ const NFTSaleCurrentRound = (props) => {
             const nftSaleContract = new web3js.eth.Contract(nftSaleABI.abi, NFT_SALE_SC)
 
             let value = await nftSaleContract.methods._price().call()
-            console.log('Price for one NFT', web3js.utils.fromWei(getStringOfBigNumber(value), 'ether'));
+            console.log('Price for one NFT', fromWeiToEther(value));
             value = value * mintAmount
+            console.log('Value for transaction', fromWeiToEther(value));
 
             const tx = {
                 to: NFT_SALE_SC,
@@ -296,14 +309,15 @@ const NFTSaleCurrentRound = (props) => {
                 maxPriorityFeePerGas: null,
                 maxFeePerGas: null,
                 value: value.toString(),
-                data: nftSaleContract.methods.buyNFT(mintPassTokenIds, mintAmount).encodeABI()
+                data: buyNFTData(mintPassTokenIds, mintAmount)
             }
-            const gasLimit = await web3js.eth.estimateGas(tx)
+
+            const gasLimit = await estimateGas(tx)
+            console.log('GAS', web3js.utils.hexToNumber(gasLimit))
+            console.log(fromWeiToEther(web3js.utils.hexToNumber(gasLimit)));
             tx.gas = gasLimit.toString()
 
             console.log(tx)
-            console.log('GLMR', web3js.utils.fromWei(getStringOfBigNumber(value), 'ether'))
-            console.log('GAS', web3js.utils.hexToNumber(gasLimit))
 
             const txHash = await sendTransaction(provider, connector, tx)
             console.log("The hash of MFB minting transaction is: ", txHash)
