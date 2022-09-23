@@ -1,4 +1,5 @@
 import React, {useState} from 'react'
+import { Image } from 'antd';
 import configs from "../configs";
 import {NFT_SALE_CURRENT_INFO} from "../constants/blockchain";
 import nftSaleABI from '../abis/MFNFTSale.json'
@@ -70,7 +71,7 @@ const MintPassVerify = () => {
             const saleContract = new web3js.eth.Contract(nftSaleABI.abi, NFT_SALE_SC)
             const mintPassContract = new web3js.eth.Contract(mintPassABI.abi, MINT_PASS_SC)
 
-            const {isError} = await getNFTInfo(mintPassContract.methods, tokenId)
+            const {isError} = await getNFTInfo(mintPassContract.methods, tokenId, false)
             if (isError) {
                 setType('error')
                 setMessage(`MoonFit Mint Pass #${tokenId} not found!`)
@@ -129,15 +130,12 @@ const MintPassVerify = () => {
                     <div className="moonfit-card-inner">
                         <div className="card-title flex flex-col lg:flex-row lg:justify-between items-start mx-auto mt-0">
                             <div className={'flex text-white w-full lg:w-auto lg:justify-start mt-0 mp-verify__title'}>
-                                Mint pass VERIFY
+                                CHECK YOUR MINT PASS
                             </div>
                         </div>
                         <div className="mp-verify__info">
                             A MoonFit MintPass can be used only once in each Sale Round.
-                            Please verify the MintPass number to below box to verify before purchasing.
-                        </div>
-                        <div>
-                            <img src={imageExample} alt=""/>
+                            Please enter the MintPass number to below box to verify before purchasing.
                         </div>
                         <form className="card-body" onSubmit={handleSubmit}>
                             <div className={'mt-4 mb-6 lg:mt-8'}>
@@ -149,7 +147,7 @@ const MintPassVerify = () => {
                                         <div className="w-full">
                                             <input
                                                 onChange={(e) => setName(e.target.value)} value={name}
-                                                placeholder="MoonFit Mint Pass #1"
+                                                placeholder="#2029"
                                                 className="ant-input mp-verify__input"
                                                 type="text"/>
                                         </div>
@@ -168,6 +166,11 @@ const MintPassVerify = () => {
                                 </div>
                             </div>
                         </form>
+
+                        <div className="mp-verify__img">
+                            <Image src={imageExample} />
+                            {/*<img src={imageExample} alt=""/>*/}
+                        </div>
                     </div>
                 </div>
             </div>

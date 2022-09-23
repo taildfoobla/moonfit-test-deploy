@@ -2,9 +2,6 @@ import configs from '../configs'
 import MetaMaskLogo from '../assets/images/wallets/MetaMaskLogo.svg';
 import SubWalletLogo from '../assets/images/wallets/SubWalletLogo.svg';
 import WalletConnectLogo from '../assets/images/wallets/WalletConnectLogo.svg';
-import {getReactEnv} from "../utils/env";
-
-const ENV = getReactEnv('ENV')
 
 export const WEB3_METHODS = {
     requestAccounts: {
@@ -215,10 +212,10 @@ export const NFT_SALE_ROUNDS_INFO = {
         nftPerPass: 2,
         dateMsg: '24th September',
         time: 1664028000000, // Date and time (GMT): Saturday, September 24, 2022 2:00:00 PM,
-        ...(ENV === 'development' ? {
+        ...(configs.env === 'development' ? {
             time: 1661176800000,
-            price: 0.119,
-            fromTokenID: 203,
+            price: 0.00119,
+            fromTokenID: 267,
         } : {})
     },
     R3: {

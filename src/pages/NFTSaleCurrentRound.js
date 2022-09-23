@@ -122,7 +122,9 @@ const NFTSaleCurrentRound = (props) => {
         provider && await switchNetwork(provider)
 
         await _getAvailableSlots()
+        loading && setLoading(false)
         await _fetchMintPass(loading)
+        loading && setLoading(false)
         await _fetchMoonBeasts(loading)
 
         loading && setLoading(false)
