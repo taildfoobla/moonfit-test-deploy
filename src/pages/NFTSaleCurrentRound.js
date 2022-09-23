@@ -24,9 +24,6 @@ import MintPass from '../components/NFTSaleCurrentRound/MintPass'
 import { getAvailableSlots, getSaleMaxAmount } from '../services/smc-ntf-sale'
 import { fetchMoonBeastsByAccount } from '../services/smc-moon-beast'
 import { fetchMintPassByAccount, addAvailableSlotForCurrenSale } from '../services/smc-mint-pass'
-import MFStory from '../components/MFStory'
-import MFUtilities from '../components/MFUtilities'
-import MFWeb3Fitness from '../components/MFWeb3Fitness'
 
 const { NFT_SALE_SC } = NFT_SALE_CURRENT_INFO
 
@@ -397,9 +394,6 @@ const NFTSaleCurrentRound = (props) => {
                         <LoadingWrapper loading={loading} />
                     </NFTStages>
                 </WalletAuthRequiredNFTSale>
-                <MFStory />
-                <MFUtilities />
-                <MFWeb3Fitness />
             </EnvWrapper>
         </CurveBGWrapper>
     )

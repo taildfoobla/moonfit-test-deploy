@@ -8,7 +8,7 @@ export const CountdownComponent = ({date, completedCallback = null}) => {
         return (
             <div className={'countdown-item'}>
                 <div className={'countdown race-sport-font secondary-color'}>{formatZeroNumber(time)}</div>
-                <div className={'text-center normal-case text-sm text-white'}>
+                <div className={'text-center normal-case text-xl text-white text-linear'}>
                     {`${timeTitle}${time > 1 ? 's' : ''}`}
                 </div>
             </div>
