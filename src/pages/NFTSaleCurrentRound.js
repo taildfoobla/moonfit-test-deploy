@@ -349,7 +349,8 @@ const NFTSaleCurrentRound = (props) => {
                         <input
                             onChange={(e) => _handleChangeAmountInput(e.target.value)}
                             value={mintAmount}
-                            type="number"/>
+                            pattern="[0-9]*"
+                            type="tel"/>
                     </span>
                     <span className="form-mint__input-icon icon-plus"
                           onClick={() => _updateMintAmount(mintAmount + 1, true)}>
