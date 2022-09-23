@@ -186,6 +186,23 @@ export const WALLET_CONNECT = {
     },
 }
 
+let forDevelopment = {}
+if (configs.env === 'development') {
+    const key = 'time_round2'
+    let timeRound2 = parseInt(localStorage.getItem(key), 10)
+    if (!timeRound2) {
+        timeRound2 = Date.now() + 15000
+    }
+
+    localStorage.setItem(key, timeRound2.toString())
+
+    forDevelopment = {
+        time: timeRound2,
+        price: 0.00119,
+        fromTokenID: 267,
+    }
+}
+
 export const NFT_SALE_ROUNDS_INFO = {
     R1: {
         number: 1,
@@ -212,11 +229,7 @@ export const NFT_SALE_ROUNDS_INFO = {
         nftPerPass: 2,
         dateMsg: '24th September',
         time: 1664028000000, // Date and time (GMT): Saturday, September 24, 2022 2:00:00 PM,
-        ...(configs.env === 'development' ? {
-            time: 1661176800000,
-            price: 0.00119,
-            fromTokenID: 267,
-        } : {})
+        ...forDevelopment,
     },
     R3: {
         number: 3,
