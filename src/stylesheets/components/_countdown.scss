@@ -1,13 +1,30 @@
 .countdown-container {
   .countdown-item {
     //margin-right: 10px;
-
     .countdown {
       background: #2A1143;
-      border-radius: 7px;
-      width: 62px;
+      width: 108px;
+      height: 86px;
       text-align: center;
       padding: 8px 15px 0;
+      line-height: 66px;
+      background-color: #020722;
+      border: 2px solid transparent;
+      border-radius: 10px;
+      background-clip: padding-box;
+      position: relative;
+      font-size: 48px;
+      color: #00EFFF;
+      &::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        z-index: -1;
+        margin: -2px;
+        border-radius: inherit;
+        background-color: #020722;
+        background-image: linear-gradient(to right bottom, #4cbfcb, #E4007B);
+      }
     }
   }
 }

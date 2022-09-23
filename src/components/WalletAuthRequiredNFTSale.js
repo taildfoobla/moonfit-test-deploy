@@ -10,6 +10,9 @@ import yahoo from "../assets/images/icons/yahoo.svg"
 import office365 from "../assets/images/icons/office365.svg"
 import wallet from "../assets/images/icons/Wallet.svg"
 import calendarCheck from "../assets/images/icons/CalendarCheck.svg"
+import MFStory from './MFStory'
+import MFUtilities from './MFUtilities'
+import MFWeb3Fitness from './MFWeb3Fitness'
 
 
 const WalletAuthRequiredNFTSale = ({ children, className }) => {
@@ -26,9 +29,9 @@ const WalletAuthRequiredNFTSale = ({ children, className }) => {
         }
 
         return <>
-            <div className={'hidden md:block normal-case mr-2 text-white text-base'}>
+            {/* <div className={'hidden md:block normal-case mr-2 text-white text-base'}>
                 Start in:
-            </div>
+            </div> */}
             <div className={'flex justify-center'}>
                 <CountdownComponent
                     date={NFT_SALE_CURRENT_INFO.time}
@@ -86,7 +89,7 @@ const WalletAuthRequiredNFTSale = ({ children, className }) => {
                         >
                             <img className="mr-1" src={calendarCheck} /> Add to Calendar
                         </button>
-                        <div class={`dropdown-content${toggleCalendar ? " toggle-calendar" : ""}`}>
+                        <div className={`dropdown-content${toggleCalendar ? " toggle-calendar" : ""}`}>
                             <a href="https://calendar.google.com/calendar/render?action=TEMPLATE&dates=20220923T111500Z%2F20220923T114500Z" target="_blank"><img src={calendar} alt="Google calendar" /> Google Calendar</a>
                             <a href="https://outlook.live.com/calendar/0/deeplink/compose?allday=false&enddt=2022-09-23T11%3A45%3A00%2B00%3A00&path=%2Fcalendar%2Faction%2Fcompose&rru=addevent&startdt=2022-09-23T11%3A15%3A00%2B00%3A00" target="_blank"><img src={outlook} alt="Microsoft Outlook" /> Microsoft Outlook</a>
                             <a href="https://outlook.office.com/calendar/0/deeplink/compose?allday=false&enddt=2022-09-23T11%3A45%3A00%2B00%3A00&path=%2Fcalendar%2Faction%2Fcompose&rru=addevent&startdt=2022-09-23T11%3A15%3A00%2B00%3A00" target="_blank"><img src={office365} alt="Office 365" /> Office 365</a>
@@ -101,6 +104,13 @@ const WalletAuthRequiredNFTSale = ({ children, className }) => {
     return (
         <div className={`wallet-auth-required-nft-sale ${className || ''}`}>
             {renderContent()}
+            {
+                !isConnected && <><MFStory />
+                    <MFUtilities />
+                    <MFWeb3Fitness />
+                </>
+            }
+
         </div>
     )
 }
