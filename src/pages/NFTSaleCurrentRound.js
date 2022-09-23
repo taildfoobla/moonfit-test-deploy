@@ -309,13 +309,15 @@ const NFTSaleCurrentRound = (props) => {
                 maxPriorityFeePerGas: null,
                 maxFeePerGas: null,
                 value: value.toString(),
-                data: buyNFTData(mintPassTokenIds, mintAmount)
+                data: nftSaleContract.methods.buyNFT(mintPassTokenIds, mintAmount).encodeABI()
             }
 
-            const gasLimit = await estimateGas(tx)
+            const gasLimit = await web3js.eth.estimateGas(tx)
+            tx.gas = gasLimit.toString()
+
             console.log('GAS', web3js.utils.hexToNumber(gasLimit))
             console.log(fromWeiToEther(web3js.utils.hexToNumber(gasLimit)));
-            tx.gas = gasLimit.toString()
+            // tx.gas = gasLimit.toString()
 
             console.log(tx)
 
