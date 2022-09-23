@@ -130,7 +130,7 @@ const NFTSaleCurrentRound = (props) => {
         } catch (e) {
             console.log('fetch MintPass error', e.message)
 
-            await Bluebird.delay(5000)
+            await Bluebird.delay(3000)
             return _fetchMintPass(isSetLoading)
         }
 
@@ -151,7 +151,7 @@ const NFTSaleCurrentRound = (props) => {
         } catch (e) {
             console.log('fetch MoonBeasts error', e.message)
 
-            await Bluebird.delay(5000)
+            await Bluebird.delay(3000)
             return _fetchMoonBeasts(isSetLoading)
         }
 
