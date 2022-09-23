@@ -55,7 +55,7 @@ const NFTSaleInfo = ({availableSlots, maxSaleSlots, isLoading, handleGetMinted =
     const mintedSlots = maxSaleSlots - availableSlots
 
     const renderMinted = () => {
-        if (isLoading) {
+        if (isLoading || Number.isNaN(mintedSlots)) {
             return <LoadingOutlined size={24} />
         }
 
@@ -71,7 +71,7 @@ const NFTSaleInfo = ({availableSlots, maxSaleSlots, isLoading, handleGetMinted =
     }
 
     const getProgressPercent = () => {
-        return Math.floor(mintedSlots / maxSaleSlots * 100)
+        return Math.floor(mintedSlots || 0 / maxSaleSlots * 100)
     }
 
     return (

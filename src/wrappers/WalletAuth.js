@@ -12,15 +12,17 @@ import {isMobileOrTablet} from "../utils/device"
 import WalletConnect from "@walletconnect/client"
 import QRCodeModal from "@walletconnect/qrcode-modal"
 
-const {APP_URI} = COMMON_CONFIGS
 
 const providerReadyEvent = {
     'ethereum': 'ethereum#initialized', // Metamask ready event
     'SubWallet': 'subwallet#initialized' // SubWallet ready event
 }
 
+// const {APP_URI} = COMMON_CONFIGS
 // const deepLink = `https://metamask.app.link/dapp/pancakeswap.finance/`
-const deepLink = `dapp://${APP_URI}`
+// const deepLink = `dapp://${APP_URI}`
+// eslint-disable-next-line no-restricted-globals
+const deepLink = `dapp://${location.origin}`
 
 const WalletAuthWrapper = ({children}) => {
     const [isConnected, setIsConnected] = useState(false)

@@ -46,6 +46,11 @@ const WebNavigation = (props) => {
         setIsWalletModalVisible(false)
     }
 
+    const onConnectDone = () => {
+        hideWalletModal()
+        console.log(wallet);
+    }
+
     const mfDrawerLogo = (
         <div>
             <img loading="lazy"
@@ -241,7 +246,7 @@ const WebNavigation = (props) => {
                                Disconnect
                            </button>
                            <button type="button"
-                                   onClick={hideWalletModal}
+                                   onClick={onConnectDone}
                                    className="w-1/2 button button-secondary">
                                Done
                            </button>
