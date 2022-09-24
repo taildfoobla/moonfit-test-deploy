@@ -1,6 +1,6 @@
 .page-nft-sale {
   --border-radius: 5px;
-  padding-top: 10px;
+  padding: 10px 10px 0;
   z-index: 1;
 
   .count-minted {
@@ -412,6 +412,12 @@
   .story-section {
     .moonfit-description, .youtube-video {
       height: 90%;
+    }
+  }
+  .list-store {
+    img {
+      height: 44px;
+      width: 144px;
     }
   }
 }
