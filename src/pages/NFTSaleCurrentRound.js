@@ -10,7 +10,6 @@ import { MinusOutlined, PlusOutlined } from '@ant-design/icons';
 import LoadingWrapper from "../components/shared/LoadingWrapper"
 import Paths from "../routes/Paths"
 import EnvWrapper from "../components/shared/EnvWrapper"
-import CurveBGWrapper from "../wrappers/CurveBG"
 import { NFT_SALE_CURRENT_INFO } from "../constants/blockchain"
 import { getStringOfBigNumber } from "../utils/number"
 import WalletAuthRequiredNFTSale from "../components/WalletAuthRequiredNFTSale"
@@ -24,6 +23,7 @@ import MintPass from '../components/NFTSaleCurrentRound/MintPass'
 import { getAvailableSlots, getSaleMaxAmount } from '../services/smc-ntf-sale'
 import { fetchMoonBeastsByAccount } from '../services/smc-moon-beast'
 import { fetchMintPassByAccount, addAvailableSlotForCurrenSale } from '../services/smc-mint-pass'
+import NftSaleBGWrapper from '../wrappers/NftSaleBG'
 
 const { NFT_SALE_SC } = NFT_SALE_CURRENT_INFO
 
@@ -379,7 +379,7 @@ const NFTSaleCurrentRound = (props) => {
     }
 
     return (
-        <CurveBGWrapper className="page-nft-sale">
+        <NftSaleBGWrapper className="page-nft-sale">
             <EnvWrapper routeItem={Paths.NFTSale}>
                 <WalletAuthRequiredNFTSale className={'section page-nft-sale'}>
                     <NFTStages>
@@ -395,7 +395,7 @@ const NFTSaleCurrentRound = (props) => {
                     </NFTStages>
                 </WalletAuthRequiredNFTSale>
             </EnvWrapper>
-        </CurveBGWrapper>
+        </NftSaleBGWrapper>
     )
 }
 
