@@ -5,7 +5,7 @@
 }
 
 .page-content {
-  padding: 180px 0 28px;
+  padding: 180px 20px 28px;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -273,7 +273,7 @@
   }
 
   .page-container {
-    width: 52.5%;
+    width: 62.5%;
     margin: 0 auto;
 
     &.not-limit-width {
@@ -288,7 +288,7 @@
     padding-top: 130px;
 
     .page-container {
-      width: 56.5%;
+      width: 80%;
       margin: 0 auto;
     }
   }

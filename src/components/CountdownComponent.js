@@ -1,13 +1,17 @@
 import React from 'react'
 import Countdown from "react-countdown"
-import {formatZeroNumber} from "../utils/number"
+import { formatZeroNumber } from "../utils/number"
 
-export const CountdownComponent = ({date, completedCallback = null}) => {
+export const CountdownComponent = ({ date, glow, completedCallback = null }) => {
 
     const renderCountdownItem = (time, timeTitle) => {
         return (
             <div className={'countdown-item'}>
-                <div className={'countdown race-sport-font secondary-color'}>{formatZeroNumber(time)}</div>
+                <div className={`countdown race-sport-font secondary-color${glow ? " countdown-glow" : ""}`}>
+                    <div className="countdown-number">
+                        {formatZeroNumber(time)}
+                    </div>
+                </div>
                 <div className={'text-center normal-case text-xl text-white text-linear'}>
                     {`${timeTitle}${time > 1 ? 's' : ''}`}
                 </div>
@@ -15,7 +19,7 @@ export const CountdownComponent = ({date, completedCallback = null}) => {
         )
     }
 
-    const renderer = ({days, hours, minutes, seconds, completed}) => {
+    const renderer = ({ days, hours, minutes, seconds, completed }) => {
         if (completed && typeof completedCallback === 'function') {
             setTimeout(completedCallback, 350)
         }
@@ -30,6 +34,6 @@ export const CountdownComponent = ({date, completedCallback = null}) => {
         )
     }
     return (
-        <Countdown date={date} renderer={renderer}/>
+        <Countdown date={date} renderer={renderer} />
     )
 }

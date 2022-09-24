@@ -18,14 +18,19 @@ import MFWeb3Fitness from './MFWeb3Fitness'
 const WalletAuthRequiredNFTSale = ({ children, className }) => {
     const { isConnected, showWalletSelectModal } = useContext(WalletAuthContext)
     const currentSale = NFT_SALE_CURRENT_INFO
-    const [isStarted, setIsStarted] = useState(currentSale.time && currentSale.time <= new Date().getTime())
+    const [isStarted, setIsStarted] = useState(true || currentSale.time && currentSale.time <= new Date().getTime())
     const [toggleCalendar, setToggleCalendar] = useState(false)
 
     // const isSubWalletInstalled = Boolean((window?.injectedWeb3 && window[PROVIDER_NAME.SubWallet]) || (window[PROVIDER_NAME.MetaMask]))
 
     const _renderCountdown = () => {
         if (isStarted) {
-            return `NFT Sale #${NFT_SALE_CURRENT_INFO.number} have been started`
+            // return `NFT Sale #${NFT_SALE_CURRENT_INFO.number} have been started`
+            return <div className="flex justify-center">
+                <button
+                    className="button button-secondary btn-join-whitelist" type="button"
+                    onClick={showWalletSelectModal}>JOIN WHITELIST SALE</button>
+            </div>
         }
 
         return <>
@@ -35,6 +40,7 @@ const WalletAuthRequiredNFTSale = ({ children, className }) => {
             <div className={'flex justify-center'}>
                 <CountdownComponent
                     date={NFT_SALE_CURRENT_INFO.time}
+                    glow={true}
                     completedCallback={() => setIsStarted(true)}
                 />
             </div>
@@ -67,37 +73,40 @@ const WalletAuthRequiredNFTSale = ({ children, className }) => {
                 </h1>
                 <div className="section-description-wrap text-center">
                     <RenderIdioms />
-                    <div className={'flex items-center mt-8 justify-center'}>
+                    <div className={'flex items-center mt-8 justify-center '}>
                         {_renderCountdown()}
                     </div>
                 </div>
-                <div className={'flex mt-8 justify-center'}>
-                    <div className="btn-connect">
-                        <button type="button"
-                            onClick={showWalletSelectModal}
-                            className="button button-secondary">
-                            <img className="mr-1" src={wallet} /> Connect Wallet
-                        </button>
-                    </div>
+                {
+                    !isStarted && <div div className={'flex mt-8 justify-center'}>
+                        <div className="btn-connect">
+                            <button type="button"
+                                onClick={showWalletSelectModal}
+                                className="button button-secondary">
+                                <img className="mr-1" src={wallet} /> Connect Wallet
+                            </button>
+                        </div>
 
-                    <div className="dropdown ml-2">
-                        <button
-                            type="button"
-                            onClick={() => setToggleCalendar(true)}
-                            onBlur={() => setToggleCalendar(false)}
-                            className="button button-default dropbtn"
-                        >
-                            <img className="mr-1" src={calendarCheck} /> Add to Calendar
-                        </button>
-                        <div className={`dropdown-content${toggleCalendar ? " toggle-calendar" : ""}`}>
-                            <a href="https://calendar.google.com/calendar/render?action=TEMPLATE&dates=20220923T111500Z%2F20220923T114500Z" target="_blank"><img src={calendar} alt="Google calendar" /> Google Calendar</a>
-                            <a href="https://outlook.live.com/calendar/0/deeplink/compose?allday=false&enddt=2022-09-23T11%3A45%3A00%2B00%3A00&path=%2Fcalendar%2Faction%2Fcompose&rru=addevent&startdt=2022-09-23T11%3A15%3A00%2B00%3A00" target="_blank"><img src={outlook} alt="Microsoft Outlook" /> Microsoft Outlook</a>
-                            <a href="https://outlook.office.com/calendar/0/deeplink/compose?allday=false&enddt=2022-09-23T11%3A45%3A00%2B00%3A00&path=%2Fcalendar%2Faction%2Fcompose&rru=addevent&startdt=2022-09-23T11%3A15%3A00%2B00%3A00" target="_blank"><img src={office365} alt="Office 365" /> Office 365</a>
-                            <a href="https://calendar.yahoo.com/?dur=&et=20220923T114500Z&st=20220923T111500Z&v=60" target="_blank"><img src={yahoo} alt="Yahoo" />Yahoo! Calendar</a>
+                        <div className="dropdown ml-2">
+                            <button
+                                type="button"
+                                onClick={() => setToggleCalendar(true)}
+                                onBlur={() => setToggleCalendar(false)}
+                                className="button button-default dropbtn"
+                            >
+                                <img className="mr-1" src={calendarCheck} /> Add to Calendar
+                            </button>
+                            <div className={`dropdown-content${toggleCalendar ? " toggle-calendar" : ""}`}>
+                                <a href="https://calendar.google.com/calendar/render?action=TEMPLATE&dates=20220924T140000Z%2F20220924T150000Z&details=Look%20like%20a%20Beauty%2C%20run%20like%20a%20Beast%F0%9F%8F%83%E2%80%8D%E2%99%82%EF%B8%8F%F0%9F%94%A5%0ABear%20in%20mind%20that%201%20Mint%20Pass%20can%20mint%20max%202%20MoonBeasts.%0ASave%20the%20date%20-%20Round%202%20is%20getting%20closer.&location=https%3A%2F%2Fapp.moonfit.xyz%2Fnft-sale&text=MoonFit%20NFT%20SALE%20%232" target="_blank"><img src={calendar} alt="Google calendar" /> Google Calendar</a>
+                                <a href="https://outlook.office.com/calendar/0/deeplink/compose?allday=false&body=Look%20like%20a%20Beauty%2C%20run%20like%20a%20Beast%F0%9F%8F%83%E2%80%8D%E2%99%82%EF%B8%8F%F0%9F%94%A5%0ABear%20in%20mind%20that%201%20Mint%20Pass%20can%20mint%20max%202%20MoonBeasts.%0ASave%20the%20date%20-%20Round%202%20is%20getting%20closer.&enddt=2022-09-24T15%3A00%3A00%2B00%3A00&location=https%3A%2F%2Fapp.moonfit.xyz%2Fnft-sale&path=%2Fcalendar%2Faction%2Fcompose&rru=addevent&startdt=2022-09-24T14%3A00%3A00%2B00%3A00&subject=MoonFit%20NFT%20SALE%20%232" target="_blank"><img src={outlook} alt="Microsoft Outlook" /> Microsoft Outlook</a>
+                                <a href="https://outlook.office.com/calendar/0/deeplink/compose?allday=false&enddt=2022-09-23T11%3A45%3A00%2B00%3A00&path=%2Fcalendar%2Faction%2Fcompose&rru=addevent&startdt=2022-09-23T11%3A15%3A00%2B00%3A00" target="_blank"><img src={office365} alt="Office 365" /> Office 365</a>
+                                <a href="https://calendar.yahoo.com/?dur=&et=20220923T114500Z&st=20220923T111500Z&v=60" target="_blank"><img src={yahoo} alt="Yahoo" />Yahoo! Calendar</a>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </div>
+                }
+
+            </div >
         ) : children
     }
 

@@ -198,7 +198,7 @@ if (configs.env === 'development') {
     localStorage.setItem(key, timeRound2.toString())
 
     forDevelopment = {
-        time: timeRound2,
+        // time: timeRound2,
         price: 0.00119,
         fromTokenID: 368,
     }
