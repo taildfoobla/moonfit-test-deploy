@@ -27,7 +27,7 @@ import {fetchMoonBeastsByAccount} from '../services/smc-moon-beast'
 import {addAvailableSlotForCurrenSale, fetchMintPassByAccount} from '../services/smc-mint-pass'
 import NftSaleBGWrapper from '../wrappers/NftSaleBG'
 
-const { NFT_SALE_SC } = NFT_SALE_CURRENT_INFO
+const { NFT_SALE_SC, isStarted } = NFT_SALE_CURRENT_INFO
 
 const NFTSaleCurrentRound = (props) => {
     const [loading, setLoading] = useState(true)
@@ -60,7 +60,7 @@ const NFTSaleCurrentRound = (props) => {
 
     useEffect(() => {
         const interval = setInterval(() => {
-            if (nftSaleAvailableQuantity !== 0) {
+            if (nftSaleAvailableQuantity !== 0 && isStarted) {
                 _getAvailableSlots().then()
             }
         }, 30000);
@@ -401,9 +401,11 @@ const NFTSaleCurrentRound = (props) => {
                         <PlusOutlined size={24} />
                     </span>
                 </div>
-                <ButtonMintNFT isDisabled={isMintBtnDisabled} isLoading={mintLoading} handleMintNFT={handleMintNFT}>
-                    {mintAmount > 0 ? `Mint ${mintAmount} NFT${mintAmount > 1 ? "s" : ""}` : "Mint NFT"}
-                </ButtonMintNFT>
+                <div className="form-mint__wrap-btn">
+                    <ButtonMintNFT isDisabled={isMintBtnDisabled} isLoading={mintLoading} handleMintNFT={handleMintNFT}>
+                        {mintAmount > 0 ? `Mint ${mintAmount} NFT${mintAmount > 1 ? "s" : ""}` : "Mint NFT"}
+                    </ButtonMintNFT>
+                </div>
             </div>
         )
     }

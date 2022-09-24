@@ -95,6 +95,6 @@ export const getNFTInfo = async (methods, tokenId, fetchMetadata = true) => {
         return {tokenId, tokenURI}
     } catch (e) {
         console.log("getNFTInfo Exception: ", e.message)
-        return {name: null, imageUrl: null, isError: true}
+        return {name: null, imageUrl: null, isNotFound: e.message.includes('URI query for nonexistent token'), isError: true}
     }
 }

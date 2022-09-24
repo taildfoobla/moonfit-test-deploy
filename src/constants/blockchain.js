@@ -260,8 +260,10 @@ export const NFT_SALE_ROUNDS_INFO = {
     }
 }
 
+const currentRoundInfo =  {...NFT_SALE_ROUNDS_INFO.R2}
 export const NFT_SALE_CURRENT_INFO = {
-    ...NFT_SALE_ROUNDS_INFO.R2,
+    ...currentRoundInfo,
+    isStarted: currentRoundInfo.time <= Date.now(),
 }
 
 export const SUPPORTED_NETWORKS = [
