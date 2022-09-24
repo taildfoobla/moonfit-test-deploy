@@ -64,6 +64,7 @@ export const sendTransaction = async (provider, connector, tx) => {
             console.log(e);
         })
     } else {
+        console.log(tx, 'eth_sendTransaction tx');
         return await provider.request({
             method: 'eth_sendTransaction', params: [tx]
         })

@@ -11,7 +11,7 @@ import { MinusOutlined, PlusOutlined } from '@ant-design/icons';
 import LoadingWrapper from "../components/shared/LoadingWrapper"
 import Paths from "../routes/Paths"
 import EnvWrapper from "../components/shared/EnvWrapper"
-import { NFT_SALE_CURRENT_INFO } from "../constants/blockchain"
+import { NFT_SALE_CURRENT_INFO, EVM_WALLETS } from "../constants/blockchain"
 import { getStringOfBigNumber } from "../utils/number"
 import WalletAuthRequiredNFTSale from "../components/WalletAuthRequiredNFTSale"
 import NFTStages from "../components/NFTStages"
@@ -21,7 +21,7 @@ import NFTSaleInfo from '../components/NFTSaleCurrentRound/NFTSaleInfo'
 import MoonBeasts from '../components/NFTSaleCurrentRound/MoonBeasts'
 import MintPass from '../components/NFTSaleCurrentRound/MintPass'
 
-import {getTransactionReceipt, getGasNetwork} from "../services/smc-common";
+import {getTransactionReceipt} from "../services/smc-common";
 import {getAvailableSlots, getSaleMaxAmount} from '../services/smc-ntf-sale'
 import {fetchMoonBeastsByAccount} from '../services/smc-moon-beast'
 import {addAvailableSlotForCurrenSale, fetchMintPassByAccount} from '../services/smc-mint-pass'
@@ -46,7 +46,7 @@ const NFTSaleCurrentRound = (props) => {
 
     const mbRetrieverRef = useRef(0)
 
-    const { wallet, network, provider, connector } = useContext(WalletAuthContext)
+    const { wallet, network, provider, connector, walletExtKey } = useContext(WalletAuthContext)
 
     useEffect(() => {
         if (!!wallet.account) {
@@ -315,8 +315,16 @@ const NFTSaleCurrentRound = (props) => {
                 value: value.toString(),
                 data: nftSaleContract.methods.buyNFT(mintPassTokenIds, mintAmount).encodeABI()
             }
-            const gasLimit = await web3js.eth.estimateGas(tx)
-            tx.gas = gasLimit.toString()
+            const _gasLimit = await web3js.eth.estimateGas(tx)
+
+            // const walletEx = EVM_WALLETS.find(item => item.extensionName === walletExtKey)
+            let gasLimit = _gasLimit
+            gasLimit = gasLimit < 20999 ? 20999 : gasLimit
+            gasLimit = gasLimit > 7920027 ? 7920027 : gasLimit
+
+            console.log({_gasLimit, gasLimit, x: typeof _gasLimit})
+
+            tx.gas = web3js.utils.numberToHex(gasLimit).toString()
 
             console.log(tx)
             console.log('GLMR', web3js.utils.fromWei(getStringOfBigNumber(value), 'ether'))
