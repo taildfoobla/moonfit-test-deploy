@@ -52,4 +52,6 @@ const getConfigs = () => {
 
 const env = getConfigs()
 
+window.__env = env
+
 export default env
