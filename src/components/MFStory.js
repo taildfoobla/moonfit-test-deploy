@@ -42,7 +42,7 @@ const MFStory = () => {
                             <div className="moonfit-description">
                                 <h3 className="description-title mb-5">WHAT IS MOONFIT?</h3>
                                 <p>MoonFit is a Web3 & NFT Lifestyle App that promotes active living by rewarding users anytime they burn calories through physical activities.</p>
-                                <p>We believe our real-life lifestyle & fitness application benefit and the proper rewarding system will inspire people to take one more step every day while helping us get one step closer to our goal.</p>
+                                <p>Your existence in the MoonFit Universe is represented via Beast or Beauty. Once you have an NFT, you can start training sessions and get rewards. The more calories you burn, the more rewards you can earn.</p>
                             </div>
 
                         </div>
@@ -91,7 +91,7 @@ const MFStory = () => {
                         <div className="moonfit-description">
                             <h3 className="description-title mb-5">WHAT IS MOONFIT?</h3>
                             <p>MoonFit is a Web3 & NFT Lifestyle App that promotes active living by rewarding users anytime they burn calories through physical activities.</p>
-                            <p>We believe our real-life lifestyle & fitness application benefit and the proper rewarding system will inspire people to take one more step every day while helping us get one step closer to our goal.</p>
+                            <p>Your existence in the MoonFit Universe is represented via Beast or Beauty. Once you have an NFT, you can start training sessions and get rewards. The more calories you burn, the more rewards you can earn.</p>
                         </div>
                         <div className="flex btn-list sm:justify-center">
                             <button type="button" onClick={() => onClickButton("1")}
