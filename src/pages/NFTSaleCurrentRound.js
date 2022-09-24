@@ -23,7 +23,7 @@ import MintPass from '../components/NFTSaleCurrentRound/MintPass'
 import { getAvailableSlots, getSaleMaxAmount } from '../services/smc-ntf-sale'
 import { fetchMoonBeastsByAccount } from '../services/smc-moon-beast'
 import { fetchMintPassByAccount, addAvailableSlotForCurrenSale } from '../services/smc-mint-pass'
-import NftSaleBGWrapper from '../wrappers/NftSaleBG'
+import CurveBGWrapper from '../wrappers/CurveBG'
 
 const { NFT_SALE_SC } = NFT_SALE_CURRENT_INFO
 
@@ -379,7 +379,7 @@ const NFTSaleCurrentRound = (props) => {
     }
 
     return (
-        <NftSaleBGWrapper className="page-nft-sale">
+        <CurveBGWrapper className="page-nft-sale">
             <EnvWrapper routeItem={Paths.NFTSale}>
                 <WalletAuthRequiredNFTSale className={'section page-nft-sale'}>
                     <NFTStages>
@@ -395,7 +395,7 @@ const NFTSaleCurrentRound = (props) => {
                     </NFTStages>
                 </WalletAuthRequiredNFTSale>
             </EnvWrapper>
-        </NftSaleBGWrapper>
+        </CurveBGWrapper>
     )
 }
 
