@@ -19,8 +19,7 @@ export const fetchMintPassByAccount = async (account) => {
     return Bluebird.map(array, async(index) => {
         const tokenId = await tokenOfOwnerByIndex(mintPassContract, account, index)
         // const {name, imageUrl} = await getNFTInfo(mintPassContract.methods, tokenId)
-        // const imageUrl = 'https://bafybeidedg4erz6vvoywe26obvqty5aiovsxzjrvakjsciusigdct2hoqy.ipfs.nftstorage.link/'
-        const imageUrl = ''
+        const imageUrl = 'https://bafybeidedg4erz6vvoywe26obvqty5aiovsxzjrvakjsciusigdct2hoqy.ipfs.nftstorage.link/'
         const name = `MoonFit Mint Pass #${tokenId}`
 
         return {
