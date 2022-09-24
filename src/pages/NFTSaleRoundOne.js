@@ -452,7 +452,7 @@ const NFTSaleRoundOne = (props) => {
                                                                 Mint
                                                             </div>
                                                             <div
-                                                                className={'flex card-body-row-title'}>Selected {selectedMp.length}
+                                                                className={'flex card-body-row-title'}> Selected {selectedMp.length}
                                                             </div>
                                                         </div>
                                                         {renderMintPasses()}

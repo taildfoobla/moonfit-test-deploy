@@ -12,7 +12,7 @@ export const CountdownComponent = ({ date, glow, completedCallback = null }) => 
                         {formatZeroNumber(time)}
                     </div>
                 </div>
-                <div className={'text-center normal-case text-xl text-white text-linear'}>
+                <div className={'text-center normal-case sm:text-sm xl:text-xl text-white text-linear'}>
                     {`${timeTitle}${time > 1 ? 's' : ''}`}
                 </div>
             </div>
