@@ -53,7 +53,7 @@ export const switchNetwork = async (provider) => {
 export const sendTransaction = async (provider, connector, tx) => {
     if (!provider && !connector) {
         // console.log("No provider or connector detected")
-        throw new Error("Please check the wallets")
+        throw new Error("No provider or connector detected. Please check your wallet.")
     }
 
     console.log({connector})

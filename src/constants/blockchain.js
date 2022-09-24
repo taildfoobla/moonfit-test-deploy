@@ -200,7 +200,7 @@ if (configs.env === 'development') {
     forDevelopment = {
         time: timeRound2,
         price: 0.00119,
-        fromTokenID: 267,
+        fromTokenID: 368,
     }
 }
 
@@ -209,6 +209,7 @@ export const NFT_SALE_ROUNDS_INFO = {
         number: 1,
         title: 'NFT Sale 1',
         timelineTitle: 'Whitelist Sale #1',
+        soldOutMsg: 'Sold out in 30 minutes',
         NFT_SALE_SC: configs.R1_NFT_SALE_SC,
         fromTokenID: 1,
         amount: 500,

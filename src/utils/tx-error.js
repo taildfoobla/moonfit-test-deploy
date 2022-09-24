@@ -14,5 +14,6 @@ export const getMainMessage = (message) => {
     } else if (message.includes('gas required exceeds allowance')) {
         mainMessage = "Insufficient balance, unable to send transaction"
     }
-    return mainMessage
+
+    return mainMessage || message
 }
