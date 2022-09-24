@@ -103,3 +103,11 @@
 .dropdown:hover .dropdown-content, .toggle-calendar {
   display: block;
 }
+.btn-join-whitelist {
+  margin-bottom: 150px;
+}
+@media (max-width: 1200px) {
+  .btn-join-whitelist {
+    margin-bottom: 100px;
+  }
+}

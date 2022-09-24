@@ -29,7 +29,7 @@ const MFStory = () => {
         <div className="story-section">
             {
                 width >= 1366 && <>
-                    <div className="grid xl:grid-cols-2 md:grid-cols-1 sm:grid-cols-1 gap-16">
+                    <div className="grid xl:grid-cols-2 md:grid-cols-1 sm:grid-cols-1 gap-24">
                         <div className="moonfit-info">
                             <div className="youtube-video">
                                 <video poster={videoPreview} controls>
@@ -56,7 +56,7 @@ const MFStory = () => {
                                 <img src={appStore} alt="AppStore" />
                             </a>
                         </div>
-                        <div className="flex btn-list sm:justify-center">
+                        <div className="flex btn-list md:justify-center sm:justify-center">
                             <button type="button" onClick={() => onClickButton("1")}
                                 className="button button-secondary">
                                 READ WHITEPAPER

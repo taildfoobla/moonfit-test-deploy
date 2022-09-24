@@ -370,9 +370,9 @@
 .story-section {
   text-transform: initial;
   margin-top: 100px;
-  .moonfit-description, .youtube-video {
-    height: 100%;
-  }
+  // .moonfit-description, .youtube-video {
+  //   height: 100%;
+  // }
 
   .youtube-video {
     width: 100%;
@@ -382,11 +382,11 @@
   }
   .what-is-moonfit {
     .description-title {
-      font-size: 32px;
+      font-size: 36px;
     }
     p {
-      font-size: 20px;
-      line-height: 26px;
+      font-size: 22px;
+      line-height: 32px;
       font-weight: 500;
       margin-bottom: 0.5rem
     }
@@ -424,7 +424,6 @@
     margin-top: 50px;
     .grid-item {
       // word-break: break-all;
-      word-wrap:break-word;
       transition: 0.2s ease-in-out;
       .block-game-feature {
       padding: 10px;
@@ -433,6 +432,7 @@
       border: 2px solid transparent;
       background-clip: padding-box;
       border-radius: 10px;
+      min-width: 200px;
       position: relative;
       cursor: pointer;
       background-image: url("../../assets/images/utilities/feature-frame-bg.png");
@@ -597,7 +597,7 @@
 	}
 
 	.block-heading-01 {
-		left: -150px;
+		left: -80px;
 		bottom: 50%;
 		transform: translateY(-32px);
 
@@ -609,7 +609,7 @@
 	}
 
 	.block-heading-02 {
-		left: -135px;
+		left: -65px;
 		top: 50%;
 		transform: translateY(32px);
 
@@ -621,7 +621,7 @@
 	}
 
 	.block-heading-03 {
-		right: -200px;
+		right: -120px;
 		bottom: 50%;
 		transform: translateY(-102px);
 
@@ -633,7 +633,7 @@
 	}
 
 	.block-heading-04 {
-		right: -150px;
+		right: -80px;
 		top: 50%;
 		transform: translateY(-50%);
 
@@ -645,7 +645,7 @@
 	}
 
 	.block-heading-05 {
-		right: -200px;
+		right: -120px;
 		top: 50%;
 		transform: translateY(102px);
 

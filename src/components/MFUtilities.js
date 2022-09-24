@@ -16,7 +16,7 @@ const MFUtilities = () => {
                 <h3>NFT UTILITIES</h3>
             </div>
 
-            <div className="grid xl:grid-cols-4 md:grid-cols-2 sm:grid-cols-1 gap-8">
+            <div className="grid xl:grid-cols-4 md:grid-cols-2 sm:grid-cols-1 gap-12">
                 <div className="grid-item">
                     <div className="block-game-feature block-frame">
                         <div className="block-frame-border"></div>
