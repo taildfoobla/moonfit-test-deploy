@@ -47,7 +47,7 @@ const MFStory = () => {
 
                         </div>
                     </div>
-                    <div className="grid xl:grid-cols-2 md:grid-cols-1 sm:grid-cols-1 gap-4 mt-3">
+                    <div className="grid xl:grid-cols-2 md:grid-cols-1 sm:grid-cols-1 gap-24 mt-3">
                         <div className="flex justify-center list-store">
                             <a rel={'noreferrer'} href="https://play.google.com/apps/testing/xyz.moonfit.app" target="_blank">
                                 <img src={chPlay} alt="Chplay" />
@@ -56,7 +56,7 @@ const MFStory = () => {
                                 <img src={appStore} alt="AppStore" />
                             </a>
                         </div>
-                        <div className="flex btn-list md:justify-center sm:justify-center">
+                        <div className="flex btn-list xl:justify-start md:justify-start sm:justify-center">
                             <button type="button" onClick={() => onClickButton("1")}
                                 className="button button-secondary">
                                 READ WHITEPAPER
