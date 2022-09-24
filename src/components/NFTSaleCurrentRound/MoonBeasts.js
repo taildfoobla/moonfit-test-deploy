@@ -35,8 +35,8 @@ const MoonBeasts = ({moonBeasts, isLoading, moonBeastMinting= 0}) => {
                 {
                     moonBeasts.map((mb, idx) => {
                         const nameArr = String(mb.name || '').split(' ')
-                        const preName = nameArr[0]
-                        const typeName = nameArr[1]
+                        const preName = nameArr[0] || 'MoonFit'
+                        const typeName = nameArr[1] || 'NFT'
                         const numberName = nameArr[2]
 
                         return (
@@ -47,7 +47,7 @@ const MoonBeasts = ({moonBeasts, isLoading, moonBeastMinting= 0}) => {
                                     <Image
                                         className="nft-wrap-img"
                                         width={'100%'}
-                                        src={mb.imageUrl}
+                                        src={mb.imageUrl || 'https://bafkreidtf37bm46cpkbanxxbnz6ykcqrtf2na4qdrdfvfgzlrasyov6zoe.ipfs.nftstorage.link/'}
                                         alt={mb.name}
                                     />
                                 </div>
