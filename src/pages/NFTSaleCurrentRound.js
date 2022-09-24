@@ -11,7 +11,7 @@ import { MinusOutlined, PlusOutlined } from '@ant-design/icons';
 import LoadingWrapper from "../components/shared/LoadingWrapper"
 import Paths from "../routes/Paths"
 import EnvWrapper from "../components/shared/EnvWrapper"
-import { NFT_SALE_CURRENT_INFO, EVM_WALLETS } from "../constants/blockchain"
+import { NFT_SALE_CURRENT_INFO } from "../constants/blockchain"
 import { getStringOfBigNumber } from "../utils/number"
 import WalletAuthRequiredNFTSale from "../components/WalletAuthRequiredNFTSale"
 import NFTStages from "../components/NFTStages"
@@ -46,7 +46,7 @@ const NFTSaleCurrentRound = (props) => {
 
     const mbRetrieverRef = useRef(0)
 
-    const { wallet, network, provider, connector, walletExtKey } = useContext(WalletAuthContext)
+    const { wallet, network, provider, connector } = useContext(WalletAuthContext)
 
     useEffect(() => {
         if (!!wallet.account) {
@@ -59,7 +59,11 @@ const NFTSaleCurrentRound = (props) => {
     }, [wallet.account])
 
     useEffect(() => {
-        const interval = setInterval(_getAvailableSlots, 30000);
+        const interval = setInterval(() => {
+            if (nftSaleAvailableQuantity !== 0) {
+                _getAvailableSlots().then()
+            }
+        }, 30000);
 
         return () => clearInterval(interval);
     }, [saleInfoLoading]);
