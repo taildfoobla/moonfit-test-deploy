@@ -361,12 +361,24 @@
   }
 }
 
-@media screen and (max-width: 800px) {
+@media (max-width: 768px) {
   .form-mint {
     flex-wrap: wrap;
-    justify-content: space-around;
+    justify-content: space-between;
+
+    &__wrap-btn {
+      margin-top: 10px;
+      flex-basis: 100%;
+      text-align: center;
+      display: flex;
+      flex-wrap: wrap;
+      align-content: center;
+      justify-content: center;
+      align-items: center;
+    }
   }
 }
+
 .story-section {
   text-transform: initial;
   margin-top: 50px;
@@ -391,7 +403,6 @@
       margin-bottom: 0.5rem
     }
   }
-  
 
   .list-store {
     img {
@@ -485,7 +496,7 @@
     }
   }
   }
-  
+
 }
 .section-web3-nft {
   text-transform: initial;

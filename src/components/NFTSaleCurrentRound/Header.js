@@ -4,7 +4,7 @@ import LoadingOutlined from "../../components/shared/LoadingOutlined";
 
 const Header = ({availableSlots, isLoading=true}) => {
     const _renderProgress = () => {
-        if (isLoading) {
+        if (isLoading || Number.isNaN(availableSlots)) {
             return <LoadingOutlined className="ml-3" />
         }
 

@@ -200,7 +200,7 @@ if (configs.env === 'development') {
     forDevelopment = {
         time: timeRound2,
         price: 0.00119,
-        fromTokenID: 368,
+        fromTokenID: 901,
     }
 }
 
@@ -260,8 +260,10 @@ export const NFT_SALE_ROUNDS_INFO = {
     }
 }
 
+const currentRoundInfo =  {...NFT_SALE_ROUNDS_INFO.R2}
 export const NFT_SALE_CURRENT_INFO = {
-    ...NFT_SALE_ROUNDS_INFO.R2,
+    ...currentRoundInfo,
+    isStarted: currentRoundInfo.time <= Date.now(),
 }
 
 export const SUPPORTED_NETWORKS = [
