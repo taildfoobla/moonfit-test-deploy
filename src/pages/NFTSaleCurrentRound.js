@@ -31,6 +31,7 @@ const { NFT_SALE_SC, isStarted } = NFT_SALE_CURRENT_INFO
 
 const NFTSaleCurrentRound = (props) => {
     const [loading, setLoading] = useState(true)
+    const [isFetching, setIsFetching] = useState(true)
     const [saleInfoLoading, setSaleInfoLoading] = useState(true)
     const [mintPassLoading, setMintPassLoading] = useState(true)
     const [moonBeastLoading, setMoonBeastLoading] = useState(true)
@@ -105,7 +106,10 @@ const NFTSaleCurrentRound = (props) => {
 
         if (receipt) {
             setTimeout(async () => {
-                await fetchData(false)
+                if (!isFetching) {
+                    await fetchData(false)
+                }
+
                 setIsConfirmedTx(true)
             }, 500)
 
@@ -192,6 +196,7 @@ const NFTSaleCurrentRound = (props) => {
     }
 
     const fetchData = async (loading = true) => {
+        setIsFetching(true)
         loading && setLoading(true)
         // Switch Network on Desktop Wallet Extension
         provider && await switchNetwork(provider)
@@ -203,6 +208,7 @@ const NFTSaleCurrentRound = (props) => {
         await _fetchMoonBeasts(loading)
 
         loading && setLoading(false)
+        setIsFetching(false)
     }
 
     const handleRefresh = async (e) => {
