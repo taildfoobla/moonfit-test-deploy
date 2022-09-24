@@ -8,6 +8,45 @@
       width: 62px;
       text-align: center;
       padding: 8px 15px 0;
+      &.countdown-glow {
+        width: 108px;
+        height: 86px;
+        text-align: center;
+        padding: 8px 15px 0;
+        line-height: 70px;
+        background-color: #020722;
+        border: 2px solid transparent;
+        border-radius: 10px;
+        background-clip: padding-box;
+        position: relative;
+        font-size: 48px;
+        .countdown-number {
+          background: linear-gradient(202.08deg, #fff -4.73%, #00efff 95.16%);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          background-clip: text;
+          text-fill-color: transparent;
+        }
+        &::before {
+          content: "";
+          position: absolute;
+          inset: 0;
+          z-index: -1;
+          margin: -2px;
+          border-radius: inherit;
+          background-color: #020722;
+          background-image: linear-gradient(to right bottom, #4cbfcb, #E4007B);
+        }
+      }
+      @media (max-width: 576px) {
+        &.countdown-glow {
+          width: 78px;
+          height: 68px;
+          line-height: 48px;
+          font-size: 28px;
+        }
+      }
     }
+    
   }
 }

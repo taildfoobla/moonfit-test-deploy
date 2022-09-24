@@ -1,5 +1,5 @@
-import React from 'react'
-import {NFT_SALE_ROUNDS_INFO, NFT_SALE_CURRENT_INFO} from "../constants/blockchain"
+import React, {useState} from 'react'
+import {NFT_SALE_CURRENT_INFO, NFT_SALE_ROUNDS_INFO} from "../constants/blockchain"
 import moonbeam from '../assets/images/icons/moonbeam.svg'
 import mintPass from '../assets/images/icons/mintpass.svg'
 import {getOrdinalDateMonthFormat} from "../utils/datetime"
@@ -8,9 +8,8 @@ import {Timeline} from "antd"
 import {CountdownComponent} from "./CountdownComponent"
 
 const NFTStages = ({children, className = ''}) => {
-    const roundKeys = Object.keys(NFT_SALE_ROUNDS_INFO)
     const currentSale = NFT_SALE_CURRENT_INFO
-    const isStarted = currentSale.time && currentSale.time <= new Date().getTime()
+    const [isStarted, setIsStarted] = useState(currentSale.time && currentSale.time <= new Date().getTime())
 
     const renderSecondRow = (saleObj) => {
         return (
@@ -44,26 +43,30 @@ const NFTStages = ({children, className = ''}) => {
     }
 
     const getTimelines = () => {
-        return roundKeys.map((key, index) => {
-            const saleObj = NFT_SALE_ROUNDS_INFO[key]
+        return Object.values(NFT_SALE_ROUNDS_INFO).map((saleObj, index) => {
             const isCurrentRound = saleObj.number === currentSale.number
             const isSoldOut = saleObj.number < currentSale.number
+            const className = classNames("pb-10", {
+                'opacity-50': saleObj.number > currentSale.number,
+                'is-sold-out': isSoldOut
+            })
+            const dot = (<div className="marker absolute w-3 h-3 rounded-full mt-1.5 -left-1.5" />)
 
             return (
                 <Timeline.Item
-                    className={classNames("pb-10", {'opacity-50': saleObj.number > currentSale.number, 'is-sold-out': isSoldOut})}
-                    dot={(
-                        <div className="marker absolute w-3 h-3 rounded-full mt-1.5 -left-1.5" />
-                    )}
-                    key={key}>
+                    className={className}
+                    dot={dot}
+                    key={saleObj.number}>
                     <div className="mb-1 text-lg race-sport-font primary-color">
-                        {saleObj.title}
+                        {saleObj.timelineTitle}
                     </div>
                     {renderSecondRow(saleObj)}
                     {isSoldOut && (
                         <div className={'flex items-center mt-4'}>
                             <div className={'hidden md:block normal-case mr-2 text-white text-base'}>
-                                <span className="countdown race-sport-font secondary-color">Sold out</span>
+                                <span className="countdown race-sport-font secondary-color">
+                                    {saleObj.soldOutMsg || 'Sold out' }
+                                </span>
                             </div>
                         </div>
                     )}
@@ -74,10 +77,9 @@ const NFTStages = ({children, className = ''}) => {
                                     className={'hidden md:block normal-case mr-2 text-white text-base'}>
                                     Start in:
                                 </div>
+
                                 <div>
-                                    <CountdownComponent date={saleObj.time}
-                                                        completedCallback={() => window.location.reload()}
-                                                        completedMessage={`NFT Sale #${saleObj.number} have been started`}/>
+                                    <CountdownComponent date={saleObj.time} completedCallback={() => setIsStarted(true)} />
                                 </div>
                             </div>
                         )
@@ -87,11 +89,15 @@ const NFTStages = ({children, className = ''}) => {
         })
     }
 
-    return isStarted ? (
-        <div className={`nft-stages ${className || ''}`}>
-            {children}
-        </div>
-    ) : (
+    if (isStarted) {
+        return (
+            <div className={`nft-stages ${className || ''}`}>
+                {children}
+            </div>
+        )
+    }
+
+    return (
         <div className={`nft-stages ${className || ''}`}>
             <div className="section-content">
                 <div className="container">

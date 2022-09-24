@@ -3,6 +3,10 @@
     font-weight: 400;
     font-size: 32px;
     line-height: 48px;
+    text-transform: initial;
+    .current-title {
+      background-image: linear-gradient(to right bottom, #4cbfcb, #e4007b);
+    }
   }
 
   .section-description-wrap {
@@ -24,7 +28,6 @@
     //top: 11.11%;
     //right: 22.65%
   }
-
 }
 
 @media screen and (max-width: 1600px) {
@@ -44,9 +47,10 @@
 
   .section-description-wrap {
     .section-description {
-      font-weight: 700;
-      font-size: 24px;
-      line-height: 30px;
+      color: #A8ADC3;
+      font-size: 22px;
+      line-height: 32px;
+      font-weight: 600;
     }
   }
 
@@ -61,5 +65,68 @@
     .landing-right-image-wrap {
       margin-left: 0;
     }
+  }
+}
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+@media (max-width: 576px) {
+  .dropdown,
+  .btn-connect {
+    button {
+      font-size: 14px;
+      img {
+        width: 20px;
+      }
+    }
+  }
+}
+
+.dropdown-content {
+  width: 100%;
+  margin-top: 2px;
+  border-radius: 5px;
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+}
+
+.dropdown-content a {
+  color: #222;
+  padding: 10px;
+  text-decoration: none;
+  display: flex;
+  text-transform: initial;
+  font-size: 14px;
+  img {
+    margin-right: 10px;
+    width: 25px;
+  }
+}
+
+.dropdown-content a:hover {
+  background-color: #f1f1f1;
+}
+
+.dropdown:hover .dropdown-content,
+.toggle-calendar {
+  display: block;
+}
+.btn-join-whitelist {
+  margin-bottom: 150px;
+}
+@media (max-width: 1200px) {
+  .btn-join-whitelist {
+    margin-bottom: 100px;
+  }
+}
+@media (max-width: 768px) {
+  .btn-join-whitelist {
+    margin-bottom: 0;
   }
 }

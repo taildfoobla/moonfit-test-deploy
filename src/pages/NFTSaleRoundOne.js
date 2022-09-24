@@ -15,7 +15,7 @@ import {
     sendTransaction,
     switchNetwork
 } from "../utils/blockchain"
-import {BLC_CONFIGS} from '../configs/blockchain'
+import configs from '../configs'
 import LoadingWrapper from "../components/shared/LoadingWrapper"
 import Paths from "../routes/Paths"
 import EnvWrapper from "../components/shared/EnvWrapper"
@@ -30,7 +30,7 @@ import WalletAuthRequiredNFTSale from "../components/WalletAuthRequiredNFTSale"
 import NFTSkeleton from "../components/NFTSkeleton"
 import NFTStages from "../components/NFTStages"
 
-const {MINT_PASS_SC, MOONBEAST_SC, R1_NFT_SALE_SC} = BLC_CONFIGS
+const {MINT_PASS_SC, MOONBEAST_SC, R1_NFT_SALE_SC} = configs
 const {Paragraph} = Typography
 const {R1} = NFT_SALE_ROUNDS_INFO
 
@@ -452,7 +452,7 @@ const NFTSaleRoundOne = (props) => {
                                                                 Mint
                                                             </div>
                                                             <div
-                                                                className={'flex card-body-row-title'}>Selected {selectedMp.length}
+                                                                className={'flex card-body-row-title'}> Selected {selectedMp.length}
                                                             </div>
                                                         </div>
                                                         {renderMintPasses()}

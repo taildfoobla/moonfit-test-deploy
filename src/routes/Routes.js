@@ -2,8 +2,8 @@ import App from "../App"
 import Paths from "./Paths"
 import MFGPrivateSale from "../pages/MFGPrivateSale"
 import MintPassMinting from "../pages/MintPassMinting"
-// import NFTSale from "../pages/NFTSaleRoundOne"
-import NFTSale from "../pages/NFTSaleRoundTwo"
+import MintPassVerify from "../pages/MintPassVerify"
+import NFTSale from "../pages/NFTSaleCurrentRound"
 import Home from "../pages/Home"
 import NotFound from "../pages/NotFound"
 
@@ -30,6 +30,11 @@ const routes = [
                 path: Paths.MintPassMinting.path,
                 exact: true,
                 component: MintPassMinting
+            },
+            {
+                path: Paths.MintPassVerify.path,
+                exact: true,
+                component: MintPassVerify
             },
             {
                 path: '*',

@@ -1,3 +1,3 @@
-export const getReactEnv = (name, defaultReturn = null) => {
+export const getReactEnv = (name) => {
     return process.env[`REACT_APP_${name}`] || 'production'
 }

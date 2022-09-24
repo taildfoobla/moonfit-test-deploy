@@ -1,7 +1,8 @@
 .section-hero {
 	z-index: 1;
 	padding: 280px 0 281px;
-	background: url(../../assets/images/hero-bg.jpg) no-repeat center;
+	background-image: url(../../assets/images/hero-bg.jpg);
+	background-repeat: no-repeat;
 	background-size: cover;
 
 	&.section-hero-3d-bg {

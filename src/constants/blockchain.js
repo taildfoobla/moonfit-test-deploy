@@ -1,9 +1,8 @@
+import configs from '../configs'
 import MetaMaskLogo from '../assets/images/wallets/MetaMaskLogo.svg';
 import SubWalletLogo from '../assets/images/wallets/SubWalletLogo.svg';
 import WalletConnectLogo from '../assets/images/wallets/WalletConnectLogo.svg';
 
-export const MOONBEAM_CHAIN_ID = 504
-export const MOONBEAM_CHAIN_ID_HEX = "0x504"
 export const WEB3_METHODS = {
     requestAccounts: {
         method: 'eth_requestAccounts'
@@ -187,34 +186,61 @@ export const WALLET_CONNECT = {
     },
 }
 
-export const SUBWALLET_EXT_URL = "https://bit.ly/3BGqFt1"
-export const METAMASK_EXT_URL = "https://chrome.google.com/webstore/detail/metamask/nkbihfbeogaeaoehlefnkodbefgpgknn"
+let forDevelopment = {}
+if (configs.env === 'development') {
+    const key = 'time_round_2_' + configs.R2_NFT_SALE_SC
+    const now = Date.now()
+    let timeRound2 = parseInt(localStorage.getItem(key), 10)
+    if (!timeRound2 || timeRound2 < now - 10 * 60 * 1000) {
+        timeRound2 = now + 10000
+    }
+
+    localStorage.setItem(key, timeRound2.toString())
+
+    forDevelopment = {
+        time: timeRound2,
+        price: 0.00119,
+        fromTokenID: 901,
+    }
+}
 
 export const NFT_SALE_ROUNDS_INFO = {
     R1: {
         number: 1,
-        title: 'Whitelist Sale #1',
+        title: 'NFT Sale 1',
+        timelineTitle: 'Whitelist Sale #1',
+        soldOutMsg: 'Sold out in 30 minutes',
+        NFT_SALE_SC: configs.R1_NFT_SALE_SC,
+        fromTokenID: 1,
         amount: 500,
         price: 79,
         mintPass: 1,
-        // price: 0.05, // TODO prod
         nftPerPass: 1,
-        // time: 1660817942296,
+        dateMsg: '22nd August',
         time: 1661176800000 // Date and time (GMT): Monday, August 22, 2022 2:00:00 PM
     },
     R2: {
         number: 2,
-        title: 'Whitelist Sale #2',
+        title: 'NFT Sale 2',
+        timelineTitle: 'Whitelist Sale #2',
+        NFT_SALE_SC: configs.R2_NFT_SALE_SC,
         amount: 1500,
+        fromTokenID: 501,
         price: 119,
         mintPass: 1,
         nftPerPass: 2,
-        time: 1664028000000 // Date and time (GMT): Saturday, September 24, 2022 2:00:00 PM
+        dateMsg: '24th September',
+        time: 1664028000000, // Date and time (GMT): Saturday, September 24, 2022 2:00:00 PM,
+        ...forDevelopment,
     },
     R3: {
         number: 3,
-        title: 'Whitelist Sale #3',
+        title: 'NFT Sale 3',
+        timelineTitle: 'Whitelist Sale #3',
+        NFT_SALE_SC: configs.R3_NFT_SALE_SC,
+        dateMsg: '',
         amount: 3000,
+        fromTokenID: 2001,
         price: 159,
         mintPass: 1,
         nftPerPass: 3,
@@ -222,8 +248,11 @@ export const NFT_SALE_ROUNDS_INFO = {
     },
     R4: {
         number: 4,
-        title: 'Public Sale',
+        title: 'NFT Sale 4',
+        timelineTitle: 'Public Sale',
+        NFT_SALE_SC: configs.R4_NFT_SALE_SC,
         amount: 5000,
+        fromTokenID: 50001,
         price: "?",
         mintPass: "?",
         nftPerPass: 3,
@@ -231,10 +260,10 @@ export const NFT_SALE_ROUNDS_INFO = {
     }
 }
 
+const currentRoundInfo =  {...NFT_SALE_ROUNDS_INFO.R2}
 export const NFT_SALE_CURRENT_INFO = {
-    ...NFT_SALE_ROUNDS_INFO.R2,
-    title: 'NFT Sale 2',
-    dateMsg: '24th September'
+    ...currentRoundInfo,
+    isStarted: currentRoundInfo.time <= Date.now(),
 }
 
 export const SUPPORTED_NETWORKS = [

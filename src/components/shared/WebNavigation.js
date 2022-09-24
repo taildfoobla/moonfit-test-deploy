@@ -1,5 +1,5 @@
 import React, {useContext, useEffect, useState} from 'react'
-import MFLogoNav from "../../assets/images/logo/logo.png"
+import MFLogoNav from "../../assets/images/logo/logo2.png"
 import {Drawer, Modal, Typography} from "antd"
 import WalletAuthContext from "../../contexts/WalletAuthContext"
 import {Link, withRouter} from "react-router-dom"
@@ -46,6 +46,11 @@ const WebNavigation = (props) => {
         setIsWalletModalVisible(false)
     }
 
+    const onConnectDone = () => {
+        hideWalletModal()
+        console.log(wallet);
+    }
+
     const mfDrawerLogo = (
         <div>
             <img loading="lazy"
@@ -57,7 +62,6 @@ const WebNavigation = (props) => {
     )
 
     const onToggleMobileMenu = () => {
-        // setIsMobileMenuVisible(!isMobileMenuVisible)
         setIsDrawerVisible(isDrawerVisible => !isDrawerVisible)
     }
 
@@ -73,7 +77,7 @@ const WebNavigation = (props) => {
             const currentPath = props.location.pathname
             const isActive = currentPath === item.path
             return item.env.includes(ENV) && (
-                <li className={classNames('nav-item', {'active-item': isActive})} key={index}>
+                <li className={classNames('nav-item', {'active-item': isActive})} key={index} onClick={() => setIsDrawerVisible(false)}>
                     {
                         item.external ? (
                             <a className="nav-link" href={item.path} target="_blank"
@@ -178,13 +182,8 @@ const WebNavigation = (props) => {
                         <button className="navbar-toggler collapsed" type="button" data-bs-toggle="collapse"
                                 data-bs-target="#mobile-menu" aria-controls="navbar" aria-expanded="false"
                                 aria-label="Toggle navigation" onClick={onToggleMobileMenu}>
-                            <span className="navbar-toggler-icon"></span>
+                                <span className="navbar-toggler-icon" />
                         </button>
-                        {/*<nav id="mobile-menu" className={CN('mobile-menu menu_scr', {'hidden': !isMobileMenuVisible})}>*/}
-                        {/*    <ul className="nav">*/}
-                        {/*        {renderLinks()}*/}
-                        {/*    </ul>*/}
-                        {/*</nav>*/}
                     </div>
                 </div>
             </div>
@@ -225,10 +224,9 @@ const WebNavigation = (props) => {
                             </button>
                         )
                     }
-                    {/*<MFAccountButton containerClassName={'ml-0 mt-2 w-full'} btnClassName={'w-full'}/>*/}
                 </div>
                 <hr className={'block md:hidden mt-5 mb-3'}/>
-                <nav className="primary-menu">
+                <nav className="primary-menu sidebar-menu">
                     <ul className="nav">
                         {renderLinks()}
                     </ul>
@@ -248,7 +246,7 @@ const WebNavigation = (props) => {
                                Disconnect
                            </button>
                            <button type="button"
-                                   onClick={hideWalletModal}
+                                   onClick={onConnectDone}
                                    className="w-1/2 button button-secondary">
                                Done
                            </button>

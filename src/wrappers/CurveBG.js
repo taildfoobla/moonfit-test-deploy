@@ -9,8 +9,7 @@ import tokenMFR from "../assets/images/token-mfr.png"
 import tokenMFG from "../assets/images/shapes/token-mfg.png"
 import WebFooter from "../components/shared/WebFooter"
 
-
-const CurveBGWrapper = ({children}) => {
+const CurveBGWrapper = ({children, className=''}) => {
     return (
         <div id="main-content" className="main-content page-content section-hero">
             <div className="section-shape section-shape-kusama move-vertical">
@@ -46,7 +45,7 @@ const CurveBGWrapper = ({children}) => {
                      width="59"
                      height="56" className="move-vertical-reversed"/>
             </div>
-            <div className={'page-container'}>
+            <div className={`page-container ${className}`}>
                 {children}
             </div>
             <WebFooter/>
