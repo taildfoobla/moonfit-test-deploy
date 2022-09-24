@@ -103,12 +103,28 @@ const NFTSaleCurrentRound = (props) => {
     const confirmTransaction = async (txHash) => {
         const receipt = await getTransactionReceipt(txHash)
 
-        if (receipt?.status === true) {
+        if (receipt) {
             setTimeout(async () => {
                 await fetchData(false)
                 setIsConfirmedTx(true)
             }, 500)
-            return true
+
+            if (!receipt.status) {
+                notification.destroy()
+                notification.error({
+                    message: `Transaction Failed`,
+                    description: (
+                        <div>
+                            The hash of MFB minting transaction is: <br />
+                            <a target="_blank" rel="noreferrer"
+                               className={'text-blue-600'}
+                               href={getTxScanUrl(txHash)}>{getShortAddress(txHash, 8)}</a>
+                        </div>
+                    ),
+                    placement: 'bottomRight',
+                    duration: 60
+                })
+            }
         }
         return true
     }
