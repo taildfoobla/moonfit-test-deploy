@@ -18,7 +18,7 @@ import MFWeb3Fitness from './MFWeb3Fitness'
 const WalletAuthRequiredNFTSale = ({ children, className }) => {
     const { isConnected, showWalletSelectModal } = useContext(WalletAuthContext)
     const currentSale = NFT_SALE_CURRENT_INFO
-    const [isStarted, setIsStarted] = useState(true || currentSale.time && currentSale.time <= new Date().getTime())
+    const [isStarted, setIsStarted] = useState(currentSale.time && currentSale.time <= new Date().getTime())
     const [toggleCalendar, setToggleCalendar] = useState(false)
 
     // const isSubWalletInstalled = Boolean((window?.injectedWeb3 && window[PROVIDER_NAME.SubWallet]) || (window[PROVIDER_NAME.MetaMask]))
