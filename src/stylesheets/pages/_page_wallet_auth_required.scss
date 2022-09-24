@@ -5,7 +5,7 @@
     line-height: 48px;
     text-transform: initial;
     .current-title {
-      background-image: linear-gradient(to right bottom, #4cbfcb, #E4007B);
+      background-image: linear-gradient(to right bottom, #4cbfcb, #e4007b);
     }
   }
 
@@ -28,7 +28,6 @@
     //top: 11.11%;
     //right: 22.65%
   }
-
 }
 
 @media screen and (max-width: 1600px) {
@@ -72,6 +71,17 @@
   position: relative;
   display: inline-block;
 }
+@media (max-width: 576px) {
+  .dropdown,
+  .btn-connect {
+    button {
+      font-size: 14px;
+      img {
+        width: 20px;
+      }
+    }
+  }
+}
 
 .dropdown-content {
   width: 100%;
@@ -81,7 +91,7 @@
   position: absolute;
   background-color: #f9f9f9;
   min-width: 160px;
-  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
   z-index: 1;
 }
 
@@ -98,9 +108,12 @@
   }
 }
 
-.dropdown-content a:hover {background-color: #f1f1f1}
+.dropdown-content a:hover {
+  background-color: #f1f1f1;
+}
 
-.dropdown:hover .dropdown-content, .toggle-calendar {
+.dropdown:hover .dropdown-content,
+.toggle-calendar {
   display: block;
 }
 .btn-join-whitelist {
