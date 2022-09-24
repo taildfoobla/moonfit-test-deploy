@@ -1,6 +1,5 @@
 import React, { useContext, useState } from 'react'
 import mfBrand from "../assets/images/brand.png"
-import nftCard from "../assets/images/universe-image.png"
 import WalletAuthContext from "../contexts/WalletAuthContext"
 import { CountdownComponent } from "./CountdownComponent"
 import { NFT_SALE_CURRENT_INFO } from "../constants/blockchain"
@@ -83,7 +82,7 @@ const WalletAuthRequiredNFTSale = ({ children, className }) => {
                             <button type="button"
                                 onClick={showWalletSelectModal}
                                 className="button button-secondary">
-                                <img className="mr-1" src={wallet} /> Connect Wallet
+                                <img className="mr-1" src={wallet} alt="" /> Connect Wallet
                             </button>
                         </div>
 
@@ -94,13 +93,13 @@ const WalletAuthRequiredNFTSale = ({ children, className }) => {
                                 onBlur={() => setToggleCalendar(false)}
                                 className="button button-default dropbtn"
                             >
-                                <img className="mr-1" src={calendarCheck} /> Add to Calendar
+                                <img className="mr-1" src={calendarCheck} alt="" /> Add to Calendar
                             </button>
                             <div className={`dropdown-content${toggleCalendar ? " toggle-calendar" : ""}`}>
-                                <a href="https://calendar.google.com/calendar/render?action=TEMPLATE&dates=20220924T140000Z%2F20220924T150000Z&details=Look%20like%20a%20Beauty%2C%20run%20like%20a%20Beast%F0%9F%8F%83%E2%80%8D%E2%99%82%EF%B8%8F%F0%9F%94%A5%0ABear%20in%20mind%20that%201%20Mint%20Pass%20can%20mint%20max%202%20MoonBeasts.%0ASave%20the%20date%20-%20Round%202%20is%20getting%20closer.&location=https%3A%2F%2Fapp.moonfit.xyz%2Fnft-sale&text=MoonFit%20NFT%20SALE%20%232" target="_blank"><img src={calendar} alt="Google calendar" /> Google Calendar</a>
-                                <a href="https://outlook.office.com/calendar/0/deeplink/compose?allday=false&body=Look%20like%20a%20Beauty%2C%20run%20like%20a%20Beast%F0%9F%8F%83%E2%80%8D%E2%99%82%EF%B8%8F%F0%9F%94%A5%0ABear%20in%20mind%20that%201%20Mint%20Pass%20can%20mint%20max%202%20MoonBeasts.%0ASave%20the%20date%20-%20Round%202%20is%20getting%20closer.&enddt=2022-09-24T15%3A00%3A00%2B00%3A00&location=https%3A%2F%2Fapp.moonfit.xyz%2Fnft-sale&path=%2Fcalendar%2Faction%2Fcompose&rru=addevent&startdt=2022-09-24T14%3A00%3A00%2B00%3A00&subject=MoonFit%20NFT%20SALE%20%232" target="_blank"><img src={outlook} alt="Microsoft Outlook" /> Microsoft Outlook</a>
-                                <a href="https://outlook.office.com/calendar/0/deeplink/compose?allday=false&enddt=2022-09-23T11%3A45%3A00%2B00%3A00&path=%2Fcalendar%2Faction%2Fcompose&rru=addevent&startdt=2022-09-23T11%3A15%3A00%2B00%3A00" target="_blank"><img src={office365} alt="Office 365" /> Office 365</a>
-                                <a href="https://calendar.yahoo.com/?dur=&et=20220923T114500Z&st=20220923T111500Z&v=60" target="_blank"><img src={yahoo} alt="Yahoo" />Yahoo! Calendar</a>
+                                <a rel={'noreferrer'} href="https://calendar.google.com/calendar/render?action=TEMPLATE&dates=20220924T140000Z%2F20220924T150000Z&details=Look%20like%20a%20Beauty%2C%20run%20like%20a%20Beast%F0%9F%8F%83%E2%80%8D%E2%99%82%EF%B8%8F%F0%9F%94%A5%0ABear%20in%20mind%20that%201%20Mint%20Pass%20can%20mint%20max%202%20MoonBeasts.%0ASave%20the%20date%20-%20Round%202%20is%20getting%20closer.&location=https%3A%2F%2Fapp.moonfit.xyz%2Fnft-sale&text=MoonFit%20NFT%20SALE%20%232" target="_blank"><img src={calendar} alt="Google calendar" /> Google Calendar</a>
+                                <a rel={'noreferrer'} href="https://outlook.office.com/calendar/0/deeplink/compose?allday=false&body=Look%20like%20a%20Beauty%2C%20run%20like%20a%20Beast%F0%9F%8F%83%E2%80%8D%E2%99%82%EF%B8%8F%F0%9F%94%A5%0ABear%20in%20mind%20that%201%20Mint%20Pass%20can%20mint%20max%202%20MoonBeasts.%0ASave%20the%20date%20-%20Round%202%20is%20getting%20closer.&enddt=2022-09-24T15%3A00%3A00%2B00%3A00&location=https%3A%2F%2Fapp.moonfit.xyz%2Fnft-sale&path=%2Fcalendar%2Faction%2Fcompose&rru=addevent&startdt=2022-09-24T14%3A00%3A00%2B00%3A00&subject=MoonFit%20NFT%20SALE%20%232" target="_blank"><img src={outlook} alt="Microsoft Outlook" /> Microsoft Outlook</a>
+                                <a rel={'noreferrer'} href="https://outlook.office.com/calendar/0/deeplink/compose?allday=false&enddt=2022-09-23T11%3A45%3A00%2B00%3A00&path=%2Fcalendar%2Faction%2Fcompose&rru=addevent&startdt=2022-09-23T11%3A15%3A00%2B00%3A00" target="_blank"><img src={office365} alt="Office 365" /> Office 365</a>
+                                <a rel={'noreferrer'} href="https://calendar.yahoo.com/?dur=&et=20220923T114500Z&st=20220923T111500Z&v=60" target="_blank"><img src={yahoo} alt="Yahoo" />Yahoo! Calendar</a>
                             </div>
                         </div>
                     </div>
