@@ -421,6 +421,14 @@
     }
   }
 }
+@media (max-width: 576px) {
+  .list-store {
+    img {
+      width: 128px !important;
+      height: 40px !important;
+    }
+  }
+}
 .utilities-section {
   padding-top: 150px;
   text-transform: initial;
