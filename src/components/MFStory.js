@@ -45,10 +45,10 @@ const MFStory = () => {
                     </div>
                     <div className="grid xl:grid-cols-2 md:grid-cols-1 sm:grid-cols-1 gap-24 mt-3">
                         <div className="flex justify-center list-store">
-                            <a href="https://play.google.com/apps/testing/xyz.moonfit.app" target="_blank">
+                            <a rel={'noreferrer'} href="https://play.google.com/apps/testing/xyz.moonfit.app" target="_blank">
                                 <img src={chPlay} alt="Chplay" />
                             </a>
-                            <a href="https://testflight.apple.com/join/lfXF5Lbd" target="_blank">
+                            <a rel={'noreferrer'} href="https://testflight.apple.com/join/lfXF5Lbd" target="_blank">
                                 <img src={appStore} alt="AppStore" />
                             </a>
                         </div>
@@ -71,11 +71,11 @@ const MFStory = () => {
                         <div className="youtube-video">
                             <img src={videoPreview} alt="preview" />
                         </div>
-                        <div className="flex md:mt-5 justify-center list-store">
+                        <div className="flex justify-center list-store">
                             <a href="https://play.google.com/apps/testing/xyz.moonfit.app" target="_blank">
                                 <img src={chPlay} alt="Chplay" />
                             </a>
-                            <a href="https://testflight.apple.com/join/lfXF5Lbd" target="_blank">
+                            <a rel={'noreferrer'} href="https://testflight.apple.com/join/lfXF5Lbd" target="_blank">
                                 <img src={appStore} alt="AppStore" />
                             </a>
                         </div>

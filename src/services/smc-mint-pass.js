@@ -28,7 +28,7 @@ export const fetchMintPassByAccount = async (account) => {
             imageUrl,
             tokenId,
         }
-    }, {concurrency: 3})
+    }, {concurrency: 2})
 }
 
 export const addAvailableSlotForCurrenSale = async (mintPasses) => {
@@ -48,7 +48,7 @@ export const addAvailableSlotForCurrenSale = async (mintPasses) => {
             isOutOfSlot,
             isSelected: !isOutOfSlot,
         }
-    }, {concurrency: 3})
+    }, {concurrency: 2})
 
     _mintPasses.sort((a, b) => {
         if (a.isOutOfSlot && b.isOutOfSlot) {

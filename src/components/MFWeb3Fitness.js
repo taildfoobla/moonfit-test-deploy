@@ -1,5 +1,4 @@
 import React from "react"
-import promotingBg from "../assets/images/promoting-bg.jpg"
 import promoting from "../assets/images/promoting.png"
 import shape1 from "../assets/images/shapes/promoting-01.png"
 import shape2 from "../assets/images/shapes/promoting-02.png"
