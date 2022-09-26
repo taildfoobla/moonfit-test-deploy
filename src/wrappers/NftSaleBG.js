@@ -15,7 +15,7 @@ import mintPassCard from "../assets/images/shapes/mint-pass-card.png"
 const NftSaleBGWrapper = ({ children, className = '' }) => {
     return (
         <div id="main-content" className="main-content page-content section-hero">
-            <div className="section-shape section-shape-beauty-card-2 move-vertical">
+            <div className="section-shape section-shape-beauty-card-2 move-vertical-reversed">
                 <img loading="lazy" src={beautyCard2} alt="Beast" width="200"
                     height="200" />
             </div>
@@ -23,7 +23,7 @@ const NftSaleBGWrapper = ({ children, className = '' }) => {
                 <img loading="lazy" src={mintPassCard} alt="Beast" width="231"
                     height="230" />
             </div>
-            <div className="section-shape section-shape-beast-card-1 move-vertical">
+            <div className="section-shape section-shape-beast-card-1 move-vertical-reversed">
                 <img loading="lazy" src={beastCard1} alt="Beast" width="200"
                     height="200" />
             </div>
@@ -35,7 +35,7 @@ const NftSaleBGWrapper = ({ children, className = '' }) => {
                 <img loading="lazy" src={beautyCard1} alt="Beast" width="200"
                     height="200" />
             </div>
-            <div className="section-shape section-shape-mint-pass-2 move-vertical">
+            <div className="section-shape section-shape-mint-pass-2 move-vertical-reversed">
                 <img loading="lazy" src={mintPassCard} alt="Beast" width="231"
                     height="230" />
             </div>
@@ -46,7 +46,7 @@ const NftSaleBGWrapper = ({ children, className = '' }) => {
             <div className="section-shape section-shape-beauty-nft move-vertical-reversed">
                 <img loading="lazy" src={beauty} alt="Beauty" width="181" height="216" />
             </div>
-            <div className="section-shape section-shape-beauty-2-nft move-vertical">
+            <div className="section-shape section-shape-beauty-2-nft move-vertical-reversed">
                 <img loading="lazy" src={beauty2} alt="Beauty 2" width="148" height="176" />
             </div>
             <div className="section-shape shape-token-mfr-nft-1 move-vertical-reversed">

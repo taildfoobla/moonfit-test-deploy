@@ -325,6 +325,12 @@
   position: relative;
   z-index: 11;
 }
+.section-footer {
+  background-image: url(../../assets/images/footer-bg-1.png);
+  background-repeat: no-repeat;
+  background-size: auto;
+  background-position: bottom;
+}
 
 @keyframes fall {
   0% {

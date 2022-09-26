@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react"
 import appStore from "../assets/images/app-store.png"
 import chPlay from "../assets/images/ch-play.png"
-import video from "../assets/videos/video.mp4"
 import videoPreview from "../assets/videos/preview.png"
 
 const MFStory = () => {
@@ -32,10 +31,7 @@ const MFStory = () => {
                     <div className="grid xl:grid-cols-2 md:grid-cols-1 sm:grid-cols-1 gap-24">
                         <div className="moonfit-info">
                             <div className="youtube-video">
-                                <video poster={videoPreview} controls>
-                                    <source src={video} type="video/mp4" />
-                                    Your browser does not support HTML video.
-                                </video>
+                                <img src={videoPreview} alt="preview" />
                             </div>
                         </div>
                         <div className="what-is-moonfit">
@@ -73,13 +69,10 @@ const MFStory = () => {
                 width < 1366 && <div className="grid xl:grid-cols-2 md:grid-cols-1 sm:grid-cols-1 gap-12">
                     <div className="moonfit-info">
                         <div className="youtube-video">
-                            <video poster={videoPreview} controls>
-                                <source src={video} type="video/mp4" />
-                                Your browser does not support HTML video.
-                            </video>
+                            <img src={videoPreview} alt="preview" />
                         </div>
                         <div className="flex justify-center list-store">
-                            <a rel={'noreferrer'} href="https://play.google.com/apps/testing/xyz.moonfit.app" target="_blank">
+                            <a href="https://play.google.com/apps/testing/xyz.moonfit.app" target="_blank">
                                 <img src={chPlay} alt="Chplay" />
                             </a>
                             <a rel={'noreferrer'} href="https://testflight.apple.com/join/lfXF5Lbd" target="_blank">

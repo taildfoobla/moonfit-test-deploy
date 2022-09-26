@@ -188,19 +188,19 @@ export const WALLET_CONNECT = {
 
 let forDevelopment = {}
 if (configs.env === 'development') {
-    const key = 'time_round_2_' + configs.R2_NFT_SALE_SC
+    const key = 'time_round_3_' + configs.R3_NFT_SALE_SC
     const now = Date.now()
-    let timeRound2 = parseInt(localStorage.getItem(key), 10)
-    if (!timeRound2 || timeRound2 < now - 10 * 60 * 1000) {
-        timeRound2 = now + 10000
+    let timeRound3 = parseInt(localStorage.getItem(key), 10)
+    if (!timeRound3 || timeRound3 < now - 10 * 60 * 1000) {
+        timeRound3 = now + 10000
     }
 
-    localStorage.setItem(key, timeRound2.toString())
+    localStorage.setItem(key, timeRound3.toString())
 
     forDevelopment = {
-        time: timeRound2,
+        time: timeRound3,
         price: 0.00119,
-        fromTokenID: 901,
+        fromTokenID: 368,
     }
 }
 
@@ -244,7 +244,8 @@ export const NFT_SALE_ROUNDS_INFO = {
         price: 159,
         mintPass: 1,
         nftPerPass: 3,
-        time: null
+        time: 1664359442000, 
+        // ...forDevelopment,
     },
     R4: {
         number: 4,
@@ -260,10 +261,8 @@ export const NFT_SALE_ROUNDS_INFO = {
     }
 }
 
-const currentRoundInfo =  {...NFT_SALE_ROUNDS_INFO.R2}
 export const NFT_SALE_CURRENT_INFO = {
-    ...currentRoundInfo,
-    isStarted: currentRoundInfo.time <= Date.now(),
+    ...NFT_SALE_ROUNDS_INFO.R3,
 }
 
 export const SUPPORTED_NETWORKS = [
