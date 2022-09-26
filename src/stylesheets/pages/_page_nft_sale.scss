@@ -301,8 +301,6 @@
 
 .form-mint {
   &__fee {
-    min-width: 150px;
-    margin-bottom: 10px;
 
     &-label {
       display: block;
@@ -364,9 +362,21 @@
 @media screen and (max-width: 800px) {
   .form-mint {
     flex-wrap: wrap;
-    justify-content: space-around;
+    justify-content: space-between;
+
+    &__wrap-btn {
+      margin-top: 10px;
+      flex-basis: 100%;
+      text-align: center;
+      display: flex;
+      flex-wrap: wrap;
+      align-content: center;
+      justify-content: center;
+      align-items: center;
+    }
   }
 }
+
 .story-section {
   text-transform: initial;
   margin-top: 50px;

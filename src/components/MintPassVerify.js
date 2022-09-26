@@ -48,23 +48,19 @@ const MintPassVerify = () => {
             }
         }
 
-        if (!_isNumeric(tokenId) || tokenId < 1) {
-            setType('warning')
-            setMessage('Invalid name. Please enter the MintPass name in the correct format!')
-            return
-        }
-
-        const _displayError = (message) => {
-            setType('error')
-            setMessage(message || 'Can\'t verify MoonFit Mint Pass. Please try again')
-
+        const _displayMessage = (message, _type = 'warning') => {
+            setType(_type)
+            setMessage(message)
             setTimeout(() => {
                 setIsLoading(false)
             }, 250)
         }
 
-        const _displayMessage = (slot) => {
+        if (!_isNumeric(tokenId) || tokenId < 1) {
+            return _displayMessage('Invalid name. Please enter the MintPass name in the correct format!', 'warning')
+        }
 
+        const _validateSlot = (slot) => {
             if (slot >= 1) {
                 setType('success')
                 setMessage(`The MintPass is eligible for buying ${slot} NFT${slot > 1 ? 's' : ''} in this Sale Round.`)
@@ -74,7 +70,7 @@ const MintPassVerify = () => {
                 }, 250)
             }
 
-            _displayError('Don’t buy this MintPass! It can not be used in this Sale Round.')
+            _displayMessage('Don’t buy this MintPass! It can not be used in this Sale Round.', 'error')
         }
 
         setIsLoading(true)
@@ -86,18 +82,18 @@ const MintPassVerify = () => {
             const {isError, isNotFound} = await getNFTInfo(mintPassContract.methods, tokenId, false)
 
             if (isNotFound) {
-                return _displayError(`MoonFit Mint Pass #${tokenId} not found!`)
+                return _displayMessage(`MoonFit Mint Pass #${tokenId} not found!`, 'error')
             }
 
             if (isError) {
-                return _displayError()
+                return _displayMessage('Blockchain is busy. Please try again later.', 'warning')
             }
 
             const slot = await saleContract.methods.getMintPassAvailableSlots(tokenId).call()
-            _displayMessage(parseInt(slot, 10))
+            _validateSlot(parseInt(slot, 10))
         } catch (error) {
             console.error(error);
-            _displayError()
+            _displayMessage('Blockchain is busy. Please try again later.', 'warning')
         }
     }
 

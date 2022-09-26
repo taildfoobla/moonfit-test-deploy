@@ -11,7 +11,7 @@ const getConfigs = () => {
         MOONBEAM_NFTSCAN_URL: 'https://moonbase.moonscan.io',
         MINT_PASS_SC: '0x7E7d9fee5c5994aA7FC1dAeb231Af015e2FdAD3E',
         R1_NFT_SALE_SC: '0xdfE0a818579B1e5271c0E3597E1D79E83690d3D6',
-        R2_NFT_SALE_SC: '0xf5BEc6D9F8cf96dCE83f40eEC9B3F20675c53C2E',
+        R2_NFT_SALE_SC: '0x9C447072B4fA1BfAE661ecA8db4924565596f39C',
         R3_NFT_SALE_SC: '',
         R4_NFT_SALE_SC: '',
         MOONBEAST_SC: '0x368a1BBED5Ca2984b0867109e0aeB2B6fAD3B17A',
@@ -36,7 +36,7 @@ const getConfigs = () => {
                 MOONBEAM_NFTSCAN_URL: 'https://moonbeam.nftscan.com',
                 MINT_PASS_SC: '0x6758053c0b27E478edE1E4882adFF708Fc4FA72D',
                 R1_NFT_SALE_SC: '0x1Cc5d866BdbD9b3Fd9d22493D29Da3D5cA97b174',
-                R2_NFT_SALE_SC: '',
+                R2_NFT_SALE_SC: '0x775282a995ac37410Bbc053a91bc01221a71c50f',
                 R3_NFT_SALE_SC: '',
                 R4_NFT_SALE_SC: '',
                 MOONBEAST_SC: '0x02A6DeC99B2Ca768D638fcD87A96F6069F91287c',
@@ -51,5 +51,7 @@ const getConfigs = () => {
 }
 
 const env = getConfigs()
+
+window.__env = env
 
 export default env

@@ -27,7 +27,7 @@ const WebFooter = (props) => {
                                         fill="#020722"/>
                                 </svg>
                             </a>
-                            <a href="https://t.me/moonfit_official_community/" target="_blank"
+                            <a href="https://t.me/moonfit_official" target="_blank"
                                rel="noreferrer"
                                className="footer-social-link telegram">
                                 <svg width="28" height="28" viewBox="0 0 28 28" fill="none"
