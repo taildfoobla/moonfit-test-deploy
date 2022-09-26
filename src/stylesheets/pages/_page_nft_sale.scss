@@ -369,14 +369,14 @@
 }
 .story-section {
   text-transform: initial;
-  margin-top: 100px;
+  margin-top: 50px;
   // .moonfit-description, .youtube-video {
   //   height: 100%;
   // }
 
   .youtube-video {
     width: 100%;
-    video {
+    img {
       border-radius: 10px;
     }
   }
@@ -473,11 +473,12 @@
         border-radius: inherit;
         background-color: #020722;
         background-image: linear-gradient(to right bottom, #4cbfcb, #E4007B);
+        opacity: 0.7;
       }
     }
     &:hover {
       transform: translateY(-10px);
-      box-shadow: 0 4px 100px rgb(228 0 123 / 50%);
+      box-shadow: 0 4px 50px rgb(161 7 216 / 50%);
       .block-game-feature-title {
         color: #4CCBC9;
       }
@@ -537,9 +538,11 @@
       .title {
         color: #4CCBC9;
         font-size: 16px;
+        font-weight: 400;
       }
       .description {
-        font-size: 20px;;
+        font-size: 20px;
+        font-weight: 600;
       }
     }
 	}
@@ -675,5 +678,7 @@
   display: block;
   color: #fff;
   font-size: 22px;
+  line-height: 32px;
+  font-weight: 600;
   text-transform: initial;
 }

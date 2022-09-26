@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react"
 import appStore from "../assets/images/app-store.png"
 import chPlay from "../assets/images/ch-play.png"
-import video from "../assets/videos/video.mp4"
 import videoPreview from "../assets/videos/preview.png"
 
 const MFStory = () => {
@@ -32,22 +31,19 @@ const MFStory = () => {
                     <div className="grid xl:grid-cols-2 md:grid-cols-1 sm:grid-cols-1 gap-24">
                         <div className="moonfit-info">
                             <div className="youtube-video">
-                                <video poster={videoPreview} controls>
-                                    <source src={video} type="video/mp4" />
-                                    Your browser does not support HTML video.
-                                </video>
+                                <img src={videoPreview} alt="preview" />
                             </div>
                         </div>
                         <div className="what-is-moonfit">
                             <div className="moonfit-description">
                                 <h3 className="description-title mb-5">WHAT IS MOONFIT?</h3>
                                 <p>MoonFit is a Web3 & NFT Lifestyle App that promotes active living by rewarding users anytime they burn calories through physical activities.</p>
-                                <p>We believe our real-life lifestyle & fitness application benefit and the proper rewarding system will inspire people to take one more step every day while helping us get one step closer to our goal.</p>
+                                <p>Your existence in the MoonFit Universe is represented via Beast or Beauty. Once you have an NFT, you can start training sessions and get rewards. The more calories you burn, the more rewards you can earn.</p>
                             </div>
 
                         </div>
                     </div>
-                    <div className="grid xl:grid-cols-2 md:grid-cols-1 sm:grid-cols-1 gap-4 mt-3">
+                    <div className="grid xl:grid-cols-2 md:grid-cols-1 sm:grid-cols-1 gap-24 mt-3">
                         <div className="flex justify-center list-store">
                             <a href="https://play.google.com/apps/testing/xyz.moonfit.app" target="_blank">
                                 <img src={chPlay} alt="Chplay" />
@@ -56,7 +52,7 @@ const MFStory = () => {
                                 <img src={appStore} alt="AppStore" />
                             </a>
                         </div>
-                        <div className="flex btn-list md:justify-center sm:justify-center">
+                        <div className="flex btn-list xl:justify-start md:justify-start sm:justify-center">
                             <button type="button" onClick={() => onClickButton("1")}
                                 className="button button-secondary">
                                 READ WHITEPAPER
@@ -73,12 +69,9 @@ const MFStory = () => {
                 width < 1366 && <div className="grid xl:grid-cols-2 md:grid-cols-1 sm:grid-cols-1 gap-12">
                     <div className="moonfit-info">
                         <div className="youtube-video">
-                            <video poster={videoPreview} controls>
-                                <source src={video} type="video/mp4" />
-                                Your browser does not support HTML video.
-                            </video>
+                            <img src={videoPreview} alt="preview" />
                         </div>
-                        <div className="flex justify-center list-store">
+                        <div className="flex md:mt-5 justify-center list-store">
                             <a href="https://play.google.com/apps/testing/xyz.moonfit.app" target="_blank">
                                 <img src={chPlay} alt="Chplay" />
                             </a>
@@ -91,7 +84,7 @@ const MFStory = () => {
                         <div className="moonfit-description">
                             <h3 className="description-title mb-5">WHAT IS MOONFIT?</h3>
                             <p>MoonFit is a Web3 & NFT Lifestyle App that promotes active living by rewarding users anytime they burn calories through physical activities.</p>
-                            <p>We believe our real-life lifestyle & fitness application benefit and the proper rewarding system will inspire people to take one more step every day while helping us get one step closer to our goal.</p>
+                            <p>Your existence in the MoonFit Universe is represented via Beast or Beauty. Once you have an NFT, you can start training sessions and get rewards. The more calories you burn, the more rewards you can earn.</p>
                         </div>
                         <div className="flex btn-list sm:justify-center">
                             <button type="button" onClick={() => onClickButton("1")}

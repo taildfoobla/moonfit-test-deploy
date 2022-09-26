@@ -52,7 +52,7 @@ const WalletAuthRequiredNFTSale = ({ children, className }) => {
             <div>
                 <span className="block-text-white">Look like a Beauty, run like a Beast🏃‍♂️🔥</span>
                 <span className="block-text-white">Bear in mind that 1 Mint Pass can mint max 2 MoonBeasts.</span>
-                <span className="block-text-white">Save the date - Round 2 is getting closer.</span>
+                <span className="block-text-white">Save the date - Round 3 is getting closer.</span>
             </div>
         )
     }
