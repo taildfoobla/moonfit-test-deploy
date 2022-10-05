@@ -190,8 +190,6 @@ let forDevelopment = {}
 if (configs.env === 'development') {
     forDevelopment = {
         time: Date.now(),
-        price: 0.00119,
-        fromTokenID: 368,
     }
 }
 
