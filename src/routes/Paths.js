@@ -7,6 +7,14 @@ const Paths = {
         path: '/nft-sale',
         env: ['local', 'development', 'production']
     },
+    NFTSaleRoundThree: {
+        path: '/nft-sale-round-3',
+        env: ['local', 'development', 'production']
+    },
+    NFTPublicSale: {
+        path: '/nft-public-sale',
+        env: ['local', 'development', 'production']
+    },
     PrivateSale: {
         path: '/private-sale',
         env: ['local']
@@ -20,7 +28,7 @@ const Paths = {
         env: ['local', 'development', 'production']
     },
     NftSaleStages: {
-        path: '/nft-sale-stages',
+        path: '/nft-sale',
         env: ['local', 'development', 'production']
     }
 }

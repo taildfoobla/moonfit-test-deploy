@@ -14,10 +14,10 @@ export const AppRoutes = [
         env: Paths.MintPassMinting.env
     },
     {
-        path: Paths.NFTSale.path,
+        path: Paths.NftSaleStages.path,
         title: "NFT Sale",
         external: false,
-        env: Paths.NFTSale.env
+        env: Paths.NftSaleStages.env
     },
     {
         path: Paths.MintPassVerify.path,

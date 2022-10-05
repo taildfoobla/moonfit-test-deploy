@@ -6,6 +6,7 @@ import mintPassABI from "../abis/MintPassNFT.json"
 import {range} from '../utils/array'
 import {balanceOfAccount, tokenOfOwnerByIndex} from './smc-common'
 import {getMintPassAvailableSlots} from './smc-ntf-sale'
+import sortMintPass from '../utils/sortMintPass'
 
 const {MOONBEAST_NETWORK, MINT_PASS_SC} = configs
 
@@ -19,7 +20,7 @@ export const fetchMintPassByAccount = async (account) => {
     return Bluebird.map(array, async(index) => {
         const tokenId = await tokenOfOwnerByIndex(mintPassContract, account, index)
         // const {name, imageUrl} = await getNFTInfo(mintPassContract.methods, tokenId)
-        const imageUrl = 'https://bafybeidedg4erz6vvoywe26obvqty5aiovsxzjrvakjsciusigdct2hoqy.ipfs.nftstorage.link/'
+        const imageUrl = 'https://bafybeidedg4erz6vvoywe26obvqty5aiovsxzjrvakjsciusigdct2hoqy.ipfs.nftstorage.link'
         const name = `MoonFit Mint Pass #${tokenId}`
 
         return {
@@ -49,25 +50,7 @@ export const addAvailableSlotForCurrenSale = async (mintPasses) => {
         }
     }, {concurrency: 2})
 
-    _mintPasses.sort((a, b) => {
-        if (a.isOutOfSlot && b.isOutOfSlot) {
-            return 0
-        }
-
-        if (a.isOutOfSlot) {
-            return 1
-        }
-
-        if (b.isOutOfSlot) {
-            return -1
-        }
-
-        if (a.availableSlots === b.availableSlots) {
-            return 0
-        }
-
-        return a.availableSlots - b.availableSlots
-    })
+    _mintPasses.sort(sortMintPass)
 
     return _mintPasses
 }
