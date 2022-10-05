@@ -4,6 +4,7 @@ import MFGPrivateSale from "../pages/MFGPrivateSale"
 import MintPassMinting from "../pages/MintPassMinting"
 import MintPassVerify from "../pages/MintPassVerify"
 import NFTSale from "../pages/NFTSaleCurrentRound"
+import NFTSaleStages from "../pages/NFTSaleStages"
 import Home from "../pages/Home"
 import NotFound from "../pages/NotFound"
 
@@ -35,6 +36,11 @@ const routes = [
                 path: Paths.MintPassVerify.path,
                 exact: true,
                 component: MintPassVerify
+            },
+            {
+                path: Paths.NftSaleStages.path,
+                exact: true,
+                component: NFTSaleStages
             },
             {
                 path: '*',

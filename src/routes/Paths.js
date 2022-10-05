@@ -18,6 +18,10 @@ const Paths = {
     MintPassVerify: {
         path: '/mint-pass-verify',
         env: ['local', 'development', 'production']
+    },
+    NftSaleStages: {
+        path: '/nft-sale-stages',
+        env: ['local', 'development', 'production']
     }
 }
 
