@@ -11,20 +11,21 @@ import { MinusOutlined, PlusOutlined } from '@ant-design/icons';
 import LoadingWrapper from "../components/shared/LoadingWrapper"
 import Paths from "../routes/Paths"
 import EnvWrapper from "../components/shared/EnvWrapper"
-import { NFT_SALE_CURRENT_INFO } from "../constants/blockchain"
+import { NFT_SALE_ROUNDS_INFO } from "../constants/blockchain"
 import { getStringOfBigNumber } from "../utils/number"
 import WalletAuthRequiredNFTSale from "../components/WalletAuthRequiredNFTSale"
 import NFTStages from "../components/NFTStages"
 import Header from '../components/NFTSaleCurrentRound/Header'
 import ButtonMintNFT from '../components/NFTSaleCurrentRound/ButtonMintNFT'
 import NFTSaleInfo from '../components/NFTSaleCurrentRound/NFTSaleInfo'
-import MoonBeasts from '../components/NFTSaleCurrentRound/MoonBeastsV2'
+import MoonBeasts from '../components/NFTSaleCurrentRound/MoonBeastsV2/index'
 import MintPass from '../components/NFTSaleCurrentRound/MintPass'
 
 import {getTransactionReceipt} from "../services/smc-common";
 import {getAvailableSlots, getSaleMaxAmount, getMintPass, getMoonBeast} from '../services/smc-ntf-sale'
 import CurveBGWrapper from '../wrappers/CurveBG'
 
+const NFT_SALE_CURRENT_INFO = NFT_SALE_ROUNDS_INFO.R3
 const { NFT_SALE_SC, isStarted } = NFT_SALE_CURRENT_INFO
 
 const NFTSaleRoundThree = (props) => {
@@ -182,8 +183,6 @@ const NFTSaleRoundThree = (props) => {
         isSetLoading && setMoonBeastLoading(true)
         try {
             const moonBeasts = await getMoonBeast(wallet.account)
-
-            console.log(moonBeasts);
 
             setMoonBeasts(moonBeasts)
         } catch (e) {
@@ -466,11 +465,8 @@ const NFTSaleRoundThree = (props) => {
                                         maxSaleSlots={nftSaleQuantity}
                                         isLoading={saleInfoLoading}
                                         handleGetMinted={handleGetMinted}
+                                        roundInfo={NFT_SALE_CURRENT_INFO}
                                     />
-
-                                    <MoonBeasts isLoading={moonBeastLoading}
-                                                moonBeasts={moonBeasts}
-                                                moonBeastMinting={moonBeastMinting}/>
 
                                     <MintPass isLoading={mintPassLoading}
                                               mintPasses={mintPasses}
@@ -480,6 +476,10 @@ const NFTSaleRoundThree = (props) => {
                                         <hr className={'card-body-separator'}/>
                                         {_renderFoot()}
                                     </MintPass>
+
+                                    <MoonBeasts isLoading={moonBeastLoading}
+                                                moonBeasts={moonBeasts}
+                                                moonBeastMinting={moonBeastMinting}/>
                                 </div>
                             </div>
                         </div>

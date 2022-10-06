@@ -75,7 +75,8 @@ const WebNavigation = (props) => {
     const renderLinks = () => {
         return AppRoutes.map((item, index) => {
             const currentPath = props.location.pathname
-            const isActive = currentPath === item.path
+            const isActive = [item.path, ...(item.actives || [])].includes(currentPath)
+
             return item.env.includes(ENV) && (
                 <li className={classNames('nav-item', {'active-item': isActive})} key={index} onClick={() => setIsDrawerVisible(false)}>
                     {
