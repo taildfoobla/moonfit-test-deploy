@@ -240,7 +240,7 @@ export const NFT_SALE_ROUNDS_INFO = {
     },
     R4: {
         number: 4,
-        title: 'NFT Sale 4',
+        title: 'Public Sale',
         timelineTitle: 'Public Sale',
         isSoldOut: false,
         NFT_SALE_SC: configs.R4_NFT_SALE_SC,

@@ -496,7 +496,7 @@ const NFTSaleRoundThree = (props) => {
                         {
                             !loading && (
                                 [
-                                    <Header availableSlots={nftSaleAvailableQuantity} isLoading={saleInfoLoading}  key="Header"/>,
+                                    <Header availableSlots={nftSaleAvailableQuantity} isLoading={saleInfoLoading} roundInfo={NFT_SALE_CURRENT_INFO} key="Header"/>,
                                     _renderContainer()
                                 ]
                             )
