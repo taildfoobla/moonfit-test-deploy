@@ -163,7 +163,6 @@ const NFTSaleRoundThree = (props) => {
 
         try {
             _mintPasses = await getMintPass(wallet.account)
-            console.log(_mintPasses);
         } catch (e) {
             console.log('fetch MintPass error', e.message)
 

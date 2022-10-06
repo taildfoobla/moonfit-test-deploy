@@ -21,8 +21,6 @@ const NFTSaleStages = () => {
         return {...item, path: mapPaths[item.number], sold: 0}
     })
 
-    console.log(stages);
-
     const getProgressPercent = (mintedSlots, maxSaleSlots) => {
         return Math.floor((mintedSlots || 0) / maxSaleSlots * 100)
     }

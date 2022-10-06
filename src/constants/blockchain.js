@@ -186,12 +186,7 @@ export const WALLET_CONNECT = {
     },
 }
 
-let forDevelopment = {}
-if (configs.env === 'development') {
-    forDevelopment = {
-        time: Date.now(),
-    }
-}
+const isDev = configs.env === 'development'
 
 export const NFT_SALE_ROUNDS_INFO = {
     R1: {
@@ -223,7 +218,6 @@ export const NFT_SALE_ROUNDS_INFO = {
         description: 'Buy max 2 MoonBeasts per MintPass',
         dateMsg: '24th September',
         time: 1664028000000, // Date and time (GMT): Saturday, September 24, 2022 2:00:00 PM,
-        ...forDevelopment,
     },
     R3: {
         number: 3,
@@ -239,7 +233,10 @@ export const NFT_SALE_ROUNDS_INFO = {
         description: 'Buy max 2 MoonBeasts per MintPass',
         dateMsg: '12th October',
         time: 1665583200000, // Date and time (GMT): Wednesday, October 12, 2022 2:00:00 PM
-        ...forDevelopment,
+        ...(isDev ? {
+            time: Date.now(),
+            price: 0.00159,
+        } : {}),
     },
     R4: {
         number: 4,
@@ -255,7 +252,10 @@ export const NFT_SALE_ROUNDS_INFO = {
         description: 'No MintPass required',
         dateMsg: '12th October',
         time: 1665583200000, // Date and time (GMT): Wednesday, October 12, 2022 2:00:00 PM
-        ...forDevelopment,
+        ...(isDev ? {
+            time: Date.now(),
+            price: 0.00219,
+        } : {}),
     }
 }
 

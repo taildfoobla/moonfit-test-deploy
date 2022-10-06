@@ -51,8 +51,6 @@ const MoonBeastsV2 = ({moonBeasts, isLoading, moonBeastMinting = 0}) => {
         const to = from + pageSize
         from = from < 0 ? 0 : from
 
-        console.log({from, to, x: moonBeasts.slice(from, to)});
-
         setData(moonBeasts.slice(from, to))
         setCurrentPage(page)
 
