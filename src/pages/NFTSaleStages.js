@@ -1,17 +1,102 @@
-import React from "react"
-import { Progress, Tag } from "antd"
+import React, {useContext, useEffect, useState} from "react"
+import {Progress, Tag} from "antd"
 import CurveBGWrapper from "../wrappers/CurveBG"
 import arrowFatRight from "../assets/images/icons/ArrowFatRight.svg"
 import mintPass from "../assets/images/icons/mintpass.svg"
 import moonBeam from "../assets/images/icons/moonbeam.svg"
+import WalletAuthContext from "../contexts/WalletAuthContext";
+import Paths from "../routes/Paths"
+import {Link} from "react-router-dom";
+import {NFT_SALE_ROUNDS_INFO} from '../constants/blockchain'
+import {
+    getAvailableSlots as getAvailableSlotsRound3,
+    getSaleMaxAmount as getSaleMaxAmountRound3
+} from "../services/smc-ntf-sale";
+import {
+    getAvailableSlots as getAvailableSlotsRound4,
+    getSaleMaxAmount as getSaleMaxAmountRound4
+} from "../services/smc-ntf-public-sale";
+
+
+const mapPaths = {
+    3: Paths.NFTSaleRoundThree.path,
+    4: Paths.NFTPublicSale.path,
+}
+
+const stagesArr = Object.values(NFT_SALE_ROUNDS_INFO).map(item => {
+    return {...item, path: mapPaths[item.number], sold: 0, _id: `${item.number}_${Date.now()}`, isLoading: true}
+})
 
 const NFTSaleStages = () => {
+    const {isConnected, showWalletSelectModal} = useContext(WalletAuthContext)
+    const [stages, setStages] = useState(stagesArr)
+
+    useEffect(() => {
+        init().then()
+    }, [])
+
+    const init = async () => {
+        const data = await Promise.all([
+            getAvailableSlotsRound3(),
+            getSaleMaxAmountRound3(),
+            getAvailableSlotsRound4(),
+            getSaleMaxAmountRound4(),
+        ])
+
+        const obj = {
+            3: {
+                amount: data[1],
+                sold: data[1] - data[0],
+                isSoldOut: data[0] === 0
+            },
+            4: {
+                amount: data[3],
+                sold: data[3] - data[2],
+                isSoldOut: data[2] === 0,
+            }
+        }
+
+        setStages(stages.map(item => {
+            return {...item, ...obj[item.number], isLoading: false}
+        }))
+    }
 
     const getProgressPercent = (mintedSlots, maxSaleSlots) => {
         return Math.floor((mintedSlots || 0) / maxSaleSlots * 100)
     }
 
+    const dateTitle = (dateMsg) => {
+        const day = dateMsg.substring(0, 2)
+        const ordinalNumber = dateMsg.substring(2, 4)
+        const month = dateMsg.substring(5, dateMsg.length)
 
+        return (
+            <>
+                <div className="flex">
+                    <h1>{day}</h1>
+                    <h3 className="pt-2">{ordinalNumber}</h3>
+                </div>
+                <h3>{month}</h3>
+            </>
+        )
+    }
+
+    const joinButton = (stage) => {
+        if (isConnected) {
+            return (
+                <Link to={stage.path} className="flex items-center header-button button button-secondary w-100">
+                    <span className="nav-text">Join now</span>
+                </Link>
+            )
+        }
+
+        return (
+            <button type="button" className="flex items-center header-button button button-secondary w-100"
+                    onClick={showWalletSelectModal}>
+                Login
+            </button>
+        )
+    }
 
     return (
         <CurveBGWrapper>
@@ -19,44 +104,42 @@ const NFTSaleStages = () => {
             <div className="flex flex-wrap justify-center grid xs:grid-cols-1 md:grid-cols-1 xl:grid-cols-4 gap-4">
                 {
                     stages.map((stage) => (
-                        <div className={`stage${stage.isSoldOut ? " sold-out" : ""}`}>
+                        <div className={`stage${stage.isSoldOut ? " sold-out" : ""}`} key={stage._id}>
                             {
                                 stage.isSoldOut && <Tag className="badge" color="#541C8D">SOLD OUT</Tag>
                             }
-                            <div className="flex">
-                                <h1>{stage.startDate.substring(0, 2)}</h1>
-                                <h3 className="pt-2">{stage.startDate.substring(2, 4)}</h3>
-                            </div>
-                            <h3>{stage.startDate.substring(5, stage.startDate.length)}</h3>
+                            {dateTitle(stage.dateMsg)}
+
                             <h4 className="mt-5">{stage.title}</h4>
                             <div className="flex">
-                                <img className="arrow-right" src={arrowFatRight} /> QUANTITY: {stage.quantity} NFT
+                                <img className="arrow-right" src={arrowFatRight} alt=""/> QUANTITY: {stage.amount} NFTs
                             </div>
                             <div className="flex">
-                                <img className="arrow-right" src={arrowFatRight} /> PRICE: <img className="ic-moonbeam" src={moonBeam} /> {stage.price.moonbeam} + <img className="ic-mintpass" src={mintPass} /> {stage.price.mintpass}
+                                <img className="arrow-right" src={arrowFatRight} alt=""/> PRICE:
+                                <img className="ic-moonbeam" src={moonBeam} alt=""/> {stage.price}
+                                + <img className="ic-mintpass" src={mintPass} alt=""/> {stage.mintPass}
                             </div>
                             <span className="description">{stage.description}</span>
                             {
-                                !stage.isSoldOut && <>
+                                !stage.isSoldOut &&
+                                <>
                                     <div className={'flex flex-col text-[#4ccbc9]'}>
                                         <div className="flex justify-between items-center">
                                             <Progress
-                                                strokeColor={{ from: '#4ccbc9', to: '#e4007b' }}
-                                                percent={getProgressPercent(stage.sold, stage.quantity)}
+                                                strokeColor={{from: '#4ccbc9', to: '#e4007b'}}
+                                                percent={getProgressPercent(stage.sold, stage.amount)}
                                                 status="active"
                                                 showInfo={false}
                                             />
                                         </div>
                                     </div>
                                     <div className="flex justify-between mint-sold">
-                                        <span>{stage.sold} / {stage.quantity} SOLD</span>
-                                        <span>{getProgressPercent(stage.sold, stage.quantity)}%</span>
+                                        <span>{stage.sold} / {stage.amount} SOLD</span>
+                                        <span>{getProgressPercent(stage.sold, stage.amount)}%</span>
                                     </div>
-                                    <button
-                                        type="button"
-                                        className={`flex items-center header-button button button-secondary w-100`}>
-                                        Login
-                                    </button></>
+
+                                    {joinButton(stage)}
+                                </>
                             }
                         </div>
                     ))
@@ -65,60 +148,5 @@ const NFTSaleStages = () => {
         </CurveBGWrapper>
     )
 }
-
-const stages = [
-    {
-        number: 1,
-        startDate: "22nd August",
-        title: "Whitelist sale",
-        quantity: 500,
-        price: {
-            moonbeam: 79,
-            mintpass: 1,
-        },
-        description: "",
-        sold: 0,
-        isSoldOut: true,
-    },
-    {
-        number: 2,
-        startDate: "24nd September",
-        title: "Whitelist sale #2",
-        quantity: 1500,
-        price: {
-            moonbeam: 199,
-            mintpass: 1,
-        },
-        description: "BUY Max 2 MOoNBEASTS PER MINTPASs",
-        sold: 0,
-        isSoldOut: true,
-    },
-    {
-        number: 3,
-        startDate: "12th October",
-        title: "Whitelist sale",
-        quantity: 2000,
-        price: {
-            moonbeam: 159,
-            mintpass: 1,
-        },
-        description: "BUY MAX 2 MOoNBEASTS PER MINTPASs",
-        sold: 420,
-        isSoldOut: false,
-    },
-    {
-        number: 4,
-        startDate: "12thn October",
-        title: "Whitelist sale",
-        quantity: 5000,
-        price: {
-            moonbeam: 219,
-            mintpass: 0,
-        },
-        description: "NO MINTPASs REQUIRED",
-        sold: 4290,
-        isSoldOut: false,
-    }
-]
 
 export default NFTSaleStages

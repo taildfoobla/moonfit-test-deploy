@@ -126,8 +126,131 @@
   }
 
   .nft-item {
+    justify-content: flex-end;
+
     .ant-image-img {
       border-radius: var(--border-radius);
+    }
+
+    .attributes {
+      width: 100%;
+      margin-top: 10px;
+      background: rgb(161 107 216 / 15%);;
+      border-radius: 5px;
+      padding: 10px 0 5px;
+
+      &:after {
+        content: '';
+        clear: both;
+      }
+    }
+
+    .nft-attribute {
+      float: left;
+      width: 25%;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-content: center;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: nowrap;
+      text-align: center;
+
+      &:after {
+        content: '';
+        position: absolute;
+        border-right: 1px solid rgb(144 130 157 / 20%);
+        height: 75%;
+        right: 0;
+      }
+
+      &:last-child:after {
+        border-right: none;
+      }
+    }
+
+    .nft-item-image {
+      position: relative;
+      width: 100%;
+
+      .ant-image-mask {
+        border-radius: 0;
+      }
+    }
+
+    .nft-item-rarity {
+      position: absolute;
+      left: 4px;
+      bottom: 4px;
+      border-radius: 5px;
+      font-weight: 700;
+      font-size: 14px;
+      display: block;
+      padding: 1px 10px 5px 10px;
+      text-transform: none;
+
+      background: #EFAA5D;
+
+      &.uncommon {
+        background: #48C8F0;
+      }
+    }
+
+
+    .nft-gender {
+      min-width: 100px;
+    }
+
+    .nft-number-name {
+      min-width: 100px;
+    }
+  }
+}
+
+.page-nft-sale {
+  .ant-pagination {
+    margin-top: 30px;
+    color: #A8ADC3;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    text-transform: none;
+  }
+
+  .ant-pagination-disabled, .ant-pagination-disabled:hover {
+    opacity: 0.4
+  }
+
+  .ant-pagination-item-link-icon {
+    opacity: 0 !important;
+  }
+  .ant-pagination-item-ellipsis {
+    font-size: 8px;
+    opacity: 1 !important;
+  }
+
+  .ant-pagination-prev,
+  .ant-pagination-next,
+  .ant-pagination-item-ellipsis {
+    color: #A8ADC3 !important;
+  }
+
+  .ant-pagination-item {
+    border: none;
+    background-color: transparent;
+
+    a {
+      color: #A8ADC3;
+      font-weight: 700;
+    }
+  }
+  .ant-pagination-item-active {
+    background-color: #4CCBC9;
+    border-radius: 50%;
+    a {
+      color: #020722;
+      font-weight: 700;
     }
   }
 }
@@ -401,7 +524,7 @@
       margin-bottom: 0.5rem
     }
   }
-  
+
 
   .list-store {
     img {
@@ -495,7 +618,7 @@
     }
   }
   }
-  
+
 }
 .section-web3-nft {
   text-transform: initial;

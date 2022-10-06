@@ -2,7 +2,7 @@ import React from 'react'
 import {NFT_SALE_CURRENT_INFO} from "../../constants/blockchain"
 import LoadingOutlined from "../../components/shared/LoadingOutlined";
 
-const Header = ({availableSlots, isLoading=true}) => {
+const Header = ({availableSlots, isLoading= true, roundInfo=NFT_SALE_CURRENT_INFO}) => {
     const _renderProgress = () => {
         if (isLoading || Number.isNaN(availableSlots)) {
             return <LoadingOutlined className="ml-3" />
@@ -30,13 +30,13 @@ const Header = ({availableSlots, isLoading=true}) => {
             <div className={'flex flex-col'}>
                 <div className={'flex justify-center'}>
                     <h2 className="font-bold text-3xl secondary-color text-center">
-                        NFT Sale <span className={'text-white'}>Round #{NFT_SALE_CURRENT_INFO.number}</span>
+                        NFT Sale <span className={'text-white'}>Round #{roundInfo.number}</span>
                     </h2>
                 </div>
                 <div className={'flex justify-center mt-6'}>
                         <span
                             className="bg-[#A16BD8] text-white normal-case font-bold px-4 pb-1 rounded dark:bg-green-500 dark:text-white">
-                            {NFT_SALE_CURRENT_INFO.dateMsg}
+                            {roundInfo.dateMsg}
                         </span>
                     {_renderProgress()}
                 </div>

@@ -36,14 +36,14 @@ const LineContract = (props) => {
 }
 
 
-const LinePrice = (props) => {
+const LinePrice = ({price}) => {
     return (
         <>
             <div className={'flex card-body-row-title mt-3'}>NFT Price</div>
             <div className={'flex flex-col'}>
                 <div className="flex justify-between items-center">
                     <div
-                        className={'text-[#4ccbc9]'}>{NFT_SALE_CURRENT_INFO.price} GLMR
+                        className={'text-[#4ccbc9]'}>{price} GLMR
                     </div>
                 </div>
             </div>
@@ -51,7 +51,7 @@ const LinePrice = (props) => {
     )
 }
 
-const NFTSaleInfo = ({availableSlots, maxSaleSlots, isLoading, handleGetMinted = () => {}}) => {
+const NFTSaleInfo = ({availableSlots, maxSaleSlots, isLoading, handleGetMinted = () => {}, roundInfo=NFT_SALE_CURRENT_INFO}) => {
     const mintedSlots = maxSaleSlots - availableSlots
 
     const renderMinted = () => {
@@ -78,7 +78,7 @@ const NFTSaleInfo = ({availableSlots, maxSaleSlots, isLoading, handleGetMinted =
         <div className={'card-body-row flex flex-col'}>
             <LineContract />
             <hr className={'card-body-separator'}/>
-            <LinePrice />
+            <LinePrice price={roundInfo.price} />
             <hr className={'card-body-separator'}/>
             <div className="cursor-pointer" onClick={handleGetMinted}>
                 <div className={'flex justify-between items-center mt-2 count-minted'}>

@@ -3,8 +3,10 @@ import Paths from "./Paths"
 import MFGPrivateSale from "../pages/MFGPrivateSale"
 import MintPassMinting from "../pages/MintPassMinting"
 import MintPassVerify from "../pages/MintPassVerify"
-import NFTSale from "../pages/NFTSaleCurrentRound"
+// import NFTSale from "../pages/NFTSaleCurrentRound"
 import NFTSaleStages from "../pages/NFTSaleStages"
+import NFTSaleRoundThree from "../pages/NFTSaleRoundThree"
+import NFTSaleRoundFour from "../pages/NFTSaleRoundFour"
 import Home from "../pages/Home"
 import NotFound from "../pages/NotFound"
 
@@ -17,10 +19,20 @@ const routes = [
                 exact: true,
                 component: Home
             },
+            // {
+            //     path: Paths.NFTSale.path,
+            //     exact: true,
+            //     component: NFTSale
+            // },
             {
-                path: Paths.NFTSale.path,
+                path: Paths.NFTSaleRoundThree.path,
                 exact: true,
-                component: NFTSale
+                component: NFTSaleRoundThree
+            },
+            {
+                path: Paths.NFTPublicSale.path,
+                exact: true,
+                component: NFTSaleRoundFour
             },
             {
                 path: Paths.PrivateSale.path,

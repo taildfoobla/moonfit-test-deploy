@@ -7,7 +7,6 @@ import {notification, Spin, Typography} from "antd"
 import {getMainMessage} from "../utils/tx-error"
 import {
     getAddressScanUrl,
-    getNFTInfo,
     getShortAddress,
     getTxScanUrl,
     sendTransaction,
@@ -22,8 +21,8 @@ import CurveBGWrapper from "../wrappers/CurveBG"
 import CopyIcon from "../components/shared/CopyIcon"
 import WalletAuthRequiredMintPass from "../components/WalletAuthRequiredMintPass"
 import MintPassNFT from "../components/MintPassMinting/MintPassNFT";
-import {range} from "../utils/array"
 import classNames from "classnames";
+import {fetchMintPassByAccount} from "../services/smc-mint-pass";
 
 const {MINT_PASS_SC} = configs
 const {Paragraph} = Typography
@@ -56,19 +55,10 @@ const MintPassMinting = (props) => {
     const clearMpInterval = () => mpRetrieverRef.current && clearInterval(mpRetrieverRef.current)
 
     const _fetchMintPass = async () => {
-        const web3js = new Web3(network.rpc_url)
-        const mintPassContract = new web3js.eth.Contract(contractABI.abi, MINT_PASS_SC)
-        const methods = mintPassContract.methods
-
-        const mpBalance = await methods.balanceOf(wallet.account).call()
-        const mintPasses = await Promise.all(range(0, mpBalance - 1).map(async i => {
-            const tokenId = await mintPassContract.methods.tokenOfOwnerByIndex(wallet.account, i).call()
-            const {name, imageUrl} = await getNFTInfo(mintPassContract.methods, tokenId)
-            return {name, imageUrl, tokenId}
-        }))
+        const mintPasses = await fetchMintPassByAccount(wallet.account)
 
         setMintPasses(mintPasses)
-        return parseInt(mpBalance, 10) || 0
+        return mintPasses.length
     }
 
     const fetchTransaction = async (txHash) => {
