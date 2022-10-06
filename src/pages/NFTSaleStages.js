@@ -15,8 +15,8 @@ const NFTSaleStages = () => {
 
     return (
         <CurveBGWrapper>
-            <h2 className="mb-5">MoonBEAST NFT SALE Stages</h2>
-            <div className="grid grid-cols-4 gap-4">
+            <h2 className="mb-5 stage-title">MoonBEAST NFT SALE Stages</h2>
+            <div className="flex flex-wrap justify-center grid xs:grid-cols-1 md:grid-cols-1 xl:grid-cols-4 gap-4">
                 {
                     stages.map((stage) => (
                         <div className={`stage${stage.isSoldOut ? " sold-out" : ""}`}>

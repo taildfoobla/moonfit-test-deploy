@@ -6,6 +6,8 @@
     background-clip: padding-box;
     border: solid -2px transparent;
     border-radius: 10px;
+    min-width: 260px;
+    min-height: 350px;
 
     &:before {
       content: '';
@@ -79,5 +81,11 @@
     .button {
         margin-top: 15px;
         width: 100%;
+    }
+}
+@media (max-width: 768px) {
+    .stage-title {
+        text-align: center;
+        font-size: 28px;
     }
 }
