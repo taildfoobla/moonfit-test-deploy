@@ -42,7 +42,6 @@ const NFTSaleStages = () => {
             getAvailableSlotsRound4(),
             getSaleMaxAmountRound4(),
         ])
-
         const obj = {
             3: {
                 amount: data[1],
