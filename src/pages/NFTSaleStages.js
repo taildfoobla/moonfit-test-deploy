@@ -62,7 +62,7 @@ const NFTSaleStages = () => {
     }
 
     const getProgressPercent = (mintedSlots, maxSaleSlots) => {
-        return Math.floor((mintedSlots || 0) / maxSaleSlots * 100)
+        return Math.floor((mintedSlots || 0) / maxSaleSlots * 10000) / 100
     }
 
     const dateTitle = (dateMsg) => {

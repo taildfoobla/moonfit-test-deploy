@@ -47,7 +47,7 @@ export const buyNFTData = (mintPassTokenIds, mintAmount) => {
     return saleContract.methods.buyNFT(mintPassTokenIds, mintAmount).encodeABI()
 }
 
-export const getMintPass = async (wallet) => {
+export const getMintPass = async (wallet, sort = true) => {
     const data = await saleContract.methods.getMintPass(wallet).call()
 
     const mintPass = data.map(item => {
@@ -69,7 +69,11 @@ export const getMintPass = async (wallet) => {
         }
     })
 
-    mintPass.sort(sortMintPass)
+    mintPass.reverse()
+
+    if (sort) {
+        mintPass.sort(sortMintPass)
+    }
 
     return mintPass
 }
@@ -83,3 +87,7 @@ export const getMoonBeast = async (wallet) => {
 
     return moonBeasts
 }
+
+export const smcContract = saleContract;
+
+export const NFT_SALE_ADDRESS = NFT_SALE_SC

@@ -1,18 +1,14 @@
 import React, { useContext, useEffect, useRef, useState } from 'react'
-import Web3 from "web3"
 import BigNumber from 'bignumber.js'
 import Bluebird from 'bluebird'
 import WalletAuthContext from "../contexts/WalletAuthContext"
-import nftSaleABI from '../abis/MFNFTSale.json'
-import { notification } from "antd"
-import { getMainMessage } from "../utils/tx-error"
-import { getShortAddress, getTxScanUrl, sendTransaction, switchNetwork } from "../utils/blockchain"
+import * as notification from "../utils/notification"
+import { switchNetwork } from "../utils/blockchain"
 import { MinusOutlined, PlusOutlined } from '@ant-design/icons';
 import LoadingWrapper from "../components/shared/LoadingWrapper"
 import Paths from "../routes/Paths"
 import EnvWrapper from "../components/shared/EnvWrapper"
 import { NFT_SALE_ROUNDS_INFO } from "../constants/blockchain"
-import { getStringOfBigNumber } from "../utils/number"
 import WalletAuthRequiredNFTSale from "../components/WalletAuthRequiredNFTSale"
 import NFTStages from "../components/NFTStages"
 import Header from '../components/NFTSaleCurrentRound/Header'
@@ -22,11 +18,11 @@ import MoonBeasts from '../components/NFTSaleCurrentRound/MoonBeastsV2/index'
 import MintPass from '../components/NFTSaleCurrentRound/MintPass'
 
 import {getTransactionReceipt} from "../services/smc-common";
-import {getAvailableSlots, getSaleMaxAmount, getMintPass, getMoonBeast} from '../services/smc-ntf-sale'
+import {getAvailableSlots, getSaleMaxAmount, getMintPass, getMoonBeast, buyNFTData, smcContract, NFT_SALE_ADDRESS} from '../services/smc-ntf-sale'
+import {buyNFT} from '../services/smc-common'
 import CurveBGWrapper from '../wrappers/CurveBG'
 
 const NFT_SALE_CURRENT_INFO = NFT_SALE_ROUNDS_INFO.R3
-const { NFT_SALE_SC, isStarted } = NFT_SALE_CURRENT_INFO
 
 const NFTSaleRoundThree = (props) => {
     const [loading, setLoading] = useState(true)
@@ -46,7 +42,7 @@ const NFTSaleRoundThree = (props) => {
 
     const mbRetrieverRef = useRef(0)
 
-    const { wallet, network, provider, connector } = useContext(WalletAuthContext)
+    const { wallet, provider, connector } = useContext(WalletAuthContext)
 
     useEffect(() => {
         if (!!wallet.account) {
@@ -60,7 +56,7 @@ const NFTSaleRoundThree = (props) => {
 
     useEffect(() => {
         const interval = setInterval(() => {
-            if (nftSaleAvailableQuantity !== 0 && isStarted) {
+            if (nftSaleAvailableQuantity !== 0) {
                 _getAvailableSlots().then()
             }
         }, 30000);
@@ -115,19 +111,7 @@ const NFTSaleRoundThree = (props) => {
 
             if (!receipt.status) {
                 notification.destroy()
-                notification.error({
-                    message: `Transaction Failed`,
-                    description: (
-                        <div>
-                            The hash of MFB minting transaction is: <br />
-                            <a target="_blank" rel="noreferrer"
-                               className={'text-blue-600'}
-                               href={getTxScanUrl(txHash)}>{getShortAddress(txHash, 8)}</a>
-                        </div>
-                    ),
-                    placement: 'bottomRight',
-                    duration: 60
-                })
+                notification.sentTransactionFailed(txHash)
             }
         }
         return true
@@ -287,31 +271,6 @@ const NFTSaleRoundThree = (props) => {
         _updateMintAmount(value, true)
     }
 
-    const _transactionSuccess = (txHash) => {
-        notification.success({
-            message: `Transaction Sent`,
-            description: (
-                <div>
-                    The hash of MFB minting transaction is: <br />
-                    <a target="_blank" rel="noreferrer"
-                       className={'text-blue-600'}
-                       href={getTxScanUrl(txHash)}>{getShortAddress(txHash, 8)}</a>
-                </div>
-            ),
-            placement: 'bottomRight',
-            duration: 60
-        })
-    }
-
-    const _transactionError = (message) => {
-        notification.error({
-            message: `Transaction Failed`,
-            description: getMainMessage(message),
-            placement: 'bottomRight',
-            duration: 10
-        })
-    }
-
     const handleMintNFT = async () => {
         const mintPassTokenIds = mintPasses.filter(item => item.isSelected).map(item => item.tokenId)
 
@@ -322,40 +281,19 @@ const NFTSaleRoundThree = (props) => {
 
         setMintLoading(true)
         try {
-            const web3js = new Web3(network.rpc_url)
-            const nonce = await web3js.eth.getTransactionCount(wallet.account, 'latest')
-            const nftSaleContract = new web3js.eth.Contract(nftSaleABI.abi, NFT_SALE_SC)
-
-            let value = await nftSaleContract.methods._price().call()
-            console.log('Price for one NFT', web3js.utils.fromWei(getStringOfBigNumber(value), 'ether'));
+            let value = await smcContract.methods._price().call()
             value = value * mintAmount
 
             const tx = {
-                to: NFT_SALE_SC,
+                to: NFT_SALE_ADDRESS,
                 from: wallet.account,
-                nonce: `${nonce}`,
                 // gasPrice: `${gasPrice}`,
                 maxPriorityFeePerGas: null,
                 maxFeePerGas: null,
                 value: value.toString(),
-                data: nftSaleContract.methods.buyNFT(mintPassTokenIds, mintAmount).encodeABI()
+                data: buyNFTData(mintPassTokenIds, mintAmount)
             }
-            const _gasLimit = await web3js.eth.estimateGas(tx)
-
-            // const walletEx = EVM_WALLETS.find(item => item.extensionName === walletExtKey)
-            let gasLimit = _gasLimit
-            // gasLimit = gasLimit < 20999 ? 20999 : gasLimit
-            // gasLimit = gasLimit > 7920027 ? 7920027 : gasLimit
-
-            console.log({_gasLimit, gasLimit, x: typeof _gasLimit})
-
-            tx.gas = web3js.utils.numberToHex(gasLimit).toString()
-
-            console.log(tx)
-            console.log('GLMR', web3js.utils.fromWei(getStringOfBigNumber(value), 'ether'))
-            console.log('GAS', web3js.utils.hexToNumber(gasLimit))
-
-            const txHash = await sendTransaction(provider, connector, tx)
+            const txHash = await buyNFT(provider, connector, smcContract, tx)
             console.log("The hash of MFB minting transaction is: ", txHash)
             setMoonBeastMinting(mintAmount)
             setIsConfirmedTx(false)
@@ -363,12 +301,12 @@ const NFTSaleRoundThree = (props) => {
             notification.destroy()
 
             mbRetrieverRef.current = setInterval(() => confirmTransaction(txHash), 3000)
-            _transactionSuccess(txHash)
+            notification.sentTransactionSuccess(txHash)
             setMintLoading(false)
         } catch (e) {
             setMintLoading(false)
             console.log(e.message);
-            _transactionError(e.message)
+            notification.error(e.message)
             console.log("!error", e)
         }
     }
