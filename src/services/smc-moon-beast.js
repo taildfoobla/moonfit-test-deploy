@@ -34,7 +34,7 @@ export const getTokenInfoOfOwnerByIndex = async (account, index) => {
     const tokenId = await _moonBeastContract.methods.tokenOfOwnerByIndex(account, index).call()
     const uri = await _moonBeastContract.methods.tokenURI(tokenId).call()
     return {
-        tokenId,
+        tokenId: parseInt(tokenId, 10),
         uri,
     }
 }

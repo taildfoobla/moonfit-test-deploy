@@ -32,7 +32,7 @@ const MoonBeasts = ({
 
         return (
             <Pagination
-                defaultCurrent={currentPage}
+                defaultCurrent={1}
                 current={currentPage}
                 pageSize={pageSize}
                 total={total}
