@@ -6,6 +6,8 @@ import nftSaleABI from "../abis/MFNFTSale.json";
 import MoonBeast from '../utils/MoonBeast'
 import sortMintPass from '../utils/sortMintPass'
 
+const {moonBeastContract} = require('./smc-moon-beast')
+
 const {MOONBEAST_NETWORK} = configs
 const {NFT_SALE_SC} = NFT_SALE_ROUNDS_INFO.R3
 
@@ -79,13 +81,31 @@ export const getMintPass = async (wallet, sort = true) => {
 }
 
 export const getMoonBeast = async (wallet) => {
+    let balance = await moonBeastContract.methods.balanceOf(wallet).call()
+    balance = parseInt(balance , 10)
+    let _moonBeasts
+    console.log({balance, wallet});
+    if (balance >= 200) {
+        _moonBeasts = Array.from(Array(balance).keys()).map(index => new MoonBeast({wallet, index}))
+
+        _moonBeasts.reverse()
+
+        return _moonBeasts
+    }
+
     const data = await saleContract.methods.getMoonBeast(wallet).call()
 
-    const moonBeasts = data.map(item => new MoonBeast(item.tokenId, item.uri, item.ownerMinted))
+    _moonBeasts = data.map((item, index) => new MoonBeast({
+        tokenId: item.tokenId,
+        uri: item.uri,
+        mintByContract: item.ownerMinted,
+        wallet,
+        index,
+    }))
 
-    moonBeasts.sort((a, b) => b.tokenId - a.tokenId)
+    _moonBeasts.sort((a, b) => b.tokenId - a.tokenId)
 
-    return moonBeasts
+    return _moonBeasts
 }
 
 export const smcContract = saleContract;

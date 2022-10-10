@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react'
 import {Image, Tooltip} from "antd"
 import getNFTMetadata from '../../../utils/moonbeast-metadata'
+import {getTokenInfoOfOwnerByIndex} from '../../../services/smc-moon-beast'
 import NFTLink from '../../NFTLink'
 import configs from "../../../configs";
 import MoonBeastItemMinting from './MoonBeastItemMinting';
@@ -9,10 +10,9 @@ import enduranceIcon from '../../../assets/images/icons/endurance.svg'
 import luckIcon from '../../../assets/images/icons/luck.svg'
 import speedIcon from '../../../assets/images/icons/speed.svg'
 
-
 const {MOONBEAST_SC} = configs
 
-const MoonBeastItem = ({moonBeast = 0}) => {
+const MoonBeastItem = ({moonBeast = {}}) => {
     const [isLoading, setIsLoading] = useState(true)
     // eslint-disable-next-line no-unused-vars
     const [isError, setIsError] = useState(false)
@@ -28,7 +28,14 @@ const MoonBeastItem = ({moonBeast = 0}) => {
     const fetchData = async () => {
         setIsLoading(true)
         setIsError(false)
-        return getNFTMetadata(moonBeast.uri).then(response => {
+        if (!moonBeast.tokenId) {
+            const {tokenId, uri} = await getTokenInfoOfOwnerByIndex(moonBeast.wallet, moonBeast.index)
+
+            moonBeast.tokenId = parseInt(tokenId, 10)
+            moonBeast.uri = uri
+        }
+
+        return getNFTMetadata(moonBeast.getUri()).then(response => {
             setName(response.name)
             setImageUrl(response.image)
             setAttributes(response.attributes)
@@ -57,7 +64,7 @@ const MoonBeastItem = ({moonBeast = 0}) => {
     }
 
     return (
-        <div data-token-id={moonBeast.tokenId}
+        <div data-token-id={moonBeast.tokenId || `${moonBeast.wallet}_${moonBeast.index}`}
              className="flex flex-col justify-center items-center mt-4 col-span-2 nft-item">
             <div className="flex nft-item-image">
                 <Image
