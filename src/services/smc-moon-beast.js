@@ -39,4 +39,6 @@ export const getTokenInfoOfOwnerByIndex = async (account, index) => {
     }
 }
 
+console.log({MOONBEAST_SC});
+
 export const moonBeastContract = _moonBeastContract
