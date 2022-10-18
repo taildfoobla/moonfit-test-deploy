@@ -28,7 +28,6 @@ export const buyNFTData = (mintAmount) => {
 }
 
 export const getMoonBeast = async (wallet) => {
-    console.log(wallet);
     let balance = await moonBeastContract.methods.balanceOf(wallet).call()
     balance = parseInt(balance , 10)
     let _moonBeasts
