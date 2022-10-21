@@ -84,7 +84,7 @@ export const getMoonBeast = async (wallet) => {
     let balance = await moonBeastContract.methods.balanceOf(wallet).call()
     balance = parseInt(balance , 10)
     let _moonBeasts
-    console.log({balance, wallet});
+
     if (balance >= 200) {
         _moonBeasts = Array.from(Array(balance).keys()).map(index => new MoonBeast({wallet, index}))
 
