@@ -3,9 +3,8 @@ import configs from '../configs'
 import Web3 from "web3";
 import Bluebird from 'bluebird'
 import nftSaleABI from "../abis/MFNFTSale.json";
-import MoonBeast from '../utils/MoonBeast'
 import sortMintPass from '../utils/sortMintPass'
-
+import {getMoonBeast as _getMoonBeast} from './smc-common'
 const {moonBeastContract} = require('./smc-moon-beast')
 
 const {MOONBEAST_NETWORK} = configs
@@ -81,31 +80,7 @@ export const getMintPass = async (wallet, sort = true) => {
 }
 
 export const getMoonBeast = async (wallet) => {
-    let balance = await moonBeastContract.methods.balanceOf(wallet).call()
-    balance = parseInt(balance , 10)
-    let _moonBeasts
-
-    if (balance >= 200) {
-        _moonBeasts = Array.from(Array(balance).keys()).map(index => new MoonBeast({wallet, index}))
-
-        _moonBeasts.reverse()
-
-        return _moonBeasts
-    }
-
-    const data = await saleContract.methods.getMoonBeast(wallet).call()
-
-    _moonBeasts = data.map((item, index) => new MoonBeast({
-        tokenId: item.tokenId,
-        uri: item.uri,
-        mintByContract: item.ownerMinted,
-        wallet,
-        index,
-    }))
-
-    _moonBeasts.sort((a, b) => b.tokenId - a.tokenId)
-
-    return _moonBeasts
+    return _getMoonBeast(moonBeastContract, saleContract, wallet)
 }
 
 export const smcContract = saleContract;

@@ -48,7 +48,7 @@ const MoonBeasts = ({
         <div className={'card-body-row flex flex-col mt-3'}>
             <div className="flex justify-between">
                 <div className={'flex card-body-row-title'}>
-                    Your NFTs
+                    Your minted NFTs
                 </div>
                 <div className={'flex card-body-row-title'}>Total {total}
                 </div>

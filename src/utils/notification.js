@@ -37,9 +37,22 @@ export const sentTransactionFailed = (txHash) => {
     })
 }
 
-export const error = (message) => notification.error({
-    message: `Transaction Failed`,
-    description: getMainMessage(message),
-    placement: 'bottomRight',
-    duration: 30
-})
+export const error = (message, error) => {
+    let description = getMainMessage(message)
+
+    if (error && (error.funcName === 'estimateGas' || error.code === -32603)) {
+        description = (
+            <div>
+                {/*{description} <br />*/}
+                The gas fee of this transaction was too high and exceeded the limit. Please lower the amount of NFTs you want to mint to less than 5.
+            </div>
+        )
+    }
+
+    return notification.error({
+        message: `Transaction Failed`,
+        description,
+        placement: 'bottomRight',
+        duration: 30
+    })
+}
