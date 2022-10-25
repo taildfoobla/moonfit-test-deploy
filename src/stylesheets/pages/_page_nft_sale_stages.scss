@@ -4,8 +4,7 @@
     padding: 30px 20px 20px 20px;
     position: relative;
     background-clip: padding-box;
-    border: solid -2px transparent;
-    border-radius: 10px;
+    border: solid 2px transparent;
     min-width: 260px;
     min-height: 350px;
 
@@ -23,9 +22,18 @@
     }
     &.sold-out {
         // filter: brightness(75%);
-        opacity: 0.9;
+        .stage-content {
+            opacity: 0.5;
+        }
         &::before {
             background: #1C0532;
+        }
+    }
+    .stage-content {
+        a {
+            &:hover {
+                color: #ffffff;
+            }
         }
     }
     .badge {
@@ -65,7 +73,7 @@
     }
     .ic-moonbeam,
     .ic-mintpass {
-        margin: 0 10px;
+        margin: 0 5px;
     }
     .ic-plus {
         display: inline-block;

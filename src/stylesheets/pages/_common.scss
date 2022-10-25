@@ -92,15 +92,15 @@
 
   .section-shape-kusama {
     top: 50%;
-    left: 3%;
+    left: 10%;
 
     img {
-      max-width: 14vw;
+      max-width: 10vw;
     }
   }
 
   .section-shape-polkadot {
-    bottom: 7%;
+    bottom: 10%;
     right: 9%;
 
     img {
@@ -140,10 +140,20 @@
 
   .section-shape-beast {
     left: 5.7%;
-    top: 24%;
+    top: 28%;
 
     img {
-      max-width: 12vw;
+      max-width: 8vw;
+    }
+  }
+
+  .section-shape-beast-2 {
+    left: 5.7%;
+    bottom: 10%;
+
+    img {
+      max-width: 6vw;
+      transform: rotate(-20deg);
     }
   }
 
@@ -217,11 +227,11 @@
   }
 
   .section-shape-beauty-2 {
-    right: 18.6%;
-    bottom: 26.3%;
+    right: 8%;
+    bottom: 30%;
 
     img {
-      max-width: 12vw;
+      max-width: 8vw;
     }
   }
 
@@ -245,8 +255,8 @@
   }
 
   .shape-token-mfr-1 {
-    left: 20%;
-    bottom: 15%;
+    left: 23%;
+    bottom: 20%;
 
     img {
       transform: rotate(25.79deg);
@@ -264,7 +274,7 @@
   }
 
   .shape-token-mfg-2 {
-    right: 45%;
+    left: 45%;
     top: 14%;
     transform: rotate(25.79deg);
     filter: blur(1px);
@@ -273,6 +283,7 @@
   .page-container {
     width: 62.5%;
     margin: 0 auto;
+    z-index: 1;
 
     &.not-limit-width {
       width: unset !important;
@@ -286,7 +297,7 @@
     padding-top: 130px;
 
     .page-container {
-      width: 80%;
+      width: 85%;
       margin: 0 auto;
     }
   }
@@ -363,3 +374,11 @@
 //    }
 //  }
 //}
+.custom-progress {
+  .ant-progress-inner {
+    background-color: #462368;
+}
+}
+.ant-pagination.ant-pagination-mini .ant-pagination-item {
+  margin: 0 5px !important;
+}

@@ -1,6 +1,7 @@
 import React from 'react'
 import kusamaV2 from "../assets/images/shapes/kusama-v2.png"
 import beast from "../assets/images/shapes/beast-3.png"
+import beast2 from "../assets/images/shapes/beast-4.png"
 import beauty from "../assets/images/shapes/beauty-4.png"
 import beauty2 from "../assets/images/shapes/beauty-5.png"
 import polkadot from "../assets/images/shapes/polkadot-v2.png"
@@ -18,6 +19,10 @@ const CurveBGWrapper = ({children, className=''}) => {
             </div>
             <div className="section-shape section-shape-beast move-vertical">
                 <img loading="lazy" src={beast} alt="Beast" width="231"
+                     height="230"/>
+            </div>
+            <div className="section-shape section-shape-beast-2 move-vertical">
+                <img loading="lazy" src={beast2} alt="Beast" width="231"
                      height="230"/>
             </div>
             <div className="section-shape section-shape-beauty move-vertical-reversed">

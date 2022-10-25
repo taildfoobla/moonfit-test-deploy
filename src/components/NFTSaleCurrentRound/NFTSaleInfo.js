@@ -22,7 +22,7 @@ const LineContract = (props) => {
 
     return (
         <>
-            <div className={'flex card-body-row-title'}>NFT contract</div>
+            <div className={'flex card-body-row-title'}>MOONBEAST NFT CONTRACT</div>
             <div className={'flex flex-col'}>
                 <Paragraph className={'flex text-white'} copyable={{text: MOONBEAST_SC, format: 'text/plain', icon: [<CopyIcon/>]}}>
                     {getShortAddress(MOONBEAST_SC, 14)}
@@ -89,7 +89,7 @@ const NFTSaleInfo = ({availableSlots, maxSaleSlots, isLoading, handleGetMinted =
                 </div>
 
                 <div className={'flex flex-col text-[#4ccbc9]'}>
-                    <div className="flex justify-between items-center">
+                    <div className="flex justify-between items-center custom-progress">
                         <Progress
                             strokeColor={{from: '#4ccbc9', to: '#e4007b'}}
                             percent={getProgressPercent()}

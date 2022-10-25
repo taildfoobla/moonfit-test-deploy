@@ -1,9 +1,10 @@
 .section-hero {
 	z-index: 1;
 	padding: 280px 0 281px;
-	background-image: url(../../assets/images/background.png);
+	background-image: url(../../assets/images/nft-sale-bg.png);
 	background-repeat: no-repeat;
 	background-size: auto;
+	background-attachment: fixed;
 
 	&.section-hero-3d-bg {
 		background: url(../../assets/images/nft-sale-bg-2x-tinied.png) no-repeat center;

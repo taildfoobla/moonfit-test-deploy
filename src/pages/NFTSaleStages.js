@@ -1,13 +1,13 @@
-import React, {useContext, useEffect, useState} from "react"
-import {Progress, Tag} from "antd"
+import React, { useContext, useEffect, useState } from "react"
+import { Progress, Tag } from "antd"
 import CurveBGWrapper from "../wrappers/CurveBG"
 import arrowFatRight from "../assets/images/icons/ArrowFatRight.svg"
 import mintPass from "../assets/images/icons/mintpass.svg"
 import moonBeam from "../assets/images/icons/moonbeam.svg"
 import WalletAuthContext from "../contexts/WalletAuthContext";
 import Paths from "../routes/Paths"
-import {Link} from "react-router-dom";
-import {NFT_SALE_ROUNDS_INFO} from '../constants/blockchain'
+import { Link } from "react-router-dom";
+import { NFT_SALE_ROUNDS_INFO } from '../constants/blockchain'
 import {
     getAvailableSlots as getAvailableSlotsRound3,
     getSaleMaxAmount as getSaleMaxAmountRound3
@@ -24,11 +24,11 @@ const mapPaths = {
 }
 
 const stagesArr = Object.values(NFT_SALE_ROUNDS_INFO).map(item => {
-    return {...item, path: mapPaths[item.number], sold: 0, _id: `${item.number}_${Date.now()}`, isLoading: true}
+    return { ...item, path: mapPaths[item.number], sold: 0, _id: `${item.number}_${Date.now()}`, isLoading: true }
 })
 
 const NFTSaleStages = () => {
-    const {isConnected, showWalletSelectModal} = useContext(WalletAuthContext)
+    const { isConnected, showWalletSelectModal } = useContext(WalletAuthContext)
     const [stages, setStages] = useState(stagesArr)
 
     useEffect(() => {
@@ -56,7 +56,7 @@ const NFTSaleStages = () => {
         }
 
         setStages(stages.map(item => {
-            return {...item, ...obj[item.number], isLoading: false}
+            return { ...item, ...obj[item.number], isLoading: false }
         }))
     }
 
@@ -91,7 +91,7 @@ const NFTSaleStages = () => {
 
         return (
             <button type="button" className="flex items-center header-button button button-secondary w-100"
-                    onClick={showWalletSelectModal}>
+                onClick={showWalletSelectModal}>
                 Login
             </button>
         )
@@ -99,47 +99,48 @@ const NFTSaleStages = () => {
 
     return (
         <CurveBGWrapper>
-            <h2 className="mb-5 stage-title">MoonBEAST NFT SALE Stages</h2>
-            <div className="flex flex-wrap justify-center grid xs:grid-cols-1 md:grid-cols-1 xl:grid-cols-4 gap-4">
+            <h2 className="stage-title ml-4 mb-12">MoonBEAST NFT SALE Stages</h2>
+            <div className="flex flex-wrap justify-center grid xs:grid-cols-1 md:grid-cols-1 xl:grid-cols-4 gap-8">
                 {
                     stages.map((stage) => (
                         <div className={`stage${stage.isSoldOut ? " sold-out" : ""}`} key={stage._id}>
                             {
                                 stage.isSoldOut && <Tag className="badge" color="#541C8D">SOLD OUT</Tag>
                             }
-                            {dateTitle(stage.dateMsg)}
-
-                            <h4 className="mt-5">{stage.title}</h4>
-                            <div className="flex">
-                                <img className="arrow-right" src={arrowFatRight} alt=""/> QUANTITY: {stage.amount} NFTs
-                            </div>
-                            <div className="flex">
-                                <img className="arrow-right" src={arrowFatRight} alt=""/> PRICE:
-                                <img className="ic-moonbeam" src={moonBeam} alt=""/> {stage.price}
-                                <span className="ic-plus">+</span> <img className="ic-mintpass" src={mintPass} alt=""/> {stage.mintPass}
-                            </div>
-                            <span className="description">{stage.description}</span>
-                            {
-                                !stage.isSoldOut &&
-                                <>
-                                    <div className={'flex flex-col text-[#4ccbc9]'}>
-                                        <div className="flex justify-between items-center">
-                                            <Progress
-                                                strokeColor={{from: '#4ccbc9', to: '#e4007b'}}
-                                                percent={getProgressPercent(stage.sold, stage.amount)}
-                                                status="active"
-                                                showInfo={false}
-                                            />
+                            <div className="stage-content">
+                                {dateTitle(stage.dateMsg)}
+                                <h4 className="mt-5 mb-3">{stage.title}</h4>
+                                <div className="flex mb-2">
+                                    <img className="arrow-right" src={arrowFatRight} alt="" /> QUANTITY: <span className="text-white ml-1"> {stage.amount} NFTs</span>
+                                </div>
+                                <div className="flex mb-3">
+                                    <img className="arrow-right" src={arrowFatRight} alt="" /> PRICE:
+                                    <img className="ic-moonbeam" src={moonBeam} alt="" /> <span className="text-[#4ccbc9] mr-1">{stage.price}
+                                    </span> + <img className="ic-mintpass" src={mintPass} alt="" /><span className="text-[#4ccbc9]">{stage.mintPass}</span>
+                                </div>
+                                <span className="description">{stage.description}</span>
+                                {
+                                    !stage.isSoldOut &&
+                                    <>
+                                        <div className={'flex flex-col text-[#4ccbc9] mt-5'}>
+                                            <div className="flex justify-between items-center">
+                                                <Progress
+                                                    strokeColor={{ from: '#4ccbc9', to: '#e4007b' }}
+                                                    percent={getProgressPercent(stage.sold, stage.amount)}
+                                                    status="active"
+                                                    showInfo={false}
+                                                />
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div className="flex justify-between mint-sold">
-                                        <span>{stage.sold} / {stage.amount} SOLD</span>
-                                        <span>{getProgressPercent(stage.sold, stage.amount)}%</span>
-                                    </div>
+                                        <div className="flex justify-between mint-sold">
+                                            <span>{stage.sold} / {stage.amount} SOLD</span>
+                                            <span>{getProgressPercent(stage.sold, stage.amount)}%</span>
+                                        </div>
 
-                                    {joinButton(stage)}
-                                </>
-                            }
+                                        {joinButton(stage)}
+                                    </>
+                                }
+                            </div>
                         </div>
                     ))
                 }
