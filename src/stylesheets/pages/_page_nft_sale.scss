@@ -216,6 +216,9 @@
     justify-content: center;
     align-items: flex-end;
     text-transform: none;
+    .ant-pagination-mini .ant-pagination-item {
+      margin: 0 5px;
+    }
   }
 
   .ant-pagination-disabled, .ant-pagination-disabled:hover {
@@ -239,7 +242,6 @@
   .ant-pagination-item {
     border: none;
     background-color: transparent;
-    margin: 0 5px !important;
     a {
       color: #A8ADC3;
       font-weight: 700;
