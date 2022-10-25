@@ -374,8 +374,13 @@
 //    }
 //  }
 //}
-.ant-pagination-item {
-  margin-right: 4px;
-  height: 30px;
-  min-width: 30px;
+.custom-progress {
+  .ant-progress-inner {
+    background-color: #462368;
+}
+}
+.ant-pagination {
+  .ant-pagination-next, .ant-pagination-prev {
+    min-width: 24px;
+  }
 }
