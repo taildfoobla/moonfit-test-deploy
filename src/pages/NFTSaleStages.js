@@ -109,11 +109,11 @@ const NFTSaleStages = () => {
                             }
                             <div className="stage-content">
                                 {dateTitle(stage.dateMsg)}
-                                <h4 className="mt-5">{stage.title}</h4>
-                                <div className="flex">
+                                <h4 className="mt-5 mb-3">{stage.title}</h4>
+                                <div className="flex mb-2">
                                     <img className="arrow-right" src={arrowFatRight} alt="" /> QUANTITY: <span className="text-white ml-1"> {stage.amount} NFTs</span>
                                 </div>
-                                <div className="flex">
+                                <div className="flex mb-3">
                                     <img className="arrow-right" src={arrowFatRight} alt="" /> PRICE:
                                     <img className="ic-moonbeam" src={moonBeam} alt="" /> <span className="text-[#4ccbc9] mr-1">{stage.price}
                                     </span> + <img className="ic-mintpass" src={mintPass} alt="" /><span className="text-[#4ccbc9]">{stage.mintPass}</span>
@@ -122,7 +122,7 @@ const NFTSaleStages = () => {
                                 {
                                     !stage.isSoldOut &&
                                     <>
-                                        <div className={'flex flex-col text-[#4ccbc9]'}>
+                                        <div className={'flex flex-col text-[#4ccbc9] mt-5'}>
                                             <div className="flex justify-between items-center">
                                                 <Progress
                                                     strokeColor={{ from: '#4ccbc9', to: '#e4007b' }}

@@ -140,10 +140,20 @@
 
   .section-shape-beast {
     left: 5.7%;
-    top: 24%;
+    top: 28%;
 
     img {
-      max-width: 12vw;
+      max-width: 8vw;
+    }
+  }
+
+  .section-shape-beast-2 {
+    left: 5.7%;
+    bottom: 10%;
+
+    img {
+      max-width: 6vw;
+      transform: rotate(-20deg);
     }
   }
 
@@ -246,7 +256,7 @@
 
   .shape-token-mfr-1 {
     left: 23%;
-    bottom: 25%;
+    bottom: 20%;
 
     img {
       transform: rotate(25.79deg);
@@ -264,7 +274,7 @@
   }
 
   .shape-token-mfg-2 {
-    right: 45%;
+    left: 45%;
     top: 14%;
     transform: rotate(25.79deg);
     filter: blur(1px);
@@ -364,3 +374,8 @@
 //    }
 //  }
 //}
+.ant-pagination-item {
+  margin-right: 4px;
+  height: 30px;
+  min-width: 30px;
+}
