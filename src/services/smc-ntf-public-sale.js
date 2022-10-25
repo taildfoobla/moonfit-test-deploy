@@ -8,6 +8,8 @@ import {getMoonBeast as _getMoonBeast} from "./smc-common";
 const {MOONBEAST_NETWORK} = configs
 const {NFT_SALE_SC} = NFT_SALE_ROUNDS_INFO.R4
 
+console.log({round: 4, NFT_SALE_SC});
+
 const web3 = new Web3(MOONBEAST_NETWORK)
 const saleContract = new web3.eth.Contract(nftSaleABI.abi, NFT_SALE_SC)
 
