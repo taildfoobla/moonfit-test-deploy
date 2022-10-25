@@ -115,8 +115,8 @@ const NFTSaleStages = () => {
                                 </div>
                                 <div className="flex">
                                     <img className="arrow-right" src={arrowFatRight} alt="" /> PRICE:
-                                    <img className="ic-moonbeam" src={moonBeam} alt="" /> <span className="text-[#4ccbc9]">{stage.price}
-                                    +</span> <img className="ic-mintpass" src={mintPass} alt="" /><span className="text-[#4ccbc9]">{stage.mintPass}</span>
+                                    <img className="ic-moonbeam" src={moonBeam} alt="" /> <span className="text-[#4ccbc9] mr-1">{stage.price}
+                                    </span> + <img className="ic-mintpass" src={mintPass} alt="" /><span className="text-[#4ccbc9]">{stage.mintPass}</span>
                                 </div>
                                 <span className="description">{stage.description}</span>
                                 {
