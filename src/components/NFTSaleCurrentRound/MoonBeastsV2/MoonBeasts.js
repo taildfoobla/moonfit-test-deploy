@@ -32,6 +32,7 @@ const MoonBeasts = ({
 
         return (
             <Pagination
+                size="small"
                 defaultCurrent={1}
                 current={currentPage}
                 pageSize={pageSize}
