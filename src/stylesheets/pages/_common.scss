@@ -379,8 +379,6 @@
     background-color: #462368;
 }
 }
-.ant-pagination {
-  .ant-pagination-next, .ant-pagination-prev {
-    margin: 0 5px;
-  }
+.ant-pagination.ant-pagination-mini .ant-pagination-item {
+  margin: 0 5px !important;
 }
