@@ -29,11 +29,9 @@
             background: #1C0532;
         }
     }
-    .stage-content {
-        a {
-            &:hover {
-                color: #ffffff;
-            }
+    .button {
+        &:hover, &:focus {
+            color: #ffffff;
         }
     }
     .badge {
@@ -91,7 +89,7 @@
         font-size: 14px;
     }
     .button {
-        margin-top: 15px;
+        // margin-top: 15px;
         width: 100%;
     }
 }

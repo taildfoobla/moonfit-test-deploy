@@ -21,6 +21,7 @@ import {getTransactionReceipt} from "../services/smc-common";
 import {getAvailableSlots, getSaleMaxAmount, getMintPass, getMoonBeast, buyNFTData, smcContract, NFT_SALE_ADDRESS} from '../services/smc-ntf-sale'
 import {buyNFT} from '../services/smc-common'
 import CurveBGWrapper from '../wrappers/CurveBG'
+import TwitterShareButton from '../components/shared/TwitterShare'
 
 const NFT_SALE_CURRENT_INFO = NFT_SALE_ROUNDS_INFO.R3
 
@@ -122,7 +123,6 @@ const NFTSaleRoundThree = (props) => {
 
         try {
             const value = await getAvailableSlots()
-            console.log({getAvailableSlots: value})
 
             if (!Number.isNaN(value)) {
                 setNftSaleAvailableQuantity(value)
@@ -419,6 +419,7 @@ const NFTSaleRoundThree = (props) => {
                                                 moonBeastMinting={moonBeastMinting}/>
                                 </div>
                             </div>
+                            <TwitterShareButton />
                         </div>
                     </div>
                 </div>
@@ -427,7 +428,7 @@ const NFTSaleRoundThree = (props) => {
     }
 
     return (
-        <CurveBGWrapper className="page-nft-sale">
+        <CurveBGWrapper className="page-nft-sale" scrollBg={true}>
             <EnvWrapper routeItem={Paths.NFTSale}>
                 <WalletAuthRequiredNFTSale className={'section page-nft-sale'}>
                     <NFTStages>

@@ -163,6 +163,28 @@ input[type='submit'],
   }
 }
 
+.button-twitter {
+  --mg-button-text: #fff;
+  --mg-button-border: #{$twitter-color};
+  --mg-button-background: #{$twitter-color};
+
+  &:hover, &:focus {
+    color: #fff;
+  }
+  &[disabled],
+  &.disabled {
+    &:hover {
+      transform: none !important;
+    }
+
+    cursor: not-allowed;
+    background-color: #14426e !important;
+    border-color: $twitter-color !important;
+    color: #FFFFFF !important;
+    box-shadow: none !important;
+  }
+}
+
 .button-subwallet {
   --mg-button-text: #fff;
   --mg-button-border: #004bff;

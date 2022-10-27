@@ -81,16 +81,26 @@ const NFTSaleStages = () => {
     }
 
     const joinButton = (stage) => {
+        if (!stage.path) {
+            return null
+        }
+        if (stage.isSoldOut) {
+            return (
+                <Link to={stage.path} className="flex items-center header-button button button-secondary w-100 mt-20">
+                    <span className="nav-text">View detail</span>
+                </Link>
+            )
+        }
         if (isConnected) {
             return (
-                <Link to={stage.path} className="flex items-center header-button button button-secondary w-100">
+                <Link to={stage.path} className="flex items-center header-button button button-secondary w-100 mt-4">
                     <span className="nav-text">Join now</span>
                 </Link>
             )
         }
 
         return (
-            <button type="button" className="flex items-center header-button button button-secondary w-100"
+            <button type="button" className="flex items-center header-button button button-secondary w-100 mt-4"
                 onClick={showWalletSelectModal}>
                 Login
             </button>
@@ -136,11 +146,10 @@ const NFTSaleStages = () => {
                                             <span>{stage.sold} / {stage.amount} SOLD</span>
                                             <span>{getProgressPercent(stage.sold, stage.amount)}%</span>
                                         </div>
-
-                                        {joinButton(stage)}
                                     </>
                                 }
                             </div>
+                            {joinButton(stage)}
                         </div>
                     ))
                 }

@@ -1,10 +1,30 @@
 .section-hero {
 	z-index: 1;
 	padding: 280px 0 281px;
-	background-image: url(../../assets/images/nft-sale-bg.png);
-	background-repeat: no-repeat;
-	background-size: auto;
-	background-attachment: fixed;
+	
+	&.attachment-bg {
+		background-image: url(../../assets/images/nft-sale-bg.png);
+		background-repeat: no-repeat;
+		background-size: auto;
+		background-attachment: fixed;
+	}
+
+	&.non-attachment-bg {
+		position: relative;
+		&::before {
+			content: "";
+			position: absolute;
+			top: 0;
+			left: 0;
+			right: 0;
+			bottom: 0;
+			background-image: url(../../assets/images/background.png), url(../../assets/images/background-footer.png);
+			background-repeat: no-repeat, no-repeat;
+			background-size: auto, auto;
+			background-position: top, bottom;
+			opacity: 0.7;
+		}
+	}
 
 	&.section-hero-3d-bg {
 		background: url(../../assets/images/nft-sale-bg-2x-tinied.png) no-repeat center;
