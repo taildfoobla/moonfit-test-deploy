@@ -16,10 +16,11 @@ import ButtonMintNFT from '../components/NFTSaleCurrentRound/ButtonMintNFT'
 import NFTSaleInfo from '../components/NFTSaleCurrentRound/NFTSaleInfo'
 import MoonBeasts from '../components/NFTSaleCurrentRound/MoonBeastsV2/index'
 
-import {getTransactionReceipt} from "../services/smc-common";
-import {getAvailableSlots, getSaleMaxAmount, getMoonBeast, buyNFTData, smcContract, NFT_SALE_ADDRESS} from '../services/smc-ntf-public-sale'
-import {buyNFT} from '../services/smc-common'
+import { getTransactionReceipt } from "../services/smc-common";
+import { getAvailableSlots, getSaleMaxAmount, getMoonBeast, buyNFTData, smcContract, NFT_SALE_ADDRESS } from '../services/smc-ntf-public-sale'
+import { buyNFT } from '../services/smc-common'
 import CurveBGWrapper from '../wrappers/CurveBG'
+import TwitterShareButton from '../components/shared/TwitterShare'
 const NFT_SALE_CURRENT_INFO = NFT_SALE_ROUNDS_INFO.R4
 
 const NFTSaleRoundThree = (props) => {
@@ -82,7 +83,7 @@ const NFTSaleRoundThree = (props) => {
             if (!Number.isNaN(value)) {
                 return setNftSaleQuantity(value)
             }
-        }catch (e) {
+        } catch (e) {
             //
         }
 
@@ -255,7 +256,7 @@ const NFTSaleRoundThree = (props) => {
                             onChange={(e) => _handleChangeAmountInput(e.target.value)}
                             value={mintAmount}
                             pattern="[0-9]*"
-                            type="tel"/>
+                            type="tel" />
                     </span>
                     <span className="form-mint__input-icon icon-plus" onClick={() => _updateMintAmount(mintAmount + 1, true)}>
                         <PlusOutlined size={24} />
@@ -286,11 +287,11 @@ const NFTSaleRoundThree = (props) => {
                                     className={'flex w-full lg:w-auto justify-center lg:justify-start mt-4 lg:mt-0'}>
                                     {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
                                     <a href="#" className={'normal-case text-xs inline primary-color'}
-                                       onClick={(e) => handleRefresh(e)}>
+                                        onClick={(e) => handleRefresh(e)}>
                                         <svg className="w-4 h-4 inline mr-1" fill="none" stroke="currentColor"
-                                             viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                            viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
-                                                  d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                                                d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
                                         </svg>
                                         Refresh
                                     </a>
@@ -311,10 +312,11 @@ const NFTSaleRoundThree = (props) => {
                                     </div>
 
                                     <MoonBeasts isLoading={moonBeastLoading}
-                                                moonBeasts={moonBeasts}
-                                                moonBeastMinting={moonBeastMinting}/>
+                                        moonBeasts={moonBeasts}
+                                        moonBeastMinting={moonBeastMinting} />
                                 </div>
                             </div>
+                            <TwitterShareButton />
                         </div>
                     </div>
                 </div>
@@ -323,14 +325,14 @@ const NFTSaleRoundThree = (props) => {
     }
 
     return (
-        <CurveBGWrapper className="page-nft-sale">
+        <CurveBGWrapper className="page-nft-sale" scrollBg={true}>
             <EnvWrapper routeItem={Paths.NFTSale}>
                 <WalletAuthRequiredNFTSale className={'section page-nft-sale'}>
                     <NFTStages>
                         {
                             !loading && (
                                 [
-                                    <Header availableSlots={nftSaleAvailableQuantity} isLoading={saleInfoLoading} roundInfo={NFT_SALE_CURRENT_INFO} key="Header"/>,
+                                    <Header availableSlots={nftSaleAvailableQuantity} isLoading={saleInfoLoading} roundInfo={NFT_SALE_CURRENT_INFO} key="Header" />,
                                     _renderContainer()
                                 ]
                             )

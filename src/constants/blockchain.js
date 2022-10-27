@@ -162,7 +162,7 @@ export const EVM_WALLETS = [
         },
         isSetGlobalString: 'isSubWallet',
         initEvent: 'subwallet#initialized',
-        isMobileSupport: false
+        isMobileSupport: true
     },
     {
         extensionName: 'ethereum',
@@ -223,7 +223,7 @@ export const NFT_SALE_ROUNDS_INFO = {
         number: 3,
         title: 'NFT Sale 3',
         timelineTitle: 'Whitelist Sale #3',
-        isSoldOut: false,
+        isSoldOut: true,
         NFT_SALE_SC: configs.R3_NFT_SALE_SC,
         amount: 3000,
         fromTokenID: 2001,
@@ -242,7 +242,7 @@ export const NFT_SALE_ROUNDS_INFO = {
         number: 4,
         title: 'Public Sale',
         timelineTitle: 'Public Sale',
-        isSoldOut: false,
+        isSoldOut: true,
         NFT_SALE_SC: configs.R4_NFT_SALE_SC,
         amount: 5000,
         fromTokenID: 50001,

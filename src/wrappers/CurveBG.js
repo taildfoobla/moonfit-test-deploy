@@ -10,9 +10,9 @@ import tokenMFR from "../assets/images/token-mfr.png"
 import tokenMFG from "../assets/images/shapes/token-mfg.png"
 import WebFooter from "../components/shared/WebFooter"
 
-const CurveBGWrapper = ({children, className=''}) => {
+const CurveBGWrapper = ({children, className='', scrollBg}) => {
     return (
-        <div id="main-content" className="main-content page-content section-hero">
+        <div id="main-content" className={`main-content page-content section-hero ${scrollBg ? "non-attachment-bg" : "attachment-bg"} `}>
             <div className="section-shape section-shape-kusama move-vertical">
                 <img loading="lazy" src={kusamaV2} alt="Kusama" width="258"
                      height="256"/>

@@ -138,7 +138,6 @@ const NFTSaleCurrentRound = (props) => {
 
         try {
             const value = await getAvailableSlots()
-            console.log({getAvailableSlots: value})
 
             if (!Number.isNaN(value)) {
                 setNftSaleAvailableQuantity(value)
