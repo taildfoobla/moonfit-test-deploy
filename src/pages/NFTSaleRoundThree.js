@@ -43,7 +43,7 @@ const NFTSaleRoundThree = (props) => {
 
     const mbRetrieverRef = useRef(0)
 
-    const { wallet, provider, connector } = useContext(WalletAuthContext)
+    const { isConnected, wallet, provider, connector } = useContext(WalletAuthContext)
 
     useEffect(() => {
         if (!!wallet.account) {
@@ -419,7 +419,7 @@ const NFTSaleRoundThree = (props) => {
                                                 moonBeastMinting={moonBeastMinting}/>
                                 </div>
                             </div>
-                            <TwitterShareButton />
+                            {/* <TwitterShareButton /> */}
                         </div>
                     </div>
                 </div>
@@ -428,7 +428,7 @@ const NFTSaleRoundThree = (props) => {
     }
 
     return (
-        <CurveBGWrapper className="page-nft-sale" scrollBg={true}>
+        <CurveBGWrapper className="page-nft-sale" scrollBg={!isConnected}>
             <EnvWrapper routeItem={Paths.NFTSale}>
                 <WalletAuthRequiredNFTSale className={'section page-nft-sale'}>
                     <NFTStages>
