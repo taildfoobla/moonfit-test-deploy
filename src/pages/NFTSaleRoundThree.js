@@ -21,7 +21,7 @@ import {getTransactionReceipt} from "../services/smc-common";
 import {getAvailableSlots, getSaleMaxAmount, getMintPass, getMoonBeast, buyNFTData, smcContract, NFT_SALE_ADDRESS} from '../services/smc-ntf-sale'
 import {buyNFT} from '../services/smc-common'
 import CurveBGWrapper from '../wrappers/CurveBG'
-import TwitterShareButton from '../components/shared/TwitterShare'
+// import TwitterShareButton from '../components/shared/TwitterShare'
 
 const NFT_SALE_CURRENT_INFO = NFT_SALE_ROUNDS_INFO.R3
 

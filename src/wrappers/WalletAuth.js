@@ -21,7 +21,7 @@ const providerReadyEvent = {
 // const deepLink = `https://metamask.app.link/dapp/pancakeswap.finance/`
 // const deepLink = `dapp://${APP_URI}`
 // eslint-disable-next-line no-restricted-globals
-const deepLink = `dapp://${location.host}`
+let deepLink = `dapp://${location.host}`
 
 const WalletAuthWrapper = ({children}) => {
     const [isConnected, setIsConnected] = useState(false)
@@ -187,6 +187,7 @@ const WalletAuthWrapper = ({children}) => {
         const providerName = wallet.extensionName
         const isInstalled = window[providerName] && window[providerName][wallet.isSetGlobalString]
         if (isMobileOrTablet() && !isMetaMaskBrowser) {
+            if (providerName === "SubWallet") deepLink = `subwallet://browser?url=${window.location.href}`
             return window.location.href = deepLink
         }
         if (!isInstalled) return window.open(wallet.installUrl)
