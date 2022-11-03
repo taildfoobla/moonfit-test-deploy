@@ -1,13 +1,13 @@
-import React, {useCallback, useEffect, useState} from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import WalletAuthContext from "../contexts/WalletAuthContext"
-import {switchNetwork} from "../utils/blockchain"
+import { switchNetwork } from "../utils/blockchain"
 import Web3 from "web3"
-import {getLocalStorage, LOCALSTORAGE_KEY, removeLocalStorage, setLocalStorage} from "../utils/storage"
-import {EVM_WALLETS, PROVIDER_NAME, SUPPORTED_NETWORKS, WALLET_CONNECT, WEB3_METHODS} from "../constants/blockchain"
-import {Modal} from "antd"
+import { getLocalStorage, LOCALSTORAGE_KEY, removeLocalStorage, setLocalStorage } from "../utils/storage"
+import { EVM_WALLETS, PROVIDER_NAME, SUPPORTED_NETWORKS, WALLET_CONNECT, WEB3_METHODS } from "../constants/blockchain"
+import { Modal } from "antd"
 import CloseIcon from "../components/shared/CloseIcon"
-import {useLocalStorage} from "../hooks/useLocalStorage"
-import {isMobileOrTablet} from "../utils/device"
+import { useLocalStorage } from "../hooks/useLocalStorage"
+import { isMobileOrTablet } from "../utils/device"
 import WalletConnect from "@walletconnect/client"
 import QRCodeModal from "@walletconnect/qrcode-modal"
 
@@ -23,7 +23,7 @@ const providerReadyEvent = {
 // eslint-disable-next-line no-restricted-globals
 let deepLink = `dapp://${location.host}`
 
-const WalletAuthWrapper = ({children}) => {
+const WalletAuthWrapper = ({ children }) => {
     const [isConnected, setIsConnected] = useState(false)
     const [wallet, setWallet] = useState({})
     // const [walletExtKey, setWalletExtKey] = useState(null)
@@ -87,7 +87,7 @@ const WalletAuthWrapper = ({children}) => {
         const account = walletAccount[0]
         let ethBalance = await web3.eth.getBalance(account) // Get wallets balance
         ethBalance = web3.utils.fromWei(ethBalance, 'ether') //Convert balance to wei
-        const chainId = await provider.request({method: 'eth_chainId'})
+        const chainId = await provider.request({ method: 'eth_chainId' })
         const nChainId = web3.utils.hexToNumber(chainId)
         const network = SUPPORTED_NETWORKS.filter(
             (chain) => chain.chain_id === nChainId
@@ -138,7 +138,7 @@ const WalletAuthWrapper = ({children}) => {
                 return
             }
             setProvider(provider)
-            await provider.request({method: 'eth_requestAccounts'})
+            await provider.request({ method: 'eth_requestAccounts' })
             await switchNetwork(provider)
             await retrieveCurrentWalletInfo(provider)
 
@@ -186,7 +186,7 @@ const WalletAuthWrapper = ({children}) => {
     const onWalletSelect = async (wallet) => {
         const providerName = wallet.extensionName
         const isInstalled = window[providerName] && window[providerName][wallet.isSetGlobalString]
-        if (isMobileOrTablet() && !isMetaMaskBrowser) {
+        if (isMobileOrTablet()) {
             if (providerName === "SubWallet") deepLink = `subwallet://browser?url=${window.location.href}`
             return window.location.href = deepLink
         }
@@ -214,7 +214,7 @@ const WalletAuthWrapper = ({children}) => {
 
         if (connector) {
             connector.on("connect", async (error, payload) => {
-                const {chainId, accounts} = payload.params[0]
+                const { chainId, accounts } = payload.params[0]
                 // await connector.updateChain({
                 //     chainId: 1287,
                 //     networkId: 1287,
@@ -246,7 +246,7 @@ const WalletAuthWrapper = ({children}) => {
     useEffect(() => {
         const wc = getLocalStorage(LOCALSTORAGE_KEY.WC_CONNECTOR, null)
         if (wc && isMobileOrTablet()) {
-            const connector = new WalletConnect({session: JSON.parse(wc)})
+            const connector = new WalletConnect({ session: JSON.parse(wc) })
             setConnector(connector)
         }
     }, [])
@@ -257,7 +257,7 @@ const WalletAuthWrapper = ({children}) => {
             bridge: "https://bridge.walletconnect.org",
             qrcodeModal: QRCodeModal,
             storageId: LOCALSTORAGE_KEY.WC_CONNECTOR,
-            qrcodeModalOptions: {desktopLinks: []}
+            qrcodeModalOptions: { desktopLinks: [] }
         })
         setConnector(connector)
 
@@ -306,21 +306,21 @@ const WalletAuthWrapper = ({children}) => {
         }}>
             {children}
             <Modal title={'Choose Wallet'}
-                   visible={isAuthModalVisible}
-                   onCancel={hideConnectModal}
-                   closeIcon={<CloseIcon/>}
-                   wrapClassName={'mf-modal connect-modal'}
-                   className={'mf-modal-content connect-modal-content top-32 sm:top-36 md:top-48'}
-                   footer={false}
+                visible={isAuthModalVisible}
+                onCancel={hideConnectModal}
+                closeIcon={<CloseIcon />}
+                wrapClassName={'mf-modal connect-modal'}
+                className={'mf-modal-content connect-modal-content top-32 sm:top-36 md:top-48'}
+                footer={false}
             >
                 <div className={'evm-wallet'}>
                     {
                         isMobileOrTablet() && !isMetaMaskBrowser && (
                             <div>
                                 <div className={'evm-wallet-item'}
-                                     onClick={onWCConnect}>
+                                    onClick={onWCConnect}>
                                     <div className={"wallet-logo"}>
-                                        <img src={WALLET_CONNECT.logo.src} alt={WALLET_CONNECT.logo.alt} width={40}/>
+                                        <img src={WALLET_CONNECT.logo.src} alt={WALLET_CONNECT.logo.alt} width={40} />
                                     </div>
                                     <div className="wallet-title">{WALLET_CONNECT.title}</div>
                                 </div>
@@ -337,15 +337,15 @@ const WalletAuthWrapper = ({children}) => {
                             const isVisible = isMobileOrTablet() ? wallet.isMobileSupport : true
                             return isVisible && (
                                 <div key={index} className={'evm-wallet-item'}
-                                     onClick={() => onWalletSelect(wallet)}>
+                                    onClick={() => onWalletSelect(wallet)}>
                                     <div className={"wallet-logo"}>
-                                        <img src={wallet.logo.src} alt={wallet.logo.alt} width={40}/>
+                                        <img src={wallet.logo.src} alt={wallet.logo.alt} width={40} />
                                     </div>
                                     <div className="wallet-title">{wallet.title}</div>
                                     {
                                         !isInstalled && !isMobileOrTablet() && (
                                             <div className="wallet-install-btn text-green-500"
-                                                 onClick={onClick}>Install</div>
+                                                onClick={onClick}>Install</div>
                                         )
                                     }
                                 </div>
@@ -355,39 +355,39 @@ const WalletAuthWrapper = ({children}) => {
                 </div>
             </Modal>
             <Modal title="Unauthorized Wallet"
-                   visible={isModalVisible}
-                   closeIcon={(
-                       <svg className={'cursor-pointer'} width="32" height="32" viewBox="0 0 32 32" fill="none"
-                            xmlns="http://www.w3.org/2000/svg">
-                           <rect x="1" y="1" width="30" height="30" rx="6" stroke="white" strokeOpacity="0.2"
-                                 strokeWidth="2"/>
-                           <path d="M21.0625 10.9375L10.9375 21.0625" stroke="white" strokeWidth="2"
-                                 strokeLinecap="round" strokeLinejoin="round"/>
-                           <path d="M21.0625 21.0625L10.9375 10.9375" stroke="white" strokeWidth="2"
-                                 strokeLinecap="round" strokeLinejoin="round"/>
-                       </svg>
-                   )}
-                   wrapClassName={'mf-modal unauthorized-wallets-modal z-[9999]'}
-                   className={'mf-modal-content unauthorized-wallets-modal-content'}
-                   onCancel={() => setIsModalVisible(false)}
-                   footer={[
-                       <div className={'flex flex-col'} key="unauthorized-wallet-modal-footer">
-                           <div className={'w-full'}>
-                               <button type="button"
-                                       onClick={onAuthorizeNewWallet}
-                                       className="w-full button button-primary">
-                                   Yes, let me authorize
-                               </button>
-                           </div>
-                           <div className={'w-full mt-3'}>
-                               <button type="button"
-                                       onClick={() => setIsModalVisible(false)}
-                                       className="w-full button button-secondary">
-                                   No, I will switch to another one now
-                               </button>
-                           </div>
-                       </div>
-                   ]}>
+                visible={isModalVisible}
+                closeIcon={(
+                    <svg className={'cursor-pointer'} width="32" height="32" viewBox="0 0 32 32" fill="none"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <rect x="1" y="1" width="30" height="30" rx="6" stroke="white" strokeOpacity="0.2"
+                            strokeWidth="2" />
+                        <path d="M21.0625 10.9375L10.9375 21.0625" stroke="white" strokeWidth="2"
+                            strokeLinecap="round" strokeLinejoin="round" />
+                        <path d="M21.0625 21.0625L10.9375 10.9375" stroke="white" strokeWidth="2"
+                            strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
+                )}
+                wrapClassName={'mf-modal unauthorized-wallets-modal z-[9999]'}
+                className={'mf-modal-content unauthorized-wallets-modal-content'}
+                onCancel={() => setIsModalVisible(false)}
+                footer={[
+                    <div className={'flex flex-col'} key="unauthorized-wallet-modal-footer">
+                        <div className={'w-full'}>
+                            <button type="button"
+                                onClick={onAuthorizeNewWallet}
+                                className="w-full button button-primary">
+                                Yes, let me authorize
+                            </button>
+                        </div>
+                        <div className={'w-full mt-3'}>
+                            <button type="button"
+                                onClick={() => setIsModalVisible(false)}
+                                className="w-full button button-secondary">
+                                No, I will switch to another one now
+                            </button>
+                        </div>
+                    </div>
+                ]}>
                 <div className={'normal-case text-xl'}>
                     Your current wallet is not authorized to connect to MoonFit WebApp. Do you want to authorize this
                     wallet now?
