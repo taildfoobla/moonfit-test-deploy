@@ -314,7 +314,7 @@ const WalletAuthWrapper = ({ children }) => {
                 footer={false}
             >
                 <div className={'evm-wallet'}>
-                    {
+                    {/* {
                         isMobileOrTablet() && !isMetaMaskBrowser && (
                             <div>
                                 <div className={'evm-wallet-item'}
@@ -326,7 +326,7 @@ const WalletAuthWrapper = ({ children }) => {
                                 </div>
                             </div>
                         )
-                    }
+                    } */}
                     {
                         EVM_WALLETS.map((wallet, index) => {
                             const isInstalled = window[wallet.extensionName] && window[wallet.extensionName][wallet.isSetGlobalString]
