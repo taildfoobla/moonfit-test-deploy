@@ -186,8 +186,9 @@ const WalletAuthWrapper = ({ children }) => {
     const onWalletSelect = async (wallet) => {
         const providerName = wallet.extensionName
         const isInstalled = window[providerName] && window[providerName][wallet.isSetGlobalString]
-        if (isMobileOrTablet()) {
+        if (isMobileOrTablet() && !isMetaMaskBrowser) {
             if (providerName === "SubWallet") deepLink = `subwallet://browser?url=${window.location.href}`
+            console.log({ deepLink })
             return window.location.href = deepLink
         }
         if (!isInstalled) return window.open(wallet.installUrl)
