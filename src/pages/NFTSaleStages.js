@@ -113,7 +113,7 @@ const NFTSaleStages = () => {
             <div className="flex flex-wrap justify-center grid xs:grid-cols-1 md:grid-cols-1 xl:grid-cols-4 gap-8">
                 {
                     stages.map((stage) => (
-                        <div className={`stage${stage.isSoldOut ? " sold-out" : ""}`} key={stage._id}>
+                        <div className={`stage${stage.isSoldOut && !stage.activeSoldOut ? " sold-out" : ""}`} key={stage._id}>
                             {
                                 stage.isSoldOut && <Tag className="badge" color="#541C8D">SOLD OUT</Tag>
                             }
