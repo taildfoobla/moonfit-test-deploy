@@ -308,7 +308,7 @@ const NFTSaleRoundThree = (props) => {
                                     />
 
                                     <div className={'card-body-row flex flex-col mt-3'}>
-                                        {_renderFoot()}
+                                        {!NFT_SALE_CURRENT_INFO.isSoldOut && _renderFoot()}
                                     </div>
 
                                     <MoonBeasts isLoading={moonBeastLoading}
