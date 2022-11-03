@@ -411,7 +411,7 @@ const NFTSaleRoundThree = (props) => {
                                               onSelect={onClickMintPass}
                                               onSelectAll={onSelectAll}>
                                         <hr className={'card-body-separator'}/>
-                                        {_renderFoot()}
+                                        {!NFT_SALE_CURRENT_INFO.isSoldOut && _renderFoot()}
                                     </MintPass>
 
                                     <MoonBeasts isLoading={moonBeastLoading}
