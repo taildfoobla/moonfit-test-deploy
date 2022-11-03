@@ -187,7 +187,7 @@ const WalletAuthWrapper = ({ children }) => {
         const providerName = wallet.extensionName
         const isInstalled = window[providerName] && window[providerName][wallet.isSetGlobalString]
         if (isMobileOrTablet() && !isMetaMaskBrowser) {
-            if (providerName === "SubWallet") deepLink = `subwallet://browser?url=${window.location.href}`
+            if (providerName === "SubWallet") deepLink = `subwallet://browser?url=${window.location.host}`
             console.log({ deepLink })
             return window.location.href = deepLink
         }
