@@ -16,16 +16,21 @@ import {
     getAvailableSlots as getAvailableSlotsRound4,
     getSaleMaxAmount as getSaleMaxAmountRound4
 } from "../services/smc-ntf-public-sale";
+import {
+    getAvailableSlots as getAvailableSlotsRoundWC,
+    getSaleMaxAmount as getSaleMaxAmountRoundWC
+} from "../services/smc-ntf-world-cup-sale";
 
 
 const mapPaths = {
     3: Paths.NFTSaleRoundThree.path,
     4: Paths.NFTPublicSale.path,
+    5: Paths.NFTSaleRoundWorldCup.path,
 }
 
 const stagesArr = Object.values(NFT_SALE_ROUNDS_INFO).map(item => {
     return { ...item, path: mapPaths[item.number], sold: 0, _id: `${item.number}_${Date.now()}`, isLoading: true }
-})
+}).sort((a, b) => a.index - b.index)
 
 const NFTSaleStages = () => {
     const { isConnected, showWalletSelectModal } = useContext(WalletAuthContext)
@@ -41,6 +46,8 @@ const NFTSaleStages = () => {
             getSaleMaxAmountRound3(),
             getAvailableSlotsRound4(),
             getSaleMaxAmountRound4(),
+            getAvailableSlotsRoundWC(),
+            getSaleMaxAmountRoundWC(),
         ])
         const obj = {
             3: {
@@ -52,6 +59,11 @@ const NFTSaleStages = () => {
                 amount: data[3],
                 sold: data[3] - data[2],
                 isSoldOut: data[2] === 0,
+            },
+            5: {
+                amount: data[5],
+                sold: data[5] - data[4],
+                isSoldOut: data[4] === 0,
             }
         }
 

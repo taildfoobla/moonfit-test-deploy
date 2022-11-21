@@ -15,6 +15,10 @@ const Paths = {
         path: '/nft-public-sale',
         env: ['local', 'development', 'production']
     },
+    NFTSaleRoundWorldCup: {
+        path: '/nft-world-cup-sale',
+        env: ['local', 'development', 'production']
+    },
     PrivateSale: {
         path: '/private-sale',
         env: ['local']

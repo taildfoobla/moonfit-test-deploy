@@ -190,6 +190,7 @@ const isDev = configs.env === 'development'
 
 export const NFT_SALE_ROUNDS_INFO = {
     R1: {
+        index: 1,
         number: 1,
         title: 'NFT Sale 1',
         timelineTitle: 'Whitelist Sale #1',
@@ -206,6 +207,7 @@ export const NFT_SALE_ROUNDS_INFO = {
         time: 1661176800000 // Date and time (GMT): Monday, August 22, 2022 2:00:00 PM
     },
     R2: {
+        index: 2,
         number: 2,
         title: 'NFT Sale 2',
         timelineTitle: 'Whitelist Sale #2',
@@ -221,7 +223,29 @@ export const NFT_SALE_ROUNDS_INFO = {
         dateMsg: '24th September',
         time: 1664028000000, // Date and time (GMT): Saturday, September 24, 2022 2:00:00 PM,
     },
+    WC: {
+        index: 3,
+        number: 5,
+        title: 'World cup Sale',
+        timelineTitle: 'World cup Sale',
+        isSoldOut: false,
+        activeSoldOut: true,
+        NFT_SALE_SC: configs.WC_NFT_SALE_SC,
+        amount: 1000,
+        fromTokenID: 2001,
+        price: 319,
+        mintPass: 0,
+        nftPerPass: null,
+        description: 'No MintPass required',
+        dateMsg: '12th October',
+        time: 1665583200000, // Date and time (GMT): Wednesday, October 12, 2022 2:00:00 PM
+        ...(isDev ? {
+            time: Date.now(),
+            price: 0.00319,
+        } : {}),
+    },
     R3: {
+        index: 4,
         number: 3,
         title: 'NFT Sale 3',
         timelineTitle: 'Whitelist Sale #3',
@@ -242,6 +266,7 @@ export const NFT_SALE_ROUNDS_INFO = {
         } : {}),
     },
     R4: {
+        index: 5,
         number: 4,
         title: 'Public Sale',
         timelineTitle: 'Public Sale',
@@ -264,7 +289,7 @@ export const NFT_SALE_ROUNDS_INFO = {
 }
 
 export const NFT_SALE_CURRENT_INFO = {
-    ...NFT_SALE_ROUNDS_INFO.R3,
+    ...NFT_SALE_ROUNDS_INFO.WC,
 }
 
 export const SUPPORTED_NETWORKS = [

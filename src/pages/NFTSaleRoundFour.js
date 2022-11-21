@@ -24,7 +24,7 @@ import CurveBGWrapper from '../wrappers/CurveBG'
 // import TwitterShareButton from '../components/shared/TwitterShare'
 const NFT_SALE_CURRENT_INFO = NFT_SALE_ROUNDS_INFO.R4
 
-const NFTSaleRoundThree = (props) => {
+const NFTSaleRoundFour = (props) => {
     const [loading, setLoading] = useState(true)
     const [isFetching, setIsFetching] = useState(true)
     const [saleInfoLoading, setSaleInfoLoading] = useState(true)
@@ -45,11 +45,11 @@ const NFTSaleRoundThree = (props) => {
     useEffect(() => {
         if (!!wallet.account) {
             setMoonBeasts([])
-            EventBus.$on('R3UpdateSaleAmount', (data) => {
+            EventBus.$on('R4UpdateSaleAmount', (data) => {
                 console.log(data, {R3UpdateSaleAmount: 'R4UpdateSaleAmount'});
                 const value = parseInt(data.maxSaleAmount, 10) - parseInt(data.currentSaleAmount, 10)
                 console.log(value);
-                if(!value && value > 0) {
+                if(!value && value >= 0) {
                     setNftSaleAvailableQuantity(value)
                 }
             })
@@ -349,4 +349,4 @@ const NFTSaleRoundThree = (props) => {
     )
 }
 
-export default NFTSaleRoundThree
+export default NFTSaleRoundFour

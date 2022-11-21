@@ -15,6 +15,7 @@ const getConfigs = () => {
         R2_NFT_SALE_SC: '0x9C447072B4fA1BfAE661ecA8db4924565596f39C',
         R3_NFT_SALE_SC: '0x3aa538270833c07D894842B6d1682A01d7E5d678',
         R4_NFT_SALE_SC: '0x7a914642A6E02bE9398e8BFf83a19F8990128eE1',
+        WC_NFT_SALE_SC: '0x7e62f5E54dBd52D73Bd07555b53bcF6DC38D551E',
         MOONBEAST_SC: '0x368a1BBED5Ca2984b0867109e0aeB2B6fAD3B17A',
     }
 
@@ -41,6 +42,7 @@ const getConfigs = () => {
                 R2_NFT_SALE_SC: '0x775282a995ac37410Bbc053a91bc01221a71c50f',
                 R3_NFT_SALE_SC: '',
                 R4_NFT_SALE_SC: '',
+                WC_NFT_SALE_SC: '',
                 MOONBEAST_SC: '0x02A6DeC99B2Ca768D638fcD87A96F6069F91287c',
             }
         case 'development':

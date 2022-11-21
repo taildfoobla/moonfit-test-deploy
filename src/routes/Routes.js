@@ -7,6 +7,7 @@ import MintPassVerify from "../pages/MintPassVerify"
 import NFTSaleStages from "../pages/NFTSaleStages"
 import NFTSaleRoundThree from "../pages/NFTSaleRoundThree"
 import NFTSaleRoundFour from "../pages/NFTSaleRoundFour"
+import NFTSaleRoundWorldCup from "../pages/NFTSaleRoundWorldCup"
 import Home from "../pages/Home"
 import NotFound from "../pages/NotFound"
 
@@ -33,6 +34,11 @@ const routes = [
                 path: Paths.NFTPublicSale.path,
                 exact: true,
                 component: NFTSaleRoundFour
+            },
+            {
+                path: Paths.NFTSaleRoundWorldCup.path,
+                exact: true,
+                component: NFTSaleRoundWorldCup
             },
             {
                 path: Paths.PrivateSale.path,
