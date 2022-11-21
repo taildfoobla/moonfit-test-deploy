@@ -5,13 +5,15 @@ import Bluebird from 'bluebird'
 import nftSaleABI from "../abis/MFNFTSale.json";
 import sortMintPass from '../utils/sortMintPass'
 import {getMoonBeast as _getMoonBeast} from './smc-common'
+import EventBus from '../utils/event-bus'
+
 const {moonBeastContract} = require('./smc-moon-beast')
 
-const {MOONBEAST_NETWORK} = configs
+const {MOONBEAM_WSS_URL} = configs
 const {NFT_SALE_SC} = NFT_SALE_ROUNDS_INFO.R3
 console.log({round: 3, NFT_SALE_SC});
 
-const web3 = new Web3(MOONBEAST_NETWORK)
+const web3 = new Web3(MOONBEAM_WSS_URL)
 const saleContract = new web3.eth.Contract(nftSaleABI.abi, NFT_SALE_SC)
 
 export const getMintPassAvailableSlots = async (tokenId, retryCount = 3) => {
@@ -78,6 +80,32 @@ export const getMintPass = async (wallet, sort = true) => {
     }
 
     return mintPass
+}
+
+export const subscribeUpdateSaleAmount = () => {
+    const eventName = 'R3UpdateSaleAmount'
+    window.__events = window.__events || {}
+    if (window.__events[eventName]) {
+        return
+    }
+
+    try {
+        window.__events[eventName] = saleContract.events.UpdateSaleAmount({}, (error, event) => {
+            try {
+                EventBus.$dispatch(eventName, event.returnValues)
+            } catch (e) {
+                console.log(e);
+            }
+        })
+            .on("connected", (subscriptionId) => {
+                console.log('R3UpdateSaleAmount SubID: ', subscriptionId);
+            })
+            .on('error', (error, receipt) => {
+                // console.log('NewTransition error:', error, receipt);
+            })
+    } catch (e) {
+        console.log(e);
+    }
 }
 
 export const getMoonBeast = async (wallet) => {

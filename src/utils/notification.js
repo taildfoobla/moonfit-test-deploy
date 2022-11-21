@@ -7,6 +7,7 @@ export const destroy = () => notification.destroy()
 
 export const sentTransactionSuccess = (txHash) => {
     return notification.success({
+        key: txHash,
         message: 'Transaction Sent',
         description: (
             <div>
@@ -23,6 +24,7 @@ export const sentTransactionSuccess = (txHash) => {
 
 export const sentTransactionFailed = (txHash) => {
     return notification.success({
+        key: txHash,
         message: `Transaction Failed`,
         description: (
             <div>
@@ -36,6 +38,8 @@ export const sentTransactionFailed = (txHash) => {
         duration: 60
     })
 }
+
+export const close = key => notification.close(key)
 
 export const error = (message, error) => {
     let description = getMainMessage(message)

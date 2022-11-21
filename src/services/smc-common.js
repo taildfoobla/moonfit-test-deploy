@@ -69,11 +69,13 @@ export const getMoonBeast = async (moonBeastContract, saleContract, wallet, opti
     let balance = await moonBeastContract.methods.balanceOf(wallet).call()
     balance = parseInt(balance , 10)
     let _moonBeasts = []
-
+    console.log(balance);
     const arrIndex = Array.from(Array(balance).keys()).reverse()
+    console.log(arrIndex);
 
     await Bluebird.map(chunk(arrIndex, 20), async (data) => {
         let beasts = await saleContract.methods.getMoonBeast(wallet, data).call()
+        console.log(beasts);
         beasts = beasts.map((item, index) => {
             return new MoonBeast({
                 tokenId: item.tokenId,

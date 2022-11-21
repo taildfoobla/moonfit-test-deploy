@@ -16,9 +16,10 @@ import ButtonMintNFT from '../components/NFTSaleCurrentRound/ButtonMintNFT'
 import NFTSaleInfo from '../components/NFTSaleCurrentRound/NFTSaleInfo'
 import MoonBeasts from '../components/NFTSaleCurrentRound/MoonBeastsV2/index'
 import MintPass from '../components/NFTSaleCurrentRound/MintPass'
+import EventBus from '../utils/event-bus'
 
 import {getTransactionReceipt} from "../services/smc-common";
-import {getAvailableSlots, getSaleMaxAmount, getMintPass, getMoonBeast, buyNFTData, smcContract, NFT_SALE_ADDRESS} from '../services/smc-ntf-sale'
+import {getAvailableSlots, getSaleMaxAmount, getMintPass, getMoonBeast, buyNFTData, subscribeUpdateSaleAmount, smcContract, NFT_SALE_ADDRESS} from '../services/smc-ntf-sale'
 import {buyNFT} from '../services/smc-common'
 import CurveBGWrapper from '../wrappers/CurveBG'
 // import TwitterShareButton from '../components/shared/TwitterShare'
@@ -49,22 +50,21 @@ const NFTSaleRoundThree = (props) => {
         if (!!wallet.account) {
             setMintPasses([])
             setMoonBeasts([])
+            EventBus.$on('R3UpdateSaleAmount', (data) => {
+                console.log(data, {R3UpdateSaleAmount: 'R3UpdateSaleAmount'});
+                const value = parseInt(data.maxSaleAmount, 10) - parseInt(data.currentSaleAmount, 10)
+                console.log(value);
+                if(!value && value > 0) {
+                    setNftSaleAvailableQuantity(value)
+                }
+            })
+
+            subscribeUpdateSaleAmount()
             fetchData().then()
         }
         notification.destroy()
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [wallet.account])
-
-    useEffect(() => {
-        const interval = setInterval(() => {
-            if (nftSaleAvailableQuantity !== 0) {
-                _getAvailableSlots().then()
-            }
-        }, 30000);
-
-        return () => clearInterval(interval);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [saleInfoLoading]);
 
     useEffect(() => {
         if (isConfirmedTx) {
@@ -111,7 +111,7 @@ const NFTSaleRoundThree = (props) => {
             }, 500)
 
             if (!receipt.status) {
-                notification.destroy()
+                notification.close(txHash)
                 notification.sentTransactionFailed(txHash)
             }
         }

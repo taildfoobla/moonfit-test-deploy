@@ -51,7 +51,8 @@ const MintPass = ({isLoading, mintPasses, isMinting, onSelect, onSelectAll, chil
                     'mp-selected': item.isSelected,
                     'mp-out-of-slot': item.isOutOfSlot
                 })}>
-                    <img src={item.imageUrl || mintPassUrl} alt={item.name}/>
+                    {/*<img src={item.imageUrl || mintPassUrl} alt={item.name}/>*/}
+                    <img src={mintPassUrl} alt={item.name}/>
                 </div>
                 <div className={'flex flex-col normal-case race-sport-font text-sm mt-4'}>
                     <span className={'secondary-color text-center'}>{preName}</span>

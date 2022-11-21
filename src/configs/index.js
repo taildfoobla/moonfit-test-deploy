@@ -7,6 +7,7 @@ const getConfigs = () => {
         APP_URI: 'dev-app.moonfit.xyz',
 
         MOONBEAST_NETWORK: 'https://rpc.api.moonbase.moonbeam.network/',
+        MOONBEAM_WSS_URL: 'wss://wss.api.moonbase.moonbeam.network',
         MOONBEAM_SCAN_URL: 'https://moonbase.moonscan.io',
         MOONBEAM_NFTSCAN_URL: 'https://moonbase.moonscan.io',
         MINT_PASS_SC: '0x7E7d9fee5c5994aA7FC1dAeb231Af015e2FdAD3E',
@@ -32,6 +33,7 @@ const getConfigs = () => {
                 env: 'production',
 
                 MOONBEAST_NETWORK: 'https://rpc.api.moonbeam.network/',
+                MOONBEAM_WSS_URL: 'wss://wss.api.moonbeam.network',
                 MOONBEAM_SCAN_URL: 'https://moonscan.io',
                 MOONBEAM_NFTSCAN_URL: 'https://moonbeam.nftscan.com',
                 MINT_PASS_SC: '0x6758053c0b27E478edE1E4882adFF708Fc4FA72D',

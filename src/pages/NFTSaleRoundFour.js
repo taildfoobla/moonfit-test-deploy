@@ -15,9 +15,10 @@ import Header from '../components/NFTSaleCurrentRound/Header'
 import ButtonMintNFT from '../components/NFTSaleCurrentRound/ButtonMintNFT'
 import NFTSaleInfo from '../components/NFTSaleCurrentRound/NFTSaleInfo'
 import MoonBeasts from '../components/NFTSaleCurrentRound/MoonBeastsV2/index'
+import EventBus from '../utils/event-bus'
 
 import { getTransactionReceipt } from "../services/smc-common";
-import { getAvailableSlots, getSaleMaxAmount, getMoonBeast, buyNFTData, smcContract, NFT_SALE_ADDRESS } from '../services/smc-ntf-public-sale'
+import { getAvailableSlots, getSaleMaxAmount, getMoonBeast, buyNFTData, subscribeUpdateSaleAmount, smcContract, NFT_SALE_ADDRESS } from '../services/smc-ntf-public-sale'
 import { buyNFT } from '../services/smc-common'
 import CurveBGWrapper from '../wrappers/CurveBG'
 // import TwitterShareButton from '../components/shared/TwitterShare'
@@ -44,22 +45,22 @@ const NFTSaleRoundThree = (props) => {
     useEffect(() => {
         if (!!wallet.account) {
             setMoonBeasts([])
+            EventBus.$on('R3UpdateSaleAmount', (data) => {
+                console.log(data, {R3UpdateSaleAmount: 'R4UpdateSaleAmount'});
+                const value = parseInt(data.maxSaleAmount, 10) - parseInt(data.currentSaleAmount, 10)
+                console.log(value);
+                if(!value && value > 0) {
+                    setNftSaleAvailableQuantity(value)
+                }
+            })
+
+            subscribeUpdateSaleAmount()
+
             fetchData().then()
         }
         notification.destroy()
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [wallet.account])
-
-    useEffect(() => {
-        const interval = setInterval(() => {
-            if (nftSaleAvailableQuantity !== 0) {
-                _getAvailableSlots().then()
-            }
-        }, 30000);
-
-        return () => clearInterval(interval);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [saleInfoLoading]);
 
     useEffect(() => {
         if (isConfirmedTx) {
@@ -106,7 +107,7 @@ const NFTSaleRoundThree = (props) => {
             }, 500)
 
             if (!receipt.status) {
-                notification.destroy()
+                notification.close(txHash)
                 notification.sentTransactionSuccess(txHash)
             }
         }
@@ -143,6 +144,7 @@ const NFTSaleRoundThree = (props) => {
 
             setMoonBeasts(moonBeasts)
         } catch (e) {
+            console.log(e);
             console.log('fetch MoonBeasts error', e.message)
 
             await Bluebird.delay(3000)
@@ -306,11 +308,13 @@ const NFTSaleRoundThree = (props) => {
                                         handleGetMinted={handleGetMinted}
                                         roundInfo={NFT_SALE_CURRENT_INFO}
                                     />
-
-                                    <div className={'card-body-row flex flex-col mt-3'}>
-                                        {!NFT_SALE_CURRENT_INFO.isSoldOut && _renderFoot()}
-                                    </div>
-
+                                    {
+                                        (NFT_SALE_CURRENT_INFO.isSoldOut || nftSaleAvailableQuantity <= 0 ) ? null: (
+                                            <div className={'card-body-row flex flex-col mt-3'}>
+                                                {_renderFoot()}
+                                            </div>
+                                        )
+                                    }
                                     <MoonBeasts isLoading={moonBeastLoading}
                                         moonBeasts={moonBeasts}
                                         moonBeastMinting={moonBeastMinting} />
