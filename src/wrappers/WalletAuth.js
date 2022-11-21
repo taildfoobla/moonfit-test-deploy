@@ -3,7 +3,7 @@ import WalletAuthContext from "../contexts/WalletAuthContext"
 import { switchNetwork } from "../utils/blockchain"
 import Web3 from "web3"
 import { getLocalStorage, LOCALSTORAGE_KEY, removeLocalStorage, setLocalStorage } from "../utils/storage"
-import { EVM_WALLETS, PROVIDER_NAME, SUPPORTED_NETWORKS, WALLET_CONNECT, WEB3_METHODS } from "../constants/blockchain"
+import { EVM_WALLETS, PROVIDER_NAME, SUPPORTED_NETWORKS, WEB3_METHODS } from "../constants/blockchain"
 import { Modal } from "antd"
 import CloseIcon from "../components/shared/CloseIcon"
 import { useLocalStorage } from "../hooks/useLocalStorage"
@@ -251,6 +251,7 @@ const WalletAuthWrapper = ({ children }) => {
         }
     }, [])
 
+    // eslint-disable-next-line no-unused-vars
     const onWCConnect = async () => {
         // create new connector
         const connector = new WalletConnect({
