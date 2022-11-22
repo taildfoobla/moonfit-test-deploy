@@ -24,7 +24,7 @@ export const WORLDCUP_TEAMS = [
         url: 'https://cdn.moonfit.xyz/image/original/world-cup/06-Netherlands.png',
     },
     {
-        name: 'UnitedStates',
+        name: 'USA',
         url: 'https://cdn.moonfit.xyz/image/original/world-cup/07-UnitedStates.png',
     },
     {
@@ -84,7 +84,7 @@ export const WORLDCUP_TEAMS = [
         url: 'https://cdn.moonfit.xyz/image/original/world-cup/21-Spain.png',
     },
     {
-        name: 'CostaRica',
+        name: 'Costa Rica',
         url: 'https://cdn.moonfit.xyz/image/original/world-cup/22-CostaRica.png',
     },
     {
@@ -108,7 +108,7 @@ export const WORLDCUP_TEAMS = [
         url: 'https://cdn.moonfit.xyz/image/original/world-cup/27-Uruguay.png',
     },
     {
-        name: 'SouthKorea',
+        name: 'South Korea',
         url: 'https://cdn.moonfit.xyz/image/original/world-cup/28-SouthKorea.png',
     },
     {
