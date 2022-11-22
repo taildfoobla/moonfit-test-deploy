@@ -278,8 +278,8 @@ const NFTSaleRoundWorldCup = (props) => {
                                     <span className='text-[#A8ADC3] font-semibold'>PICK YOUR FAVOURITE TEAM</span>
                                 </div>
                                 <div className='team-select-detail text-center mt-7'>
-                                    <span className='capitalize text-[18px] font-normal'>Pick a National Football team</span>
-                                    <p className='capitalize font-normal'>you want yours NFT to wear their uniform.</p>
+                                    <span className='normal-case font-normal'>Pick a National Football team</span>
+                                    <p className='normal-case font-normal'>you want yours NFT to wear their uniform.</p>
                                     <button type="button"
                                         onClick={toggleModal}
                                         className="button button-secondary">
