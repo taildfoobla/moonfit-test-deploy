@@ -43,11 +43,6 @@ const Header = ({ availableSlots, isLoading = true, roundInfo = NFT_SALE_CURRENT
                         className="bg-[#A16BD8] text-[16px] text-white uppercase font-bold px-4 pb-1 rounded dark:text-white">
                         {roundInfo.dateMsg}
                     </span>
-                    {
-                        roundInfo.specialRound && <span className="bg-[#4CCBC9] text-[16px] uppercase font-bold ml-2 px-4 pb-1 rounded font-extrabold text-[#020722]">
-                            571 nfts left
-                        </span>
-                    }
                     {_renderProgress()}
                 </div>
                 {roundInfo.specialRound && _headerInfoItems()}
@@ -60,20 +55,20 @@ const _headerInfoItems = () => {
     return (
         <div className='grid md:grid-cols-1 lg:grid-cols-3 gap-4 items-info mt-12'>
             <div className='info flex flex-nowrap border-gradient-red'>
-                <span className='index text-triple-gradient text-triple-shadow mr-5'>1</span>
-                <span className='capitalize lg:text-[20px] leading-7 font-semibold md:pt-1 lg:pt-3'>
+                <span className='index text-triple-gradient-2 text-triple-shadow mr-5'>1</span>
+                <span className='normal-case lg:text-[20px] leading-7 font-semibold md:pt-1 lg:pt-3'>
                     The NFTs will wear National Football team uniforms, and you can pick what uniform you want your NFT to wear.
                 </span>
             </div>
             <div className='info flex flex-nowrap border-gradient-red'>
-                <span className='index text-triple-gradient text-triple-shadow mr-5'>2</span>
-                <span className='capitalize lg:text-[20px] leading-7 font-semibold md:pt-1 lg:pt-3'>
+                <span className='index text-triple-gradient-2 text-triple-shadow mr-5'>2</span>
+                <span className='normal-case lg:text-[20px] leading-7 font-semibold md:pt-1 lg:pt-3'>
                     WC edition NFTs have better stats and attributes compared to other rounds by 20%.
                 </span>
             </div>
             <div className='info flex flex-nowrap border-gradient-red'>
-                <span className='index text-triple-gradient text-triple-shadow mr-5'>3</span>
-                <span className='capitalize lg:text-[20px] leading-7 font-semibold md:pt-1 lg:pt-3'>
+                <span className='index text-triple-gradient-2 text-triple-shadow mr-5'>3</span>
+                <span className='normal-case lg:text-[20px] leading-7 font-semibold md:pt-1 lg:pt-3'>
                     25% of the total revenue goes to the prize pool which will be distributed at the end of World Cup 2022. Your share in the prize pool will depend on how many WC Champion Moonbeast NFTs you own.
                 </span>
             </div>
