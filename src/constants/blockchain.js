@@ -233,7 +233,7 @@ export const NFT_SALE_ROUNDS_INFO = {
         NFT_SALE_SC: configs.WC_NFT_SALE_SC,
         amount: 1000,
         fromTokenID: 2001,
-        price: 319,
+        price: 399,
         mintPass: 0,
         nftPerPass: null,
         description: 'No MintPass required',
@@ -241,7 +241,7 @@ export const NFT_SALE_ROUNDS_INFO = {
         time: 1665583200000, // Date and time (GMT): Wednesday, October 12, 2022 2:00:00 PM
         ...(isDev ? {
             time: Date.now(),
-            price: 0.00319,
+            price: 0.00399,
         } : {}),
     },
     R3: {
