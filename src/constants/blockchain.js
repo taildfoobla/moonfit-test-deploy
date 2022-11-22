@@ -240,7 +240,7 @@ export const NFT_SALE_ROUNDS_INFO = {
         mintPass: 0,
         nftPerPass: null,
         description: 'No MintPass required',
-        dateMsg: '12th October',
+        dateMsg: 'nov 25 - dec 15',
         time: 1665583200000, // Date and time (GMT): Wednesday, October 12, 2022 2:00:00 PM
         ...(isDev ? {
             time: Date.now(),
