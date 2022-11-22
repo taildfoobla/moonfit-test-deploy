@@ -19,7 +19,7 @@ const MoonBeasts = ({ moonBeasts, moonBeastMinting = 0 }) => {
                 {/* <div className={'text-center text-white normal-case'}>
                     If you have a pass, please click "MINT NFT" button to mint one.
                 </div> */}
-                <div className={'text-center text-white normal-case'}>Please pick a team and enter the amount of Beast & Beauty</div>
+                <div className={'text-center text-white normal-case font-normal'}>Please pick a team and enter the amount of Beast & Beauty</div>
                 <div className={'text-center text-white normal-case font-normal'}>
                     you want to Mint, then click the "MINT NFT" button
                 </div>

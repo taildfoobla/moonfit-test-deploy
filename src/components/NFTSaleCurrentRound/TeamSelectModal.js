@@ -30,7 +30,7 @@ const TeamSelectModal = (props) => {
             )}
             wrapClassName={'wrapper-modal'}
         >
-            <div className="grid grid-cols-3 gap-4 list-team">
+            <div className="grid sm:grid-cols-6 lg:grid-cols-3 gap-4 list-team">
                 {
                     WORLDCUP_TEAMS.map((team, index) => (
                         <div key={`${index}_${new Date()}`} className="team text-center" onClick={() => onSelectTeam(team)}>
