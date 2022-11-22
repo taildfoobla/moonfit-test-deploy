@@ -292,6 +292,60 @@
     }
   }
 
+  &.section-worldcup {
+    .section-shape-beast-nft {
+      left: 2%;
+      bottom: 26%;
+
+      img {
+        scale: 0.6;
+        max-width: 12vw;
+      }
+    }
+
+    .section-shape-beauty-nft {
+      right: 5%;
+      top: 25%;
+
+      img {
+        scale: 0.7;
+        max-width: 12vw;
+      }
+    }
+
+    .section-shape-beauty-2-nft {
+      right: 8%;
+      bottom: 18%;
+
+      img {
+        scale: 0.6;
+        max-width: 12vw;
+      }
+    }
+
+    .shape-token-mfr-nft-1 {
+      left: 15%;
+      bottom: 19%;
+
+      img {
+        transform: rotate(25.79deg);
+      }
+    }
+
+    .shape-token-mfr-nft-2 {
+      top: 21%;
+      left: 21%;
+    }
+
+    .shape-token-mfg-nft-2 {
+      right: 20%;
+      top: 23%;
+      left: unset;
+      transform: rotate(25.79deg);
+      filter: blur(1px);
+    }
+  }
+
 }
 
 @media screen and (max-width: 1600px) {
@@ -407,6 +461,7 @@
 
     .team-image {
       cursor: pointer;
+
       &.selected {
         position: relative;
         border: 0px solid transparent;

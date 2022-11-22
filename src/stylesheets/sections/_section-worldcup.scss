@@ -83,8 +83,20 @@
     text-transform: capitalize;
 }
 
+.text-triple-gradient-2 {
+    z-index: 1;
+    font-size: 32px;
+    background-image: linear-gradient(to right bottom, #4cbfcb, #7ac9e0, #a3d4ed, #c7dff5, #e4ebfa, #e7eafd, #ece8ff, #f2e6ff, #efd1fe, #f2baf8, #f7a1ed, #ff84dd);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-fill-color: transparent;
+    filter: drop-shadow(-2px 2px #1749ff);
+    // text-transform: capitalize;
+}
+
 .text-triple-shadow {
-    text-shadow: 0 0 40px rgba(64,0,22,0.76);
+    text-shadow: 0 0 20px rgba(64,0,22,1);
 }
 
 .border-gradient-red {

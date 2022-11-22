@@ -1,7 +1,6 @@
 import React, { useState } from "react"
 import { WORLDCUP_TEAMS } from "../../constants/worldcup-team"
 import { Modal } from "antd"
-import ecuador from "../../assets/images/worldcup/ecuador.png"
 
 const TeamSelectModal = (props) => {
 
@@ -37,8 +36,7 @@ const TeamSelectModal = (props) => {
                         <div key={`${index}_${new Date()}`} className="team text-center" onClick={() => onSelectTeam(team)}>
                             <div className={`team-image${selectedTeam && (selectedTeam.name === team.name) ? " selected" : ""}`}>
                                 <div className="team-image-border">
-                                     <img src={team.url} />
-
+                                    <img src={team.url} />
                                 </div>
                             </div>
                             <span className="race-sport-font team-name text-[16px] font-normal">{team.name}</span>

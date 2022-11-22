@@ -17,7 +17,6 @@ import ButtonMintNFT from '../components/NFTSaleCurrentRound/ButtonMintNFT'
 import NFTSaleInfo from '../components/NFTSaleCurrentRound/NFTSaleInfo'
 import MoonBeasts from '../components/NFTSaleCurrentRound/MoonBeastsV2/index'
 import EventBus from '../utils/event-bus'
-import ecuador from "../assets/images/worldcup/ecuador.png"
 import ball from "../assets/images/worldcup/ball.svg"
 import ballWhite from "../assets/images/worldcup/ball-white.svg"
 
@@ -268,8 +267,7 @@ const NFTSaleRoundWorldCup = (props) => {
                                     </a>
                                 </div>
                                 <div className='team-select-detail text-center'>
-                                     <img className='w-full mx-auto' src={team?.url} onClick={toggleModal} />
-                                    {/*<img className='w-full mx-auto' src={ecuador} onClick={toggleModal} />*/}
+                                    <img className='w-full mx-auto' src={team?.url} onClick={toggleModal} />
                                     <span className='race-sport-font text-[20px] font-normal'>{team?.name}</span>
                                 </div>
                             </div>
@@ -340,7 +338,7 @@ const NFTSaleRoundWorldCup = (props) => {
                                 className="card-title flex flex-col lg:flex-row justify-center lg:justify-between items-start mx-auto mt-0 mb-6 lg:mb-10">
                                 <div
                                     className={'flex text-white justify-center w-full lg:w-auto justify-center lg:justify-start mt-4 lg:mt-0'}>
-                                    Mint with Mint Pass
+                                    Public mint
                                 </div>
                                 <div
                                     className={'flex w-full lg:w-auto justify-center lg:justify-start mt-4 lg:mt-0'}>
