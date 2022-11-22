@@ -204,7 +204,8 @@ export const NFT_SALE_ROUNDS_INFO = {
         nftPerPass: 1,
         description: '',
         dateMsg: '22nd August',
-        time: 1661176800000 // Date and time (GMT): Monday, August 22, 2022 2:00:00 PM
+        time: 1661176800000, // Date and time (GMT): Monday, August 22, 2022 2:00:00 PM
+        specialRound: false
     },
     R2: {
         index: 2,
@@ -222,10 +223,12 @@ export const NFT_SALE_ROUNDS_INFO = {
         description: 'Buy max 2 MoonBeasts per MintPass',
         dateMsg: '24th September',
         time: 1664028000000, // Date and time (GMT): Saturday, September 24, 2022 2:00:00 PM,
+        specialRound: false
     },
     WC: {
         index: 3,
         number: 5,
+        headerTitle: 'World cup 2022',
         title: 'World cup Sale',
         timelineTitle: 'World cup Sale',
         isSoldOut: false,
@@ -243,6 +246,7 @@ export const NFT_SALE_ROUNDS_INFO = {
             time: Date.now(),
             price: 0.00319,
         } : {}),
+        specialRound: true
     },
     R3: {
         index: 4,
@@ -264,6 +268,7 @@ export const NFT_SALE_ROUNDS_INFO = {
             time: Date.now(),
             price: 0.00159,
         } : {}),
+        specialRound: false
     },
     R4: {
         index: 5,
@@ -285,6 +290,7 @@ export const NFT_SALE_ROUNDS_INFO = {
             time: Date.now(),
             price: 0.00219,
         } : {}),
+        specialRound: false
     }
 }
 

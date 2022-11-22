@@ -48,16 +48,41 @@
         padding: 16px 22px;
         background-color: #2A1143;
         border-radius: 7px;
+
         .card-body-row-title {
           color: #A8ADC3;
           font-size: 16px;
         }
+
         .card-body-separator {
           color: #90829d;
           opacity: 0.2;
           //border: 1px solid #90829D;
           margin: 20px 0 3px;
         }
+      }
+    }
+
+    &.worldcup-card-inner {
+      position: relative;
+      background-clip: padding-box;
+      border: solid 2px transparent;
+      border-radius: 10px;
+      background-color: #000000;
+      .card-body-row {
+        background-color: #220510;
+      }
+      &::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        z-index: -1;
+        margin: -2px;
+        border-radius: inherit;
+        background: linear-gradient(to right bottom, #3d0516, #4e0c20, #60132a, #731b35, #862341);
       }
     }
   }
