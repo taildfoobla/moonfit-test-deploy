@@ -32,7 +32,7 @@ const Paths = {
         env: ['local', 'development', 'production']
     },
     NftSaleStages: {
-        path: '/nft-sale',
+        path: '/nft-world-cup-sale',
         env: ['local', 'development', 'production']
     }
 }

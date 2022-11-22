@@ -57,7 +57,7 @@
     max-width: 570px;
     margin-top: 54px;
 
-    > .button {
+    >.button {
       min-width: 300px;
     }
   }
@@ -126,9 +126,9 @@
       scale: 0.5;
       max-width: 12vw;
     }
-   }
+  }
 
-   .section-shape-beauty-2-nft {
+  .section-shape-beauty-2-nft {
     right: 10%;
     bottom: 20%;
 
@@ -243,10 +243,12 @@
       transform: rotate(25.79deg);
     }
   }
+
   .shape-token-mfr-nft-2 {
     right: 6.6%;
     bottom: 40%;
   }
+
   .shape-token-mfg-nft-2 {
     left: 30%;
     top: 14%;
@@ -377,16 +379,209 @@
 .custom-progress {
   .ant-progress-inner {
     background-color: #462368;
+  }
 }
-}
+
 .ant-pagination.ant-pagination-mini {
   .ant-pagination-item {
     margin: 0 5px !important;
   }
+
   .ant-pagination-prev {
     margin-right: 5px !important;
   }
+
   .ant-pagination-next {
     margin-left: 5px !important;
   }
+}
+
+.wrapper-modal {
+  background: rgba(2, 7, 34, 0.8);
+
+  .list-team {
+    height: 600px;
+    overflow: auto;
+    margin-right: -25px;
+    padding-right: 25px;
+
+    .team-image {
+      cursor: pointer;
+      &.selected {
+        position: relative;
+        border: 0px solid transparent;
+        background-clip: padding-box;
+        padding: 2px;
+        background-image: linear-gradient(to right bottom, #4cbfcb, #e4007b);
+        border-radius: 5px;
+
+        .team-image-border {
+          width: 100%;
+          height: 100%;
+          background-color: #000000;
+          border-radius: 4px;
+        }
+      }
+    }
+  }
+
+  @media (max-width: 996px) {
+    .list-team {
+      height: 500px;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .list-team {
+      height: 400px;
+    }
+  }
+
+  @media (max-width: 576px) {
+    .list-team {
+      height: 300px;
+    }
+  }
+
+  .ant-modal-content {
+    background-color: #000000;
+    color: #ffffff;
+    box-shadow: 0 4px 80px 0 rgba(161, 107, 216, 0.7);
+
+    position: relative;
+    background-clip: padding-box;
+    border: solid 2px transparent;
+    border-radius: 10px;
+    padding: 0 5px;
+
+    &:before {
+      content: "";
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      z-index: -1;
+      margin: -2px;
+      border-radius: inherit;
+      background: linear-gradient(to right, #4ccbc9, #e4007b);
+    }
+
+    .ant-modal-close {
+      position: absolute;
+      width: 32px;
+      height: 32px;
+      line-height: 32px;
+      top: -50px;
+      color: #ffffff;
+      right: 48.5%;
+      border-radius: 10px;
+      border: none;
+
+      .ant-modal-close-x {
+        width: 32px;
+        height: 32px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: #fff;
+      }
+    }
+
+    .ant-modal-header {
+      text-align: center;
+      border-top-left-radius: 8px;
+      border-top-right-radius: 8px;
+      background-color: #000000;
+      border-bottom: 1px solid #000000;
+
+      .ant-modal-title {
+        font-family: "Race Sport", serif;
+        color: #ffffff;
+        font-weight: bold;
+        font-size: 20px;
+        padding-top: 15px;
+      }
+    }
+
+    .modal-body-row {
+      padding: 16px 22px;
+      margin: 15px 0;
+      background-color: #000000;
+      border-radius: 7px;
+
+      .modal-body-row-title {
+        color: #a8adc3;
+        font-size: 16px;
+      }
+    }
+
+    .ant-modal-footer {
+      border-top: 1px solid #151a30;
+      padding: 15px 20px;
+
+      .flex {
+        display: flex;
+
+        .w-1\/2 {
+          width: 50%;
+        }
+
+        .button {
+          color: #fff;
+          border-radius: 5px;
+          line-height: 22px;
+          min-height: 44px;
+          font-size: 16px;
+          font-weight: 800;
+          letter-spacing: 0;
+          cursor: pointer;
+          transition: 0.2s ease-in-out;
+
+          &:hover {
+            transform: translateY(-2px);
+          }
+
+          &+button {
+            margin-left: 15px;
+          }
+        }
+
+        .button-dark {
+          background: hsla(0, 0%, 100%, 0.2);
+          border: 2px solid hsla(0, 0%, 100%, 0.2);
+          padding: 0 var(--button-hoz-padding);
+        }
+
+        .button-secondary {
+          border: #e4007b;
+          background-color: #e4007b;
+        }
+      }
+
+      .w-full {
+        width: 100%;
+      }
+    }
+  }
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #141414 #2c2c2c;
+}
+
+/* Chrome, Edge, and Safari */
+*::-webkit-scrollbar {
+  width: 10px;
+}
+
+*::-webkit-scrollbar-track {
+  background: #2c2c2c;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: #141414;
+  border-radius: 8px;
+  border: 2px solid #1c1c1c;
 }
