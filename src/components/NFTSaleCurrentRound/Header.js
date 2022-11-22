@@ -43,11 +43,6 @@ const Header = ({ availableSlots, isLoading = true, roundInfo = NFT_SALE_CURRENT
                         className="bg-[#A16BD8] text-[16px] text-white uppercase font-bold px-4 pb-1 rounded dark:text-white">
                         {roundInfo.dateMsg}
                     </span>
-                    {
-                        roundInfo.specialRound && <span className="bg-[#4CCBC9] text-[16px] uppercase font-bold ml-2 px-4 pb-1 rounded font-extrabold text-[#020722]">
-                            571 nfts left
-                        </span>
-                    }
                     {_renderProgress()}
                 </div>
                 {roundInfo.specialRound && _headerInfoItems()}

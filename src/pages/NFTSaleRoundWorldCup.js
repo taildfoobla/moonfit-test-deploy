@@ -268,8 +268,8 @@ const NFTSaleRoundWorldCup = (props) => {
                                     </a>
                                 </div>
                                 <div className='team-select-detail text-center'>
-                                    {/* <img className='w-full mx-auto' src={team?.url} onClick={toggleModal} /> */}
-                                    <img className='w-full mx-auto' src={ecuador} onClick={toggleModal} />
+                                     <img className='w-full mx-auto' src={team?.url} onClick={toggleModal} />
+                                    {/*<img className='w-full mx-auto' src={ecuador} onClick={toggleModal} />*/}
                                     <span className='race-sport-font text-[20px] font-normal'>{team?.name}</span>
                                 </div>
                             </div>

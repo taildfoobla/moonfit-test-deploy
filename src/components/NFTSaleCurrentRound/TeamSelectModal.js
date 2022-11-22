@@ -37,9 +37,9 @@ const TeamSelectModal = (props) => {
                         <div key={`${index}_${new Date()}`} className="team text-center" onClick={() => onSelectTeam(team)}>
                             <div className={`team-image${selectedTeam && (selectedTeam.name === team.name) ? " selected" : ""}`}>
                                 <div className="team-image-border">
-                                    <img src={ecuador} />
+                                     <img src={team.url} />
+
                                 </div>
-                                {/* <img src={team.url} /> */}
                             </div>
                             <span className="race-sport-font team-name text-[16px] font-normal">{team.name}</span>
                         </div>
