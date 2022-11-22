@@ -330,7 +330,7 @@ const NFTSaleRoundWorldCup = (props) => {
 
     const _renderContainer = () => {
         return (
-            <div className="section-content" key={'_renderContainer'}>
+            <div className="section-content mt-7" key={'_renderContainer'}>
                 <div className="container">
                     <div className="moonfit-card">
                         <div className="moonfit-card-inner worldcup-card-inner">

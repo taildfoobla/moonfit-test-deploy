@@ -43,7 +43,7 @@ const LinePrice = ({price}) => {
             <div className={'flex flex-col'}>
                 <div className="flex justify-between items-center">
                     <div
-                        className={'text-[#4ccbc9]'}>{price} GLMR
+                        className={'text-[#4ccbc9]'}>{price} GLMR / NFT
                     </div>
                 </div>
             </div>
