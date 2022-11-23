@@ -14,7 +14,7 @@ const LineContract = (props) => {
     const renderAddressLink = (address) => {
         const url = getAddressScanUrl(address)
         return (
-            <a href={url} target={'_blank'} rel={'noreferrer'} className={'text-[#A16BD8] text-sm normal-case mt-2'}>
+            <a href={url} target={'_blank'} rel={'noreferrer'} className={'text-[#A16BD8] text-[18px] text-sm normal-case mt-2'}>
                 View on block explorer
             </a>
         )
