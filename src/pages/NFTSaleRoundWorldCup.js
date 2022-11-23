@@ -282,7 +282,7 @@ const NFTSaleRoundWorldCup = (props) => {
                                     <p className='normal-case font-normal'>you want yours NFT to wear their uniform.</p>
                                     <button type="button"
                                         onClick={toggleModal}
-                                        className="button button-secondary">
+                                        className="button button-secondary mt-4" style={{ padding: "10px 30px" }}>
                                         <img className='pt-1 mr-2' src={ballWhite} /> Pick a team
                                     </button>
                                 </div>

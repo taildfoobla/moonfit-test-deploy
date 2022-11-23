@@ -30,7 +30,7 @@ const TeamSelectModal = (props) => {
             )}
             wrapClassName={'wrapper-modal'}
         >
-            <div className="grid sm:grid-cols-6 lg:grid-cols-3 gap-4 list-team">
+            <div className="grid grid-cols-3 gap-4 list-team">
                 {
                     WORLDCUP_TEAMS.map((team, index) => (
                         <div key={`${index}_${new Date()}`} className="team text-center" onClick={() => onSelectTeam(team)}>
@@ -39,13 +39,15 @@ const TeamSelectModal = (props) => {
                                     <img src={team.url} />
                                 </div>
                             </div>
-                            <span className="race-sport-font team-name text-[16px] font-normal">{team.name}</span>
+                            <span className={`race-sport-font team-name text-[16px] font-normal${selectedTeam && (selectedTeam.name === team.name) ? " text-[#E4007B]" : ""}`}>{team.name}</span>
                         </div>
                     ))
                 }
             </div>
             <div className="flex flex-row">
-                <button type="button"
+                <button 
+                    type="button"
+                    disabled={!selectedTeam}
                     className="w-full mt-5 button button-primary" onClick={() => { onChangeTeam(selectedTeam); handleCancel() }}>
                     CONFIRM
                 </button>
