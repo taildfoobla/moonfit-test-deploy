@@ -135,7 +135,7 @@ const RoundWorldCup = () => {
             {
                 isSoldOut && <Tag className="badge" color="#541C8D">SOLD OUT</Tag>
             }
-            <div className="stage-content" onClick={() => setIsLoading(!isLoading)}>
+            <div className="stage-content">
                 {dateTitle(currentRoundSale.dateMsg)}
                 <h4 className="mt-5 mb-3">{currentRoundSale.title}</h4>
                 <div className="flex mb-2">
