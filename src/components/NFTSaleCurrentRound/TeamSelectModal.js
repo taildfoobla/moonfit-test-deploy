@@ -1,11 +1,15 @@
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import { WORLDCUP_TEAMS } from "../../constants/worldcup-team"
 import { Modal } from "antd"
 
 const TeamSelectModal = (props) => {
 
-    const { open, handleCancel, onChangeTeam } = props
+    const { open, team, handleCancel, onChangeTeam } = props
     const [selectedTeam, setSeletectedTeam] = useState(null)
+
+    useEffect(() => {
+        setSeletectedTeam(team)
+    }, [open])
 
     const onSelectTeam = (team, forceClose = false) => {
         setSeletectedTeam(team)
