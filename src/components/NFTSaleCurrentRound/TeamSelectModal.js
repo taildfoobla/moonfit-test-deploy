@@ -7,8 +7,13 @@ const TeamSelectModal = (props) => {
     const { open, handleCancel, onChangeTeam } = props
     const [selectedTeam, setSeletectedTeam] = useState(null)
 
-    const onSelectTeam = (team) => {
+    const onSelectTeam = (team, forceClose = false) => {
         setSeletectedTeam(team)
+
+        if(forceClose) {
+            onChangeTeam(team)
+            handleCancel()
+        }
     }
 
     return (
@@ -32,8 +37,11 @@ const TeamSelectModal = (props) => {
         >
             <div className="grid grid-cols-3 gap-4 list-team">
                 {
-                    WORLDCUP_TEAMS.map((team, index) => (
-                        <div key={`${index}_${new Date()}`} className="team text-center" onClick={() => onSelectTeam(team)}>
+                    WORLDCUP_TEAMS.map((team) => (
+                        <div key={`${team.name}`} className="team text-center"
+                             onClick={() => onSelectTeam(team)}
+                             onDoubleClick={() => onSelectTeam(team, true)}
+                        >
                             <div className={`team-image${selectedTeam && (selectedTeam.name === team.name) ? " selected" : ""}`}>
                                 <div className="team-image-border">
                                     <img src={team.url} />
@@ -45,7 +53,7 @@ const TeamSelectModal = (props) => {
                 }
             </div>
             <div className="flex flex-row">
-                <button 
+                <button
                     type="button"
                     disabled={!selectedTeam}
                     className="w-full mt-5 button button-primary" onClick={() => { onChangeTeam(selectedTeam); handleCancel() }}>

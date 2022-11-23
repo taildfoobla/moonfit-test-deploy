@@ -28,6 +28,7 @@ const MoonBeastItem = ({moonBeast = {}}) => {
     const fetchData = async () => {
         setIsLoading(true)
         setIsError(false)
+        console.log(moonBeast);
         if (!moonBeast.tokenId) {
             const {tokenId, uri} = await getTokenInfoOfOwnerByIndex(moonBeast.wallet, moonBeast.index)
 
@@ -54,7 +55,7 @@ const MoonBeastItem = ({moonBeast = {}}) => {
         return (
             <div className={'flex flex-col normal-case race-sport-font text-sm mt-4'}>
                 <span className={'secondary-color text-center nft-gender'}>{preName}</span>
-                <span className={'primary-color text-center nft-number-name mt-1'}>{numberName}</span>
+                <span className={'primary-color text-center nft-number-name mt-1'}>{numberName} {moonBeast.tokenId}</span>
             </div>
         )
     }

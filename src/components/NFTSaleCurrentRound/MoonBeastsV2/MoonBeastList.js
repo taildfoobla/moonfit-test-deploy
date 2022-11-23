@@ -31,7 +31,7 @@ const MoonBeasts = ({ moonBeasts, moonBeastMinting = 0 }) => {
         <div className={"grid grid-cols-4 lg:grid-cols-6 gap-4"}>
             {_renderMinting()}
             {
-                moonBeasts.map((mb) => <MoonBeastItem moonBeast={mb} key={`${mb.wallet}_${mb.tokenId || mb.index}`} />)
+                moonBeasts.map((mb, index) => <MoonBeastItem moonBeast={mb} key={`${index}_${mb.wallet}_${mb.tokenId || mb.index}`} />)
             }
         </div>
     )
