@@ -12,7 +12,7 @@ const Header = ({ availableSlots, isLoading = true, roundInfo = NFT_SALE_CURRENT
             const nft = availableSlots > 1 ? 'NFTs' : 'NFT'
 
             return (
-                <span className="ml-3 bg-[#4CCBC9] text-[#020722] uppercase font-extrabold px-4 rounded dark:bg-green-500 dark:text-white">
+                <span className="ml-3 bg-[#4CCBC9] text-[#020722] text-[16px] uppercase font-extrabold px-4 rounded dark:bg-green-500 dark:text-white">
                     {availableSlots} {nft} left
                 </span>
             )
@@ -40,7 +40,7 @@ const Header = ({ availableSlots, isLoading = true, roundInfo = NFT_SALE_CURRENT
                 </div>
                 <div className={'flex justify-center mt-6'}>
                     <span
-                        className="bg-[#A16BD8] text-white uppercase font-bold px-4 rounded dark:text-white">
+                        className="bg-[#A16BD8] text-[16px] text-white uppercase font-bold px-4 rounded dark:text-white">
                         {roundInfo.dateMsg}
                     </span>
                     {_renderProgress()}
