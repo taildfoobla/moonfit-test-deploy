@@ -24,7 +24,7 @@ const RoundComingSoon = ({stage}) => {
                 {dateTitle(stage.dateMsg)}
                 <h4 className="mt-5 mb-3">{stage.title}</h4>
                 <div className="flex mb-2">
-                    <img className="arrow-right" src={arrowFatRight} alt="" /> QUANTITY: <span className="text-white ml-1"> ? NFTs</span>
+                    <img className="arrow-right" src={arrowFatRight} alt="" /> QUANTITY: <span className="text-white ml-1"> {stage.amount} NFTs</span>
                 </div>
                 <div className="flex mb-3">
                     <img className="arrow-right" src={arrowFatRight} alt="" /> PRICE:
