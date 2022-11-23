@@ -14,11 +14,11 @@ const MoonBeasts = ({
 
     const _itemRender = (_, type, originalElement) => {
         if (type === 'prev') {
-            return <span>&#8249; Prev</span>;
+            return <span>Prev</span>;
         }
 
         if (type === 'next') {
-            return <span>Next &#8250;</span>;
+            return <span>Next</span>;
         }
 
         return originalElement;
