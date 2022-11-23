@@ -41,7 +41,7 @@ const Header = ({ availableSlots, isLoading = true, roundInfo = NFT_SALE_CURRENT
                 <div className={'flex justify-center mt-6'}>
                     <span
                         className="bg-[#A16BD8] text-[16px] text-white uppercase font-bold px-4 rounded dark:text-white">
-                        {roundInfo.dateMsg}
+                        {roundInfo.specialRound ? roundInfo.dateRange : roundInfo.dateMsg}
                     </span>
                     {_renderProgress()}
                 </div>

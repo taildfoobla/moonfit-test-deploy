@@ -240,7 +240,8 @@ export const NFT_SALE_ROUNDS_INFO = {
         mintPass: 0,
         nftPerPass: null,
         description: 'No MintPass required',
-        dateMsg: 'nov 25 - dec 15',
+        dateMsg: '25th November',
+        dateRange: 'nov 25 - dec 15',
         eventUpdateSaleAmountName: 'WorldCupUpdateSaleAmount',
         time: 1665583200000, // Date and time (GMT): Wednesday, October 12, 2022 2:00:00 PM
         ...(isDev ? {
