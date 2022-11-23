@@ -253,7 +253,7 @@ const NFTSaleRoundWorldCup = (props) => {
             <div className='section-mint'>
                 {
                     NFT_SALE_CURRENT_INFO.specialRound && <>
-                        <TeamSelectModal open={openModal} team={team} handleCancel={toggleModal} onChangeTeam={onChangeTeam} />
+                        <TeamSelectModal open={openModal} currentTeam={team} handleCancel={toggleModal} onChangeTeam={onChangeTeam} />
                         {
                             team && <div className='form-mint__team-select'>
                                 <div className='flex flex-wrap justify-between items-center'>
