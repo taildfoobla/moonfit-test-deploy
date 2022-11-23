@@ -1,130 +1,39 @@
-export const WORLDCUP_TEAMS = [
-    {
-        name: 'Qatar',
-        url: 'https://cdn.moonfit.xyz/image/original/world-cup/01-Qatar.png',
-    },
-    {
-        name: 'Ecuador',
-        url: 'https://cdn.moonfit.xyz/image/original/world-cup/02-Ecuador.png',
-    },
-    {
-        name: 'England',
-        url: 'https://cdn.moonfit.xyz/image/original/world-cup/03-England.png',
-    },
-    {
-        name: 'Iran',
-        url: 'https://cdn.moonfit.xyz/image/original/world-cup/04-Iran.png',
-    },
-    {
-        name: 'Senegal',
-        url: 'https://cdn.moonfit.xyz/image/original/world-cup/05-Senegal.png',
-    },
-    {
-        name: 'Netherlands',
-        url: 'https://cdn.moonfit.xyz/image/original/world-cup/06-Netherlands.png',
-    },
-    {
-        name: 'USA',
-        url: 'https://cdn.moonfit.xyz/image/original/world-cup/07-UnitedStates.png',
-    },
-    {
-        name: 'Wales',
-        url: 'https://cdn.moonfit.xyz/image/original/world-cup/08-Wales.png',
-    },
-    {
-        name: 'Argentina',
-        url: 'https://cdn.moonfit.xyz/image/original/world-cup/09-Argentina.png',
-    },
-    {
-        name: 'SaudiArabia',
-        url: 'https://cdn.moonfit.xyz/image/original/world-cup/10-SaudiArabia.png',
-    },
-    {
-        name: 'Denmark',
-        url: 'https://cdn.moonfit.xyz/image/original/world-cup/11-Denmark.png',
-    },
-    {
-        name: 'Tunisian',
-        url: 'https://cdn.moonfit.xyz/image/original/world-cup/12-Tunisian.png',
-    },
-    {
-        name: 'Mexico',
-        url: 'https://cdn.moonfit.xyz/image/original/world-cup/13-Mexico.png',
-    },
-    {
-        name: 'Poland',
-        url: 'https://cdn.moonfit.xyz/image/original/world-cup/14-Poland.png',
-    },
-    {
-        name: 'France',
-        url: 'https://cdn.moonfit.xyz/image/original/world-cup/15-France.png',
-    },
-    {
-        name: 'Australia',
-        url: 'https://cdn.moonfit.xyz/image/original/world-cup/16-Australia.png',
-    },
-    {
-        name: 'Morocco',
-        url: 'https://cdn.moonfit.xyz/image/original/world-cup/17-Morocco.png',
-    },
-    {
-        name: 'Croatia',
-        url: 'https://cdn.moonfit.xyz/image/original/world-cup/18-Croatia.png',
-    },
-    {
-        name: 'Germany',
-        url: 'https://cdn.moonfit.xyz/image/original/world-cup/19-Germany.png',
-    },
-    {
-        name: 'Japan',
-        url: 'https://cdn.moonfit.xyz/image/original/world-cup/20-Japan.png',
-    },
-    {
-        name: 'Spain',
-        url: 'https://cdn.moonfit.xyz/image/original/world-cup/21-Spain.png',
-    },
-    {
-        name: 'Costa Rica',
-        url: 'https://cdn.moonfit.xyz/image/original/world-cup/22-CostaRica.png',
-    },
-    {
-        name: 'Belgium',
-        url: 'https://cdn.moonfit.xyz/image/original/world-cup/23-Belgium.png',
-    },
-    {
-        name: 'Canada',
-        url: 'https://cdn.moonfit.xyz/image/original/world-cup/24-Canada.png',
-    },
-    {
-        name: 'Switzerland',
-        url: 'https://cdn.moonfit.xyz/image/original/world-cup/25-Switzerland.png',
-    },
-    {
-        name: 'Cameroon',
-        url: 'https://cdn.moonfit.xyz/image/original/world-cup/26-Cameroon.png',
-    },
-    {
-        name: 'Uruguay',
-        url: 'https://cdn.moonfit.xyz/image/original/world-cup/27-Uruguay.png',
-    },
-    {
-        name: 'South Korea',
-        url: 'https://cdn.moonfit.xyz/image/original/world-cup/28-SouthKorea.png',
-    },
-    {
-        name: 'Portugal',
-        url: 'https://cdn.moonfit.xyz/image/original/world-cup/29-Portugal.png',
-    },
-    {
-        name: 'Ghana',
-        url: 'https://cdn.moonfit.xyz/image/original/world-cup/30-Ghana.png',
-    },
-    {
-        name: 'Brazil',
-        url: 'https://cdn.moonfit.xyz/image/original/world-cup/31-Brazil.png',
-    },
-    {
-        name: 'Serbia',
-        url: 'https://cdn.moonfit.xyz/image/original/world-cup/32-Serbia.png',
-    },
-]
+const teams = {
+    Qatar: '01-Qatar.png',
+    Ecuador: '02-Ecuador.png',
+    England: '03-England.png',
+    Iran: '04-Iran.png',
+    Senegal: '05-Senegal.png',
+    Netherlands: '06-Netherlands.png',
+    'United States': '07-UnitedStates.png',
+    Wales: '08-Wales.png',
+    Argentina: '09-Argentina.png',
+    SaudiArabia: '10-SaudiArabia.png',
+    Denmark: '11-Denmark.png',
+    Tunisian: '12-Tunisian.png',
+    Mexico: '13-Mexico.png',
+    Poland: '14-Poland.png',
+    France: '15-France.png',
+    Australia: '16-Australia.png',
+    Morocco: '17-Morocco.png',
+    Croatia: '18-Croatia.png',
+    Germany: '19-Germany.png',
+    Japan: '20-Japan.png',
+    Spain: '21-Spain.png',
+    'Costa Rica': '22-CostaRica.png',
+    Belgium: '23-Belgium.png',
+    Canada: '24-Canada.png',
+    Switzerland: '25-Switzerland.png',
+    Cameroon: '26-Cameroon.png',
+    Uruguay: '27-Uruguay.png',
+    'South Korea': '28-SouthKorea.png',
+    Portugal: '29-Portugal.png',
+    Ghana: '30-Ghana.png',
+    Brazil: '31-Brazil.png',
+    Serbia: '32-Serbia.png',
+}
+
+export const WORLDCUP_TEAMS = Object.keys(teams).map(name => ({
+    name,
+    url: `https://cdn.moonfit.xyz/image/original/world-cup/${teams[name]}`
+}))
