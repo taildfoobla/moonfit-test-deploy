@@ -6,15 +6,21 @@ const TeamSelectModal = (props) => {
 
     const { open, team, handleCancel, onChangeTeam } = props
     const [selectedTeam, setSeletectedTeam] = useState(null)
+    const element = document.getElementById("selected-item")
 
     useEffect(() => {
         setSeletectedTeam(team)
+        if (open) {
+            setTimeout(() => {
+                element && element.scrollIntoView()
+            }, 200)
+        }
     }, [open])
 
     const onSelectTeam = (team, forceClose = false) => {
         setSeletectedTeam(team)
 
-        if(forceClose) {
+        if (forceClose) {
             onChangeTeam(team)
             handleCancel()
         }
@@ -45,10 +51,10 @@ const TeamSelectModal = (props) => {
                 {
                     WORLDCUP_TEAMS.map((team) => (
                         <div key={`${team.name}`} className="team text-center"
-                             onClick={() => onSelectTeam(team)}
-                             onDoubleClick={() => onSelectTeam(team, true)}
+                            onClick={() => onSelectTeam(team)}
+                            onDoubleClick={() => onSelectTeam(team, true)}
                         >
-                            <div className={`team-image${selectedTeam && (selectedTeam.name === team.name) ? " selected" : ""}`}>
+                            <div id={selectedTeam && (selectedTeam.name === team.name) ? "selected-item" : ""} className={`team-image${selectedTeam && (selectedTeam.name === team.name) ? " selected" : ""}`}>
                                 <div className="team-image-border">
                                     <img src={team.url} />
                                 </div>
