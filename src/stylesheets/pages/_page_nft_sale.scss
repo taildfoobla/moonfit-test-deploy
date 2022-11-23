@@ -169,6 +169,9 @@
       &:last-child:after {
         border-right: none;
       }
+      // .attribute-value {
+      //   font-size: 14px;
+      // }
     }
 
     .nft-item-image {
@@ -429,6 +432,9 @@
 
   .worldcup-card-inner {
     .form-mint {
+      &__fee-value {
+        font-size: 16px;
+      }
       &__team-select {
         span {
           font-size: 14px;
@@ -484,6 +490,10 @@
     }
   }
 
+  &__fee-value {
+    font-size: 20px;
+  }
+
   &__warp-input {
     display: flex;
     align-content: center;
@@ -494,6 +504,10 @@
     user-select: none;
     background: #1C0532;
     border-radius: 5px;
+  }
+
+  &__wrap-btn {
+    font-size: 18px;
   }
 
   &__input-icon {

@@ -69,6 +69,9 @@
       border: solid 2px transparent;
       border-radius: 10px;
       background-color: #000000;
+      box-shadow: 0px 0px 20px 0px rgb(102 66 79 / 50%);
+      -webkit-box-shadow: 0px 0px 20px 0px rgb(102 66 79 / 50%);
+      -moz-box-shadow: 0px 0px 20px 0px rgb(102 66 79 / 50%);
       .card-body-row {
         background-color: #220510;
       }
