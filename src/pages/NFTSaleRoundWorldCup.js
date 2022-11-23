@@ -343,9 +343,9 @@ const NFTSaleRoundWorldCup = (props) => {
                                 <div
                                     className={'flex w-full lg:w-auto justify-center lg:justify-start mt-4 lg:mt-0'}>
                                     {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
-                                    <a href="#" className={'normal-case text-xs inline primary-color darker-grotesque-font text-[18px] font-extrabold'}
+                                    <a href="#" className={'uppercase text-xs inline primary-color darker-grotesque-font text-[18px] font-extrabold'}
                                         onClick={(e) => handleRefresh(e)}>
-                                        <svg className="w-4 h-4 inline mr-1" fill="none" stroke="currentColor"
+                                        <svg className="w-4 h-4 inline mb-1 mr-1" fill="none" stroke="currentColor"
                                             viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
                                                 d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
