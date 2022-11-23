@@ -335,7 +335,7 @@ const NFTSaleRoundWorldCup = (props) => {
                     <div className="moonfit-card">
                         <div className="moonfit-card-inner worldcup-card-inner">
                             <div
-                                className="card-title flex flex-col lg:flex-row justify-center lg:justify-between items-start mx-auto mt-0 mb-6 lg:mb-10">
+                                className="card-title flex flex-col lg:flex-row justify-center lg:justify-between items-start mx-auto mt-0 mb-5 lg:mb-5">
                                 <div
                                     className={'flex text-white justify-center w-full lg:w-auto justify-center lg:justify-start mt-4 lg:mt-0'}>
                                     Public mint
