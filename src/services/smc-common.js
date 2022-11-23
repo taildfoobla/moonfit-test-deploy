@@ -5,6 +5,7 @@ import {getStringOfBigNumber} from "../utils/number";
 import {sendTransaction} from "../utils/blockchain";
 import {chunk} from "../utils/array";
 import MoonBeast from "../utils/MoonBeast";
+import BigNumber from "bignumber.js"
 const {MOONBEAST_NETWORK} = configs
 
 const web3 = new Web3(MOONBEAST_NETWORK)
@@ -36,7 +37,14 @@ export const fromWeiToEther = (value) => web3.utils.fromWei(getStringOfBigNumber
 export const getGasNetwork = () => web3.eth.getGasPrice()
 
 export const buyNFT = async (provider, connector, contract, tx) => {
+    const balance = await web3.eth.getBalance(tx.from)
+
+    if (new BigNumber(tx.value).gt(new BigNumber(balance))) {
+        throw new Error ('Insufficient balance.')
+    }
+
     const nonce = await web3.eth.getTransactionCount(tx.from, 'latest')
+
     tx.nonce = String(nonce)
 
     const _gasLimit = await web3.eth.estimateGas(tx).catch(e => {
