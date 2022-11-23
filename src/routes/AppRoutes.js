@@ -17,10 +17,11 @@ export const AppRoutes = [
         path: Paths.NftSaleStages.path,
         title: "NFT Sale",
         external: false,
-        env: Paths.NFTSaleRoundWorldCup.env,
+        env: Paths.NftSaleStages.env,
         actives: [
             Paths.NFTPublicSale.path,
             Paths.NFTSaleRoundThree.path,
+            Paths.NFTSaleRoundWorldCup.path,
             Paths.NftSaleStages.path,
         ]
     },

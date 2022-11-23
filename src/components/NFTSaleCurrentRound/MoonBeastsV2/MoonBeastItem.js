@@ -55,7 +55,7 @@ const MoonBeastItem = ({moonBeast = {}}) => {
         return (
             <div className={'flex flex-col normal-case race-sport-font text-sm mt-4'}>
                 <span className={'secondary-color text-center nft-gender'}>{preName}</span>
-                <span className={'primary-color text-center nft-number-name mt-1'}>{numberName} {moonBeast.tokenId}</span>
+                <span className={'primary-color text-center nft-number-name mt-1'}>{numberName}</span>
             </div>
         )
     }

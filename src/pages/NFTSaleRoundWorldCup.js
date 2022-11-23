@@ -1,7 +1,6 @@
 import React, { useContext, useEffect, useRef, useState } from 'react'
 import BigNumber from 'bignumber.js'
 import Bluebird from 'bluebird'
-import { Input, Modal } from 'antd';
 import WalletAuthContext from "../contexts/WalletAuthContext"
 import * as notification from "../utils/notification"
 import { switchNetwork } from "../utils/blockchain"
