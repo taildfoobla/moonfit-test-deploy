@@ -4,12 +4,12 @@ import { Modal } from "antd"
 
 const TeamSelectModal = (props) => {
 
-    const { open, team, handleCancel, onChangeTeam } = props
+    const { open, currentTeam, handleCancel, onChangeTeam } = props
     const [selectedTeam, setSeletectedTeam] = useState(null)
     const element = document.getElementById("selected-item")
 
     useEffect(() => {
-        setSeletectedTeam(team)
+        setSeletectedTeam(currentTeam)
         if (open) {
             setTimeout(() => {
                 element && element.scrollIntoView()
@@ -54,7 +54,7 @@ const TeamSelectModal = (props) => {
                             onClick={() => onSelectTeam(team)}
                             onDoubleClick={() => onSelectTeam(team, true)}
                         >
-                            <div id={selectedTeam && (selectedTeam.name === team.name) ? "selected-item" : ""} className={`team-image${selectedTeam && (selectedTeam.name === team.name) ? " selected" : ""}`}>
+                            <div id={currentTeam && (currentTeam.name === team.name) ? "selected-item" : ""} className={`team-image${selectedTeam && (selectedTeam.name === team.name) ? " selected" : ""}`}>
                                 <div className="team-image-border">
                                     <img src={team.url} />
                                 </div>

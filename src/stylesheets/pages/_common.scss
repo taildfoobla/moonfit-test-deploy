@@ -305,20 +305,20 @@
 
     .section-shape-beauty-nft {
       right: 5%;
-      top: 25%;
+      top: 26%;
 
       img {
-        scale: 0.7;
+        scale: 0.8;
         max-width: 12vw;
       }
     }
 
     .section-shape-beauty-2-nft {
       right: 8%;
-      bottom: 18%;
+      bottom: 19%;
 
       img {
-        scale: 0.6;
+        scale: 0.7;
         max-width: 12vw;
       }
     }
@@ -481,6 +481,9 @@
           border-radius: 4px;
         }
       }
+    }
+    span {
+      cursor: pointer;
     }
   }
 
