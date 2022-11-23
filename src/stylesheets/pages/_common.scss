@@ -451,7 +451,7 @@
 }
 
 .wrapper-modal {
-  background: rgb(28 0 10 / 0.7);
+  background: rgb(63 26 26 / 0.9);
 
   .list-team {
     height: 600px;
@@ -523,7 +523,9 @@
   .ant-modal-content {
     background-color: #000000;
     color: #ffffff;
-    box-shadow: 0 4px 80px 0 rgba(161, 107, 216, 0.7);
+    box-shadow: 0 0 40px 15px rgb(102 66 79 / 50%);
+    -webkit-box-shadow: 0 0 40px 15px rgb(102 66 79 / 50%);
+    -moz-box-shadow: 0 0 40px 15px rgba(102,66,79,.5);
 
     position: relative;
     background-clip: padding-box;

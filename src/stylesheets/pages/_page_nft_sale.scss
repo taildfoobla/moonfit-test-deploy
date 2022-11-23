@@ -473,6 +473,13 @@
           cursor: pointer;
         }
       }
+      @media (max-width: 600px) {
+        .team-select-detail {
+          span {
+            font-size: 14px;
+          }
+        }
+      }
     }
   }
 }
