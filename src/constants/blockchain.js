@@ -241,6 +241,7 @@ export const NFT_SALE_ROUNDS_INFO = {
         nftPerPass: null,
         description: 'No MintPass required',
         dateMsg: 'nov 25 - dec 15',
+        eventUpdateSaleAmountName: 'WorldCupUpdateSaleAmount',
         time: 1665583200000, // Date and time (GMT): Wednesday, October 12, 2022 2:00:00 PM
         ...(isDev ? {
             time: Date.now(),
@@ -263,6 +264,7 @@ export const NFT_SALE_ROUNDS_INFO = {
         nftPerPass: 2,
         description: 'Buy max 2 MoonBeasts per MintPass',
         dateMsg: '12th October',
+        eventUpdateSaleAmountName: 'R3UpdateSaleAmount',
         time: 1665583200000, // Date and time (GMT): Wednesday, October 12, 2022 2:00:00 PM
         ...(isDev ? {
             time: Date.now(),
@@ -285,6 +287,7 @@ export const NFT_SALE_ROUNDS_INFO = {
         nftPerPass: null,
         description: 'No MintPass required',
         dateMsg: '12th October',
+        eventUpdateSaleAmountName: 'R4UpdateSaleAmount',
         time: 1665583200000, // Date and time (GMT): Wednesday, October 12, 2022 2:00:00 PM
         ...(isDev ? {
             time: Date.now(),

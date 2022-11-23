@@ -22,7 +22,7 @@ import CopyIcon from "../components/shared/CopyIcon"
 import WalletAuthRequiredMintPass from "../components/WalletAuthRequiredMintPass"
 import MintPassNFT from "../components/MintPassMinting/MintPassNFT";
 import classNames from "classnames";
-import {getMintPass} from "../services/smc-ntf-sale";
+import {fetchMintPassByAccount} from "../services/smc-mint-pass";
 
 const {MINT_PASS_SC} = configs
 const {Paragraph} = Typography
@@ -55,7 +55,7 @@ const MintPassMinting = (props) => {
     const clearMpInterval = () => mpRetrieverRef.current && clearInterval(mpRetrieverRef.current)
 
     const _fetchMintPass = async () => {
-        const mintPasses = await getMintPass(wallet.account, false)
+        const mintPasses = await fetchMintPassByAccount(wallet.account, false)
 
         setMintPasses(mintPasses)
         return mintPasses.length

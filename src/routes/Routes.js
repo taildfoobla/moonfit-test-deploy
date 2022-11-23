@@ -2,11 +2,11 @@ import App from "../App"
 import Paths from "./Paths"
 import MFGPrivateSale from "../pages/MFGPrivateSale"
 import MintPassMinting from "../pages/MintPassMinting"
-import MintPassVerify from "../pages/MintPassVerify"
+// import MintPassVerify from "../pages/MintPassVerify"
 // import NFTSale from "../pages/NFTSaleCurrentRound"
 import NFTSaleStages from "../pages/NFTSaleStages"
-import NFTSaleRoundThree from "../pages/NFTSaleRoundThree"
-import NFTSaleRoundFour from "../pages/NFTSaleRoundFour"
+// import NFTSaleRoundThree from "../pages/NFTSaleRoundThree"
+// import NFTSaleRoundFour from "../pages/NFTSaleRoundFour"
 import NFTSaleRoundWorldCup from "../pages/NFTSaleRoundWorldCup"
 import Home from "../pages/Home"
 import NotFound from "../pages/NotFound"
@@ -21,20 +21,15 @@ const routes = [
                 component: Home
             },
             // {
-            //     path: Paths.NFTSale.path,
+            //     path: Paths.NFTSaleRoundThree.path,
             //     exact: true,
-            //     component: NFTSale
+            //     component: NFTSaleRoundThree
             // },
-            {
-                path: Paths.NFTSaleRoundThree.path,
-                exact: true,
-                component: NFTSaleRoundThree
-            },
-            {
-                path: Paths.NFTPublicSale.path,
-                exact: true,
-                component: NFTSaleRoundFour
-            },
+            // {
+            //     path: Paths.NFTPublicSale.path,
+            //     exact: true,
+            //     component: NFTSaleRoundFour
+            // },
             {
                 path: Paths.NFTSaleRoundWorldCup.path,
                 exact: true,
@@ -50,11 +45,11 @@ const routes = [
                 exact: true,
                 component: MintPassMinting
             },
-            {
-                path: Paths.MintPassVerify.path,
-                exact: true,
-                component: MintPassVerify
-            },
+            // {
+            //     path: Paths.MintPassVerify.path,
+            //     exact: true,
+            //     component: MintPassVerify
+            // },
             {
                 path: Paths.NftSaleStages.path,
                 exact: true,

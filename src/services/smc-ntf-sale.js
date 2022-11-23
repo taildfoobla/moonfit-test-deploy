@@ -10,7 +10,7 @@ import EventBus from '../utils/event-bus'
 const {moonBeastContract} = require('./smc-moon-beast')
 
 const {MOONBEAM_WSS_URL} = configs
-const {NFT_SALE_SC} = NFT_SALE_ROUNDS_INFO.R3
+const {NFT_SALE_SC, eventUpdateSaleAmountName: eventName} = NFT_SALE_ROUNDS_INFO.R3
 console.log({round: 3, NFT_SALE_SC});
 
 const web3 = new Web3(MOONBEAM_WSS_URL)
@@ -83,7 +83,6 @@ export const getMintPass = async (wallet, sort = true) => {
 }
 
 export const subscribeUpdateSaleAmount = () => {
-    const eventName = 'R3UpdateSaleAmount'
     window.__events = window.__events || {}
     if (window.__events[eventName]) {
         return
@@ -92,7 +91,16 @@ export const subscribeUpdateSaleAmount = () => {
     try {
         window.__events[eventName] = saleContract.events.UpdateSaleAmount({}, (error, event) => {
             try {
-                EventBus.$dispatch(eventName, event.returnValues)
+                if (!event || !event.returnValues || !event.returnValues.maxSaleAmount) {
+                    return
+                }
+
+                EventBus.$dispatch(eventName, {
+                    eventName,
+                    soldAmount: parseInt(event.returnValues.soldAmount, 10),
+                    maxSaleAmount: parseInt(event.returnValues.maxSaleAmount, 10),
+                    availableSlot: parseInt(event.returnValues.availableSlot, 10),
+                })
             } catch (e) {
                 console.log(e);
             }

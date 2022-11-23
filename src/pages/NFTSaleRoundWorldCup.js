@@ -51,12 +51,10 @@ const NFTSaleRoundWorldCup = (props) => {
     useEffect(() => {
         if (!!wallet.account) {
             setMoonBeasts([])
-            EventBus.$on('WCUpdateSaleAmount', (data) => {
-                console.log(data, { R3UpdateSaleAmount: 'WCUpdateSaleAmount' });
-                const value = parseInt(data.maxSaleAmount, 10) - parseInt(data.currentSaleAmount, 10)
-                console.log(value);
-                if (!value && value >= 0) {
-                    setNftSaleAvailableQuantity(value)
+            EventBus.$on(NFT_SALE_CURRENT_INFO.eventUpdateSaleAmountName, (data) => {
+                console.log(data);
+                if (data.soldAmount && data.maxSaleAmount) {
+                    setNftSaleAvailableQuantity(data.availableSlot)
                 }
             })
 

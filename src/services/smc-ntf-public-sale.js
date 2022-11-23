@@ -7,7 +7,7 @@ import {getMoonBeast as _getMoonBeast} from "./smc-common";
 import EventBus from "../utils/event-bus";
 
 const {MOONBEAM_WSS_URL} = configs
-const {NFT_SALE_SC} = NFT_SALE_ROUNDS_INFO.R4
+const {NFT_SALE_SC, eventUpdateSaleAmountName: eventName} = NFT_SALE_ROUNDS_INFO.R4
 
 console.log({round: 4, NFT_SALE_SC});
 
@@ -21,7 +21,6 @@ export const getAvailableSlots = async () => {
 }
 
 export const subscribeUpdateSaleAmount = () => {
-    const eventName = 'R4UpdateSaleAmount'
     window.__events = window.__events || {}
     if (window.__events[eventName]) {
         return
@@ -30,7 +29,16 @@ export const subscribeUpdateSaleAmount = () => {
     try {
         window.__events[eventName] = saleContract.events.UpdateSaleAmount({}, (error, event) => {
             try {
-                EventBus.$dispatch(eventName, event.returnValues)
+                if (!event || !event.returnValues || !event.returnValues.maxSaleAmount) {
+                    return
+                }
+
+                EventBus.$dispatch(eventName, {
+                    eventName,
+                    soldAmount: parseInt(event.returnValues.soldAmount, 10),
+                    maxSaleAmount: parseInt(event.returnValues.maxSaleAmount, 10),
+                    availableSlot: parseInt(event.returnValues.availableSlot, 10),
+                })
             } catch (e) {
                 console.log(e);
             }

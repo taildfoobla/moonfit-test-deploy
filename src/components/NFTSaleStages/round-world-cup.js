@@ -10,16 +10,20 @@ import Paths from "../../routes/Paths"
 import { Link } from "react-router-dom";
 import { NFT_SALE_ROUNDS_INFO } from '../../constants/blockchain'
 import {
-    getAvailableSlots as getAvailableSlotsRoundWC,
-    getSaleMaxAmount as getSaleMaxAmountRoundWC
+    getAvailableSlots,
+    getSaleMaxAmount,
+    subscribeUpdateSaleAmount,
 } from "../../services/smc-ntf-world-cup-sale";
+import EventBus from "../../utils/event-bus";
+
+const currentRoundSale = NFT_SALE_ROUNDS_INFO.WC
 
 const RoundWorldCup = () => {
     const { isConnected, showWalletSelectModal } = useContext(WalletAuthContext)
     const [isLoading, setIsLoading] = useState(true)
     const [isSoldOut, setIsSoldOut] = useState(false)
     const [bought, setBound] = useState(0)
-    const [maxAmountRound, setMaxAmountRound] = useState(NFT_SALE_ROUNDS_INFO.WC.amount)
+    const [maxAmountRound, setMaxAmountRound] = useState(currentRoundSale.amount)
 
     useEffect(() => {
         init().then()
@@ -27,9 +31,19 @@ const RoundWorldCup = () => {
 
     const init = async () => {
         setIsLoading(true)
+        EventBus.$on(currentRoundSale.eventUpdateSaleAmountName, (data) => {
+            if (data.soldAmount && data.maxSaleAmount) {
+                setBound(data.soldAmount)
+                setMaxAmountRound(data.maxSaleAmount)
+                setIsSoldOut(data.availableSlot === 0)
+            }
+        })
+
+        subscribeUpdateSaleAmount()
+
         const data = await Promise.all([
-            getAvailableSlotsRoundWC(),
-            getSaleMaxAmountRoundWC(),
+            getAvailableSlots(),
+            getSaleMaxAmount(),
         ])
 
         setBound(data[1] - data[0])
@@ -87,8 +101,6 @@ const RoundWorldCup = () => {
         )
     }
 
-    const stage = NFT_SALE_ROUNDS_INFO.WC
-
     const renderFooter = () => {
         if (isLoading) {
             return (
@@ -119,25 +131,25 @@ const RoundWorldCup = () => {
     }
 
     return (
-        <div className={`stage${stage.isSoldOut && !stage.activeSoldOut ? " sold-out" : ""}`} key={stage._id}>
+        <div className={`stage${isSoldOut && !currentRoundSale.activeSoldOut ? " sold-out" : ""}`}>
             {
-                stage.isSoldOut && <Tag className="badge" color="#541C8D">SOLD OUT</Tag>
+                isSoldOut && <Tag className="badge" color="#541C8D">SOLD OUT</Tag>
             }
             <div className="stage-content" onClick={() => setIsLoading(!isLoading)}>
-                {dateTitle(stage.dateMsg)}
-                <h4 className="mt-5 mb-3">{stage.title}</h4>
+                {dateTitle(currentRoundSale.dateMsg)}
+                <h4 className="mt-5 mb-3">{currentRoundSale.title}</h4>
                 <div className="flex mb-2">
-                    <img className="arrow-right" src={arrowFatRight} alt="" /> QUANTITY: <span className="text-white ml-1"> {stage.amount} NFTs</span>
+                    <img className="arrow-right" src={arrowFatRight} alt="" /> QUANTITY: <span className="text-white ml-1"> {maxAmountRound} NFTs</span>
                 </div>
                 <div className="flex mb-3">
                     <img className="arrow-right" src={arrowFatRight} alt="" /> PRICE:
-                    <img className="ic-moonbeam" src={moonBeam} alt="" /> <span className="text-[#4ccbc9] mr-1">{stage.price}
-                                    </span> + <img className="ic-mintpass" src={mintPass} alt="" /><span className="text-[#4ccbc9]">{stage.mintPass}</span>
+                    <img className="ic-moonbeam" src={moonBeam} alt="" /> <span className="text-[#4ccbc9] mr-1">{currentRoundSale.price}
+                                    </span> + <img className="ic-mintpass" src={mintPass} alt="" /><span className="text-[#4ccbc9]">{currentRoundSale.mintPass}</span>
                 </div>
-                <span className="description">{stage.description}</span>
+                <span className="description">{currentRoundSale.description}</span>
                 {renderFooter()}
             </div>
-            {joinButton(stage)}
+            {joinButton()}
         </div>
     )
 }

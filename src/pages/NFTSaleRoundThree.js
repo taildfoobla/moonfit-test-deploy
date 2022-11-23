@@ -50,10 +50,9 @@ const NFTSaleRoundThree = (props) => {
         if (!!wallet.account) {
             setMintPasses([])
             setMoonBeasts([])
-            EventBus.$on('R3UpdateSaleAmount', (data) => {
-                console.log(data, {R3UpdateSaleAmount: 'R3UpdateSaleAmount'});
-                const value = parseInt(data.maxSaleAmount, 10) - parseInt(data.currentSaleAmount, 10)
-                console.log(value);
+            EventBus.$on(NFT_SALE_CURRENT_INFO.eventUpdateSaleAmountName, (data) => {
+                const value = data.maxSaleAmount - data.currentSaleAmount
+                console.log({bought: value}, data);
                 if(!value && value >= 0) {
                     setNftSaleAvailableQuantity(value)
                 }

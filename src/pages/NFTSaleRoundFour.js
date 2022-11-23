@@ -45,10 +45,9 @@ const NFTSaleRoundFour = (props) => {
     useEffect(() => {
         if (!!wallet.account) {
             setMoonBeasts([])
-            EventBus.$on('R4UpdateSaleAmount', (data) => {
-                console.log(data, {R3UpdateSaleAmount: 'R4UpdateSaleAmount'});
-                const value = parseInt(data.maxSaleAmount, 10) - parseInt(data.currentSaleAmount, 10)
-                console.log(value);
+            EventBus.$on(NFT_SALE_CURRENT_INFO.eventUpdateSaleAmountName, (data) => {
+                const value = data.maxSaleAmount - data.currentSaleAmount
+                console.log({bought: value}, data);
                 if(!value && value >= 0) {
                     setNftSaleAvailableQuantity(value)
                 }
