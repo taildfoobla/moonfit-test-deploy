@@ -67,7 +67,7 @@ const NFTSaleInfo = ({availableSlots, maxSaleSlots, isLoading, handleGetMinted =
             )
         }
 
-        return <div className={'text-[#4ccbc9]'}>{mintedSlots} / {maxSaleSlots}</div>
+        return <div className={'text-[#4ccbc9] text-[16px]'}>{mintedSlots} / {maxSaleSlots}</div>
     }
 
     const getProgressPercent = () => {

@@ -451,7 +451,7 @@
 }
 
 .wrapper-modal {
-  background: rgba(2, 7, 34, 0.8);
+  background: rgb(28 0 10 / 0.7);
 
   .list-team {
     height: 600px;
@@ -461,9 +461,11 @@
 
     .team-image {
       cursor: pointer;
+
       img {
         padding: 8px;
       }
+
       &.selected {
         position: relative;
         border: 0px solid transparent;
@@ -488,9 +490,27 @@
     }
   }
 
+  @media (min-width: 768px) {
+    .ant-modal-content {
+      width: 600px !important;
+    }
+  }
+
   @media (max-width: 768px) {
+    .ant-modal-content {
+      .ant-modal-header {
+        .ant-modal-title { 
+          font-size: 24px;
+        }
+      }
+    }
     .list-team {
       height: 400px;
+      grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+
+      .team-name {
+        font-size: 12px !important;
+      }
     }
   }
 
@@ -508,7 +528,7 @@
     position: relative;
     background-clip: padding-box;
     border: solid 2px transparent;
-    border-radius: 10px;
+    border-radius: 20px;
     padding: 0 5px;
 
     &:before {
@@ -519,7 +539,7 @@
       bottom: 0;
       left: 0;
       z-index: -1;
-      margin: -2px;
+      margin: -3px;
       border-radius: inherit;
       background: linear-gradient(to right bottom, #3d0516, #4e0c20, #60132a, #731b35, #862341);
     }
@@ -556,8 +576,8 @@
         font-family: "Race Sport", serif;
         color: #ffffff;
         font-weight: bold;
-        font-size: 20px;
-        padding-top: 15px;
+        font-size: 36px;
+        padding-top: 25px;
       }
     }
 
@@ -594,7 +614,7 @@
           letter-spacing: 0;
           cursor: pointer;
           transition: 0.2s ease-in-out;
-
+          
           &:hover {
             transform: translateY(-2px);
           }
@@ -620,6 +640,12 @@
         width: 100%;
       }
     }
+    .button {
+      &:disabled {
+        opacity: 0.4;
+        cursor: not-allowed;
+      }
+    }
   }
 }
 
@@ -641,4 +667,8 @@
   background-color: #141414;
   border-radius: 8px;
   border: 2px solid #1c1c1c;
+}
+
+.grid-cols-2 {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
 }
