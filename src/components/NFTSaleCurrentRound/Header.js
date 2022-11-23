@@ -12,7 +12,7 @@ const Header = ({ availableSlots, isLoading = true, roundInfo = NFT_SALE_CURRENT
             const nft = availableSlots > 1 ? 'NFTs' : 'NFT'
 
             return (
-                <span className="ml-3 bg-[#4CCBC9] text-[#020722] normal-case font-extrabold px-4 rounded dark:bg-green-500 dark:text-white">
+                <span className="ml-3 bg-[#4CCBC9] text-[#020722] uppercase font-extrabold px-4 rounded dark:bg-green-500 dark:text-white">
                     {availableSlots} {nft} left
                 </span>
             )
