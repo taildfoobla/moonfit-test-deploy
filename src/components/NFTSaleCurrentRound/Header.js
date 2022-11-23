@@ -69,7 +69,7 @@ const _headerInfoItems = () => {
             <div className='info flex flex-nowrap border-gradient-red'>
                 <span className='index text-triple-gradient-2 text-triple-shadow mr-5'>3</span>
                 <span className='normal-case lg:text-[20px] leading-7 font-semibold md:pt-1 lg:pt-3'>
-                    25% of the total revenue goes to the prize pool which will be distributed at the end of World Cup 2022. Your share in the prize pool will depend on how many WC Champion Moonbeast NFTs you own.
+                    Up to <span className='text-[#4CCBC9]'>100,000 $GLMR</span> (25%) of the total revenue will be distributed after World Cup 2022 ends. Your prize pool share is determined by the number of WC Champion Moonbeast NFTs you own.
                 </span>
             </div>
         </div>
