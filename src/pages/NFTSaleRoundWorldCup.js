@@ -213,6 +213,7 @@ const NFTSaleRoundWorldCup = (props) => {
                 value: value.toString(),
                 data: buyNFTData(mintAmount, team?.name)
             }
+            console.log({tx})
             const txHash = await buyNFT(provider, connector, smcContract, tx)
             console.log("The hash of MFB minting transaction is: ", txHash)
             setMoonBeastMinting(mintAmount)
