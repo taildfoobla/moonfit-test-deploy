@@ -359,6 +359,21 @@
   }
 }
 
+@media screen and (max-width: 768px) {
+  .page-content {
+    &.section-worldcup {
+
+      .section-shape-beauty-nft,
+      .section-shape-beauty-2-nft,
+      .shape-token-mfr-nft-1,
+      .shape-token-mfr-nft-2,
+      .shape-token-mfg-nft-2 {
+        display: none;
+      }
+    }
+  }
+}
+
 @media screen and (max-width: 600px) {
   .page-content {
     padding-top: 110px;
@@ -482,6 +497,7 @@
         }
       }
     }
+
     span {
       cursor: pointer;
     }
@@ -502,11 +518,12 @@
   @media (max-width: 768px) {
     .ant-modal-content {
       .ant-modal-header {
-        .ant-modal-title { 
-          font-size: 24px;
+        .ant-modal-title {
+          font-size: 24px !important;
         }
       }
     }
+
     .list-team {
       height: 400px;
       grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
@@ -528,7 +545,7 @@
     color: #ffffff;
     box-shadow: 0 0 40px 15px rgb(102 66 79 / 50%);
     -webkit-box-shadow: 0 0 40px 15px rgb(102 66 79 / 50%);
-    -moz-box-shadow: 0 0 40px 15px rgba(102,66,79,.5);
+    -moz-box-shadow: 0 0 40px 15px rgba(102, 66, 79, .5);
 
     position: relative;
     background-clip: padding-box;
@@ -619,7 +636,7 @@
           letter-spacing: 0;
           cursor: pointer;
           transition: 0.2s ease-in-out;
-          
+
           &:hover {
             transform: translateY(-2px);
           }
@@ -645,6 +662,7 @@
         width: 100%;
       }
     }
+
     .button {
       &:disabled {
         opacity: 0.4;

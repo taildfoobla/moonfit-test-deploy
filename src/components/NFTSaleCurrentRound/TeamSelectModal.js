@@ -6,10 +6,10 @@ const TeamSelectModal = (props) => {
 
     const { open, currentTeam, handleCancel, onChangeTeam } = props
     const [selectedTeam, setSeletectedTeam] = useState(null)
-    const element = document.getElementById("selected-item")
 
     useEffect(() => {
         setSeletectedTeam(currentTeam)
+        const element = document.getElementById("selected-item")
         if (open) {
             setTimeout(() => {
                 element && element.scrollIntoView()
