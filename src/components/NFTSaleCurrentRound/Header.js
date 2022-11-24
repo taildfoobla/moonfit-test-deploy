@@ -19,7 +19,7 @@ const Header = ({ availableSlots, isLoading = true, roundInfo = NFT_SALE_CURRENT
         }
 
         return (
-            <span className="ml-3 bg-[#EF2763] text-white normal-case font-bold px-4 pb-1 rounded dark:bg-green-500 dark:text-white">
+            <span className="ml-3 bg-[#EF2763] text-[16px] text-white uppercase font-bold px-4 rounded dark:bg-green-500 dark:text-white">
                 Sold out
             </span>
         )
