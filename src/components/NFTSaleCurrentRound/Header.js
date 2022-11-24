@@ -57,20 +57,22 @@ const _headerInfoItems = () => {
             <div className='info flex flex-nowrap border-gradient-red'>
                 <span className='index text-triple-gradient-2 text-triple-shadow mr-5'>1</span>
                 <span className='normal-case lg:text-[20px] leading-7 font-semibold md:pt-1 lg:pt-3'>
-                    The NFTs will wear National Football team uniforms, and you can pick what uniform you want your NFT to wear.
+                    The NFTs will wear National Football teams' uniforms of your choice. Only Moonbeast NFTs for minting in this round.
                 </span>
             </div>
             <div className='info flex flex-nowrap border-gradient-red'>
                 <span className='index text-triple-gradient-2 text-triple-shadow mr-5'>2</span>
                 <span className='normal-case lg:text-[20px] leading-7 font-semibold md:pt-1 lg:pt-3'>
-                    WC edition NFTs have better stats and attributes compared to other rounds by 20%.
+                    Special: <span className='text-[#4CCBC9]'>25%</span> chance to mint <span className='text-[#4CCBC9]'>Uncommon NFTs</span>; <span className='text-[#E4007B]'>20%</span> better NFT stats and attributes compared to other rounds.
                 </span>
             </div>
             <div className='info flex flex-nowrap border-gradient-red'>
                 <span className='index text-triple-gradient-2 text-triple-shadow mr-5'>3</span>
                 <span className='normal-case lg:text-[20px] leading-7 font-semibold md:pt-1 lg:pt-3'>
-                    Up to <span className='text-[#4CCBC9]'>100,000 $GLMR</span> (25%) of the total revenue will be distributed after World Cup 2022 ends. Your prize pool share is determined by the number of WC Champion Moonbeast NFTs you own.
+                    Holders of 2022 World Cup Champion Moonbeast NFTs will share up to <span className='text-[#4CCBC9]'>100,000 $GLMR</span> (25% of total revenue) based on the amount of WC Champion NFTs owned.
                 </span>
+
+
             </div>
         </div>
     )
