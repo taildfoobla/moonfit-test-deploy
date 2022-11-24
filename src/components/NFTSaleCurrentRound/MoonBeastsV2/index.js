@@ -20,7 +20,15 @@ const MoonBeastsV2 = ({moonBeasts, isLoading, moonBeastMinting = 0, handleRefres
     })
 
     useEffect(() => {
+        init()
+        EventBus.$on('buyNFT', () => {
+            setCurrentPage(1)
+        })
+    })
+
+    useEffect(() => {
         addItemWithMinting()
+        setCurrentPage(1)
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [moonBeastMinting])
 
