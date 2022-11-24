@@ -20,7 +20,16 @@ import ball from "../assets/images/worldcup/ball.svg"
 import ballWhite from "../assets/images/worldcup/ball-white.svg"
 
 import { getTransactionReceipt } from "../services/smc-common";
-import { getAvailableSlots, getSaleMaxAmount, getMoonBeast, buyNFTData, subscribeUpdateSaleAmount, smcContract, NFT_SALE_ADDRESS } from '../services/smc-ntf-world-cup-sale'
+import {
+    getAvailableSlots,
+    getSaleMaxAmount,
+    getMoonBeast,
+    buyNFTData,
+    subscribeUpdateSaleAmount,
+    getPrice,
+    NFT_SALE_ADDRESS,
+    getContract
+} from '../services/smc-ntf-world-cup-sale'
 import { buyNFT } from '../services/smc-common'
 import WorldcupBGWrapper from '../wrappers/WorldcupBG';
 import TeamSelectModal from '../components/NFTSaleCurrentRound/TeamSelectModal';
@@ -35,6 +44,7 @@ const NFTSaleRoundWorldCup = (props) => {
     const [moonBeastLoading, setMoonBeastLoading] = useState(true)
     const [mintLoading, setMintLoading] = useState(false)
     const [moonBeasts, setMoonBeasts] = useState([])
+    const [moonBeastKey, setMoonBeastKey] = useState(Date.now())
     const [nftSaleQuantity, setNftSaleQuantity] = useState(NFT_SALE_CURRENT_INFO.amount)
     const [nftSaleAvailableQuantity, setNftSaleAvailableQuantity] = useState(NaN)
     const [moonBeastMinting, setMoonBeastMinting] = useState(0)
@@ -147,6 +157,7 @@ const NFTSaleRoundWorldCup = (props) => {
             const moonBeasts = await getMoonBeast(wallet.account)
 
             setMoonBeasts(moonBeasts)
+            setMoonBeastKey(Date.now())
         } catch (e) {
             console.log(e);
             console.log('fetch MoonBeasts error', e.message)
@@ -180,7 +191,6 @@ const NFTSaleRoundWorldCup = (props) => {
     }
 
 
-
     const _updateMintAmount = (value, checkSelected = false, maxValue) => {
         let amount = value
         if (value !== '') {
@@ -203,7 +213,7 @@ const NFTSaleRoundWorldCup = (props) => {
     const handleMintNFT = async () => {
         setMintLoading(true)
         try {
-            let value = await smcContract.methods._price().call()
+            let value = await getPrice()
             value = value * mintAmount
 
             const tx = {
@@ -215,8 +225,8 @@ const NFTSaleRoundWorldCup = (props) => {
                 value: value.toString(),
                 data: buyNFTData(mintAmount, team?.name)
             }
-            console.log({ tx })
-            const txHash = await buyNFT(provider, connector, smcContract, tx)
+            const txHash = await buyNFT(provider, connector, getContract(), tx)
+            EventBus.$dispatch('buyNFT', {})
             console.log("The hash of MFB minting transaction is: ", txHash)
             setMoonBeastMinting(mintAmount)
             setIsConfirmedTx(false)
@@ -256,17 +266,19 @@ const NFTSaleRoundWorldCup = (props) => {
             <div className='section-mint'>
                 {
                     NFT_SALE_CURRENT_INFO.specialRound && <>
-                        <TeamSelectModal open={openModal} currentTeam={team} handleCancel={toggleModal} onChangeTeam={onChangeTeam} />
+                        <TeamSelectModal open={openModal} currentTeam={team} handleCancel={toggleModal}
+                            onChangeTeam={onChangeTeam} />
                         {
                             team && <div className='form-mint__team-select'>
                                 <div className='flex flex-wrap justify-between items-center'>
                                     <span className='text-[#A8ADC3] font-semibold'>PICK YOUR FAVOURITE TEAM</span>
-                                    <a className='text-[#4CCBC9] font-extrabold flex items-center' onClick={toggleModal}>Change TEAM
-                                        <img className='ml-2 pt-1' src={ball} />
+                                    <a className='text-[#4CCBC9] font-extrabold flex items-center' onClick={toggleModal}>Change
+                                        TEAM
+                                        <img className='ml-2 pt-1' alt="" src={ball} />
                                     </a>
                                 </div>
                                 <div className='team-select-detail text-center'>
-                                    <img className='w-full mx-auto' src={team?.url} onClick={toggleModal} />
+                                    <img className='w-full mx-auto' src={team?.url} alt="" onClick={toggleModal} />
                                     <span className='race-sport-font text-[20px] font-normal'>{team?.name}</span>
                                 </div>
                             </div>
@@ -282,7 +294,7 @@ const NFTSaleRoundWorldCup = (props) => {
                                     <button type="button"
                                         onClick={toggleModal}
                                         className="button button-secondary mt-4" style={{ padding: "10px 30px" }}>
-                                        <img className='mr-2' src={ballWhite} /> Pick a team
+                                        <img className='mr-2' src={ballWhite} alt="Pick a team" /> Pick a team
                                     </button>
                                 </div>
                             </div>
@@ -297,11 +309,10 @@ const NFTSaleRoundWorldCup = (props) => {
                                 {getTotalFee()} GLMR
                             </span>
                         </div>
-                        {/* <div className="form-mint__fee normal-case items-center">
-                        <Input placeholder="Please input team" value={team} onChange={onChangeTeam} />
-                    </div> */}
+
                         <div className="form-mint__warp-input">
-                            <span className="form-mint__input-icon icon-minus" onClick={() => _updateMintAmount(mintAmount - 1, true)}>
+                            <span className="form-mint__input-icon icon-minus"
+                                onClick={() => _updateMintAmount(mintAmount - 1, true)}>
                                 <MinusOutlined size={24} />
                             </span>
                             <span className="form-mint__input-value">
@@ -311,12 +322,14 @@ const NFTSaleRoundWorldCup = (props) => {
                                     pattern="[0-9]*"
                                     type="tel" />
                             </span>
-                            <span className="form-mint__input-icon icon-plus" onClick={() => _updateMintAmount(mintAmount + 1, true)}>
+                            <span className="form-mint__input-icon icon-plus"
+                                onClick={() => _updateMintAmount(mintAmount + 1, true)}>
                                 <PlusOutlined size={24} />
                             </span>
                         </div>
                         <div className="form-mint__wrap-btn">
-                            <ButtonMintNFT isDisabled={isMintBtnDisabled} isLoading={mintLoading} handleMintNFT={handleMintNFT}>
+                            <ButtonMintNFT isDisabled={isMintBtnDisabled} isLoading={mintLoading}
+                                handleMintNFT={handleMintNFT}>
                                 {mintAmount > 0 ? `Mint ${mintAmount} NFT${mintAmount > 1 ? "s" : ""}` : "Mint NFT"}
                             </ButtonMintNFT>
                         </div>
@@ -341,7 +354,8 @@ const NFTSaleRoundWorldCup = (props) => {
                                 <div
                                     className={'flex w-full lg:w-auto justify-center lg:justify-start mt-4 lg:mt-0'}>
                                     {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
-                                    <a href="#" className={'uppercase text-xs inline primary-color darker-grotesque-font text-[18px] font-extrabold'}
+                                    <a href="#"
+                                        className={'uppercase text-xs inline primary-color darker-grotesque-font text-[18px] font-extrabold'}
                                         onClick={(e) => handleRefresh(e)}>
                                         <svg className="w-4 h-4 inline mb-1 mr-1" fill="none" stroke="currentColor"
                                             viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -371,6 +385,8 @@ const NFTSaleRoundWorldCup = (props) => {
                                     {
                                         isConnected && <MoonBeasts isLoading={moonBeastLoading}
                                             moonBeasts={moonBeasts}
+                                            handleRefresh={_fetchMoonBeasts}
+                                            key={moonBeastKey}
                                             moonBeastMinting={moonBeastMinting} />
                                     }
                                 </div>
@@ -395,16 +411,17 @@ const NFTSaleRoundWorldCup = (props) => {
                         {
                             !loading && (
                                 [
-                                    <Header availableSlots={nftSaleAvailableQuantity} isLoading={saleInfoLoading} roundInfo={NFT_SALE_CURRENT_INFO} key="Header" />,
+                                    <Header availableSlots={nftSaleAvailableQuantity} isLoading={saleInfoLoading}
+                                        roundInfo={NFT_SALE_CURRENT_INFO} key="Header" />,
                                     _renderContainer()
                                 ]
                             )
                         }
                         {isConnected && <LoadingWrapper loading={loading} />}
-                    </NFTStages>
-                </div>
-            </EnvWrapper>
-        </WorldcupBGWrapper>
+                    </NFTStages >
+                </div >
+            </EnvWrapper >
+        </WorldcupBGWrapper >
     )
 }
 

@@ -2,7 +2,6 @@ import React, { useContext, useEffect, useState } from "react"
 import { Progress, Tag } from "antd"
 import WalletAuthContext from "../../contexts/WalletAuthContext";
 import arrowFatRight from "../../assets/images/icons/ArrowFatRight.svg"
-import mintPass from "../../assets/images/icons/mintpass.svg"
 import moonBeam from "../../assets/images/icons/moonbeam.svg"
 import LoadingOutlined from "../../components/shared/LoadingOutlined";
 

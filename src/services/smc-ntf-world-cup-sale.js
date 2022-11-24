@@ -6,28 +6,33 @@ import {moonBeastContract} from "./smc-moon-beast";
 import {getMoonBeast as _getMoonBeast} from "./smc-common";
 import EventBus from "../utils/event-bus";
 
-const {MOONBEAM_WSS_URL} = configs
+const {MOONBEAM_WSS_URL, MOONBEAST_NETWORK} = configs
 const {NFT_SALE_SC, eventUpdateSaleAmountName: eventName} = NFT_SALE_ROUNDS_INFO.WC
 
 console.log({round: 'WC2022', eventName, NFT_SALE_SC});
 
-const web3 = new Web3(MOONBEAM_WSS_URL)
-const saleContract = new web3.eth.Contract(nftSaleABI.abi, NFT_SALE_SC)
+const web3 = new Web3(MOONBEAST_NETWORK)
+
+export const getContract = () => new web3.eth.Contract(nftSaleABI.abi, NFT_SALE_SC)
 
 export const getAvailableSlots = async () => {
-    const value = await saleContract.methods.getAvailableSlots().call()
+    const contract = new web3.eth.Contract(nftSaleABI.abi, NFT_SALE_SC)
+    const value = await contract.methods.getAvailableSlots().call()
 
     return parseInt(value)
 }
 
 export const subscribeUpdateSaleAmount = () => {
+    const web3 = new Web3(MOONBEAM_WSS_URL)
+    const contract = new web3.eth.Contract(nftSaleABI.abi, NFT_SALE_SC)
+
     window.__events = window.__events || {}
     if (window.__events[eventName]) {
         return
     }
 
     try {
-        window.__events[eventName] = saleContract.events.UpdateSaleAmount({}, (error, event) => {
+        window.__events[eventName] = contract.events.UpdateSaleAmount({}, (error, event) => {
             console.log(event);
             try {
                 if (!event || !event.returnValues || !event.returnValues.maxSaleAmount) {
@@ -56,20 +61,20 @@ export const subscribeUpdateSaleAmount = () => {
 }
 
 export const getSaleMaxAmount = async () => {
-    const value = await saleContract.methods._maxSaleAmount().call()
+    const value = await getContract().methods._maxSaleAmount().call()
 
     return parseInt(value)
 }
 
 export const buyNFTData = (mintAmount, team) => {
     console.log({mintAmount, team})
-    return saleContract.methods.buyNFT(mintAmount, team).encodeABI()
+    return getContract().methods.buyNFT(mintAmount, team).encodeABI()
 }
 
 export const getMoonBeast = async (wallet) => {
-    return _getMoonBeast(moonBeastContract, saleContract, wallet)
+    return _getMoonBeast(moonBeastContract, getContract(), wallet)
 }
 
-export const smcContract = saleContract;
+export const getPrice = () => getContract().methods._price().call();
 
 export const NFT_SALE_ADDRESS = NFT_SALE_SC

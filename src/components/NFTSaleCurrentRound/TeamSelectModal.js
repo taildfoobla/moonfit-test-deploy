@@ -56,7 +56,7 @@ const TeamSelectModal = (props) => {
                         >
                             <div id={currentTeam && (currentTeam.name === team.name) ? "selected-item" : ""} className={`team-image${selectedTeam && (selectedTeam.name === team.name) ? " selected" : ""}`}>
                                 <div className="team-image-border">
-                                    <img src={team.url} />
+                                    <img src={team.url} alt="" />
                                 </div>
                             </div>
                             <span className={`race-sport-font team-name text-[16px] font-normal${selectedTeam && (selectedTeam.name === team.name) ? " text-[#E4007B]" : ""}`}>{team.name}</span>

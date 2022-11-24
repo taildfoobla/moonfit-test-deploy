@@ -9,7 +9,8 @@ const MoonBeasts = ({
                         total = 0,
                         pageSize = 6,
                         currentPage = 1,
-                        onChangePage = () => null
+                        onChangePage = () => null,
+                        handleRefresh = () => null,
                     }) => {
 
     const _itemRender = (_, type, originalElement) => {
@@ -47,7 +48,7 @@ const MoonBeasts = ({
 
     return (
         <div className={'card-body-row flex flex-col mt-3'}>
-            <div className="flex justify-between">
+            <div className="flex justify-between cursor-pointer" onClick={() => handleRefresh(true)}>
                 <div className={'flex card-body-row-title'}>
                     Your minted NFTs
                 </div>

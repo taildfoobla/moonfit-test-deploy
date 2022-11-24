@@ -2,8 +2,9 @@ import React, {useEffect, useState} from 'react'
 
 import MoonBeasts from './MoonBeasts';
 import LoadingOutlined from "../../shared/LoadingOutlined";
+import EventBus from '../../../utils/event-bus'
 
-const MoonBeastsV2 = ({moonBeasts, isLoading, moonBeastMinting = 0}) => {
+const MoonBeastsV2 = ({moonBeasts, isLoading, moonBeastMinting = 0, handleRefresh = () => {}}) => {
     const [data, setData] = useState([])
     const [currentPage, setCurrentPage] = useState(1)
     const [isFetchData, setIsFetchData] = useState(false)
@@ -13,33 +14,26 @@ const MoonBeastsV2 = ({moonBeasts, isLoading, moonBeastMinting = 0}) => {
 
     useEffect(() => {
         init()
+        EventBus.$on('buyNFT', () => {
+            setCurrentPage(1)
+        })
     })
 
     useEffect(() => {
-        addItemWithMinting()
+        setCurrentPage(1)
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [moonBeastMinting])
+    }, [moonBeasts, moonBeastMinting])
 
     const init = () => {
         if (data.length) {
             return
         }
 
-        if (moonBeasts.length <= 9) {
+        if (moonBeasts.length <= pageSize) {
             setData(moonBeasts)
         } else {
             setData(moonBeasts.slice(0, pageSize))
         }
-    }
-
-    const addItemWithMinting = () => {
-        let _data = [...data]
-
-        while (_data.length < moonBeasts.length && (_data.length + moonBeastMinting) % itemInRow !== 0) {
-            _data = _data.concat(moonBeasts.slice(_data.length, _data.length + 1))
-        }
-
-        setData(_data)
     }
 
     const onChangePage = (page, pageSize) => {
@@ -63,6 +57,7 @@ const MoonBeastsV2 = ({moonBeasts, isLoading, moonBeastMinting = 0}) => {
                                       moonBeastMinting={moonBeastMinting}
                                       hasPagination={data.length < moonBeasts.length}
                                       onChangePage={onChangePage}
+                                      handleRefresh={handleRefresh}
                                       total={moonBeasts.length}
                                       currentPage={currentPage}
                                       pageSize={pageSize}
