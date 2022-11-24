@@ -20,21 +20,9 @@ const MoonBeastsV2 = ({moonBeasts, isLoading, moonBeastMinting = 0, handleRefres
     })
 
     useEffect(() => {
-        init()
-        EventBus.$on('buyNFT', () => {
-            setCurrentPage(1)
-        })
-    })
-
-    useEffect(() => {
-        addItemWithMinting()
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [moonBeastMinting])
-
-    useEffect(() => {
         setCurrentPage(1)
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [moonBeasts])
+    }, [moonBeasts, moonBeastMinting])
 
     const init = () => {
         if (data.length) {
@@ -46,16 +34,6 @@ const MoonBeastsV2 = ({moonBeasts, isLoading, moonBeastMinting = 0, handleRefres
         } else {
             setData(moonBeasts.slice(0, pageSize))
         }
-    }
-
-    const addItemWithMinting = () => {
-        let _data = [...data]
-
-        while (_data.length < moonBeasts.length && (_data.length + moonBeastMinting) % itemInRow !== 0) {
-            _data = _data.concat(moonBeasts.slice(_data.length, _data.length + 1))
-        }
-
-        setData(_data)
     }
 
     const onChangePage = (page, pageSize) => {
