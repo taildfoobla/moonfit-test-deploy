@@ -28,9 +28,13 @@ const MoonBeastsV2 = ({moonBeasts, isLoading, moonBeastMinting = 0, handleRefres
 
     useEffect(() => {
         addItemWithMinting()
-        setCurrentPage(1)
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [moonBeastMinting])
+
+    useEffect(() => {
+        setCurrentPage(1)
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [moonBeasts])
 
     const init = () => {
         if (data.length) {
