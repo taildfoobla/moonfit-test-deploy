@@ -45,15 +45,15 @@ const MoonBeastItemMinting = ({ isMinting = false }) => {
                 </div>
             </div>
             <div className="flex flex-col normal-case race-sport-font text-sm mt-4">
-                <span className="secondary-color text-center nft-gender bg-gray-200 rounded dark:bg-gray-700 w-20">
+                <span className="secondary-color text-center nft-gender-minting bg-gray-200 rounded dark:bg-gray-700 w-20">
                     &nbsp;
                 </span>
-                <span className="primary-color text-center nft-number-name mt-1 text-center bg-gray-200 rounded dark:bg-gray-700 w-16">
+                <span className="primary-color text-center nft-number-name-minting mt-1 text-center bg-gray-200 rounded dark:bg-gray-700 w-16">
                     &nbsp;
                 </span>
             </div>
             <div className="flex normal-case mt-2">
-                <span className="text-[#A16BD8] text-sm normal-case">................................</span>
+                <span className="text-[#A16BD8] text-sm normal-case">............................</span>
             </div>
         </div>
     )
