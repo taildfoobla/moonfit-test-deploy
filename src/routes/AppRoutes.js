@@ -14,7 +14,7 @@ export const AppRoutes = [
         env: Paths.MintPassMinting.env
     },
     {
-        path: Paths.NftSaleStages.path,
+        path: Paths.NFTSaleRoundWorldCup.path,
         title: "NFT Sale",
         external: false,
         env: Paths.NFTSaleRoundWorldCup.env,
