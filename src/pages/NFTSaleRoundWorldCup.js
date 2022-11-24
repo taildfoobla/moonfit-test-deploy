@@ -42,6 +42,7 @@ const NFTSaleRoundWorldCup = (props) => {
     const [team, setTeam] = useState('')
     const [openModal, setOpenModal] = useState(false)
     const maxMintAmount = 100
+    const isExpired = NFT_SALE_CURRENT_INFO.expireDate ? new Date() > new Date(NFT_SALE_CURRENT_INFO.expireDate) : false
 
     const mbRetrieverRef = useRef(0)
 
@@ -361,7 +362,7 @@ const NFTSaleRoundWorldCup = (props) => {
                                         roundInfo={NFT_SALE_CURRENT_INFO}
                                     />
                                     {
-                                        (NFT_SALE_CURRENT_INFO.isSoldOut || nftSaleAvailableQuantity <= 0) ? null : (
+                                        (isExpired || NFT_SALE_CURRENT_INFO.isSoldOut || nftSaleAvailableQuantity <= 0) ? null : (
                                             <div className={'card-body-row flex flex-col mt-3'}>
                                                 {_renderFoot()}
                                             </div>

@@ -333,8 +333,8 @@
     }
 
     .shape-token-mfr-nft-2 {
-      top: 21%;
-      left: 21%;
+      top: 24%;
+      left: 18%;
     }
 
     .shape-token-mfg-nft-2 {
@@ -343,6 +343,11 @@
       left: unset;
       transform: rotate(25.79deg);
       filter: blur(1px);
+    }
+
+    .shape-token-mfg-nft-3 {
+      left: 25%;
+      top: 10%;
     }
   }
 
@@ -367,7 +372,8 @@
       .section-shape-beauty-2-nft,
       .shape-token-mfr-nft-1,
       .shape-token-mfr-nft-2,
-      .shape-token-mfg-nft-2 {
+      .shape-token-mfg-nft-2,
+      .shape-token-mfg-nft-3 {
         display: none;
       }
     }

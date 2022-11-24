@@ -2,9 +2,10 @@ import React from "react"
 import beast from "../assets/images/shapes/beast-3.png"
 import beauty from "../assets/images/shapes/beauty-4.png"
 import beauty2 from "../assets/images/shapes/beauty-5.png"
-import tokenMFR2 from "../assets/images/shapes/token-mfr.png"
+import tokenMFR2 from "../assets/images/shapes/token-mfr-2.png"
 import tokenMFR from "../assets/images/token-mfr.png"
 import tokenMFG from "../assets/images/shapes/token-mfg.png"
+import tokenMFG2 from "../assets/images/shapes/token-mfg-2.png"
 import WebFooter from "../components/shared/WebFooter"
 
 const WorldcupBGWrapper = ({ children, className = "", scrollBg }) => {
@@ -33,6 +34,11 @@ const WorldcupBGWrapper = ({ children, className = "", scrollBg }) => {
             </div>
             <div className="section-shape shape-token-mfg-nft-2">
                 <img loading="lazy" src={tokenMFG} alt="shape"
+                    width="59"
+                    height="56" className="move-vertical-reversed" />
+            </div>
+            <div className="section-shape shape-token-mfg-nft-3">
+                <img loading="lazy" src={tokenMFG2} alt="shape"
                     width="59"
                     height="56" className="move-vertical-reversed" />
             </div>
