@@ -14,14 +14,14 @@ const MoonBeasts = ({ moonBeasts, moonBeastMinting = 0 }) => {
 
     if (moonBeasts.length === 0 && !moonBeastMinting) {
         return (
-            <div className={'my-3'}>
+            <div className={'mt-8 mb-3'}>
                 {/* <div className={'text-center text-white normal-case'}>You don't own any beast/beauty yet.</div> */}
                 {/* <div className={'text-center text-white normal-case'}>
                     If you have a pass, please click "MINT NFT" button to mint one.
                 </div> */}
                 {/* <div className={'text-center text-white normal-case font-normal'}>Please pick a team and enter the amount of Beast & Beauty</div> */}
                 <div className={'text-center text-white normal-case font-normal'}>
-                    Please pick a team and enter the amount of Beast you want to Mint, then click the "MINT NFT" button
+                    Please pick a team and enter the amount of Beast you want to mint, then click the "MINT NFT" button
                 </div>
             </div>
         )

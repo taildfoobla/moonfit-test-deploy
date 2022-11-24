@@ -1,14 +1,15 @@
-import React from 'react'
-import {Progress, Typography} from "antd"
-import {getAddressScanUrl, getShortAddress,} from "../../utils/blockchain"
+import React, { useContext } from 'react'
+import { Progress, Typography } from "antd"
+import { getAddressScanUrl, getShortAddress, } from "../../utils/blockchain"
 import CopyIcon from "../shared/CopyIcon"
-import {NFT_SALE_CURRENT_INFO} from "../../constants/blockchain"
+import { NFT_SALE_CURRENT_INFO } from "../../constants/blockchain"
 import configs from "../../configs";
 import LoadingOutlined from "../../components/shared/LoadingOutlined";
+import WalletAuthContext from '../../contexts/WalletAuthContext'
+import wallet from "../../assets/images/icons/Wallet.svg"
+const { MOONBEAST_SC } = configs
 
-const {MOONBEAST_SC} = configs
-
-const {Paragraph} = Typography
+const { Paragraph } = Typography
 
 const LineContract = (props) => {
     const renderAddressLink = (address) => {
@@ -24,7 +25,7 @@ const LineContract = (props) => {
         <>
             <div className={'flex card-body-row-title'}>MOONBEAST NFT CONTRACT</div>
             <div className={'flex flex-col'}>
-                <Paragraph className={'flex text-white'} copyable={{text: MOONBEAST_SC, format: 'text/plain', icon: [<CopyIcon/>]}}>
+                <Paragraph className={'flex text-white'} copyable={{ text: MOONBEAST_SC, format: 'text/plain', icon: [<CopyIcon />] }}>
                     {getShortAddress(MOONBEAST_SC, 14)}
                 </Paragraph>
                 <div className={'flex'}>
@@ -36,7 +37,7 @@ const LineContract = (props) => {
 }
 
 
-const LinePrice = ({price}) => {
+const LinePrice = ({ price }) => {
     return (
         <>
             <div className={'flex card-body-row-title mt-3'}>NFT Price</div>
@@ -51,7 +52,8 @@ const LinePrice = ({price}) => {
     )
 }
 
-const NFTSaleInfo = ({availableSlots, maxSaleSlots, isLoading, handleGetMinted = () => {}, roundInfo=NFT_SALE_CURRENT_INFO}) => {
+const NFTSaleInfo = ({ availableSlots, maxSaleSlots, isLoading, handleGetMinted = () => { }, roundInfo = NFT_SALE_CURRENT_INFO }) => {
+    const { isConnected, showWalletSelectModal } = useContext(WalletAuthContext)
     const mintedSlots = maxSaleSlots - availableSlots
 
     const renderMinted = () => {
@@ -77,9 +79,9 @@ const NFTSaleInfo = ({availableSlots, maxSaleSlots, isLoading, handleGetMinted =
     return (
         <div className={'card-body-row flex flex-col'}>
             <LineContract />
-            <hr className={'card-body-separator'}/>
+            <hr className={'card-body-separator'} />
             <LinePrice price={roundInfo.price} />
-            <hr className={'card-body-separator'}/>
+            <hr className={'card-body-separator'} />
             <div className="cursor-pointer" onClick={handleGetMinted}>
                 <div className={'flex justify-between items-center mt-2 count-minted'}>
                     <div className={'flex card-body-row-title'}>
@@ -91,7 +93,7 @@ const NFTSaleInfo = ({availableSlots, maxSaleSlots, isLoading, handleGetMinted =
                 <div className={'flex flex-col text-[#4ccbc9]'}>
                     <div className="flex justify-between items-center custom-progress">
                         <Progress
-                            strokeColor={{from: '#4ccbc9', to: '#e4007b'}}
+                            strokeColor={{ from: '#4ccbc9', to: '#e4007b' }}
                             percent={getProgressPercent()}
                             status="active"
                             showInfo={false}
@@ -99,6 +101,17 @@ const NFTSaleInfo = ({availableSlots, maxSaleSlots, isLoading, handleGetMinted =
                     </div>
                 </div>
             </div>
+            {
+                !isConnected && <div className={'flex mt-8 justify-center form-mint-footer'} style={{marginTop: "30px"}}>
+                    <div className="btn-connect">
+                        <button type="button"
+                            onClick={showWalletSelectModal}
+                            className="button button-secondary">
+                            <img className="mr-1" src={wallet} /> Connect Wallet
+                        </button>
+                    </div>
+                </div>
+            }
         </div>
     )
 }

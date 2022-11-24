@@ -1,26 +1,27 @@
-import React, {useContext, useEffect, useState} from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import MFLogoNav from "../../assets/images/logo/logo2.png"
-import {Drawer, Modal, Typography} from "antd"
+import { Drawer, Modal, Typography } from "antd"
 import WalletAuthContext from "../../contexts/WalletAuthContext"
-import {Link, withRouter} from "react-router-dom"
+import { Link, withRouter } from "react-router-dom"
 import Paths from "../../routes/Paths"
 // import MFAccountButton from "../MFAccountButton"
-import {getShortAddress} from "../../utils/blockchain"
-import {getReactEnv} from "../../utils/env"
-import {AppRoutes} from "../../routes/AppRoutes"
+import { getShortAddress } from "../../utils/blockchain"
+import { getReactEnv } from "../../utils/env"
+import { AppRoutes } from "../../routes/AppRoutes"
 import CopyIcon from "./CopyIcon"
-import {CHAIN_ID_MAPPING, EVM_WALLETS} from "../../constants/blockchain"
+import { CHAIN_ID_MAPPING, EVM_WALLETS } from "../../constants/blockchain"
 import classNames from "classnames"
 import CloseIcon from "./CloseIcon"
-import {isMobileOrTablet} from "../../utils/device"
-
+import { isMobileOrTablet } from "../../utils/device"
+import { useLocation } from "react-router-dom"
 const ENV = getReactEnv('ENV')
-const {Paragraph} = Typography
+const { Paragraph } = Typography
 
 const WebNavigation = (props) => {
     const [isWalletModalVisible, setIsWalletModalVisible] = useState(false)
     const [isDrawerVisible, setIsDrawerVisible] = useState(false)
     const [colorChange, setColorChange] = useState(false)
+    const { pathname } = useLocation()
     // const [isMobileMenuVisible, setIsMobileMenuVisible] = useState(false)
 
     const {
@@ -54,9 +55,9 @@ const WebNavigation = (props) => {
     const mfDrawerLogo = (
         <div>
             <img loading="lazy"
-                 alt="MoonFit Whitelist - Web3 & NFT Lifestyle App"
-                 src={MFLogoNav}
-                 width={150}
+                alt="MoonFit Whitelist - Web3 & NFT Lifestyle App"
+                src={MFLogoNav}
+                width={150}
             />
         </div>
     )
@@ -78,11 +79,11 @@ const WebNavigation = (props) => {
             const isActive = [item.path, ...(item.actives || [])].includes(currentPath)
 
             return item.env.includes(ENV) && (
-                <li className={classNames('nav-item', {'active-item': isActive})} key={index} onClick={() => setIsDrawerVisible(false)}>
+                <li className={classNames('nav-item', { 'active-item': isActive })} key={index} onClick={() => setIsDrawerVisible(false)}>
                     {
                         item.external ? (
                             <a className="nav-link" href={item.path} target="_blank"
-                               rel="noreferrer">
+                                rel="noreferrer">
                                 <span className="nav-text">{item.title}</span>
                             </a>
                         ) : (
@@ -101,18 +102,18 @@ const WebNavigation = (props) => {
     }
 
     const renderAccountExtra = () => {
-        if (!walletExtKey) return <div/>
+        if (!walletExtKey) return <div />
         const walletExt = EVM_WALLETS.find(w => w.extensionName === walletExtKey)
         return (
             <div className={'flex flex-row items-center pt-2 mt-2 justify-between'}>
                 <div className={'mr-3 pr-2 inline-flex normal-case text-base'}>
                     <span className={'mr-2'}>Connected with</span> <img src={walletExt.logo.src}
-                                                                        alt={walletExt.logo.alt} width={25}/>
+                        alt={walletExt.logo.alt} width={25} />
                 </div>
                 {
                     !isMobileOrTablet() && (
                         <div className={'normal-case text-base cursor-pointer text-[#A16BD8] hover:text-blue-600'}
-                             onClick={onConnectMoreWallet}>
+                            onClick={onConnectMoreWallet}>
                             Connect more wallets
                         </div>
                     )
@@ -121,9 +122,10 @@ const WebNavigation = (props) => {
         )
     }
 
+    const headerBg = pathname.includes("/nft-world-cup-sale") ? 'bg-[#29000F]' : 'bg-[#120838]'
 
     return (
-        <header id="header" className={classNames('header', {'bg-[#120838]': colorChange})}>
+        <header id="header" className={`header ${colorChange ? headerBg : ""}`}>
             <div className="flex justify-between items-center px-6 lg:px-12">
                 <div className="header-inner w-full">
                     <div className="flex items-center header-left">
@@ -133,8 +135,8 @@ const WebNavigation = (props) => {
                         <div className="site-branding">
                             <Link to={Paths.Home.path}>
                                 <img loading="lazy"
-                                     alt="MoonFit Whitelist - Web3 & NFT Lifestyle App"
-                                     src={MFLogoNav}
+                                    alt="MoonFit Whitelist - Web3 & NFT Lifestyle App"
+                                    src={MFLogoNav}
                                 />
                             </Link>
                         </div>
@@ -151,28 +153,28 @@ const WebNavigation = (props) => {
                             {
                                 isConnected ? (
                                     <button type="button"
-                                            onClick={showWalletModal}
-                                            className="header-button button button-primary mr-4">
-                                        <svg className="inline w-5 h-5 mr-1" style={{marginTop: 2}} width="24"
-                                             height="24"
-                                             viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        onClick={showWalletModal}
+                                        className="header-button button button-primary mr-4">
+                                        <svg className="inline w-5 h-5 mr-1" style={{ marginTop: 2 }} width="24"
+                                            height="24"
+                                            viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                             <path
                                                 d="M20.25 6.75H5.25C5.05109 6.75 4.86032 6.67098 4.71967 6.53033C4.57902 6.38968 4.5 6.19891 4.5 6C4.5 5.80109 4.57902 5.61032 4.71967 5.46967C4.86032 5.32902 5.05109 5.25 5.25 5.25H18C18.1989 5.25 18.3897 5.17098 18.5303 5.03033C18.671 4.88968 18.75 4.69891 18.75 4.5C18.75 4.30109 18.671 4.11032 18.5303 3.96967C18.3897 3.82902 18.1989 3.75 18 3.75H5.25C4.65402 3.75247 4.08316 3.99031 3.66174 4.41174C3.24031 4.83316 3.00247 5.40402 3 6V18C3.00247 18.596 3.24031 19.1668 3.66174 19.5883C4.08316 20.0097 4.65402 20.2475 5.25 20.25H20.25C20.6478 20.25 21.0294 20.092 21.3107 19.8107C21.592 19.5294 21.75 19.1478 21.75 18.75V8.25C21.75 7.85218 21.592 7.47064 21.3107 7.18934C21.0294 6.90804 20.6478 6.75 20.25 6.75ZM16.875 14.625C16.6525 14.625 16.435 14.559 16.25 14.4354C16.065 14.3118 15.9208 14.1361 15.8356 13.9305C15.7505 13.725 15.7282 13.4988 15.7716 13.2805C15.815 13.0623 15.9222 12.8618 16.0795 12.7045C16.2368 12.5472 16.4373 12.44 16.6555 12.3966C16.8738 12.3532 17.1 12.3755 17.3055 12.4606C17.5111 12.5458 17.6868 12.69 17.8104 12.875C17.934 13.06 18 13.2775 18 13.5C18 13.7984 17.8815 14.0845 17.6705 14.2955C17.4595 14.5065 17.1734 14.625 16.875 14.625Z"
-                                                fill="#020722"/>
+                                                fill="#020722" />
                                         </svg>
 
                                         {getShortAddress(wallet.account, 6)}
                                     </button>
                                 ) : (
                                     <button type="button"
-                                            onClick={showWalletSelectModal}
-                                            className="header-button button button-primary mr-4">
-                                        <svg className="inline w-5 h-5 mr-1" style={{marginTop: 2}} width="24"
-                                             height="24"
-                                             viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        onClick={showWalletSelectModal}
+                                        className="header-button button button-primary mr-4">
+                                        <svg className="inline w-5 h-5 mr-1" style={{ marginTop: 2 }} width="24"
+                                            height="24"
+                                            viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                             <path
                                                 d="M20.25 6.75H5.25C5.05109 6.75 4.86032 6.67098 4.71967 6.53033C4.57902 6.38968 4.5 6.19891 4.5 6C4.5 5.80109 4.57902 5.61032 4.71967 5.46967C4.86032 5.32902 5.05109 5.25 5.25 5.25H18C18.1989 5.25 18.3897 5.17098 18.5303 5.03033C18.671 4.88968 18.75 4.69891 18.75 4.5C18.75 4.30109 18.671 4.11032 18.5303 3.96967C18.3897 3.82902 18.1989 3.75 18 3.75H5.25C4.65402 3.75247 4.08316 3.99031 3.66174 4.41174C3.24031 4.83316 3.00247 5.40402 3 6V18C3.00247 18.596 3.24031 19.1668 3.66174 19.5883C4.08316 20.0097 4.65402 20.2475 5.25 20.25H20.25C20.6478 20.25 21.0294 20.092 21.3107 19.8107C21.592 19.5294 21.75 19.1478 21.75 18.75V8.25C21.75 7.85218 21.592 7.47064 21.3107 7.18934C21.0294 6.90804 20.6478 6.75 20.25 6.75ZM16.875 14.625C16.6525 14.625 16.435 14.559 16.25 14.4354C16.065 14.3118 15.9208 14.1361 15.8356 13.9305C15.7505 13.725 15.7282 13.4988 15.7716 13.2805C15.815 13.0623 15.9222 12.8618 16.0795 12.7045C16.2368 12.5472 16.4373 12.44 16.6555 12.3966C16.8738 12.3532 17.1 12.3755 17.3055 12.4606C17.5111 12.5458 17.6868 12.69 17.8104 12.875C17.934 13.06 18 13.2775 18 13.5C18 13.7984 17.8815 14.0845 17.6705 14.2955C17.4595 14.5065 17.1734 14.625 16.875 14.625Z"
-                                                fill="#020722"/>
+                                                fill="#020722" />
                                         </svg>
                                         Connect Wallet
                                     </button>
@@ -181,52 +183,52 @@ const WebNavigation = (props) => {
                             {/*<MFAccountButton/>*/}
                         </div>
                         <button className="navbar-toggler collapsed" type="button" data-bs-toggle="collapse"
-                                data-bs-target="#mobile-menu" aria-controls="navbar" aria-expanded="false"
-                                aria-label="Toggle navigation" onClick={onToggleMobileMenu}>
-                                <span className="navbar-toggler-icon" />
+                            data-bs-target="#mobile-menu" aria-controls="navbar" aria-expanded="false"
+                            aria-label="Toggle navigation" onClick={onToggleMobileMenu}>
+                            <span className="navbar-toggler-icon" />
                         </button>
                     </div>
                 </div>
             </div>
             <Drawer title={mfDrawerLogo}
-                    placement={'left'}
-                    closable={false}
-                    onClose={() => setIsDrawerVisible(false)}
-                    visible={isDrawerVisible}
-                    key="left"
-                    width={300}
+                placement={'left'}
+                closable={false}
+                onClose={() => setIsDrawerVisible(false)}
+                visible={isDrawerVisible}
+                key="left"
+                width={300}
             >
                 <div className={'block md:hidden w-full'}>
                     {
                         isConnected ? (
                             <button type="button"
-                                    onClick={showWalletModal}
-                                    className="header-button w-full button button-primary">
-                                <svg className="inline w-5 h-5 mr-1" style={{marginTop: 2}} width="24" height="24"
-                                     viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                onClick={showWalletModal}
+                                className="header-button w-full button button-primary">
+                                <svg className="inline w-5 h-5 mr-1" style={{ marginTop: 2 }} width="24" height="24"
+                                    viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path
                                         d="M20.25 6.75H5.25C5.05109 6.75 4.86032 6.67098 4.71967 6.53033C4.57902 6.38968 4.5 6.19891 4.5 6C4.5 5.80109 4.57902 5.61032 4.71967 5.46967C4.86032 5.32902 5.05109 5.25 5.25 5.25H18C18.1989 5.25 18.3897 5.17098 18.5303 5.03033C18.671 4.88968 18.75 4.69891 18.75 4.5C18.75 4.30109 18.671 4.11032 18.5303 3.96967C18.3897 3.82902 18.1989 3.75 18 3.75H5.25C4.65402 3.75247 4.08316 3.99031 3.66174 4.41174C3.24031 4.83316 3.00247 5.40402 3 6V18C3.00247 18.596 3.24031 19.1668 3.66174 19.5883C4.08316 20.0097 4.65402 20.2475 5.25 20.25H20.25C20.6478 20.25 21.0294 20.092 21.3107 19.8107C21.592 19.5294 21.75 19.1478 21.75 18.75V8.25C21.75 7.85218 21.592 7.47064 21.3107 7.18934C21.0294 6.90804 20.6478 6.75 20.25 6.75ZM16.875 14.625C16.6525 14.625 16.435 14.559 16.25 14.4354C16.065 14.3118 15.9208 14.1361 15.8356 13.9305C15.7505 13.725 15.7282 13.4988 15.7716 13.2805C15.815 13.0623 15.9222 12.8618 16.0795 12.7045C16.2368 12.5472 16.4373 12.44 16.6555 12.3966C16.8738 12.3532 17.1 12.3755 17.3055 12.4606C17.5111 12.5458 17.6868 12.69 17.8104 12.875C17.934 13.06 18 13.2775 18 13.5C18 13.7984 17.8815 14.0845 17.6705 14.2955C17.4595 14.5065 17.1734 14.625 16.875 14.625Z"
-                                        fill="#020722"/>
+                                        fill="#020722" />
                                 </svg>
 
                                 {getShortAddress(wallet.account, 6)}
                             </button>
                         ) : (
                             <button type="button"
-                                    onClick={showWalletSelectModal}
-                                    className="header-button w-full button button-primary">
-                                <svg className="inline w-5 h-5 mr-1" style={{marginTop: 2}} width="24" height="24"
-                                     viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                onClick={showWalletSelectModal}
+                                className="header-button w-full button button-primary">
+                                <svg className="inline w-5 h-5 mr-1" style={{ marginTop: 2 }} width="24" height="24"
+                                    viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path
                                         d="M20.25 6.75H5.25C5.05109 6.75 4.86032 6.67098 4.71967 6.53033C4.57902 6.38968 4.5 6.19891 4.5 6C4.5 5.80109 4.57902 5.61032 4.71967 5.46967C4.86032 5.32902 5.05109 5.25 5.25 5.25H18C18.1989 5.25 18.3897 5.17098 18.5303 5.03033C18.671 4.88968 18.75 4.69891 18.75 4.5C18.75 4.30109 18.671 4.11032 18.5303 3.96967C18.3897 3.82902 18.1989 3.75 18 3.75H5.25C4.65402 3.75247 4.08316 3.99031 3.66174 4.41174C3.24031 4.83316 3.00247 5.40402 3 6V18C3.00247 18.596 3.24031 19.1668 3.66174 19.5883C4.08316 20.0097 4.65402 20.2475 5.25 20.25H20.25C20.6478 20.25 21.0294 20.092 21.3107 19.8107C21.592 19.5294 21.75 19.1478 21.75 18.75V8.25C21.75 7.85218 21.592 7.47064 21.3107 7.18934C21.0294 6.90804 20.6478 6.75 20.25 6.75ZM16.875 14.625C16.6525 14.625 16.435 14.559 16.25 14.4354C16.065 14.3118 15.9208 14.1361 15.8356 13.9305C15.7505 13.725 15.7282 13.4988 15.7716 13.2805C15.815 13.0623 15.9222 12.8618 16.0795 12.7045C16.2368 12.5472 16.4373 12.44 16.6555 12.3966C16.8738 12.3532 17.1 12.3755 17.3055 12.4606C17.5111 12.5458 17.6868 12.69 17.8104 12.875C17.934 13.06 18 13.2775 18 13.5C18 13.7984 17.8815 14.0845 17.6705 14.2955C17.4595 14.5065 17.1734 14.625 16.875 14.625Z"
-                                        fill="#020722"/>
+                                        fill="#020722" />
                                 </svg>
                                 Connect Wallet
                             </button>
                         )
                     }
                 </div>
-                <hr className={'block md:hidden mt-5 mb-3'}/>
+                <hr className={'block md:hidden mt-5 mb-3'} />
                 <nav className="primary-menu sidebar-menu">
                     <ul className="nav">
                         {renderLinks()}
@@ -234,31 +236,31 @@ const WebNavigation = (props) => {
                 </nav>
             </Drawer>
             <Modal title={'Wallet Information'}
-                   visible={isWalletModalVisible}
-                   onCancel={hideWalletModal}
-                   closeIcon={<CloseIcon/>}
-                   wrapClassName={'mf-modal account-modal'}
-                   className={'mf-modal-content account-modal-content top-4 sm:top-24 md:top-32'}
-                   footer={[
-                       <div className={'flex w-full'} key={'account-modal-footer'}>
-                           <button type="button"
-                                   onClick={() => onDisconnect(() => setIsWalletModalVisible(false))}
-                                   className="w-1/2 button button-dark">
-                               Disconnect
-                           </button>
-                           <button type="button"
-                                   onClick={onConnectDone}
-                                   className="w-1/2 button button-secondary">
-                               Done
-                           </button>
-                       </div>
-                   ]}
+                visible={isWalletModalVisible}
+                onCancel={hideWalletModal}
+                closeIcon={<CloseIcon />}
+                wrapClassName={'mf-modal account-modal'}
+                className={'mf-modal-content account-modal-content top-4 sm:top-24 md:top-32'}
+                footer={[
+                    <div className={'flex w-full'} key={'account-modal-footer'}>
+                        <button type="button"
+                            onClick={() => onDisconnect(() => setIsWalletModalVisible(false))}
+                            className="w-1/2 button button-dark">
+                            Disconnect
+                        </button>
+                        <button type="button"
+                            onClick={onConnectDone}
+                            className="w-1/2 button button-secondary">
+                            Done
+                        </button>
+                    </div>
+                ]}
             >
                 <div>
                     <div className="flex flex-col modal-body-row">
                         <div className={'flex modal-body-row-title'}>Wallet address</div>
                         <Paragraph className={'flex text-white'}
-                                   copyable={{text: wallet.account, format: 'text/plain', icon: [<CopyIcon/>]}}>
+                            copyable={{ text: wallet.account, format: 'text/plain', icon: [<CopyIcon />] }}>
                             {getShortAddress(wallet.account, 12)}
                         </Paragraph>
                         {renderAccountExtra()}
