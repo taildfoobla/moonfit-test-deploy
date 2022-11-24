@@ -93,7 +93,7 @@ export const getMoonBeast = async (moonBeastContract, saleContract, wallet, opti
         })
 
         _moonBeasts = _moonBeasts.concat(beasts)
-    }, { concurrency: 2 })
+    }, { concurrency: 1 })
 
     _moonBeasts = _moonBeasts.filter(item => {
         if (options && options.isOwnerMinted && !item.isOwnerMinted) {

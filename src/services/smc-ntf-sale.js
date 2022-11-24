@@ -11,7 +11,7 @@ const {moonBeastContract} = require('./smc-moon-beast')
 
 const {MOONBEAM_WSS_URL} = configs
 const {NFT_SALE_SC, eventUpdateSaleAmountName: eventName} = NFT_SALE_ROUNDS_INFO.R3
-console.log({round: 3, NFT_SALE_SC});
+// console.log({round: 3, NFT_SALE_SC});
 
 const web3 = new Web3(MOONBEAM_WSS_URL)
 const saleContract = new web3.eth.Contract(nftSaleABI.abi, NFT_SALE_SC)

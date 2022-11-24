@@ -2,8 +2,9 @@ import React, {useEffect, useState} from 'react'
 
 import MoonBeasts from './MoonBeasts';
 import LoadingOutlined from "../../shared/LoadingOutlined";
+import EventBus from '../../../utils/event-bus'
 
-const MoonBeastsV2 = ({moonBeasts, isLoading, moonBeastMinting = 0}) => {
+const MoonBeastsV2 = ({moonBeasts, isLoading, moonBeastMinting = 0, handleRefresh = () => {}}) => {
     const [data, setData] = useState([])
     const [currentPage, setCurrentPage] = useState(1)
     const [isFetchData, setIsFetchData] = useState(false)
@@ -13,6 +14,9 @@ const MoonBeastsV2 = ({moonBeasts, isLoading, moonBeastMinting = 0}) => {
 
     useEffect(() => {
         init()
+        EventBus.$on('buyNFT', () => {
+            setCurrentPage(1)
+        })
     })
 
     useEffect(() => {
@@ -25,7 +29,7 @@ const MoonBeastsV2 = ({moonBeasts, isLoading, moonBeastMinting = 0}) => {
             return
         }
 
-        if (moonBeasts.length <= 9) {
+        if (moonBeasts.length <= pageSize) {
             setData(moonBeasts)
         } else {
             setData(moonBeasts.slice(0, pageSize))
@@ -63,6 +67,7 @@ const MoonBeastsV2 = ({moonBeasts, isLoading, moonBeastMinting = 0}) => {
                                       moonBeastMinting={moonBeastMinting}
                                       hasPagination={data.length < moonBeasts.length}
                                       onChangePage={onChangePage}
+                                      handleRefresh={handleRefresh}
                                       total={moonBeasts.length}
                                       currentPage={currentPage}
                                       pageSize={pageSize}

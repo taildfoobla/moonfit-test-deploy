@@ -28,7 +28,6 @@ const MoonBeastItem = ({moonBeast = {}}) => {
     const fetchData = async () => {
         setIsLoading(true)
         setIsError(false)
-        console.log(moonBeast);
         if (!moonBeast.tokenId) {
             const {tokenId, uri} = await getTokenInfoOfOwnerByIndex(moonBeast.wallet, moonBeast.index)
 
