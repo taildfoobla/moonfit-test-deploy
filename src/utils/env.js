@@ -1,3 +1,3 @@
 export const getReactEnv = (name) => {
-    return 'production'
+    return process.env[`REACT_APP_${name}`] || 'production'
 }
