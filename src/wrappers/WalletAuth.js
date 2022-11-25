@@ -10,7 +10,7 @@ import { useLocalStorage } from "../hooks/useLocalStorage"
 import { isMobileOrTablet } from "../utils/device"
 import WalletConnect from "@walletconnect/client"
 import QRCodeModal from "@walletconnect/qrcode-modal"
-
+import { useLocation } from "react-router-dom"
 
 const providerReadyEvent = {
     'ethereum': 'ethereum#initialized', // Metamask ready event
@@ -32,7 +32,7 @@ const WalletAuthWrapper = ({ children }) => {
     const [isModalVisible, setIsModalVisible] = useState(false)
     const [isAuthModalVisible, setIsAuthModalVisible] = useState(false)
     const [network, setNetWork] = useLocalStorage(LOCALSTORAGE_KEY.NETWORK)
-
+    const { pathname } = useLocation()
     // use Wallet Connect
     const [connector, setConnector] = useState(null)
 
@@ -188,6 +188,7 @@ const WalletAuthWrapper = ({ children }) => {
         const isInstalled = window[providerName] && window[providerName][wallet.isSetGlobalString]
         if (isMobileOrTablet() && !isMetaMaskBrowser) {
             if (providerName === "SubWallet") deepLink = `subwallet://browser?url=${window.location.host}`
+            if (pathname && pathname.length !== 0) deepLink = `${deepLink}${pathname}`
             return window.location.href = deepLink
         }
         if (!isInstalled) return window.open(wallet.installUrl)
