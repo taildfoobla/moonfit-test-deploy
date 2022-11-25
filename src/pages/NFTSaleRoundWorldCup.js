@@ -238,7 +238,6 @@ const NFTSaleRoundWorldCup = (props) => {
             notification.sentTransactionSuccess(txHash)
             setMintLoading(false)
         } catch (e) {
-            window.e = e
             setMintLoading(false)
             console.log(e.message);
             notification.error(e.message, e)
