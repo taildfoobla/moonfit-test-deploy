@@ -111,12 +111,12 @@ const WebNavigation = (props) => {
                         alt={walletExt.logo.alt} width={25} />
                 </div>
                 {
-                    !isMobileOrTablet() && (
-                        <div className={'normal-case text-base cursor-pointer text-[#A16BD8] hover:text-blue-600'}
-                            onClick={onConnectMoreWallet}>
-                            Connect more wallets
-                        </div>
-                    )
+                    // !isMobileOrTablet() && (
+                    <div className={'normal-case text-base cursor-pointer text-[#A16BD8] hover:text-blue-600'}
+                        onClick={onConnectMoreWallet}>
+                        Connect more wallets
+                    </div>
+                    // )
                 }
             </div>
         )
