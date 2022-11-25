@@ -8,11 +8,14 @@ const {MINT_PASS_SC} = configs
 
 const MintPassNFT = ({tokenId, name, imageUrl}) => {
     const renderNFTLink = (address, tokenId) => {
-        const url = getNFTScanUrl(address.toLowerCase(), tokenId)
+        // const url = getNFTScanUrl(address.toLowerCase(), tokenId)
         return (
-            <a href={url} target={'_blank'} rel={'noreferrer'} className={'text-[#A16BD8] text-sm normal-case'}>
+            // <a href="#" target={'_blank'} rel={'noreferrer'} className={'text-[#A16BD8] text-sm normal-case'}>
+            //     View on NFTScan
+            // </a>
+            <span className={'text-[#A16BD8] text-sm normal-case'}>
                 View on NFTScan
-            </a>
+            </span>
         )
     }
 
