@@ -38,7 +38,7 @@ const Header = ({ availableSlots, isLoading = true, roundInfo = NFT_SALE_CURRENT
                         }
                     </h2>
                 </div>
-                <div className={'flex justify-center mt-6'}>
+                <div className={'flex justify-center mt-6'} style={{minHeight: '32px'}}>
                     <span
                         className="bg-[#A16BD8] text-[16px] text-white uppercase font-bold px-4 rounded dark:text-white">
                         {roundInfo.specialRound ? roundInfo.dateRange : roundInfo.dateMsg}

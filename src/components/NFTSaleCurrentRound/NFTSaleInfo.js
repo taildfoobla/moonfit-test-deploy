@@ -83,7 +83,7 @@ const NFTSaleInfo = ({ availableSlots, maxSaleSlots, isLoading, handleGetMinted 
             <LinePrice price={roundInfo.price} />
             <hr className={'card-body-separator'} />
             <div className="cursor-pointer" onClick={handleGetMinted}>
-                <div className={'flex justify-between items-center mt-2 count-minted'}>
+                <div className={'flex justify-between items-center mt-2 count-minted'} style={{minHeight: '35px'}}>
                     <div className={'flex card-body-row-title'}>
                         Total Minted
                     </div>

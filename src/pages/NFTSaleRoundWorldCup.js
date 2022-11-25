@@ -60,18 +60,16 @@ const NFTSaleRoundWorldCup = (props) => {
     const { isConnected, wallet, provider, connector } = useContext(WalletAuthContext)
 
     useEffect(() => {
-        if (!!wallet.account) {
-            setMoonBeasts([])
-            EventBus.$on(NFT_SALE_CURRENT_INFO.eventUpdateSaleAmountName, (data) => {
-                if (data.soldAmount && data.maxSaleAmount) {
-                    setNftSaleAvailableQuantity(data.availableSlot)
-                }
-            })
+        setMoonBeasts([])
+        EventBus.$on(NFT_SALE_CURRENT_INFO.eventUpdateSaleAmountName, (data) => {
+            if (data.soldAmount && data.maxSaleAmount) {
+                setNftSaleAvailableQuantity(data.availableSlot)
+            }
+        })
 
-            subscribeUpdateSaleAmount()
+        subscribeUpdateSaleAmount()
 
-            fetchData().then()
-        }
+        fetchData().then()
         notification.destroy()
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [wallet.account])
@@ -152,6 +150,9 @@ const NFTSaleRoundWorldCup = (props) => {
     }
 
     const _fetchMoonBeasts = async (isSetLoading = true) => {
+        if (!wallet.account) {
+            return
+        }
         isSetLoading && setMoonBeastLoading(true)
         try {
             const moonBeasts = await getMoonBeast(wallet.account)
