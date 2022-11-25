@@ -42,7 +42,7 @@ const getConfigs = () => {
                 R2_NFT_SALE_SC: '0x775282a995ac37410Bbc053a91bc01221a71c50f',
                 R3_NFT_SALE_SC: '',
                 R4_NFT_SALE_SC: '',
-                WC_NFT_SALE_SC: '',
+                WC_NFT_SALE_SC: '0x5c0101b04F2b7dc186356e4cd934855db658eEf4',
                 MOONBEAST_SC: '0x02A6DeC99B2Ca768D638fcD87A96F6069F91287c',
             }
         case 'development':
