@@ -213,8 +213,8 @@ const WalletAuthWrapper = ({ children }) => {
             alert(JSON.stringify({
                 providerName: providerName,
                 isSetGlobalString: wallet.isSetGlobalString,
-                w: window[providerName],
-                isInstalled,
+                w: typeof window[providerName],
+                isInstalled: isInstalled ? 'True' : 'False',
             }))
         }
 
