@@ -4,7 +4,7 @@ const getConfigs = () => {
     const env = getReactEnv('ENV')
     const config = {
         API_URL: 'https://api-dev.moonfit.xyz/v1',
-        APP_URI: 'dev-app.moonfit.xyz',
+        APP_URI: window.location.host,
 
         MOONBEAST_NETWORK: 'https://rpc.api.moonbase.moonbeam.network/',
         MOONBEAM_WSS_URL: 'wss://wss.api.moonbase.moonbeam.network',
@@ -25,12 +25,12 @@ const getConfigs = () => {
                 ...config,
                 env: 'local',
                 API_URL: 'http://0.0.0.0:8081/v1',
-                APP_URI: 'localhost:3000',
+                APP_URI: window.location.host,
             }
         case 'production':
             return {
                 API_URL: 'https://api-prod.moonfit.xyz/v1',
-                APP_URI: 'app.moonfit.xyz',
+                APP_URI: window.location.host,
                 env: 'production',
 
                 MOONBEAST_NETWORK: 'https://rpc.api.moonbeam.network/',
