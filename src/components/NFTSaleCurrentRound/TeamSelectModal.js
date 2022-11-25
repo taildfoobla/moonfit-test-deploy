@@ -6,6 +6,7 @@ const TeamSelectModal = (props) => {
 
     const { open, currentTeam, handleCancel, onChangeTeam } = props
     const [selectedTeam, setSeletectedTeam] = useState(null)
+    const sortTeam = WORLDCUP_TEAMS.sort((a, b) => a.name.localeCompare(b.name))
 
     useEffect(() => {
         setSeletectedTeam(currentTeam)
@@ -49,7 +50,7 @@ const TeamSelectModal = (props) => {
         >
             <div className="grid grid-cols-3 gap-4 list-team">
                 {
-                    WORLDCUP_TEAMS.map((team) => (
+                    sortTeam.map((team) => (
                         <div key={`${team.name}`} className="team text-center"
                             onClick={() => onSelectTeam(team)}
                             onDoubleClick={() => onSelectTeam(team, true)}
