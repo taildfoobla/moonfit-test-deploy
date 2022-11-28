@@ -14,11 +14,11 @@ jobs:
       - name: Install dependencies
         run: yarn -i
       - name: Build dependencies
-        run: REACT_APP_ENV=development DISABLE_ESLINT_PLUGIN=true yarn build
+        run: REACT_APP_ENV=production DISABLE_ESLINT_PLUGIN=true yarn build
 
       - name: Deploy to Firebase
         uses: w9jds/firebase-action@master
         with:
-          args: deploy --only hosting:moonfit-nft
+          args: deploy --only hosting:prod
         env:
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
