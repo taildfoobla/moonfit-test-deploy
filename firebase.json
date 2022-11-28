@@ -1,8 +1,7 @@
 {
   "hosting": [
     {
-      "target": "prod",
-      "site": "moonfit-nft",
+      "target": "moonfit-nft",
       "public": "build",
       "ignore": [
         "firebase.json",
@@ -17,7 +16,6 @@
       ]
     },
     {
-      "target": "dev",
       "site": "moonfit-token-sale",
       "public": "build",
       "ignore": [
