@@ -2,7 +2,7 @@ name: Deploy to firebase
 
 on:
   push:
-    branches: [develop]
+    branches: [master]
 
 jobs:
   build:
@@ -19,6 +19,6 @@ jobs:
       - name: Deploy to Firebase
         uses: w9jds/firebase-action@master
         with:
-          args: deploy --only hosting dev moonfit-token-sale
+          args: deploy --only hosting prod moonfit-nft
         env:
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
