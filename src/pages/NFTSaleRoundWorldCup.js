@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useRef, useState } from 'react'
 import BigNumber from 'bignumber.js'
 import Bluebird from 'bluebird'
+import moment from 'moment'
 import WalletAuthContext from "../contexts/WalletAuthContext"
 import * as notification from "../utils/notification"
 import { switchNetwork } from "../utils/blockchain"
@@ -9,7 +10,6 @@ import LoadingWrapper from "../components/shared/LoadingWrapper"
 import Paths from "../routes/Paths"
 import EnvWrapper from "../components/shared/EnvWrapper"
 import { NFT_SALE_ROUNDS_INFO } from "../constants/blockchain"
-import WalletAuthRequiredNFTSale from "../components/WalletAuthRequiredNFTSale"
 import NFTStages from "../components/NFTStages"
 import Header from '../components/NFTSaleCurrentRound/Header'
 import ButtonMintNFT from '../components/NFTSaleCurrentRound/ButtonMintNFT'
@@ -53,7 +53,7 @@ const NFTSaleRoundWorldCup = (props) => {
     const [team, setTeam] = useState('')
     const [openModal, setOpenModal] = useState(false)
     const maxMintAmount = 100
-    const isExpired = NFT_SALE_CURRENT_INFO.expireDate ? new Date() > new Date(NFT_SALE_CURRENT_INFO.expireDate) : false
+    const isExpired = NFT_SALE_CURRENT_INFO.expireDate ? moment() > moment(NFT_SALE_CURRENT_INFO.expireDate).endOf("day") : false
 
     const mbRetrieverRef = useRef(0)
 
