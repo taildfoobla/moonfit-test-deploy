@@ -11,6 +11,7 @@ const MoonBeasts = ({
                         currentPage = 1,
                         onChangePage = () => null,
                         handleRefresh = () => null,
+                        isExpired = false
                     }) => {
 
     const _itemRender = (_, type, originalElement) => {
@@ -55,7 +56,7 @@ const MoonBeasts = ({
                 <div className={'flex card-body-row-title'}>Total {total}
                 </div>
             </div>
-            <MoonBeastList moonBeasts={moonBeasts} moonBeastMinting={moonBeastMinting}/>
+            <MoonBeastList moonBeasts={moonBeasts} moonBeastMinting={moonBeastMinting} isExpired={isExpired} />
             {_renderLoadMore()}
         </div>
     )

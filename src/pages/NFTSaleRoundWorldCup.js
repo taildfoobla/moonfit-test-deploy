@@ -54,7 +54,6 @@ const NFTSaleRoundWorldCup = (props) => {
     const [openModal, setOpenModal] = useState(false)
     const maxMintAmount = 100
     const isExpired = NFT_SALE_CURRENT_INFO.expireDate ? moment() > moment(NFT_SALE_CURRENT_INFO.expireDate).endOf("day") : false
-
     const mbRetrieverRef = useRef(0)
 
     const { isConnected, wallet, provider, connector } = useContext(WalletAuthContext)
@@ -351,30 +350,35 @@ const NFTSaleRoundWorldCup = (props) => {
                                     className={'flex text-white justify-center w-full lg:w-auto justify-center lg:justify-start mt-4 lg:mt-0'}>
                                     Public mint
                                 </div>
-                                <div
-                                    className={'flex w-full lg:w-auto justify-center lg:justify-start mt-4 lg:mt-0'}>
-                                    {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
-                                    <a href="#"
-                                        className={'uppercase text-xs inline primary-color darker-grotesque-font text-[18px] font-extrabold'}
-                                        onClick={(e) => handleRefresh(e)}>
-                                        <svg className="w-4 h-4 inline mb-1 mr-1" fill="none" stroke="currentColor"
-                                            viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
-                                                d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-                                        </svg>
-                                        Refresh
-                                    </a>
-                                </div>
+                                {
+                                    !isExpired && <div
+                                        className={'flex w-full lg:w-auto justify-center lg:justify-start mt-4 lg:mt-0'}>
+                                        {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
+                                        <a href="#"
+                                            className={'uppercase text-xs inline primary-color darker-grotesque-font text-[18px] font-extrabold'}
+                                            onClick={(e) => handleRefresh(e)}>
+                                            <svg className="w-4 h-4 inline mb-1 mr-1" fill="none" stroke="currentColor"
+                                                viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
+                                                    d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                                            </svg>
+                                            Refresh
+                                        </a>
+                                    </div>
+                                }
                             </div>
                             <div className="card-body">
                                 <div className={'mt-4 mb-6 lg:mt-8'}>
-                                    <NFTSaleInfo
-                                        availableSlots={nftSaleAvailableQuantity}
-                                        maxSaleSlots={nftSaleQuantity}
-                                        isLoading={saleInfoLoading}
-                                        handleGetMinted={handleGetMinted}
-                                        roundInfo={NFT_SALE_CURRENT_INFO}
-                                    />
+                                    {
+                                        !isExpired && <NFTSaleInfo
+                                            availableSlots={nftSaleAvailableQuantity}
+                                            maxSaleSlots={nftSaleQuantity}
+                                            isLoading={saleInfoLoading}
+                                            handleGetMinted={handleGetMinted}
+                                            roundInfo={NFT_SALE_CURRENT_INFO}
+                                        />
+                                    }
+
                                     {
                                         (!isConnected || isExpired || NFT_SALE_CURRENT_INFO.isSoldOut || nftSaleAvailableQuantity <= 0) ? null : (
                                             <div className={'card-body-row flex flex-col mt-3'}>
@@ -387,6 +391,7 @@ const NFTSaleRoundWorldCup = (props) => {
                                             moonBeasts={moonBeasts}
                                             handleRefresh={_fetchMoonBeasts}
                                             key={moonBeastKey}
+                                            isExpired={isExpired}
                                             moonBeastMinting={moonBeastMinting} />
                                     }
                                 </div>
@@ -399,10 +404,6 @@ const NFTSaleRoundWorldCup = (props) => {
         )
     }
 
-    if (isExpired) {
-        return null
-    }
-
     return (
         <WorldcupBGWrapper className="page-nft-sale" scrollBg={!isConnected}>
             <EnvWrapper routeItem={Paths.NFTSale}>
@@ -412,7 +413,7 @@ const NFTSaleRoundWorldCup = (props) => {
                             !loading && (
                                 [
                                     <Header availableSlots={nftSaleAvailableQuantity} isLoading={saleInfoLoading}
-                                        roundInfo={NFT_SALE_CURRENT_INFO} key="Header" />,
+                                        roundInfo={NFT_SALE_CURRENT_INFO} isExpired={isExpired} key="Header" />,
                                     _renderContainer()
                                 ]
                             )

@@ -4,7 +4,7 @@ import MoonBeasts from './MoonBeasts';
 import LoadingOutlined from "../../shared/LoadingOutlined";
 import EventBus from '../../../utils/event-bus'
 
-const MoonBeastsV2 = ({moonBeasts, isLoading, moonBeastMinting = 0, handleRefresh = () => {}}) => {
+const MoonBeastsV2 = ({moonBeasts, isLoading, moonBeastMinting = 0, handleRefresh = () => {}, isExpired = false}) => {
     const [data, setData] = useState([])
     const [currentPage, setCurrentPage] = useState(1)
     const [isFetchData, setIsFetchData] = useState(false)
@@ -61,6 +61,7 @@ const MoonBeastsV2 = ({moonBeasts, isLoading, moonBeastMinting = 0, handleRefres
                                       total={moonBeasts.length}
                                       currentPage={currentPage}
                                       pageSize={pageSize}
+                                      isExpired={isExpired}
     />
 
     if (isLoading || isFetchData) {
