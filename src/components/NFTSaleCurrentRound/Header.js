@@ -9,7 +9,7 @@ const Header = ({ availableSlots, isLoading = true, roundInfo = NFT_SALE_CURRENT
         }
 
         if (isExpired) {
-            return <span className="ml-3 bg-[#4CCBC9] text-[#020722] text-[16px] uppercase font-extrabold px-4 rounded dark:bg-green-500 dark:text-white">
+            return <span className="ml-3 bg-[#EF2763] text-[16px] text-white uppercase font-bold px-4 rounded dark:bg-green-500 dark:text-white">
                 SALE ENDED
             </span>
         }
