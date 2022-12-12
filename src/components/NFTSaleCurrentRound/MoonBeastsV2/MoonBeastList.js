@@ -3,7 +3,7 @@ import { range } from "../../../utils/array"
 import MoonBeastItem from './MoonBeastItem';
 import MoonBeastItemMinting from './MoonBeastItemMinting';
 
-const MoonBeasts = ({ moonBeasts, moonBeastMinting = 0 }) => {
+const MoonBeasts = ({ moonBeasts, moonBeastMinting = 0, isExpired = false }) => {
     const _renderMinting = () => {
         if (!moonBeastMinting) {
             return null
@@ -21,7 +21,7 @@ const MoonBeasts = ({ moonBeasts, moonBeastMinting = 0 }) => {
                 </div> */}
                 {/* <div className={'text-center text-white normal-case font-normal'}>Please pick a team and enter the amount of Beast & Beauty</div> */}
                 <div className={'text-center text-white normal-case font-normal'}>
-                    Please pick a team and enter the amount of Beast you want to mint, then click the "MINT NFT" button
+                    {isExpired ? `No NFTs found!` : `Please pick a team and enter the amount of Beast you want to mint, then click the "MINT NFT" button`}
                 </div>
             </div>
         )
