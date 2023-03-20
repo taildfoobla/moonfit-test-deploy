@@ -128,6 +128,9 @@ export const updateTransactionHash = async (data) => {
         const {data: resp} = await axios({
             method: 'POST',
             url: `${API_URL}/wallet/update-wallet-transaction-by-web`,
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem('walletToken')}`
+            },
             data,
         })
 

@@ -10,7 +10,7 @@ const MoonBeastsV2 = ({moonBeasts, user, isLoading, handleRefresh = () => {}}) =
     const [isFetchData, setIsFetchData] = useState(false)
 
     const itemInRow = 3
-    const pageSize = itemInRow * 2
+    const pageSize = itemInRow * 6
 
     useEffect(() => {
         init()
