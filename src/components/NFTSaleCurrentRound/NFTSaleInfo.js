@@ -107,7 +107,7 @@ const NFTSaleInfo = ({ availableSlots, maxSaleSlots, isLoading, handleGetMinted 
                         <button type="button"
                             onClick={showWalletSelectModal}
                             className="button button-secondary">
-                            <img className="mr-1" src={wallet} /> Connect Wallet
+                            <img className="mr-1" src={wallet} alt="" /> Connect Wallet
                         </button>
                     </div>
                 </div>

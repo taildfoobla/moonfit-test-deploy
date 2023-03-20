@@ -78,3 +78,71 @@ export const createAuthApiRequest = async ({url, method, data, params, isFormDat
         }
     }
 }
+
+export const loginByWallet = async (data) => {
+    try {
+        const {data: resp} = await axios({
+            method: 'POST',
+            url: `${API_URL}/auth/login-by-wallet`,
+            data,
+        })
+
+        return resp
+    } catch (e) {
+        const {response} = e
+        const message = response ? response.statusText : e.message || e
+        const data = response ? response.data : ''
+        return {
+            success: false,
+            message,
+            data
+        }
+    }
+}
+
+export const depositNFT = async (data) => {
+    try {
+        const {data: resp} = await axios({
+            method: 'POST',
+            url: `${API_URL}/wallet/deposit-transaction-by-web`,
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem('walletToken')}`
+            },
+            data,
+        })
+
+        return resp
+    } catch (e) {
+        const {response} = e
+        const message = response ? response.statusText : e.message || e
+        const data = response ? response.data : ''
+        return {
+            success: false,
+            message,
+            data
+        }
+    }
+}
+export const updateTransactionHash = async (data) => {
+    try {
+        const {data: resp} = await axios({
+            method: 'POST',
+            url: `${API_URL}/wallet/update-wallet-transaction-by-web`,
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem('walletToken')}`
+            },
+            data,
+        })
+
+        return resp
+    } catch (e) {
+        const {response} = e
+        const message = response ? response.statusText : e.message || e
+        const data = response ? response.data : ''
+        return {
+            success: false,
+            message,
+            data
+        }
+    }
+}

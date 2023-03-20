@@ -5,6 +5,7 @@ import MintPassMinting from "../pages/MintPassMinting"
 // import MintPassVerify from "../pages/MintPassVerify"
 // import NFTSale from "../pages/NFTSaleCurrentRound"
 import NFTSaleStages from "../pages/NFTSaleStages"
+import Deposit from "../pages/Deposit"
 // import NFTSaleRoundThree from "../pages/NFTSaleRoundThree"
 // import NFTSaleRoundFour from "../pages/NFTSaleRoundFour"
 import NFTSaleRoundWorldCup from "../pages/NFTSaleRoundWorldCup"
@@ -54,6 +55,11 @@ const routes = [
                 path: Paths.NftSaleStages.path,
                 exact: true,
                 component: NFTSaleStages
+            },
+            {
+                path: Paths.Deposit.path,
+                exact: true,
+                component: Deposit
             },
             {
                 path: '*',

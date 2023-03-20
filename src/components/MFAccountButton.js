@@ -103,7 +103,7 @@ const MFAccountButton = ({containerClassName = '', btnClassName = ''}) => {
                 {getShortUsername(user?.name)}
             </button>
             <Modal title="Account Information"
-                   visible={isModalVisible}
+                   open={isModalVisible}
                    onCancel={hideModal}
                    closeIcon={(
                        <svg className={'cursor-pointer'} width="32" height="32" viewBox="0 0 32 32" fill="none"
@@ -168,7 +168,7 @@ const MFAccountButton = ({containerClassName = '', btnClassName = ''}) => {
                 Login
             </button>
             <Modal title="Web Cross Sign In"
-                   visible={isModalVisible}
+                   open={isModalVisible}
                    closeIcon={(
                        <svg className={'cursor-pointer'} width="32" height="32" viewBox="0 0 32 32" fill="none"
                             xmlns="http://www.w3.org/2000/svg">

@@ -1,33 +1,37 @@
-import React, {useEffect, useState} from 'react'
+import React, {useContext, useEffect, useState} from 'react'
 import {Image, Tooltip} from "antd"
 import getNFTMetadata from '../../../utils/moonbeast-metadata'
 import {getTokenInfoOfOwnerByIndex} from '../../../services/smc-moon-beast'
-import NFTLink from '../../NFTLink'
-import configs from "../../../configs";
 import MoonBeastItemMinting from './MoonBeastItemMinting';
 import socialIcon from '../../../assets/images/icons/social.svg'
 import enduranceIcon from '../../../assets/images/icons/endurance.svg'
 import luckIcon from '../../../assets/images/icons/luck.svg'
 import speedIcon from '../../../assets/images/icons/speed.svg'
+import LoadingOutlined from '../../shared/LoadingOutlined'
+import {depositNFT, updateTransactionHash} from '../../../utils/api'
+import {
+    sendTransaction,
+} from "../../../utils/blockchain"
+import WalletAuthContext from "../../../contexts/WalletAuthContext";
+import * as notification from "../../../utils/notification";
+import {getTransactionReceipt} from "../../../services/smc-common";
 
-const {MOONBEAST_SC} = configs
-
-const MoonBeastItem = ({moonBeast = {}}) => {
+const MoonBeastItem = ({moonBeast = {}, user}) => {
     const [isLoading, setIsLoading] = useState(true)
-    // eslint-disable-next-line no-unused-vars
-    const [isError, setIsError] = useState(false)
+    const [isDeposit, setIsDeposit] = useState(false)
+    const [transaction, setTransaction] = useState({})
     const [name, setName] = useState('MoonBeast NFT')
     const [imageUrl, setImageUrl] = useState(true)
     const [attributes, setAttributes] = useState({})
+    const [isConfirmedTx, setIsConfirmedTx] = useState(false)
+    const { provider, connector} = useContext(WalletAuthContext)
 
     useEffect(() => {
         fetchData().then()
     }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
-
     const fetchData = async () => {
         setIsLoading(true)
-        setIsError(false)
         if (!moonBeast.tokenId) {
             const {tokenId, uri} = await getTokenInfoOfOwnerByIndex(moonBeast.wallet, moonBeast.index)
 
@@ -42,9 +46,31 @@ const MoonBeastItem = ({moonBeast = {}}) => {
             setIsLoading(false)
         }).catch(e => {
             setTimeout(fetchData, 3000)
-            setIsError(true)
         })
     }
+
+
+    const confirmTransaction = async (txHash) => {
+        const receipt = await getTransactionReceipt(txHash)
+
+        if (receipt) {
+            if (!receipt.status) {
+                notification.close(txHash)
+                notification.sentTransactionSuccess(txHash)
+
+                setTransaction({
+                    ...transaction,
+                    success: true,
+                })
+                return
+            }
+        }
+
+        setTimeout(() => {
+            confirmTransaction(txHash)
+        }, 3000)
+    }
+
 
     const renderNFTName = () => {
         const nameArr = String(name || '').split(' ')
@@ -63,6 +89,56 @@ const MoonBeastItem = ({moonBeast = {}}) => {
         return <MoonBeastItemMinting/>
     }
 
+    const depositMoonBeast = async () => {
+        setIsDeposit(true)
+        const response = await depositNFT({
+            user_id: user.id,
+            wallet_address: moonBeast.wallet_address,
+            value: 1,
+            token_id: moonBeast.tokenId,
+            currency: 'MoonBeast',
+            type: 'MoonBeast',
+        })
+
+        const {transaction: transactionData} = response
+        transactionData.gas = String(transactionData.gas)
+
+        const txHash = await sendTransaction(provider, connector, transactionData).catch(() => Promise.resolve(null))
+        if (txHash) {
+            updateTransactionHash({transaction_id: response.id, transaction_hash: txHash}).then()
+            setTransaction({
+                transactionId: response.id,
+                transactionData,
+                success: false,
+            })
+
+            setTimeout(() => {
+                confirmTransaction(txHash)
+            }, 3000)
+
+            notification.destroy()
+            notification.sentTransactionSuccess(txHash)
+        } else {
+            setIsDeposit(false)
+        }
+    }
+
+    const renderButtonDeposit = () => {
+        if (isDeposit) {
+            return (
+                <button type="button" className="button button-secondary btn-deposit" disabled={true}>
+                    {transaction.success ? 'Deposited': <LoadingOutlined />}
+                </button>
+            )
+        }
+
+        return (
+            <button onClick={depositMoonBeast} type="button" className="button button-secondary btn-deposit">
+                Deposit
+            </button>
+        )
+    }
+
     return (
         <div data-token-id={moonBeast.tokenId || `${moonBeast.wallet}_${moonBeast.index}`}
              className="flex flex-col justify-center items-center mt-4 col-span-2 nft-item">
@@ -70,6 +146,7 @@ const MoonBeastItem = ({moonBeast = {}}) => {
                 <Image
                     className="nft-wrap-img"
                     width={'100%'}
+                    preview={false}
                     src={imageUrl || 'https://bafkreidtf37bm46cpkbanxxbnz6ykcqrtf2na4qdrdfvfgzlrasyov6zoe.ipfs.nftstorage.link/'}
                     alt={name}
                 />
@@ -102,8 +179,10 @@ const MoonBeastItem = ({moonBeast = {}}) => {
                 </div>
             </div>
             {renderNFTName()}
-            <div className="flex normal-case mt-2">
-                <NFTLink address={MOONBEAST_SC} tokenId={moonBeast.tokenId}/>
+            <div className="normal-case mt-2">
+                <div>
+                    {renderButtonDeposit()}
+                </div>
             </div>
         </div>
     )

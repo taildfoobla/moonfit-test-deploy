@@ -11,7 +11,7 @@ export const sentTransactionSuccess = (txHash) => {
         message: 'Transaction Sent',
         description: (
             <div>
-                The hash of MFB minting transaction is: <br/>
+                The hash of deposit transaction is: <br/>
                 <a target="_blank" rel="noreferrer"
                    className={'text-blue-600'}
                    href={getTxScanUrl(txHash)}>{getShortAddress(txHash, 8)}</a>

@@ -16,7 +16,7 @@ const TeamSelectModal = (props) => {
                 element && element.scrollIntoView()
             }, 200)
         }
-    }, [open])
+    }, [open]) // eslint-disable-line react-hooks/exhaustive-deps
 
     const onSelectTeam = (team, forceClose = false) => {
         setSeletectedTeam(team)
@@ -30,7 +30,7 @@ const TeamSelectModal = (props) => {
     return (
         <Modal
             title="PICK A TEAM"
-            visible={open}
+            open={open}
             footer={false}
             mask={false}
             onCancel={handleCancel}
