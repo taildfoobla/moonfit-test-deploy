@@ -272,10 +272,10 @@ const NFTSaleRoundWorldCup = (props) => {
                             team && <div className='form-mint__team-select'>
                                 <div className='flex flex-wrap justify-between items-center'>
                                     <span className='text-[#A8ADC3] font-semibold'>PICK YOUR FAVOURITE TEAM</span>
-                                    <a className='text-[#4CCBC9] font-extrabold flex items-center' onClick={toggleModal}>Change
+                                    <button className='text-[#4CCBC9] font-extrabold flex items-center' onClick={toggleModal}>Change
                                         TEAM
                                         <img className='ml-2 pt-1' alt="" src={ball} />
-                                    </a>
+                                    </button>
                                 </div>
                                 <div className='team-select-detail text-center'>
                                     <img className='w-full mx-auto' src={team?.url} alt="" onClick={toggleModal} />

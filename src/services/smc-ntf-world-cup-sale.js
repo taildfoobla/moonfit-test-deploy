@@ -9,8 +9,6 @@ import EventBus from "../utils/event-bus";
 const {MOONBEAM_WSS_URL, MOONBEAST_NETWORK} = configs
 const {NFT_SALE_SC, eventUpdateSaleAmountName: eventName} = NFT_SALE_ROUNDS_INFO.WC
 
-console.log({round: 'WC2022', eventName, NFT_SALE_SC});
-
 const web3 = new Web3(MOONBEAST_NETWORK)
 
 export const getContract = () => new web3.eth.Contract(nftSaleABI.abi, NFT_SALE_SC)
@@ -71,8 +69,8 @@ export const buyNFTData = (mintAmount, team) => {
     return getContract().methods.buyNFT(mintAmount, team).encodeABI()
 }
 
-export const getMoonBeast = async (wallet) => {
-    return _getMoonBeast(moonBeastContract, getContract(), wallet)
+export const getMoonBeast = async (wallet, options =  {mintByContract: true, isOwnerMinted: true}) => {
+    return _getMoonBeast(moonBeastContract, getContract(), wallet, options)
 }
 
 export const getPrice = () => getContract().methods._price().call();

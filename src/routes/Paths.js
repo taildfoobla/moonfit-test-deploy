@@ -36,6 +36,10 @@ const Paths = {
     NftSaleStages: {
         path: '/nft-sale',
         env: ['local', 'development', 'production']
+    },
+    Deposit: {
+        path: '/deposit',
+        env: ['local', 'development', 'production']
     }
 }
 

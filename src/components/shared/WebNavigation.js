@@ -12,7 +12,6 @@ import CopyIcon from "./CopyIcon"
 import { CHAIN_ID_MAPPING, EVM_WALLETS } from "../../constants/blockchain"
 import classNames from "classnames"
 import CloseIcon from "./CloseIcon"
-import { isMobileOrTablet } from "../../utils/device"
 import { useLocation } from "react-router-dom"
 const ENV = getReactEnv('ENV')
 const { Paragraph } = Typography
@@ -194,7 +193,7 @@ const WebNavigation = (props) => {
                 placement={'left'}
                 closable={false}
                 onClose={() => setIsDrawerVisible(false)}
-                visible={isDrawerVisible}
+                open={isDrawerVisible}
                 key="left"
                 width={300}
             >
@@ -236,7 +235,7 @@ const WebNavigation = (props) => {
                 </nav>
             </Drawer>
             <Modal title={'Wallet Information'}
-                visible={isWalletModalVisible}
+                open={isWalletModalVisible}
                 onCancel={hideWalletModal}
                 closeIcon={<CloseIcon />}
                 wrapClassName={'mf-modal account-modal'}

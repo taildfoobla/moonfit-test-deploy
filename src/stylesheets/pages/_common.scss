@@ -711,3 +711,32 @@
   border-radius: 7px;
   background: #29000F;
 }
+
+.deposit-page  {
+  .user-info {
+    display: flex;
+
+    &.is-loading {
+      align-content: center;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .avatar {
+      margin-right: 10px;
+    }
+
+    p {
+      margin-bottom: 10px;
+      text-transform: none;
+    }
+  }
+
+  .btn-deposit {
+    display: block;
+    min-height: 30px;
+    font-size: 14px;
+    padding: 5px 20px !important;
+    min-width: initial !important;
+  }
+}

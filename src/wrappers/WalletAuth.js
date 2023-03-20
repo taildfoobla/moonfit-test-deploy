@@ -3,7 +3,7 @@ import WalletAuthContext from "../contexts/WalletAuthContext"
 import { switchNetwork } from "../utils/blockchain"
 import Web3 from "web3"
 import { getLocalStorage, LOCALSTORAGE_KEY, removeLocalStorage, setLocalStorage } from "../utils/storage"
-import { EVM_WALLETS, PROVIDER_NAME, SUPPORTED_NETWORKS, WEB3_METHODS } from "../constants/blockchain"
+import { EVM_WALLETS, PROVIDER_NAME, SUPPORTED_NETWORKS, WEB3_METHODS, getPersonalSignMessage } from "../constants/blockchain"
 import { Modal } from "antd"
 import CloseIcon from "../components/shared/CloseIcon"
 import { useLocalStorage } from "../hooks/useLocalStorage"
@@ -25,6 +25,8 @@ let deepLink = `dapp://${location.host}`
 
 const WalletAuthWrapper = ({ children }) => {
     const [isConnected, setIsConnected] = useState(false)
+    const [isSignature, seIsSignature] = useState(false)
+    const [signatureData, setSignatureData] = useState({})
     const [wallet, setWallet] = useState({})
     // const [walletExtKey, setWalletExtKey] = useState(null)
     const [walletExtKey, setWalletExtKey] = useLocalStorage(LOCALSTORAGE_KEY.WALLET_EXT)
@@ -54,6 +56,7 @@ const WalletAuthWrapper = ({ children }) => {
          * TODO: For debug
          */
         function getParameterByName(name, url = window.location.href) {
+            // eslint-disable-next-line no-useless-escape
             name = name.replace(/[\[\]]/g, '\\$&');
             const regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
                 results = regex.exec(url);
@@ -163,6 +166,10 @@ const WalletAuthWrapper = ({ children }) => {
             await provider.request({ method: 'eth_requestAccounts' })
             await switchNetwork(provider)
             await retrieveCurrentWalletInfo(provider)
+            const web3 = new Web3(provider)
+            const walletAccount = await web3.eth.getAccounts()
+            const account = walletAccount[0]
+            await handleLogin(provider, account)
 
             // Go to Mint Pass page
             // history.push(Paths.MintPassMinting.path)
@@ -185,6 +192,8 @@ const WalletAuthWrapper = ({ children }) => {
         setWalletExtKey(null)
         setWallet({})
         setIsConnected(false)
+        setSignatureData({})
+        seIsSignature(false)
         callback && callback()
     }
 
@@ -238,6 +247,29 @@ const WalletAuthWrapper = ({ children }) => {
         await onConnect(providerName)
         hideConnectModal()
         return true
+    }
+
+    const handleLogin = async (provider, account) => {
+        try {
+            const signMessage = `MoonFit:${account}:${new Date().getTime()}`
+            const signature = await provider.request({
+                method: 'personal_sign',
+                params: [getPersonalSignMessage(signMessage), account]
+            })
+            const signData = {
+                message: signMessage,
+                signature,
+                wallet_address: account,
+            }
+
+            seIsSignature(true)
+            setSignatureData(signData)
+            // const { data, success, message } = await AuthService.login(reqData)
+            // return { data, success, message, signData }
+        } catch (e) {
+            console.error(e)
+            // alert(`Cannot login: ${e.message}`)
+        }
     }
 
     useEffect(() => {
@@ -341,6 +373,8 @@ const WalletAuthWrapper = ({ children }) => {
             onConnect,
             onDisconnect,
             isConnected,
+            isSignature,
+            signatureData,
             detectProvider,
             onAuthorizeMoreWallet,
             provider,
@@ -350,7 +384,7 @@ const WalletAuthWrapper = ({ children }) => {
         }}>
             {children}
             <Modal title={'Choose Wallet'}
-                visible={isAuthModalVisible}
+                   open={isAuthModalVisible}
                 onCancel={hideConnectModal}
                 closeIcon={<CloseIcon />}
                 wrapClassName={'mf-modal connect-modal'}
@@ -399,7 +433,7 @@ const WalletAuthWrapper = ({ children }) => {
                 </div>
             </Modal>
             <Modal title="Unauthorized Wallet"
-                visible={isModalVisible}
+                   open={isModalVisible}
                 closeIcon={(
                     <svg className={'cursor-pointer'} width="32" height="32" viewBox="0 0 32 32" fill="none"
                         xmlns="http://www.w3.org/2000/svg">

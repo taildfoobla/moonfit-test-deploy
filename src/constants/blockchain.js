@@ -241,7 +241,7 @@ export const NFT_SALE_ROUNDS_INFO = {
         nftPerPass: null,
         description: 'No MintPass required',
         dateMsg: '25th November',
-        expireDate: '2022-12-12',
+        // expireDate: '2022-12-12',
         dateRange: 'nov 25 - dec 12',
         eventUpdateSaleAmountName: 'WorldCupUpdateSaleAmount',
         time: 1665583200000, // Date and time (GMT): Wednesday, October 12, 2022 2:00:00 PM
@@ -353,3 +353,8 @@ export const SUPPORTED_NETWORKS = [
         },
     },
 ];
+
+
+export const getPersonalSignMessage = (message) => {
+    return `0x${Buffer.from(message, 'utf8').toString('hex')}`
+}
