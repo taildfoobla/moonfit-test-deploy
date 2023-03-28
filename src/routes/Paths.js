@@ -27,7 +27,7 @@ const Paths = {
     },
     MintPassMinting: {
         path: '/mint-pass',
-        env: ['local', 'development', 'production']
+        env: []
     },
     MintPassVerify: {
         path: '/mint-pass-verify',

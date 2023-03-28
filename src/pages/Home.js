@@ -39,11 +39,11 @@ const Home = (props) => {
                         {
                             isConnected ? (
                                 <div>
-                                    <button type="button"
-                                            onClick={() => history.push(Paths.MintPassMinting.path)}
-                                            className="button button-primary">
-                                        Mint Pass
-                                    </button>
+                                    {/*<button type="button"*/}
+                                    {/*        onClick={() => history.push(Paths.MintPassMinting.path)}*/}
+                                    {/*        className="button button-primary">*/}
+                                    {/*    Mint Pass*/}
+                                    {/*</button>*/}
                                     <button type="button"
                                             onClick={() => history.push(Paths.NFTSaleRoundWorldCup.path)}
                                             className="button button-secondary">
