@@ -228,7 +228,7 @@ const NFTSaleRoundWorldCup = () => {
                                 className="card-title flex flex-col lg:flex-row justify-center lg:justify-between items-start mx-auto mt-0 mb-5 lg:mb-5">
                                 <div
                                     className={'flex text-white justify-center w-full lg:w-auto justify-center lg:justify-start mt-4 lg:mt-0'}>
-                                    Your NFT
+                                    Your NFTs
                                 </div>
                                 <div
                                     className={'flex w-full lg:w-auto justify-center lg:justify-start mt-4 lg:mt-0'}>
