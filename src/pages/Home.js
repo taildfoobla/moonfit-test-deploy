@@ -47,7 +47,7 @@ const Home = (props) => {
                                     <button type="button"
                                             onClick={() => history.push(Paths.Deposit.path)}
                                             className="button button-secondary">
-                                        Deposit NFT tokens APP
+                                        Deposit Into App
                                     </button>
                                 </div>
                             ) : (

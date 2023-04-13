@@ -15,7 +15,7 @@ export const AppRoutes = [
     },
     {
         path: Paths.Deposit.path,
-        title: "Deposit NFT to App",
+        title: "Deposit Into App",
         external: false,
         env: Paths.Deposit.env,
         actives: [
