@@ -267,7 +267,7 @@ const NFTSaleRoundWorldCup = () => {
                         <button type="button"
                                 onClick={showWalletSelectModal}
                                 className="button button-secondary">
-                            <img className="mr-1" src={walletIcon} alt=""/> {isConnected ? 'Signature Wallet' : 'Connect Wallet'}
+                            <img className="mr-1" src={walletIcon} alt=""/> {isConnected ? 'Sign In MoonFit App' : 'Connect Wallet'}
                         </button>
                     </div>
                 </div>
