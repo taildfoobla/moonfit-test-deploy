@@ -123,6 +123,31 @@ export const depositNFTToApp = async (data) => {
         }
     }
 }
+
+export const getMoonBeatInfo = async (tokenIds) => {
+    try {
+        const {data: resp} = await axios({
+            method: 'GET',
+            url: `${API_URL}/wallet/moon-beasts?token_ids=${tokenIds.join(',')}`,
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem('walletToken')}`
+            },
+        })
+
+        return resp
+    } catch (e) {
+        const {response} = e
+        const message = response ? response.statusText : e.message || e
+        const data = response ? response.data : ''
+
+        return {
+            success: false,
+            message,
+            data
+        }
+    }
+}
+
 export const updateTransactionHash = async (data) => {
     try {
         const {data: resp} = await axios({
