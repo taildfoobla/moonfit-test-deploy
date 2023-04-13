@@ -65,7 +65,6 @@ export const getSaleMaxAmount = async () => {
 }
 
 export const buyNFTData = (mintAmount, team) => {
-    console.log({mintAmount, team})
     return getContract().methods.buyNFT(mintAmount, team).encodeABI()
 }
 

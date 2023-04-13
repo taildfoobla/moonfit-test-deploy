@@ -45,9 +45,9 @@ const Home = (props) => {
                                     {/*    Mint Pass*/}
                                     {/*</button>*/}
                                     <button type="button"
-                                            onClick={() => history.push(Paths.NFTSaleRoundWorldCup.path)}
+                                            onClick={() => history.push(Paths.Deposit.path)}
                                             className="button button-secondary">
-                                        NFT Sale
+                                        Deposit NFT tokens APP
                                     </button>
                                 </div>
                             ) : (

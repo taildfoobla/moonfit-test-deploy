@@ -100,7 +100,7 @@ export const loginByWallet = async (data) => {
     }
 }
 
-export const depositNFT = async (data) => {
+export const depositNFTToApp = async (data) => {
     try {
         const {data: resp} = await axios({
             method: 'POST',

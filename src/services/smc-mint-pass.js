@@ -21,12 +21,13 @@ export const fetchMintPassByAccount = async (account) => {
         const tokenId = await tokenOfOwnerByIndex(mintPassContract, account, index)
         // const {name, imageUrl} = await getNFTInfo(mintPassContract.methods, tokenId)
         const imageUrl = 'https://bafybeidedg4erz6vvoywe26obvqty5aiovsxzjrvakjsciusigdct2hoqy.ipfs.nftstorage.link'
-        const name = `MoonFit Mint Pass #${tokenId}`
+        const name = `MintPass #${tokenId}`
 
         return {
             name,
             imageUrl,
             tokenId,
+            type: 'MintPass'
         }
     }, {concurrency: 2})
 }

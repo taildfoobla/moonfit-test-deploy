@@ -12,10 +12,10 @@ const {MOONBEAST_NETWORK, MOONBEAST_SC} = configs
 const web3js = new Web3(MOONBEAST_NETWORK)
 const _moonBeastContract = new web3js.eth.Contract(moonBeastABI.abi, MOONBEAST_SC)
 
-export const fetchMoonBeastsByAccount = async (account) => {
+export const fetchMoonBeastsByAccount = async (account, maxLength = Number.MAX_SAFE_INTEGER) => {
     const balance = await balanceOfAccount(_moonBeastContract, account)
 
-    const data = range(0, balance - 1)
+    const data = range(0, (balance > maxLength ? maxLength : balance) - 1)
 
     return Bluebird.map(data, async index => {
         // const tokenId = await moonBeastContract.methods.tokenOfOwnerByIndex(wallet.account, index).call()
@@ -25,7 +25,7 @@ export const fetchMoonBeastsByAccount = async (account) => {
             return {tokenId, isCurrentRound}
         }
         const {name, imageUrl} = await getNFTInfo(_moonBeastContract.methods, tokenId)
-        return {name, imageUrl, tokenId, isCurrentRound}
+        return {name, imageUrl, tokenId, isCurrentRound, type: 'MoonBeast'}
     }, {concurrency: 5})
 }
 
