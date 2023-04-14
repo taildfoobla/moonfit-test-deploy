@@ -30,6 +30,19 @@ export const fetchMoonBeastsByAccount = async (account, maxLength = Number.MAX_S
 }
 
 
+export const fetchMoonBeastIdsByAccount = async (account, maxLength = Number.MAX_SAFE_INTEGER) => {
+    const balance = await balanceOfAccount(_moonBeastContract, account)
+
+    const data = range(0, (balance > maxLength ? maxLength : balance) - 1)
+
+    return Bluebird.map(data, async index => {
+        const tokenId = await tokenOfOwnerByIndex(_moonBeastContract, account, index)
+
+        return tokenId
+    }, {concurrency: 3})
+}
+
+
 export const getTokenInfoOfOwnerByIndex = async (account, index) => {
     const tokenId = await _moonBeastContract.methods.tokenOfOwnerByIndex(account, index).call()
     const uri = await _moonBeastContract.methods.tokenURI(tokenId).call()

@@ -44,9 +44,17 @@ const WalletAuthWrapper = ({ children }) => {
         function checkConnectedWallet() {
             const userData = JSON.parse(getLocalStorage(LOCALSTORAGE_KEY.WALLET_ACCOUNT))
             if (userData != null) {
-                // console.log(userData)
                 setWallet(userData)
                 setIsConnected(true)
+
+                const data = JSON.parse(getLocalStorage(LOCALSTORAGE_KEY.WALLET_SIGNATURE))
+
+                console.log(userData, data)
+
+                if (data && userData.account === data.account) {
+                    seIsSignature(true)
+                    setSignatureData(data.signature)
+                }
             }
         }
 
@@ -188,6 +196,7 @@ const WalletAuthWrapper = ({ children }) => {
         }
 
         removeLocalStorage(LOCALSTORAGE_KEY.WALLET_ACCOUNT)
+        removeLocalStorage(LOCALSTORAGE_KEY.WALLET_SIGNATURE)
         removeLocalStorage(LOCALSTORAGE_KEY.NETWORK)
         setWalletExtKey(null)
         setWallet({})
@@ -264,6 +273,10 @@ const WalletAuthWrapper = ({ children }) => {
 
             seIsSignature(true)
             setSignatureData(signData)
+            setLocalStorage(LOCALSTORAGE_KEY.WALLET_SIGNATURE, JSON.stringify({
+                account,
+                signature: signData,
+            }))
             // const { data, success, message } = await AuthService.login(reqData)
             // return { data, success, message, signData }
         } catch (e) {

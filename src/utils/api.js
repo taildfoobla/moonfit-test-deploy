@@ -87,6 +87,15 @@ export const loginByWallet = async (data) => {
             data,
         })
 
+        if (resp.success && resp.data && resp.data.access_token) {
+            localStorage.setItem('walletToken', resp.data.access_token)
+
+            clearTimeout(window._loginByWallet)
+            window._loginByWallet = setTimeout(async () => {
+                await loginByWallet(data)
+            }, 5 * 60 *1000)
+        }
+
         return resp
     } catch (e) {
         const {response} = e

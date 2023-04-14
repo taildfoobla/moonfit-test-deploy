@@ -3,7 +3,7 @@ import {Avatar} from 'antd';
 import Bluebird from 'bluebird'
 import WalletAuthContext from "../contexts/WalletAuthContext"
 import * as notification from "../utils/notification"
-import {switchNetwork} from "../utils/blockchain"
+import {getShortAddress, switchNetwork} from "../utils/blockchain"
 import LoadingWrapper from "../components/shared/LoadingWrapper"
 import LoadingOutlined from "../components/shared/LoadingOutlined"
 import Paths from "../routes/Paths"
@@ -13,10 +13,11 @@ import NFTItem from '../components/DepositNFT/NFTItem'
 import {loginByWallet} from "../utils/api"
 
 import {fetchMintPassByAccount} from '../services/smc-mint-pass'
-import {fetchMoonBeastsByAccount} from '../services/smc-moon-beast'
+import {fetchMoonBeastIdsByAccount} from '../services/smc-moon-beast'
 import CurveBGWrapper from '../wrappers/CurveBG'
 import walletIcon from "../assets/images/icons/Wallet.svg";
 import {depositToMobileApp} from "../components/DepositNFT/_depositToMobileApp";
+import {getMoonBeatInfo} from '../utils/api'
 
 const NFTSaleRoundWorldCup = () => {
     const [loading, setLoading] = useState(false)
@@ -65,7 +66,6 @@ const NFTSaleRoundWorldCup = () => {
             setIsLogin(false)
             if (response.success) {
                 setUser(response.data.user)
-                localStorage.setItem('walletToken', response.data.access_token)
                 _fetchMoonFitNT().then()
             } else {
                 setLoginMessage(response.message)
@@ -87,7 +87,18 @@ const NFTSaleRoundWorldCup = () => {
         console.log(1);
         setIsNFTLoading(true)
         try {
-            const _moonBeasts = await fetchMoonBeastsByAccount(wallet.account, 50)
+            const _moonBeasts = await fetchMoonBeastIdsByAccount(wallet.account, 50).then(async tokenIds => {
+                const response = await getMoonBeatInfo(tokenIds)
+
+                return response.data.moonBeasts.map(item => {
+                    return {
+                        ...item,
+                        tokenId: item.token_id,
+                        imageUrl: item.image_url,
+                        type: 'MoonBeast',
+                    }
+                })
+            })
             const _mintPass = await fetchMintPassByAccount(wallet.account)
             console.log(_moonBeasts)
             console.log(_mintPass);
@@ -144,6 +155,7 @@ const NFTSaleRoundWorldCup = () => {
                 <div>
                     <p>Email: {user.email || ''}</p>
                     <p>Name: {user.name || ''}</p>
+                    <p>Wallet connected: {user.wallet_address ?  getShortAddress(user.wallet_address, 6): ''}</p>
                 </div>
             </>
         )
