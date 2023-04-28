@@ -13,7 +13,6 @@ import WalletAuthRequiredNFTSale from "../components/WalletAuthRequiredNFTSale"
 import NFTStages from "../components/NFTStages"
 import Header from '../components/NFTSaleCurrentRound/Header'
 import ButtonMintNFT from '../components/NFTSaleCurrentRound/ButtonMintNFT'
-import NFTSaleInfo from '../components/NFTSaleCurrentRound/NFTSaleInfo'
 import MoonBeasts from '../components/NFTSaleCurrentRound/MoonBeastsV2/index'
 import MintPass from '../components/NFTSaleCurrentRound/MintPass'
 import EventBus from '../utils/event-bus'
@@ -22,6 +21,7 @@ import {getTransactionReceipt} from "../services/smc-common";
 import {getAvailableSlots, getSaleMaxAmount, getMintPass, getMoonBeast, buyNFTData, subscribeUpdateSaleAmount, smcContract, NFT_SALE_ADDRESS} from '../services/smc-ntf-sale'
 import {buyNFT} from '../services/smc-common'
 import CurveBGWrapper from '../wrappers/CurveBG'
+import NFTSaleMoonBestInfo from '../components/NFTSaleCurrentRound/NFTSaleMoonBestInfo'
 // import TwitterShareButton from '../components/shared/TwitterShare'
 
 const NFT_SALE_CURRENT_INFO = NFT_SALE_ROUNDS_INFO.R3
@@ -378,7 +378,7 @@ const NFTSaleRoundThree = (props) => {
                                 className="card-title flex flex-col lg:flex-row justify-center lg:justify-between items-start mx-auto mt-0 mb-6 lg:mb-10">
                                 <div
                                     className={'flex text-white justify-center w-full lg:w-auto justify-center lg:justify-start mt-4 lg:mt-0'}>
-                                    Mint with Mint Pass
+                                    PURCHASE MoonBEST
                                 </div>
                                 <div
                                     className={'flex w-full lg:w-auto justify-center lg:justify-start mt-4 lg:mt-0'}>
@@ -396,22 +396,22 @@ const NFTSaleRoundThree = (props) => {
                             </div>
                             <div className="card-body">
                                 <div className={'mt-4 mb-6 lg:mt-8'}>
-                                    <NFTSaleInfo
-                                        availableSlots={nftSaleAvailableQuantity}
-                                        maxSaleSlots={nftSaleQuantity}
-                                        isLoading={saleInfoLoading}
-                                        handleGetMinted={handleGetMinted}
-                                        roundInfo={NFT_SALE_CURRENT_INFO}
+                                    <NFTSaleMoonBestInfo
+                                        // availableSlots={nftSaleAvailableQuantity}
+                                        // maxSaleSlots={nftSaleQuantity}
+                                        // isLoading={saleInfoLoading}
+                                        // handleGetMinted={handleGetMinted}
+                                        // roundInfo={NFT_SALE_CURRENT_INFO}
                                     />
 
-                                    <MintPass isLoading={mintPassLoading}
+                                    {/* <MintPass isLoading={mintPassLoading}
                                               mintPasses={mintPasses}
                                               isMinting={!!moonBeastMinting}
                                               onSelect={onClickMintPass}
                                               onSelectAll={onSelectAll}>
                                         <hr className={'card-body-separator'}/>
                                         {!NFT_SALE_CURRENT_INFO.isSoldOut && _renderFoot()}
-                                    </MintPass>
+                                    </MintPass> */}
 
                                     <MoonBeasts isLoading={moonBeastLoading}
                                                 moonBeasts={moonBeasts}

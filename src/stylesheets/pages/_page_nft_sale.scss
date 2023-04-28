@@ -917,3 +917,87 @@
   font-weight: 600;
   text-transform: initial;
 }
+
+.purchase-moonbest {
+  .tabs {
+    margin: auto;
+    padding: 5px;
+    border-radius: 10px;
+    border: 2px solid #351C4F;
+    .tab {
+      color: #A8ADC3;
+      font-size: 18px;
+      line-height: 26px;
+      padding: 5px 15px;
+      cursor: pointer;
+      &.active {
+        color: #4CCBC9;
+        border-radius: 7px;
+        background-color: #351C4F;
+        box-shadow: 0px 10px 74px rgba(0, 0, 0, 0.49);
+        transition: 0.3s linear ease-in-out;
+      }
+      &:hover {
+        opacity: 0.8;
+      }
+    }
+  }
+  .packs {
+    .pack {
+      position: relative;
+      padding: 10px;
+      border-radius: 10px;
+      background: #351C4F;
+      cursor: pointer;
+      padding: 25px 5px;
+      .left {
+        min-width: 200px;
+      }
+      .sub-label {
+        color: #A8ADC3;
+      }
+      .badge-recommend {
+        position: absolute;
+        top: 0px;
+        right: -15px;
+        background-color: #E4007B;
+        padding: 0px 8px 3px 8px;
+        border-radius: 3px;
+      }
+      &.active {
+        background-size: cover !important;
+        background: url(./../../assets/images/active-pack-bg.png) no-repeat center;
+        position: relative;
+        background-clip: padding-box;
+        border: solid 3px transparent;
+        .race-sport-font {
+          color: #4CCBC9;
+        }
+        .sub-label {
+          color: #fff;
+        }
+        &::before {
+          content: "";
+          position: absolute;
+          top: 0;
+          right: 0;
+          bottom: 0;
+          left: 0;
+          z-index: -1;
+          margin: -3px;
+          border-radius: inherit;
+          background: linear-gradient(to right, #4ccbc9, #e4007b);
+        }
+      }
+    }
+  }
+}
+.ant-tooltip-inner {
+  color: #fff;
+  background-color: #A16BD8;
+  text-align: center;
+  text-transform: none;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 18px;
+}
