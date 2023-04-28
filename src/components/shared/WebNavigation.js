@@ -73,6 +73,7 @@ const WebNavigation = (props) => {
         }
     }
     const renderLinks = () => {
+        console.log({AppRoutes})
         return AppRoutes.map((item, index) => {
             const currentPath = props.location.pathname
             const isActive = [item.path, ...(item.actives || [])].includes(currentPath)

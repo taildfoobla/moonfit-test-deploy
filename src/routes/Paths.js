@@ -9,8 +9,7 @@ const Paths = {
     },
     NFTSaleRoundThree: {
         path: '/nft-sale-round-3',
-        // env: ['local', 'development', 'production'],
-        env: [],
+        env: ['local', 'development', 'production'],
     },
     NFTPublicSale: {
         path: '/nft-public-sale',

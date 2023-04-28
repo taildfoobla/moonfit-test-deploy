@@ -6,6 +6,8 @@ import nftSaleABI from "../abis/MFNFTSale.json";
 import sortMintPass from '../utils/sortMintPass'
 import {getMoonBeast as _getMoonBeast} from './smc-common'
 import EventBus from '../utils/event-bus'
+import axios from "axios";
+import { createApiRequest } from "../utils/api";
 
 const {moonBeastContract} = require('./smc-moon-beast')
 
