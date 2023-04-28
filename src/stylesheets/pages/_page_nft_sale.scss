@@ -169,6 +169,7 @@
       &:last-child:after {
         border-right: none;
       }
+
       // .attribute-value {
       //   font-size: 14px;
       // }
@@ -472,15 +473,18 @@
         font-size: 18px;
         cursor: pointer;
       }
+
       .team-select-detail {
         span {
           font-size: 18px;
         }
+
         img {
           max-width: 300px;
           cursor: pointer;
         }
       }
+
       @media (max-width: 600px) {
         .team-select-detail {
           span {
@@ -924,12 +928,14 @@
     padding: 5px;
     border-radius: 10px;
     border: 2px solid #351C4F;
+
     .tab {
       color: #A8ADC3;
       font-size: 18px;
       line-height: 26px;
       padding: 5px 15px;
       cursor: pointer;
+
       &.active {
         color: #4CCBC9;
         border-radius: 7px;
@@ -937,45 +943,54 @@
         box-shadow: 0px 10px 74px rgba(0, 0, 0, 0.49);
         transition: 0.3s linear ease-in-out;
       }
+
       &:hover {
         opacity: 0.8;
       }
     }
   }
+
   .packs {
     .pack {
       position: relative;
-      padding: 10px;
       border-radius: 10px;
       background: #351C4F;
       cursor: pointer;
-      padding: 25px 5px;
+      padding: 25px 15px 25px 10px;
       .left {
         min-width: 200px;
       }
+
       .sub-label {
         color: #A8ADC3;
       }
+
       .badge-recommend {
         position: absolute;
         top: 0px;
         right: -15px;
         background-color: #E4007B;
-        padding: 0px 8px 3px 8px;
+        padding: 3px 8px;
         border-radius: 3px;
+        display: flex;
+        align-items: center;
       }
+
       &.active {
         background-size: cover !important;
         background: url(./../../assets/images/active-pack-bg.png) no-repeat center;
         position: relative;
         background-clip: padding-box;
         border: solid 3px transparent;
+
         .race-sport-font {
           color: #4CCBC9;
         }
+
         .sub-label {
           color: #fff;
         }
+
         &::before {
           content: "";
           position: absolute;
@@ -992,6 +1007,7 @@
     }
   }
 }
+
 .ant-tooltip-inner {
   color: #fff;
   background-color: #A16BD8;
@@ -1000,4 +1016,10 @@
   font-size: 16px;
   font-weight: 600;
   line-height: 18px;
+}
+
+.ant-tooltip-arrow .ant-tooltip-arrow-content {
+  border-color: #A16BD8;
+  background-color: #A16BD8;
+  --antd-arrow-background-color: none;
 }

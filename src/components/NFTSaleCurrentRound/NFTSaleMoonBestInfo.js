@@ -57,13 +57,14 @@ const NFTSaleMoonBestInfo = (props) => {
 
     return (
         <div className={'card-body-row flex flex-col purchase-moonbest'}>
+            <div className='text-center normal-case font-semibold mb-5'>
+                <p className='text-white text-[20px] mb-0'>You have 2 Mint Pass available</p>
+                <p className='text-[#A8ADC3] text-[18px] w-3/4 m-auto'>Each mint pass is one-time use only for buying 1 MoonBeast at a discounted price.</p>
+            </div>
+
             <div className='flex justify-center normal-case tabs'>
                 <div className={`tab ${tab === 1 ? 'active' : ''}`} onClick={() => setTab(1)}>With Mint Pass</div>
                 <div className={`tab ${tab === 2 ? 'active' : ''}`} onClick={() => setTab(2)}>Without Mint Pass</div>
-            </div>
-            <div className='text-center normal-case font-semibold mt-5'>
-                <p className='text-white text-[20px] mb-0'>You have 2 Mint Pass available</p>
-                <p className='text-[#A8ADC3] text-[18px] w-3/4 m-auto'>Each mint pass is one-time use only for buying 1 MoonBeast at a discounted price.</p>
             </div>
 
             <ul className='packs p-0'>
@@ -82,7 +83,7 @@ const NFTSaleMoonBestInfo = (props) => {
                                 </div>
                             </div>
                             <div className='right flex items-center'>
-                                <img src={Moonbeam} /> <span className='ml-3 font-bold text-[20px] text-[#4CCBC9]'>{mintpass.value * mintpass.amount}</span>
+                                <img className='mr-3' src={Moonbeam} /> <span className='font-bold text-[20px] text-[#4CCBC9]'>{mintpass.value * mintpass.amount}</span>
                             </div>
                             {mintpass.isRecommend && <div className='badge-recommend'><span className='text-[13px] font-semibold normal-case'>Recommended</span></div>}
                         </li>
