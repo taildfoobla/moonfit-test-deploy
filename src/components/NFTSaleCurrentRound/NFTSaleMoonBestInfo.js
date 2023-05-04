@@ -83,7 +83,7 @@ const NFTSaleMoonBestInfo = (props) => {
                                 </div>
                             </div>
                             <div className='right flex items-center'>
-                                <img className='mr-3' src={Moonbeam} /> <span className='font-bold text-[20px] text-[#4CCBC9]'>{mintpass.value * mintpass.amount}</span>
+                                <img className='mr-3' src={Moonbeam} /> <span className='font-bold text-[20px] text-[#4CCBC9]'>{mintpass.value}</span>
                             </div>
                             {mintpass.isRecommend && <div className='badge-recommend'><span className='text-[13px] font-semibold normal-case'>Recommended</span></div>}
                         </li>
