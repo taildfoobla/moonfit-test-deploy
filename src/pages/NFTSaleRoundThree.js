@@ -18,7 +18,10 @@ import MintPass from '../components/NFTSaleCurrentRound/MintPass'
 import EventBus from '../utils/event-bus'
 
 import {getTransactionReceipt} from "../services/smc-common";
+import {fetchMintPassByAccount} from "../services/smc-mint-pass"
+import {fetchMoonBeastsByAccount} from '../services/smc-moon-beast'
 import {getAvailableSlots, getSaleMaxAmount, getMintPass, getMoonBeast, buyNFTData, subscribeUpdateSaleAmount, smcContract, NFT_SALE_ADDRESS} from '../services/smc-ntf-sale'
+import {getAvailableMintPass} from '../services/smc-ntf-sale-round-34'
 import {buyNFT} from '../services/smc-common'
 import CurveBGWrapper from '../wrappers/CurveBG'
 import NFTSaleMoonBestInfo from '../components/NFTSaleCurrentRound/NFTSaleMoonBestInfo'
@@ -29,6 +32,7 @@ const NFT_SALE_CURRENT_INFO = NFT_SALE_ROUNDS_INFO.R3
 const NFTSaleRoundThree = (props) => {
     const [loading, setLoading] = useState(true)
     const [isFetching, setIsFetching] = useState(true)
+    const [availableMintPass, setAvailableMintPass] = useState(0)
     const [saleInfoLoading, setSaleInfoLoading] = useState(true)
     const [mintPassLoading, setMintPassLoading] = useState(true)
     const [moonBeastLoading, setMoonBeastLoading] = useState(true)
@@ -48,17 +52,6 @@ const NFTSaleRoundThree = (props) => {
 
     useEffect(() => {
         if (!!wallet.account) {
-            setMintPasses([])
-            setMoonBeasts([])
-            EventBus.$on(NFT_SALE_CURRENT_INFO.eventUpdateSaleAmountName, (data) => {
-                const value = data.maxSaleAmount - data.currentSaleAmount
-                console.log({bought: value}, data);
-                if(!value && value >= 0) {
-                    setNftSaleAvailableQuantity(value)
-                }
-            })
-
-            subscribeUpdateSaleAmount()
             fetchData().then()
         }
         notification.destroy()
@@ -145,7 +138,7 @@ const NFTSaleRoundThree = (props) => {
         let _mintPasses
 
         try {
-            _mintPasses = await getMintPass(wallet.account)
+            _mintPasses = await fetchMintPassByAccount(wallet.account)
         } catch (e) {
             console.log('fetch MintPass error', e.message)
 
@@ -164,7 +157,8 @@ const NFTSaleRoundThree = (props) => {
     const _fetchMoonBeasts = async (isSetLoading = true) => {
         isSetLoading && setMoonBeastLoading(true)
         try {
-            const moonBeasts = await getMoonBeast(wallet.account)
+            const moonBeasts = await fetchMoonBeastsByAccount(wallet.account, 150)
+            console.log({moonBeasts});
 
             setMoonBeasts(moonBeasts)
         } catch (e) {
@@ -178,6 +172,9 @@ const NFTSaleRoundThree = (props) => {
     }
 
     const fetchData = async (loading = true) => {
+        const  value  = await getAvailableMintPass(wallet.account)
+        setAvailableMintPass(value)
+        console.log(value, '----------------------------------------------------------------');
         setIsFetching(true)
         loading && setLoading(true)
         // Switch Network on Desktop Wallet Extension
@@ -397,6 +394,7 @@ const NFTSaleRoundThree = (props) => {
                             <div className="card-body">
                                 <div className={'mt-4 mb-6 lg:mt-8'}>
                                     <NFTSaleMoonBestInfo
+                                        availableMintPass={availableMintPass}
                                         // availableSlots={nftSaleAvailableQuantity}
                                         // maxSaleSlots={nftSaleQuantity}
                                         // isLoading={saleInfoLoading}

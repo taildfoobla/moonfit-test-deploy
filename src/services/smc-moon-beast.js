@@ -15,7 +15,12 @@ const _moonBeastContract = new web3js.eth.Contract(moonBeastABI.abi, MOONBEAST_S
 export const fetchMoonBeastsByAccount = async (account, maxLength = Number.MAX_SAFE_INTEGER) => {
     const balance = await balanceOfAccount(_moonBeastContract, account)
 
-    const data = range(0, (balance > maxLength ? maxLength : balance) - 1)
+    let data = range(0, balance - 1)
+
+    if (balance > maxLength) {
+        data = data.slice(-maxLength)
+    }
+    console.log(data);
 
     return Bluebird.map(data, async index => {
         // const tokenId = await moonBeastContract.methods.tokenOfOwnerByIndex(wallet.account, index).call()
@@ -33,7 +38,11 @@ export const fetchMoonBeastsByAccount = async (account, maxLength = Number.MAX_S
 export const fetchMoonBeastIdsByAccount = async (account, maxLength = Number.MAX_SAFE_INTEGER) => {
     const balance = await balanceOfAccount(_moonBeastContract, account)
 
-    const data = range(0, (balance > maxLength ? maxLength : balance) - 1)
+    let data = range(0, balance - 1)
+
+    if (balance > maxLength) {
+        data = data.slice(-maxLength)
+    }
 
     return Bluebird.map(data, async index => {
         const tokenId = await tokenOfOwnerByIndex(_moonBeastContract, account, index)
@@ -44,7 +53,9 @@ export const fetchMoonBeastIdsByAccount = async (account, maxLength = Number.MAX
 
 
 export const getTokenInfoOfOwnerByIndex = async (account, index) => {
+    console.log(index);
     const tokenId = await _moonBeastContract.methods.tokenOfOwnerByIndex(account, index).call()
+    console.log(tokenId);
     const uri = await _moonBeastContract.methods.tokenURI(tokenId).call()
     return {
         tokenId: parseInt(tokenId, 10),

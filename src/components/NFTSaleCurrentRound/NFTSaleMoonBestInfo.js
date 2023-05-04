@@ -1,9 +1,5 @@
 import React, { Fragment, useContext, useEffect, useState } from 'react'
-import { Progress, Tooltip, Typography } from "antd"
-import { getAddressScanUrl, getShortAddress, } from "../../utils/blockchain"
-import CopyIcon from "../shared/CopyIcon"
-import { NFT_SALE_CURRENT_INFO } from "../../constants/blockchain"
-import configs from "../../configs";
+import { Tooltip } from "antd"
 import LoadingOutlined from "../shared/LoadingOutlined";
 import WalletAuthContext from '../../contexts/WalletAuthContext'
 import wallet from "../../assets/images/icons/Wallet.svg"
@@ -14,7 +10,6 @@ import Pack3 from '../../assets/images/icons/pack-3.svg'
 import Pack5 from '../../assets/images/icons/pack-5.svg'
 import Pack13 from '../../assets/images/icons/pack-13.svg'
 import LockMintpass from '../../assets/images/icons/lock-mintpass.svg'
-import { getListPack } from '../../services/smc-ntf-sale'
 import { WITHOUT_MINT_PASS_PACK, WITH_MINT_PASS_PACK } from '../../constants/packs'
 
 const NFTSaleMoonBestInfo = (props) => {
@@ -58,7 +53,7 @@ const NFTSaleMoonBestInfo = (props) => {
     return (
         <div className={'card-body-row flex flex-col purchase-moonbest'}>
             <div className='text-center normal-case font-semibold mb-5'>
-                <p className='text-white text-[20px] mb-0'>You have 2 Mint Pass available</p>
+                <p className='text-white text-[20px] mb-0'>You have {props.availableMintPass || 0} Mint Pass available</p>
                 <p className='text-[#A8ADC3] text-[18px] w-3/4 m-auto'>Each mint pass is one-time use only for buying 1 MoonBeast at a discounted price.</p>
             </div>
 
