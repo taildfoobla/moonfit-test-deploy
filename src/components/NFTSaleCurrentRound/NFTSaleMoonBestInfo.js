@@ -17,6 +17,7 @@ import {buyNFT, getTransactionReceipt} from "../../services/smc-common";
 import * as notification from "../../utils/notification";
 import {getMainMessage} from "../../utils/tx-error";
 import Bluebird from "bluebird";
+import {sentTransactionSuccess} from "../../utils/notification";
 
 const NFTSaleMoonBestInfo = (props) => {
     const {isConnected, wallet, provider, connector, showWalletSelectModal} = useContext(WalletAuthContext)
@@ -122,7 +123,7 @@ const NFTSaleMoonBestInfo = (props) => {
 
                 if (txHash) {
                     notification.destroy()
-                    notification.sentTransactionFailed(txHash)
+                    notification.sentTransactionSuccess(txHash)
                     confirmTransaction(txHash).then()
                 }
 
