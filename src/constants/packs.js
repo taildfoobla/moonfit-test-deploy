@@ -1,13 +1,13 @@
 const {env} = require('../configs')
 
 const mapEnv = item => {
-    env.price = item.value
+    item.price = item.value
 
     if (env === 'development') {
-        env.price = item.value / 10 * 5
+        item.price = item.value / 10 * 5
     }
 
-    return env
+    return item
 }
 export const WITH_MINT_PASS_PACK = [
     {

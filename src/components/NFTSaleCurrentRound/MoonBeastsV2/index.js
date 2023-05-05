@@ -61,6 +61,7 @@ const MoonBeastsV2 = ({moonBeasts, isLoading, moonBeastMinting = 0, handleRefres
                                       total={moonBeasts.length}
                                       currentPage={currentPage}
                                       pageSize={pageSize}
+                                      isLoading={isLoading}
                                       isExpired={isExpired}
     />
 

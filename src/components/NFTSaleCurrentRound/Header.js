@@ -72,31 +72,4 @@ const Header = ({ availableSlots, isLoading = true, roundInfo = NFT_SALE_CURRENT
     )
 }
 
-const _headerInfoItems = () => {
-    return (
-        <div className='grid md:grid-cols-1 lg:grid-cols-3 gap-4 items-info mt-12'>
-            <div className='info flex flex-nowrap border-gradient-red'>
-                <span className='index text-triple-gradient-2 text-triple-shadow mr-5'>1</span>
-                <span className='normal-case lg:text-[20px] leading-7 font-semibold md:pt-1 lg:pt-3'>
-                    The NFTs will wear National Football teams' uniforms of your choice. Only Moonbeast NFTs for minting in this round.
-                </span>
-            </div>
-            <div className='info flex flex-nowrap border-gradient-red'>
-                <span className='index text-triple-gradient-2 text-triple-shadow mr-5'>2</span>
-                <span className='normal-case lg:text-[20px] leading-7 font-semibold md:pt-1 lg:pt-3'>
-                    Special: <span className='text-[#4CCBC9]'>25%</span> chance to mint <span className='text-[#4CCBC9]'>Uncommon NFTs</span>; <span className='text-[#E4007B]'>20%</span> better NFT stats and attributes compared to other rounds.
-                </span>
-            </div>
-            <div className='info flex flex-nowrap border-gradient-red'>
-                <span className='index text-triple-gradient-2 text-triple-shadow mr-5'>3</span>
-                <span className='normal-case lg:text-[20px] leading-7 font-semibold md:pt-1 lg:pt-3'>
-                    Holders of 2022 World Cup Champion Moonbeast NFTs will share up to <span className='text-[#4CCBC9]'>100,000 $GLMR</span> (25% of total revenue) based on the amount of WC Champion NFTs owned.
-                </span>
-
-
-            </div>
-        </div>
-    )
-}
-
 export default Header
