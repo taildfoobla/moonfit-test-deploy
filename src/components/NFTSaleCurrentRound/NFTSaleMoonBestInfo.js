@@ -9,7 +9,7 @@ import Pack1 from '../../assets/images/icons/pack-1.svg'
 import Pack3 from '../../assets/images/icons/pack-3.svg'
 import Pack5 from '../../assets/images/icons/pack-5.svg'
 import Pack13 from '../../assets/images/icons/pack-13.svg'
-import LockMintpass from '../../assets/images/icons/lock-mintpass.svg'
+import LockMintpass from '../../assets/images/icons/lock-item.svg'
 import { WITHOUT_MINT_PASS_PACK, WITH_MINT_PASS_PACK } from '../../constants/packs'
 
 const NFTSaleMoonBestInfo = (props) => {
@@ -40,7 +40,11 @@ const NFTSaleMoonBestInfo = (props) => {
     }
 
     const onChangePack = (pack) => {
-        setSelectedPack(pack)
+        setSelectedPack({...pack, tab})
+    }
+
+    const  onChangeTab = (value) => {
+        setTab(value)
     }
 
     const handleLockMintpass = () => {
@@ -48,6 +52,46 @@ const NFTSaleMoonBestInfo = (props) => {
         setTimeout(() => {
             setLoading(false)
         }, 2000)
+    }
+
+    const countMintPass = () => {
+        return props.availableMintPass + props.totalMintPass
+    }
+
+    const _renderButton = () => {
+        const _renderText = () => {
+            if (loading) {
+                return (
+                    <Fragment>
+                        <LoadingOutlined className='text-white' /> <span className='ml-2'>Locking</span>
+                    </Fragment>
+                )
+            }
+
+            if (props.availableMintPass < selectedPack.amount && tab === 1) {
+                return (
+                    <Fragment>
+                        <img className="mr-2" src={LockMintpass} alt="" /> Lock Mintpass
+                    </Fragment>
+                )
+            }
+
+
+            return (
+                <Fragment>
+                    <img className="mr-2" src={LockMintpass} alt="" /> Mint NFT
+                </Fragment>
+            )
+
+        }
+
+        return (
+            <button type="button"
+                onClick={handleLockMintpass}
+                className="button button-secondary">
+                    {_renderText()}
+            </button>
+        )
     }
 
     return (
@@ -58,51 +102,49 @@ const NFTSaleMoonBestInfo = (props) => {
             </div>
 
             <div className='flex justify-center normal-case tabs'>
-                <div className={`tab ${tab === 1 ? 'active' : ''}`} onClick={() => setTab(1)}>With Mint Pass</div>
-                <div className={`tab ${tab === 2 ? 'active' : ''}`} onClick={() => setTab(2)}>Without Mint Pass</div>
+                <div className={`tab ${tab === 1 ? 'active' : ''}`} onClick={() => onChangeTab(1)}>With Mint Pass</div>
+                <div className={`tab ${tab === 2 ? 'active' : ''}`} onClick={() => onChangeTab(2)}>Without Mint Pass</div>
             </div>
 
             <ul className='packs p-0'>
                 {
-                    listPack.map((mintpass, index) => (
-                        <li key={index} className={`pack flex justify-between items-center ${selectedPack.value === mintpass.value ? 'active' : ''}`} onClick={() => onChangePack(mintpass)}>
-                            <div className='left flex items-center'>
-                                <img src={renderPackIcon(mintpass.type)} />
-                                <div className='pack-label ml-3'>
-                                    <p className='flex text-[14px] race-sport-font mb-0'><span className='mr-2'>{mintpass.label}</span> 
-                                    <Tooltip className='pack-tooltip' placement="top" title={mintpass.tooltip}>
-                                        <img src={QuestionIcon} />
-                                    </Tooltip>
-                                    </p>
-                                    {mintpass.discount && <p className='text-[15px] sub-label'><span>{mintpass.value} x {mintpass.amount}</span> <span className='text-[#EF2763]'>(-{mintpass.discount}%)</span></p>}
+                    listPack.map((item, index) => {
+                        let calssName = `pack flex justify-between items-center ${selectedPack.value === item.value ? 'active' : ''}`
+                        if (item.amount > countMintPass()) {
+                            calssName = `${calssName} disabled`
+                        }
+                        return (
+                            <li key={index} className={calssName} onClick={() => onChangePack(item)}>
+                                <div className='left flex items-center'>
+                                    <img src={renderPackIcon(item.type)} />
+                                    <div className='pack-label ml-3'>
+                                        <p className='flex text-[14px] race-sport-font mb-0'><span className='mr-2'>{item.label}</span> 
+                                        <Tooltip className='pack-tooltip' placement="top" title={item.tooltip}>
+                                            <img src={QuestionIcon} />
+                                        </Tooltip>
+                                        </p>
+                                        {item.discount && <p className='text-[15px] sub-label'><span>{item.value} x {item.amount}</span> <span className='text-[#EF2763]'>(-{item.discount}%)</span></p>}
+                                    </div>
                                 </div>
-                            </div>
-                            <div className='right flex items-center'>
-                                <img className='mr-3' src={Moonbeam} /> <span className='font-bold text-[20px] text-[#4CCBC9]'>{mintpass.value}</span>
-                            </div>
-                            {mintpass.isRecommend && <div className='badge-recommend'><span className='text-[13px] font-semibold normal-case'>Recommended</span></div>}
-                        </li>
-                    ))
+                                <div className='right flex items-center'>
+                                    <img className='mr-3' src={Moonbeam} /> <span className='font-bold text-[20px] text-[#4CCBC9]'>{item.value}</span>
+                                </div>
+                                {item.isRecommend && <div className='badge-recommend'><span className='text-[13px] font-semibold normal-case'>Recommended</span></div>}
+                            </li>
+                        )
+                    })
                 }
             </ul>
             <hr className={'card-body-separator'} />
             <div className='flex justify-between items-center'>
                 <div className='left'>
                     <span className='text-[16px] text-[#A8ADC3]'>FEE:</span>
-                    <p className='text-[20px] text-[#4CCBC9] race-sport-font'>{selectedPack.value * selectedPack.amount} $GLMR</p>
+                    <p className='text-[20px] text-[#4CCBC9] race-sport-font'>
+                        {selectedPack.tab === tab && selectedPack.value ? `${selectedPack.value} $GLMR`: ''}
+                    </p>
                 </div>
                 <div className='right'>
-                    <button type="button"
-                        onClick={handleLockMintpass}
-                        className="button button-secondary">
-                            {
-                                loading ? <Fragment>
-                                    <LoadingOutlined className='text-white' /> <span className='ml-2'>Locking</span>
-                                </Fragment> : <Fragment>
-                                    <img className="mr-2" src={LockMintpass} alt="" /> Lock Mintpass
-                                </Fragment>
-                            }
-                    </button>
+                    {_renderButton()}
                 </div>
             </div>
             {

@@ -4,7 +4,7 @@ import axios from 'axios'
 const _fetchMetadata = {}
 
 const isMaximumFetchData = () => {
-    return Object.values(_fetchMetadata).filter(Boolean) >= 5;
+    return Object.values(_fetchMetadata).filter(loading => loading === true).length >= 5;
 }
 
 const startFetchData = (uri) => {
@@ -52,8 +52,11 @@ const getMetadata = async (uri) => {
 
     startFetchData(uri)
 
+    if (typeof _fetchMetadata[uri] === 'object') {
+        return Promise.resolve(_fetchMetadata[uri])
+    }
+
     return axios.get(uri).then(response => {
-        endFetchData(uri)
         let {image} = response.data
 
         if (image.startsWith('ipfs://')) {
@@ -67,7 +70,21 @@ const getMetadata = async (uri) => {
             attributes[item.trait_type] = item.value
         })
 
-        return {...response.data, image, attributes}
+        _fetchMetadata[uri] = {
+            ...response.data,
+            image,
+            attributes: {
+                Type: attributes.Type,
+                Name: attributes.Name,
+                Rarity: attributes.Rarity,
+                Social: attributes.Social,
+                Endurance: attributes.Endurance,
+                Luck: attributes.Luck,
+                Speed: attributes.Speed,
+            }
+        }
+
+        return _fetchMetadata[uri]
     }).catch(e => {
         endFetchData(uri)
     })
