@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react'
 import {Image, Tooltip} from "antd"
 import getNFTMetadata from '../../../utils/moonbeast-metadata'
-import {getTokenInfoOfOwnerByIndex} from '../../../services/smc-moon-beast'
+import {getTokenInfoOfOwnerByIndex, getTokenURI} from '../../../services/smc-moon-beast'
 import NFTLink from '../../NFTLink'
 import configs from "../../../configs";
 import MoonBeastItemMinting from './MoonBeastItemMinting';
@@ -35,7 +35,11 @@ const MoonBeastItem = ({moonBeast = {}}) => {
             moonBeast.uri = uri
         }
 
-        return getNFTMetadata(moonBeast.getUri()).then(response => {
+        if (!moonBeast.uri) {
+            moonBeast.uri = await getTokenURI(moonBeast.tokenId)
+        }
+
+        return getNFTMetadata(moonBeast.uri).then(response => {
             setName(response.name)
             setImageUrl(response.image)
             setAttributes(response.attributes)

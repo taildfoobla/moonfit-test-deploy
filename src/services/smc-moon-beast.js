@@ -53,14 +53,23 @@ export const fetchMoonBeastIdsByAccount = async (account, maxLength = Number.MAX
 
 
 export const getTokenInfoOfOwnerByIndex = async (account, index) => {
-    console.log(index);
     const tokenId = await _moonBeastContract.methods.tokenOfOwnerByIndex(account, index).call()
-    console.log(tokenId);
     const uri = await _moonBeastContract.methods.tokenURI(tokenId).call()
     return {
         tokenId: parseInt(tokenId, 10),
         uri,
     }
+}
+
+export const getTokenURI = async tokenId => {
+    const key = `mb_uri_${tokenId}`
+    let value = localStorage.getItem(key)
+    if (!value || value  === '[object Promise]') {
+        value = await _moonBeastContract.methods.tokenURI(tokenId).call()
+        localStorage.setItem(key, value)
+    }
+
+    return Promise.resolve(value)
 }
 
 export const moonBeastContract = _moonBeastContract

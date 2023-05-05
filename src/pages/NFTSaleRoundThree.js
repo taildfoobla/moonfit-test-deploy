@@ -19,7 +19,7 @@ import EventBus from '../utils/event-bus'
 
 import {getTransactionReceipt} from "../services/smc-common";
 import {fetchMintPassByAccount} from "../services/smc-mint-pass"
-import {fetchMoonBeastsByAccount} from '../services/smc-moon-beast'
+import {fetchMoonBeastIdsByAccount} from '../services/smc-moon-beast'
 import {getAvailableSlots, getSaleMaxAmount, getMintPass, getMoonBeast, buyNFTData, subscribeUpdateSaleAmount, smcContract, NFT_SALE_ADDRESS} from '../services/smc-ntf-sale'
 import {getAvailableMintPass} from '../services/smc-ntf-sale-round-34'
 import {buyNFT} from '../services/smc-common'
@@ -43,6 +43,7 @@ const NFTSaleRoundThree = (props) => {
     const [nftSaleAvailableQuantity, setNftSaleAvailableQuantity] = useState(NaN)
     const [moonBeastMinting, setMoonBeastMinting] = useState(0)
     const [isConfirmedTx, setIsConfirmedTx] = useState(false)
+    const [amount, setAmount] = useState(0)
     const [mintAmount, setMintAmount] = useState(0)
     const [maxMintAmount, setMaxMintAmount] = useState(0)
 
@@ -157,10 +158,10 @@ const NFTSaleRoundThree = (props) => {
     const _fetchMoonBeasts = async (isSetLoading = true) => {
         isSetLoading && setMoonBeastLoading(true)
         try {
-            const moonBeasts = await fetchMoonBeastsByAccount(wallet.account, 150)
+            const moonBeasts = await fetchMoonBeastIdsByAccount(wallet.account, 150)
             console.log({moonBeasts});
 
-            setMoonBeasts(moonBeasts)
+            setMoonBeasts(moonBeasts.map(tokenId => ({tokenId})))
         } catch (e) {
             console.log('fetch MoonBeasts error', e.message)
 
@@ -326,45 +327,6 @@ const NFTSaleRoundThree = (props) => {
         _updateMintPass(_mintPasses)
     }
 
-    const _renderFoot = () => {
-        if (maxMintAmount === 0) {
-            return
-        }
-
-        const isMintBtnDisabled = totalMintPassSelected() === 0 || mintLoading || moonBeastMinting || !mintAmount
-
-        return (
-            <div className="flex flex-row items-center mt-6 form-mint justify-between">
-                <div className="form-mint__fee normal-case items-center">
-                    <span className="mb-1 form-mint__fee-label">Fee: </span>
-                    <span className={'race-sport-font primary-color form-mint__fee-value'}>
-                        {getTotalFee()} GLMR
-                    </span>
-                </div>
-                <div className="form-mint__warp-input">
-                    <span className="form-mint__input-icon icon-minus" onClick={() => _updateMintAmount(mintAmount - 1, true)}>
-                        <MinusOutlined size={24} />
-                    </span>
-                    <span className="form-mint__input-value">
-                        <input
-                            onChange={(e) => _handleChangeAmountInput(e.target.value)}
-                            value={mintAmount}
-                            pattern="[0-9]*"
-                            type="tel"/>
-                    </span>
-                    <span className="form-mint__input-icon icon-plus" onClick={() => _updateMintAmount(mintAmount + 1, true)}>
-                        <PlusOutlined size={24} />
-                    </span>
-                </div>
-                <div className="form-mint__wrap-btn">
-                    <ButtonMintNFT isDisabled={isMintBtnDisabled} isLoading={mintLoading} handleMintNFT={handleMintNFT}>
-                        {mintAmount > 0 ? `Mint ${mintAmount} NFT${mintAmount > 1 ? "s" : ""}` : "Mint NFT"}
-                    </ButtonMintNFT>
-                </div>
-            </div>
-        )
-    }
-
     const _renderContainer = () => {
         return (
             <div className="section-content" key={'_renderContainer'}>
@@ -395,6 +357,8 @@ const NFTSaleRoundThree = (props) => {
                                 <div className={'mt-4 mb-6 lg:mt-8'}>
                                     <NFTSaleMoonBestInfo
                                         availableMintPass={availableMintPass}
+                                        totalMintPass={mintPasses.length}
+                                        setAmount={setAmount}
                                         // availableSlots={nftSaleAvailableQuantity}
                                         // maxSaleSlots={nftSaleQuantity}
                                         // isLoading={saleInfoLoading}
