@@ -33,17 +33,6 @@ const NFTSaleMoonBestInfo = (props) => {
         setListPack(tab === 1 ? WITH_MINT_PASS_PACK : WITHOUT_MINT_PASS_PACK)
     }, [tab])
 
-    const renderPackIcon = (type) => {
-        const icons = {
-            pack1: Pack1,
-            pack3: Pack3,
-            pack5: Pack5,
-            pack13: Pack13,
-        }
-
-        return icons[type]
-    }
-
     const onChangePack = (pack) => {
         setSelectedPack({...pack, tab})
         setOldSelectedPack({
@@ -68,6 +57,17 @@ const NFTSaleMoonBestInfo = (props) => {
 
     const countMintPass = () => {
         return props.availableMintPass + props.totalMintPass
+    }
+
+    const _renderPackIcon = (type) => {
+        const icons = {
+            pack1: Pack1,
+            pack3: Pack3,
+            pack5: Pack5,
+            pack13: Pack13,
+        }
+
+        return icons[type]
     }
 
     const _renderButton = () => {
@@ -226,7 +226,7 @@ const NFTSaleMoonBestInfo = (props) => {
                         return (
                             <li key={index} className={className} onClick={() => onChangePack(item)}>
                                 <div className='left flex items-center'>
-                                    <img src={renderPackIcon(item.type)} alt={item.type}/>
+                                    <img src={_renderPackIcon(item.type)} alt={item.type}/>
                                     <div className='pack-label ml-3'>
                                         <p className='flex text-[14px] race-sport-font mb-0'><span
                                             className='mr-2'>{item.label}</span>

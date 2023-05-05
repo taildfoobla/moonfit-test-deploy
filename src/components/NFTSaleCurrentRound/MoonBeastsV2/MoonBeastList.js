@@ -21,7 +21,7 @@ const MoonBeasts = ({ moonBeasts, moonBeastMinting = 0, isExpired = false }) => 
                 </div> */}
                 {/* <div className={'text-center text-white normal-case font-normal'}>Please pick a team and enter the amount of Beast & Beauty</div> */}
                 <div className={'text-center text-white normal-case font-normal'}>
-                    {isExpired ? `No NFTs found!` : `Please pick a team and enter the amount of Beast you want to mint, then click the "MINT NFT" button`}
+                    No NFTs found!
                 </div>
             </div>
         )

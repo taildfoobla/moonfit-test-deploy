@@ -1,3 +1,14 @@
+const {env} = require('../configs')
+
+const mapEnv = item => {
+    env.price = item.value
+
+    if (env === 'development') {
+        env.price = item.value / 10 * 5
+    }
+
+    return env
+}
 export const WITH_MINT_PASS_PACK = [
     {
         type: 'pack1',
@@ -30,7 +41,7 @@ export const WITH_MINT_PASS_PACK = [
         label: 'Pack 13',
         tooltip: '13 NFT is equivalent to 10km target - recommend for 10K runner'
     }
-]
+].map(mapEnv)
 
 export const WITHOUT_MINT_PASS_PACK = [
     {
@@ -64,4 +75,4 @@ export const WITHOUT_MINT_PASS_PACK = [
         label: 'Pack 13',
         tooltip: '13 NFT is equivalent to 10km target - recommend for 10K runner'
     }
-]
+].map(mapEnv)

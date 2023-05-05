@@ -1,10 +1,8 @@
-import {NFT_SALE_ROUNDS_INFO} from "../constants/blockchain"
 import configs from '../configs'
 import Web3 from "web3";
 import nftSaleABI from "../abis/MoonBeastNFTSaleRound34.json";
 import {moonBeastContract} from "./smc-moon-beast";
 import {getMoonBeast as _getMoonBeast} from "./smc-common";
-import EventBus from "../utils/event-bus";
 
 const {MOONBEAM_WSS_URL} = configs
 

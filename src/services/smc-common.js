@@ -53,10 +53,7 @@ export const buyNFT = async (provider, connector, contract, tx) => {
         throw e
     })
 
-    // const walletEx = EVM_WALLETS.find(item => item.extensionName === walletExtKey)
     let gasLimit = _gasLimit
-    // gasLimit = gasLimit < 20999 ? 20999 : gasLimit
-    // gasLimit = gasLimit > 7920027 ? 7920027 : gasLimit
 
     console.log({_gasLimit, gasLimit, x: typeof _gasLimit})
 
