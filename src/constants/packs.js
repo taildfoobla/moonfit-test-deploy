@@ -1,11 +1,15 @@
-const {env} = require('../configs')
+import configs from '../configs'
+import BigNumber from "bignumber.js";
 
 const mapEnv = item => {
     item.price = item.value
+    item.pack = item.amount
 
-    if (env === 'development') {
-        item.price = item.value / 10 * 5
+    if (configs.env === 'development') {
+        item.price = new BigNumber(item.value, 10).dividedBy(10 ** 5, 10)
     }
+
+    item.price = new BigNumber(item.price, 10).multipliedBy(10 ** 18).toNumber()
 
     return item
 }

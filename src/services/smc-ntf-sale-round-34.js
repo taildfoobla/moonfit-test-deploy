@@ -21,6 +21,8 @@ export const getAvailableMintPass = async (owner) => {
     return parseInt(value)
 }
 
+export const mintNFTWithoutMintPassData = pack => saleContract.methods.mintNFTWithoutMintPassV2(pack).encodeABI()
+
 
 export const getSaleMaxAmount = async () => {
     const value = await saleContract.methods._maxSaleAmount().call()
@@ -35,6 +37,8 @@ export const buyNFTData = (mintAmount) => {
 export const getMoonBeast = async (wallet) => {
     return _getMoonBeast(moonBeastContract, saleContract, wallet)
 }
+
+export const NFT_SALE_ADDRESS = configs.R34_NFT_SALE_SC
 
 export const smcContract = saleContract;
 
