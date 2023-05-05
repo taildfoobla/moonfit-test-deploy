@@ -8,13 +8,12 @@ const RoundComingSoon = ({stage}) => {
     const dateTitle = () => {
 
         return (
-            <>
-                <div className="flex">
-                    <h1>TBA</h1>
-                    <h3 className="pt-2">&nbsp;</h3>
+            <div className="flex">
+                <div>
+                    <h2 className="mb-2">Mint Now</h2>
+                    <h3 className="mb-2">in MoonFit App</h3>
                 </div>
-                <h3>&nbsp;</h3>
-            </>
+            </div>
         )
     }
 
