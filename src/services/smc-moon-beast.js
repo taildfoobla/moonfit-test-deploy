@@ -44,11 +44,15 @@ export const fetchMoonBeastIdsByAccount = async (account, maxLength = Number.MAX
         data = data.slice(-maxLength)
     }
 
-    return Bluebird.map(data, async index => {
+    const result = await Bluebird.map(data, async index => {
         const tokenId = await tokenOfOwnerByIndex(_moonBeastContract, account, index)
 
-        return tokenId
+        return parseInt(tokenId, 10)
     }, {concurrency: 3})
+
+    console.log({balance, data, result});
+
+    return result;
 }
 
 

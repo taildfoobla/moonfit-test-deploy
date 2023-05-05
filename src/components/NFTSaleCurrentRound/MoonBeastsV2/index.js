@@ -29,6 +29,8 @@ const MoonBeastsV2 = ({moonBeasts, isLoading, moonBeastMinting = 0, handleRefres
             return
         }
 
+        console.log({moonBeasts});
+
         if (moonBeasts.length <= pageSize) {
             setData(moonBeasts)
         } else {

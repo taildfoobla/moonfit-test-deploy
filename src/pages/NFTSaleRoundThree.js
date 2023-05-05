@@ -43,7 +43,7 @@ const NFTSaleRoundThree = () => {
             if (!Number.isNaN(value)) {
                 setSaleAmount(value)
             } else {
-                await Bluebird.delay(3000)
+                await Bluebird.delay(60000)
                 return _getAvailableSlots()
             }
         } catch (e) {
@@ -69,9 +69,9 @@ const NFTSaleRoundThree = () => {
         setMoonBeastLoading(true)
 
         try {
-            const moonBeasts = await fetchMoonBeastIdsByAccount(wallet.account, 150)
+            const _moonBeasts = await fetchMoonBeastIdsByAccount(wallet.account, 150)
 
-            setMoonBeasts(moonBeasts.map(tokenId => ({tokenId})))
+            setMoonBeasts(_moonBeasts.map(tokenId => ({tokenId})))
         } catch (e) {
             console.log('fetch MoonBeasts error', e.message)
 
