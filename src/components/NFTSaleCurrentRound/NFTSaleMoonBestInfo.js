@@ -9,7 +9,7 @@ import Pack1 from '../../assets/images/icons/pack-1.svg'
 import Pack3 from '../../assets/images/icons/pack-3.svg'
 import Pack5 from '../../assets/images/icons/pack-5.svg'
 import Pack13 from '../../assets/images/icons/pack-13.svg'
-import LockMintpass from '../../assets/images/icons/lock-item.svg'
+import LockMintPass from '../../assets/images/icons/lock-mintpass.svg'
 import { WITHOUT_MINT_PASS_PACK, WITH_MINT_PASS_PACK } from '../../constants/packs'
 
 const NFTSaleMoonBestInfo = (props) => {
@@ -47,7 +47,7 @@ const NFTSaleMoonBestInfo = (props) => {
         setTab(value)
     }
 
-    const handleLockMintpass = () => {
+    const handleLockMintPass = () => {
         setLoading(true)
         setTimeout(() => {
             setLoading(false)
@@ -71,7 +71,7 @@ const NFTSaleMoonBestInfo = (props) => {
             if (props.availableMintPass < selectedPack.amount && tab === 1) {
                 return (
                     <Fragment>
-                        <img className="mr-2" src={LockMintpass} alt="" /> Lock Mintpass
+                        <img className="mr-2" src={LockMintPass} alt="" /> Lock Mintpass
                     </Fragment>
                 )
             }
@@ -79,7 +79,7 @@ const NFTSaleMoonBestInfo = (props) => {
 
             return (
                 <Fragment>
-                    <img className="mr-2" src={LockMintpass} alt="" /> Mint NFT
+                    <img className="mr-2" src={LockMintPass} alt="" /> Mint NFT
                 </Fragment>
             )
 
@@ -87,7 +87,7 @@ const NFTSaleMoonBestInfo = (props) => {
 
         return (
             <button type="button"
-                onClick={handleLockMintpass}
+                onClick={handleLockMintPass}
                 className="button button-secondary">
                     {_renderText()}
             </button>
