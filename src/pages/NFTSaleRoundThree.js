@@ -110,15 +110,15 @@ const NFTSaleRoundThree = () => {
                     <div className="moonfit-card">
                         <div className="moonfit-card-inner">
                             <div
-                                className="card-title flex flex-col lg:flex-row justify-center lg:justify-between items-start mx-auto mt-0 mb-6 lg:mb-10">
+                                className="card-title flex flex-col lg:flex-row justify-center lg:justify-between items-center mx-auto mt-0 mb-6 lg:mb-8">
                                 <div
-                                    className={'flex text-white justify-center w-full lg:w-auto justify-center lg:justify-start mt-4 lg:mt-0'}>
+                                    className={'flex text-[20px] text-white leading-normal font-normal justify-center w-full lg:w-auto justify-center lg:justify-start mt-4 lg:mt-0'}>
                                     PURCHASE MoonBeast
                                 </div>
                                 <div
                                     className={'flex w-full lg:w-auto justify-center lg:justify-start mt-4 lg:mt-0'}>
                                     {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
-                                    <a href="#" className={'normal-case text-xs inline primary-color'}
+                                    <a href="#" className={'text-[18px] font-extrabold inline primary-color darker-grotesque-font'}
                                        type="button" onClick={e => handleRefresh(e)}>
                                         <svg className="w-4 h-4 inline mr-1" fill="none" stroke="currentColor"
                                              viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
