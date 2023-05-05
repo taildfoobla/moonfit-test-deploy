@@ -25,8 +25,7 @@ const NFTSaleMoonBestInfo = (props) => {
     const [listPack, setListPack] = useState([])
     const [selectedPack, setSelectedPack] = useState({})
     const [oldSelectedPack, setOldSelectedPack] = useState({})
-    const [isConfirmedTx, setIsConfirmedTx] = useState(false)
-    const [mintAmount, setMintAmount] = useState(0)
+    const [buttonText, setButtonText] = useState('Minting')
     const [maxMintAmount, setMaxMintAmount] = useState(0)
 
     const mbRetrieverRef = useRef(0)
@@ -35,32 +34,21 @@ const NFTSaleMoonBestInfo = (props) => {
         setListPack(tab === 1 ? WITH_MINT_PASS_PACK : WITHOUT_MINT_PASS_PACK)
     }, [tab])
 
-
-    useEffect(() => {
-        if (isConfirmedTx) {
-            // console.log('Effect isConfirmedTx', isConfirmedTx)
-            clearMbInterval()
-            props.setMoonBeastMinting(0)
-        }
-        // return () => clearMbInterval()
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [isConfirmedTx])
-
-    const clearMbInterval = () => {
-        mbRetrieverRef.current && clearInterval(mbRetrieverRef.current)
-        mbRetrieverRef.current = 0
-    }
-
     const confirmTransaction = async (txHash) => {
         const receipt = await getTransactionReceipt(txHash)
 
         if (receipt) {
+            props.setMoonBeastMinting(0)
+            notification.close(txHash)
+            props.onRefresh()
+
             if (!receipt.status) {
-                props.setMoonBeastMinting(0)
-                props.onRefresh()
-                notification.close(txHash)
                 notification.sentTransactionFailed(txHash)
+            } else {
+                notification.sentTransactionSuccess(txHash)
             }
+
+            return
         }
 
         await Bluebird.delay(3000)
@@ -117,7 +105,7 @@ const NFTSaleMoonBestInfo = (props) => {
         setLoading(true)
 
         if (tab === 2) {
-
+            setButtonText('Minting')
             try {
                 const tx = {
                     to: NFT_SALE_ADDRESS,
@@ -164,7 +152,7 @@ const NFTSaleMoonBestInfo = (props) => {
             return (
                 <button className="button button-secondary" type="button">
                     <LoadingOutlined className='text-white'/>
-                    <span className='ml-2'>Locking</span>
+                    <span className='ml-2'>{buttonText}</span>
                 </button>
             )
         }
