@@ -15,6 +15,8 @@ import {WITHOUT_MINT_PASS_PACK, WITH_MINT_PASS_PACK} from '../../constants/packs
 import {mintNFTWithoutMintPassData, NFT_SALE_ADDRESS, smcContract} from "../../services/smc-ntf-sale-round-34";
 import {buyNFT, getTransactionReceipt} from "../../services/smc-common";
 import * as notification from "../../utils/notification";
+import {getMainMessage} from "../../utils/tx-error";
+import Bluebird from "bluebird";
 
 const NFTSaleMoonBestInfo = (props) => {
     const {isConnected, wallet, provider, connector, showWalletSelectModal} = useContext(WalletAuthContext)
@@ -53,20 +55,17 @@ const NFTSaleMoonBestInfo = (props) => {
         const receipt = await getTransactionReceipt(txHash)
 
         if (receipt) {
-            setTimeout(async () => {
-                // if (!isFetching) {
-                //     await fetchData(false)
-                // }
-
-                setIsConfirmedTx(true)
-            }, 500)
-
             if (!receipt.status) {
+                props.setMoonBeastMinting(0)
+                props.onRefresh()
                 notification.close(txHash)
                 notification.sentTransactionFailed(txHash)
             }
         }
-        return true
+
+        await Bluebird.delay(3000)
+
+        return confirmTransaction(txHash)
     }
 
     const handleMintNFT = async () => {
@@ -118,29 +117,31 @@ const NFTSaleMoonBestInfo = (props) => {
         setLoading(true)
 
         if (tab === 2) {
-            console.log(selectedPack);
 
-            const tx = {
-                        to: NFT_SALE_ADDRESS,
-                        from: wallet.account,
-                        // gasPrice: `${gasPrice}`,
-                        maxPriorityFeePerGas: null,
-                        maxFeePerGas: null,
-                        value: selectedPack.price.toString(),
-                        data: mintNFTWithoutMintPassData(selectedPack.pack)
-                    }
-            console.log(tx);
-            const txHash = await buyNFT(provider, connector, smcContract, tx)
-                console.log(txHash)
+            try {
+                const tx = {
+                    to: NFT_SALE_ADDRESS,
+                    from: wallet.account,
+                    // gasPrice: `${gasPrice}`,
+                    maxPriorityFeePerGas: null,
+                    maxFeePerGas: null,
+                    value: selectedPack.price.toString(),
+                    data: mintNFTWithoutMintPassData(selectedPack.pack)
+                }
 
-            return;
+                const txHash = await buyNFT(provider, connector, smcContract, tx)
+                props.setMoonBeastMinting(selectedPack.pack)
+
+                if (txHash) {
+                    notification.destroy()
+                    notification.sentTransactionFailed(txHash)
+                    confirmTransaction(txHash).then()
+                }
+            } catch (e) {
+                notification.error(e.message, e)
+                setLoading(false)
+            }
         }
-
-        setTimeout(() => {
-            setLoading(false)
-
-            props.onRefresh()
-        }, 2000)
     }
 
     const countMintPass = () => {
