@@ -6,7 +6,7 @@ import {sendTransaction} from "../utils/blockchain";
 import {chunk} from "../utils/array";
 import MoonBeast from "../utils/MoonBeast";
 import BigNumber from "bignumber.js"
-const {MOONBEAST_NETWORK} = configs
+const {MOONBEAST_NETWORK, MOONBEAM_SCAN_URL} = configs
 
 const web3 = new Web3(MOONBEAST_NETWORK)
 
@@ -53,10 +53,7 @@ export const buyNFT = async (provider, connector, contract, tx) => {
         throw e
     })
 
-    // const walletEx = EVM_WALLETS.find(item => item.extensionName === walletExtKey)
     let gasLimit = _gasLimit
-    // gasLimit = gasLimit < 20999 ? 20999 : gasLimit
-    // gasLimit = gasLimit > 7920027 ? 7920027 : gasLimit
 
     console.log({_gasLimit, gasLimit, x: typeof _gasLimit})
 
@@ -68,7 +65,7 @@ export const buyNFT = async (provider, connector, contract, tx) => {
 
     const txHash = await sendTransaction(provider, connector, tx)
 
-    console.log('transaction hash:', 'txHash')
+    console.log('transaction hash:', `${MOONBEAM_SCAN_URL}/tx/${txHash}`)
 
     return txHash
 }

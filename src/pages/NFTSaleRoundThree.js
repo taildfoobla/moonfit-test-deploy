@@ -1,55 +1,31 @@
-import React, { useContext, useEffect, useRef, useState } from 'react'
-import BigNumber from 'bignumber.js'
+import React, { useContext, useEffect, useState } from 'react'
 import Bluebird from 'bluebird'
 import WalletAuthContext from "../contexts/WalletAuthContext"
 import * as notification from "../utils/notification"
 import { switchNetwork } from "../utils/blockchain"
-import { MinusOutlined, PlusOutlined } from '@ant-design/icons';
-import LoadingWrapper from "../components/shared/LoadingWrapper"
 import Paths from "../routes/Paths"
 import EnvWrapper from "../components/shared/EnvWrapper"
-import { NFT_SALE_ROUNDS_INFO } from "../constants/blockchain"
 import WalletAuthRequiredNFTSale from "../components/WalletAuthRequiredNFTSale"
 import NFTStages from "../components/NFTStages"
 import Header from '../components/NFTSaleCurrentRound/Header'
-import ButtonMintNFT from '../components/NFTSaleCurrentRound/ButtonMintNFT'
 import MoonBeasts from '../components/NFTSaleCurrentRound/MoonBeastsV2/index'
-import MintPass from '../components/NFTSaleCurrentRound/MintPass'
-import EventBus from '../utils/event-bus'
 
-import {getTransactionReceipt} from "../services/smc-common";
-import {fetchMintPassByAccount} from "../services/smc-mint-pass"
+import {getMintPassBalance} from "../services/smc-mint-pass"
 import {fetchMoonBeastIdsByAccount} from '../services/smc-moon-beast'
-import {getAvailableSlots, getSaleMaxAmount, getMintPass, getMoonBeast, buyNFTData, subscribeUpdateSaleAmount, smcContract, NFT_SALE_ADDRESS} from '../services/smc-ntf-sale'
-import {getAvailableMintPass} from '../services/smc-ntf-sale-round-34'
-import {buyNFT} from '../services/smc-common'
+import {getAvailableMintPass, getAvailableSlots} from '../services/smc-ntf-sale-round-34'
 import CurveBGWrapper from '../wrappers/CurveBG'
 import NFTSaleMoonBestInfo from '../components/NFTSaleCurrentRound/NFTSaleMoonBestInfo'
-// import TwitterShareButton from '../components/shared/TwitterShare'
 
-const NFT_SALE_CURRENT_INFO = NFT_SALE_ROUNDS_INFO.R3
-
-const NFTSaleRoundThree = (props) => {
-    const [loading, setLoading] = useState(true)
-    const [isFetching, setIsFetching] = useState(true)
+const NFTSaleRoundThree = () => {
     const [availableMintPass, setAvailableMintPass] = useState(0)
-    const [saleInfoLoading, setSaleInfoLoading] = useState(true)
-    const [mintPassLoading, setMintPassLoading] = useState(true)
     const [moonBeastLoading, setMoonBeastLoading] = useState(true)
-    const [mintLoading, setMintLoading] = useState(false)
-    const [mintPasses, setMintPasses] = useState([])
+    const [saleLoading, setSaleLoading] = useState(true)
+    const [mintPassBalance, setMintPassBalance] = useState(0)
     const [moonBeasts, setMoonBeasts] = useState([])
-    const [nftSaleQuantity, setNftSaleQuantity] = useState(NFT_SALE_CURRENT_INFO.amount)
-    const [nftSaleAvailableQuantity, setNftSaleAvailableQuantity] = useState(NaN)
+    const [saleAmount, setSaleAmount] = useState(NaN)
     const [moonBeastMinting, setMoonBeastMinting] = useState(0)
-    const [isConfirmedTx, setIsConfirmedTx] = useState(false)
-    const [amount, setAmount] = useState(0)
-    const [mintAmount, setMintAmount] = useState(0)
-    const [maxMintAmount, setMaxMintAmount] = useState(0)
 
-    const mbRetrieverRef = useRef(0)
-
-    const { isConnected, wallet, provider, connector } = useContext(WalletAuthContext)
+    const { isConnected, wallet, provider } = useContext(WalletAuthContext)
 
     useEffect(() => {
         if (!!wallet.account) {
@@ -59,272 +35,72 @@ const NFTSaleRoundThree = (props) => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [wallet.account])
 
-    useEffect(() => {
-        if (isConfirmedTx) {
-            // console.log('Effect isConfirmedTx', isConfirmedTx)
-            clearMbInterval()
-            setMoonBeastMinting(0)
-        }
-        // return () => clearMbInterval()
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [isConfirmedTx])
 
-    const clearMbInterval = () => {
-        mbRetrieverRef.current && clearInterval(mbRetrieverRef.current)
-        mbRetrieverRef.current = 0
-    }
-
-    const _getSaleMaxAmount = async () => {
-        try {
-            const value = await getSaleMaxAmount()
-
-            if (!Number.isNaN(value)) {
-                return setNftSaleQuantity(value)
-            }
-        }catch (e) {
-            //
-        }
-
-        await Bluebird.delay(3000)
-        return _getSaleMaxAmount()
-    }
-
-    setTimeout(_getSaleMaxAmount, 0)
-
-    const confirmTransaction = async (txHash) => {
-        const receipt = await getTransactionReceipt(txHash)
-
-        if (receipt) {
-            setTimeout(async () => {
-                if (!isFetching) {
-                    await fetchData(false)
-                }
-
-                setIsConfirmedTx(true)
-            }, 500)
-
-            if (!receipt.status) {
-                notification.close(txHash)
-                notification.sentTransactionFailed(txHash)
-            }
-        }
-        return true
-    }
-
-    const _getAvailableSlots = async (isSetLoading = false) => {
-        isSetLoading && setSaleInfoLoading(true)
-
+    const _getAvailableSlots = async () => {
         try {
             const value = await getAvailableSlots()
 
             if (!Number.isNaN(value)) {
-                setNftSaleAvailableQuantity(value)
+                setSaleAmount(value)
             } else {
                 await Bluebird.delay(3000)
-                return _getAvailableSlots(isSetLoading)
+                return _getAvailableSlots()
             }
         } catch (e) {
             //
         }
-
-        isSetLoading && setSaleInfoLoading(false)
     }
 
-    const handleGetMinted = async () => {
-        await _getAvailableSlots(true)
+    const _fetchMintPass = async () => {
+        setSaleLoading(true)
+
+        const [_availableMintPass, _mintPassesBalance] = await Promise.all([
+            getAvailableMintPass(wallet.account),
+            getMintPassBalance(wallet.account),
+        ])
+
+        setMintPassBalance(_mintPassesBalance)
+        setAvailableMintPass(_availableMintPass)
+
+        setSaleLoading(false)
     }
 
-    const _fetchMintPass = async (isSetLoading = true) => {
-        isSetLoading && setMintPassLoading(true)
-        let _mintPasses
+    const _fetchMoonBeasts = async () => {
+        setMoonBeastLoading(true)
 
-        try {
-            _mintPasses = await fetchMintPassByAccount(wallet.account)
-        } catch (e) {
-            console.log('fetch MintPass error', e.message)
-
-            await Bluebird.delay(3000)
-            return _fetchMintPass(isSetLoading)
-        }
-
-        setMintPasses(_mintPasses)
-        const _maxMintAmount = _mintPasses.map(item => item.availableSlots).reduce((a, b) => a + b, 0)
-        setMaxMintAmount(_maxMintAmount)
-        _updateMintAmount(_maxMintAmount, false, _maxMintAmount)
-
-        setMintPassLoading(false)
-    }
-
-    const _fetchMoonBeasts = async (isSetLoading = true) => {
-        isSetLoading && setMoonBeastLoading(true)
         try {
             const moonBeasts = await fetchMoonBeastIdsByAccount(wallet.account, 150)
-            console.log({moonBeasts});
 
             setMoonBeasts(moonBeasts.map(tokenId => ({tokenId})))
         } catch (e) {
             console.log('fetch MoonBeasts error', e.message)
 
             await Bluebird.delay(3000)
-            return _fetchMoonBeasts(isSetLoading)
+            return _fetchMoonBeasts()
         }
 
         setMoonBeastLoading(false)
     }
 
-    const fetchData = async (loading = true) => {
-        const  value  = await getAvailableMintPass(wallet.account)
-        setAvailableMintPass(value)
-        console.log(value, '----------------------------------------------------------------');
-        setIsFetching(true)
-        loading && setLoading(true)
+    const fetchData = async () => {
         // Switch Network on Desktop Wallet Extension
         provider && await switchNetwork(provider)
 
-        await _getAvailableSlots(true)
-        loading && setLoading(false)
-        await _fetchMintPass(loading)
-        loading && setLoading(false)
-        await _fetchMoonBeasts(loading)
-
-        loading && setLoading(false)
-        setIsFetching(false)
+        await Promise.all([
+            _getAvailableSlots(),
+            _fetchMintPass(),
+            _fetchMoonBeasts()
+        ])
     }
 
     const handleRefresh = async (e) => {
-        e.preventDefault()
+        e && e.preventDefault()
 
-        await _getAvailableSlots(true)
-        await _fetchMintPass(true)
-        await _fetchMoonBeasts(true)
-    }
-
-    const _updateMintPass = (_mintPasses) => {
-        const _maxMintAmount = _mintPasses
-            .filter(item => item.isSelected)
-            .map(item => item.availableSlots)
-            .reduce((a, b) => a + b, 0)
-
-        setMintPasses(_mintPasses)
-        _updateMintAmount(_maxMintAmount)
-    }
-
-    const onClickMintPass = (tokenId) => {
-        const _mintPasses = mintPasses.map(item => {
-            let { isSelected } = item
-            if (!item.isOutOfSlot && item.tokenId === tokenId) {
-                isSelected = !isSelected
-            }
-
-            return {
-                ...item,
-                isSelected
-            }
-        })
-
-        _updateMintPass(_mintPasses)
-    }
-
-    const _calculateSelectedMintPasses = (amount) => {
-        let _tmpAmount = 0
-        const _mintPasses = mintPasses.map(item => {
-            const isSelected = !item.isOutOfSlot && _tmpAmount < amount
-            _tmpAmount += item.availableSlots
-
-            return {
-                ...item,
-                isSelected,
-            }
-        })
-
-        setMintPasses(_mintPasses)
-    }
-
-    const _updateMintAmount = (value, checkSelected = false, maxValue) => {
-        let amount = value
-        if (value !== '') {
-            amount = parseInt(value, 10)
-            amount = amount > 0 ? amount : 0
-            if (maxValue) {
-                amount = amount < maxValue ? amount : maxValue
-            } else {
-                amount = amount < maxMintAmount ? amount : maxMintAmount
-            }
-
-            if (!amount) {
-                console.log({amount, maxMintAmount, maxValue})
-                console.log({mintPasses})
-            }
-        }
-
-        if (checkSelected) {
-            _calculateSelectedMintPasses(parseInt(value, 10) || 0)
-        }
-
-        setMintAmount(amount || 0)
-    }
-
-    const _handleChangeAmountInput = (value) => {
-        _updateMintAmount(value, true)
-    }
-
-    const handleMintNFT = async () => {
-        const mintPassTokenIds = mintPasses.filter(item => item.isSelected).map(item => item.tokenId)
-
-        if (mintPassTokenIds.length === 0 || mintAmount <= 0) {
-            alert('No mint pass selected')
-            return
-        }
-
-        setMintLoading(true)
-        try {
-            let value = await smcContract.methods._price().call()
-            value = value * mintAmount
-
-            const tx = {
-                to: NFT_SALE_ADDRESS,
-                from: wallet.account,
-                // gasPrice: `${gasPrice}`,
-                maxPriorityFeePerGas: null,
-                maxFeePerGas: null,
-                value: value.toString(),
-                data: buyNFTData(mintPassTokenIds, mintAmount)
-            }
-            const txHash = await buyNFT(provider, connector, smcContract, tx)
-            console.log("The hash of MFB minting transaction is: ", txHash)
-            setMoonBeastMinting(mintAmount)
-            setIsConfirmedTx(false)
-            clearMbInterval()
-            notification.destroy()
-
-            mbRetrieverRef.current = setInterval(() => confirmTransaction(txHash), 3000)
-            notification.sentTransactionSuccess(txHash)
-            setMintLoading(false)
-        } catch (e) {
-            setMintLoading(false)
-            console.log(e.message);
-            notification.error(e.message)
-            console.log("!error", e)
-        }
-    }
-
-    const getTotalFee = () => {
-        return new BigNumber(NFT_SALE_CURRENT_INFO.price).multipliedBy(parseInt(mintAmount, 10), 10).toString()
-    }
-
-    const totalMintPassSelected = () => mintPasses.filter(item => item.isSelected).length
-
-    const onSelectAll = () => {
-        const isSelected = totalMintPassSelected() === 0
-
-        const _mintPasses = mintPasses.map(item => {
-            return {
-                ...item,
-                isSelected: isSelected && !item.isOutOfSlot,
-            }
-        })
-
-        _updateMintPass(_mintPasses)
+        return Promise.all([
+            _getAvailableSlots(),
+            _fetchMintPass(),
+            _fetchMoonBeasts(),
+        ])
     }
 
     const _renderContainer = () => {
@@ -337,13 +113,13 @@ const NFTSaleRoundThree = (props) => {
                                 className="card-title flex flex-col lg:flex-row justify-center lg:justify-between items-start mx-auto mt-0 mb-6 lg:mb-10">
                                 <div
                                     className={'flex text-white justify-center w-full lg:w-auto justify-center lg:justify-start mt-4 lg:mt-0'}>
-                                    PURCHASE MoonBEST
+                                    PURCHASE MoonBeast
                                 </div>
                                 <div
                                     className={'flex w-full lg:w-auto justify-center lg:justify-start mt-4 lg:mt-0'}>
                                     {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
                                     <a href="#" className={'normal-case text-xs inline primary-color'}
-                                       onClick={(e) => handleRefresh(e)}>
+                                       type="button" onClick={e => handleRefresh(e)}>
                                         <svg className="w-4 h-4 inline mr-1" fill="none" stroke="currentColor"
                                              viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
@@ -357,30 +133,17 @@ const NFTSaleRoundThree = (props) => {
                                 <div className={'mt-4 mb-6 lg:mt-8'}>
                                     <NFTSaleMoonBestInfo
                                         availableMintPass={availableMintPass}
-                                        totalMintPass={mintPasses.length}
-                                        setAmount={setAmount}
-                                        // availableSlots={nftSaleAvailableQuantity}
-                                        // maxSaleSlots={nftSaleQuantity}
-                                        // isLoading={saleInfoLoading}
-                                        // handleGetMinted={handleGetMinted}
-                                        // roundInfo={NFT_SALE_CURRENT_INFO}
+                                        totalMintPass={mintPassBalance}
+                                        onRefresh={(e) => handleRefresh(e)}
+                                        isLoading={saleLoading}
+                                        setMoonBeastMinting={val => setMoonBeastMinting(val)}
                                     />
-
-                                    {/* <MintPass isLoading={mintPassLoading}
-                                              mintPasses={mintPasses}
-                                              isMinting={!!moonBeastMinting}
-                                              onSelect={onClickMintPass}
-                                              onSelectAll={onSelectAll}>
-                                        <hr className={'card-body-separator'}/>
-                                        {!NFT_SALE_CURRENT_INFO.isSoldOut && _renderFoot()}
-                                    </MintPass> */}
 
                                     <MoonBeasts isLoading={moonBeastLoading}
                                                 moonBeasts={moonBeasts}
                                                 moonBeastMinting={moonBeastMinting}/>
                                 </div>
                             </div>
-                            {/* <TwitterShareButton /> */}
                         </div>
                     </div>
                 </div>
@@ -394,14 +157,14 @@ const NFTSaleRoundThree = (props) => {
                 <WalletAuthRequiredNFTSale className={'section page-nft-sale'}>
                     <NFTStages>
                         {
-                            !loading && (
-                                [
-                                    <Header availableSlots={nftSaleAvailableQuantity} isLoading={saleInfoLoading} roundInfo={NFT_SALE_CURRENT_INFO} key="Header"/>,
-                                    _renderContainer()
-                                ]
-                            )
+                            [
+                                <Header availableSlots={saleAmount} isLoading={isNaN(saleAmount)} roundInfo={{
+                                    number: '3&4',
+                                    hideDate: true,
+                                }} key="Header"/>,
+                                _renderContainer()
+                            ]
                         }
-                        <LoadingWrapper loading={loading} />
                     </NFTStages>
                 </WalletAuthRequiredNFTSale>
             </EnvWrapper>

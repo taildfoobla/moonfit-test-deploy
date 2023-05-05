@@ -1,10 +1,8 @@
-import {NFT_SALE_ROUNDS_INFO} from "../constants/blockchain"
 import configs from '../configs'
 import Web3 from "web3";
 import nftSaleABI from "../abis/MoonBeastNFTSaleRound34.json";
 import {moonBeastContract} from "./smc-moon-beast";
 import {getMoonBeast as _getMoonBeast} from "./smc-common";
-import EventBus from "../utils/event-bus";
 
 const {MOONBEAM_WSS_URL} = configs
 
@@ -23,6 +21,8 @@ export const getAvailableMintPass = async (owner) => {
     return parseInt(value)
 }
 
+export const mintNFTWithoutMintPassData = pack => saleContract.methods.mintNFTWithoutMintPassV2(pack).encodeABI()
+
 
 export const getSaleMaxAmount = async () => {
     const value = await saleContract.methods._maxSaleAmount().call()
@@ -37,6 +37,8 @@ export const buyNFTData = (mintAmount) => {
 export const getMoonBeast = async (wallet) => {
     return _getMoonBeast(moonBeastContract, saleContract, wallet)
 }
+
+export const NFT_SALE_ADDRESS = configs.R34_NFT_SALE_SC
 
 export const smcContract = saleContract;
 

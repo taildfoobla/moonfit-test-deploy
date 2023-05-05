@@ -49,8 +49,6 @@ const WalletAuthWrapper = ({ children }) => {
 
                 const data = JSON.parse(getLocalStorage(LOCALSTORAGE_KEY.WALLET_SIGNATURE))
 
-                console.log(userData, data)
-
                 if (data && userData.account === data.account) {
                     seIsSignature(true)
                     setSignatureData(data.signature)

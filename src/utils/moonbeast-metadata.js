@@ -1,5 +1,6 @@
 import Bluebird from 'bluebird'
 import axios from 'axios'
+import * as url from "url";
 
 const _fetchMetadata = {}
 
@@ -15,37 +16,9 @@ const endFetchData = (uri) => {
     _fetchMetadata[uri] = false
 }
 
-export const getNFTInfo = async (methods, tokenId, fetchMetadata = true) => {
-    if (!tokenId) return {name: null, imageUrl: null}
-    try {
-        const tokenURI = await methods.tokenURI(tokenId).call()
+const getMetadata = async (uri, delayTime) => {
+    await Bluebird.delay(delayTime || 50)
 
-        if (fetchMetadata) {
-            const {data} = await axios.get(tokenURI)
-            const {name, image} = data
-            if (image.startsWith('ipfs://')) {
-                const cid = image.replace('ipfs://', '')
-                const imageUrl = `https://${cid}.ipfs.nftstorage.link/`
-                return {name, imageUrl}
-            }
-
-            return {name, imageUrl: image}
-        }
-
-        return {tokenId, tokenURI}
-    } catch (e) {
-        console.log("getNFTInfo Exception: ", e.message)
-        return {
-            name: null,
-            imageUrl: null,
-            isNotFound: e.message.includes('URI query for nonexistent token'),
-            isError: true
-        }
-    }
-}
-
-const getMetadata = async (uri) => {
-    await Bluebird.delay(50)
     if (isMaximumFetchData()) {
         return getMetadata(uri)
     }
@@ -62,6 +35,11 @@ const getMetadata = async (uri) => {
         if (image.startsWith('ipfs://')) {
             const cid = image.replace('ipfs://', '')
             image = `https://${cid}.ipfs.nftstorage.link/`
+        }
+
+        if(response.data.attributes.length === 0) {
+            console.log('No attributes found', url, response.data)
+            return getMetadata(uri, 2000)
         }
 
         const attributes = {}

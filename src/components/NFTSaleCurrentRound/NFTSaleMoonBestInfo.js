@@ -1,4 +1,5 @@
-import React, {Fragment, useContext, useEffect, useState} from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
+import BigNumber from 'bignumber.js'
 import {Tooltip} from "antd"
 import LoadingOutlined from "../shared/LoadingOutlined";
 import WalletAuthContext from '../../contexts/WalletAuthContext'
@@ -11,123 +12,223 @@ import Pack5 from '../../assets/images/icons/pack-5.svg'
 import Pack13 from '../../assets/images/icons/pack-13.svg'
 import LockMintPass from '../../assets/images/icons/lock-mintpass.svg'
 import {WITHOUT_MINT_PASS_PACK, WITH_MINT_PASS_PACK} from '../../constants/packs'
+import {mintNFTWithoutMintPassData, NFT_SALE_ADDRESS, smcContract} from "../../services/smc-ntf-sale-round-34";
+import {buyNFT, getTransactionReceipt} from "../../services/smc-common";
+import * as notification from "../../utils/notification";
+import {getMainMessage} from "../../utils/tx-error";
+import Bluebird from "bluebird";
 
 const NFTSaleMoonBestInfo = (props) => {
-    const {isConnected, showWalletSelectModal} = useContext(WalletAuthContext)
+    const {isConnected, wallet, provider, connector, showWalletSelectModal} = useContext(WalletAuthContext)
     const [tab, setTab] = useState(1)
     const [loading, setLoading] = useState(false)
     const [listPack, setListPack] = useState([])
     const [selectedPack, setSelectedPack] = useState({})
+    const [oldSelectedPack, setOldSelectedPack] = useState({})
+    const [isConfirmedTx, setIsConfirmedTx] = useState(false)
+    const [mintAmount, setMintAmount] = useState(0)
+    const [maxMintAmount, setMaxMintAmount] = useState(0)
+
+    const mbRetrieverRef = useRef(0)
 
     useEffect(() => {
         setListPack(tab === 1 ? WITH_MINT_PASS_PACK : WITHOUT_MINT_PASS_PACK)
     }, [tab])
 
-    const renderPackIcon = (type) => {
-        let icon = null
-        switch (type) {
-            case 'pack1':
-                icon = Pack1
-                break
-            case 'pack3':
-                icon = Pack3
-                break
-            case 'pack5':
-                icon = Pack5
-                break
-            case 'pack13':
-                icon = Pack13
-                break
-            default:
-                break
+
+    useEffect(() => {
+        if (isConfirmedTx) {
+            // console.log('Effect isConfirmedTx', isConfirmedTx)
+            clearMbInterval()
+            props.setMoonBeastMinting(0)
         }
-        return icon
+        // return () => clearMbInterval()
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [isConfirmedTx])
+
+    const clearMbInterval = () => {
+        mbRetrieverRef.current && clearInterval(mbRetrieverRef.current)
+        mbRetrieverRef.current = 0
     }
 
+    const confirmTransaction = async (txHash) => {
+        const receipt = await getTransactionReceipt(txHash)
+
+        if (receipt) {
+            if (!receipt.status) {
+                props.setMoonBeastMinting(0)
+                props.onRefresh()
+                notification.close(txHash)
+                notification.sentTransactionFailed(txHash)
+            }
+        }
+
+        await Bluebird.delay(3000)
+
+        return confirmTransaction(txHash)
+    }
+
+    const handleMintNFT = async () => {
+        // setMintLoading(true)
+        // try {
+        //     let value = await smcContract.methods._price().call()
+        //     value = value * mintAmount
+        //
+        //     const tx = {
+        //         to: NFT_SALE_ADDRESS,
+        //         from: wallet.account,
+        //         // gasPrice: `${gasPrice}`,
+        //         maxPriorityFeePerGas: null,
+        //         maxFeePerGas: null,
+        //         value: value.toString(),
+        //         data: buyNFTData(mintPassTokenIds, mintAmount)
+        //     }
+        //     const txHash = await buyNFT(provider, connector, smcContract, tx)
+        //     console.log("The hash of MFB minting transaction is: ", txHash)
+        //     setMoonBeastMinting(mintAmount)
+        //     setIsConfirmedTx(false)
+        //     clearMbInterval()
+        //     notification.destroy()
+        //
+        //     mbRetrieverRef.current = setInterval(() => confirmTransaction(txHash), 3000)
+        //     notification.sentTransactionSuccess(txHash)
+        //     setMintLoading(false)
+        // } catch (e) {
+        //     setMintLoading(false)
+        //     console.log(e.message);
+        //     notification.error(e.message)
+        //     console.log("!error", e)
+        // }
+    }
     const onChangePack = (pack) => {
         setSelectedPack({...pack, tab})
+        setOldSelectedPack({
+            ...oldSelectedPack,
+            [tab]: {...pack, tab},
+        })
     }
 
     const onChangeTab = (value) => {
         setTab(value)
+        setSelectedPack({...(oldSelectedPack[value] || {}), tab: value})
     }
 
-    const handleLockMintPass = () => {
+    const handleLockMintPass = async () => {
         setLoading(true)
-        setTimeout(() => {
-            setLoading(false)
-        }, 2000)
+
+        if (tab === 2) {
+
+            try {
+                const tx = {
+                    to: NFT_SALE_ADDRESS,
+                    from: wallet.account,
+                    // gasPrice: `${gasPrice}`,
+                    maxPriorityFeePerGas: null,
+                    maxFeePerGas: null,
+                    value: selectedPack.price.toString(),
+                    data: mintNFTWithoutMintPassData(selectedPack.pack)
+                }
+
+                const txHash = await buyNFT(provider, connector, smcContract, tx)
+                props.setMoonBeastMinting(selectedPack.pack)
+
+                if (txHash) {
+                    notification.destroy()
+                    notification.sentTransactionFailed(txHash)
+                    confirmTransaction(txHash).then()
+                }
+            } catch (e) {
+                notification.error(e.message, e)
+                setLoading(false)
+            }
+        }
     }
 
     const countMintPass = () => {
         return props.availableMintPass + props.totalMintPass
     }
 
+    const _renderPackIcon = (type) => {
+        const icons = {
+            pack1: Pack1,
+            pack3: Pack3,
+            pack5: Pack5,
+            pack13: Pack13,
+        }
+
+        return icons[type]
+    }
+
     const _renderButton = () => {
-        const _renderText = () => {
-            if (loading) {
-                return (
-                    <Fragment>
-                        <LoadingOutlined className='text-white'/>
-                        <span className='ml-2'>Locking</span>
-                    </Fragment>
-                )
-            }
-
-            if (tab === 1) {
-                if (countMintPass() < selectedPack.amount) {
-                    return (
-                        <Fragment>
-                            <img className="mr-2" src={LockMintPass} alt=""/>
-                            <span>INSUFFICIENT MINTPASS</span>
-                        </Fragment>
-                    )
-                }
-
-                if (props.availableMintPass < selectedPack.amount) {
-                    return (
-                        <Fragment>
-                            <img className="mr-2" src={LockMintPass} alt=""/>
-                            <span>Lock Mintpass</span>
-                        </Fragment>
-                    )
-                }
-            }
-
-            if (!selectedPack.amount) {
-                return (
-                    <Fragment>
-                        <img className="mr-2" src={LockMintPass} alt=""/>
-                        <span>Select a pack</span>
-                    </Fragment>
-                )
-            }
-
-
+        if (loading) {
             return (
-                <Fragment>
-                    <img className="mr-2" src={LockMintPass} alt=""/>
-                    <span>Mint Pack {selectedPack.amount}</span>
-                </Fragment>
+                <button className="button button-secondary" type="button">
+                    <LoadingOutlined className='text-white'/>
+                    <span className='ml-2'>Locking</span>
+                </button>
             )
+        }
 
+        if (!selectedPack.amount || selectedPack.tab !== tab) {
+            return (
+                <button className="button button-secondary disabled" type="button" disabled>
+                    <img className="mr-2" src={LockMintPass} alt=""/>
+                    <span>Select a pack</span>
+                </button>
+            )
+        }
+
+        if (tab === 1) {
+            if (countMintPass() < selectedPack.amount) {
+                return (
+                    <button className="button button-secondary disabled" type="button" disabled>
+                        <img className="mr-2" src={LockMintPass} alt=""/>
+                        <span>Insufficient MintPass</span>
+                    </button>
+                )
+            }
+
+            if (props.availableMintPass < selectedPack.amount) {
+                return (
+                    <button className="button button-secondary" type="button" onClick={handleLockMintPass}>
+                        <img className="mr-2" src={LockMintPass} alt=""/>
+                        <span>Lock MintPass</span>
+                    </button>
+                )
+            }
         }
 
         return (
-            <button type="button" onClick={handleLockMintPass} className="button button-secondary">
-                {_renderText()}
+            <button className="button button-secondary" type="button" onClick={handleLockMintPass}>
+                <img className="mr-2" src={LockMintPass} alt=""/>
+                <span>Mint Pack {selectedPack.amount}</span>
             </button>
         )
     }
 
+    const renderHead = () => {
+        const _head = (
+            <div className='text-center normal-case font-semibold mb-5'>
+                <p className='text-white text-[20px] mb-0'>
+                    You have {props.availableMintPass || 0} Mint Pass available
+                </p>
+                <p className='text-[#A8ADC3] text-[18px] w-3/4 m-auto'>
+                    Each mint pass is one-time use only for buying 1
+                    MoonBeast at a discounted price.
+                </p>
+            </div>
+        )
+
+        if(props.isLoading)  {
+            return <LoadingOutlined>{_head}</LoadingOutlined>
+        }
+
+        return _head
+    }
+
     return (
         <div className={'card-body-row flex flex-col purchase-moonbest'}>
-            <div className='text-center normal-case font-semibold mb-5'>
-                <p className='text-white text-[20px] mb-0'>You have {props.availableMintPass || 0} Mint Pass
-                    available</p>
-                <p className='text-[#A8ADC3] text-[18px] w-3/4 m-auto'>Each mint pass is one-time use only for buying 1
-                    MoonBeast at a discounted price.</p>
-            </div>
+            {renderHead()}
 
             <div className='flex justify-center normal-case tabs'>
                 <div className={`tab ${tab === 1 ? 'active' : ''}`} onClick={() => onChangeTab(1)}>With Mint Pass</div>
@@ -138,28 +239,32 @@ const NFTSaleMoonBestInfo = (props) => {
             <ul className='packs p-0'>
                 {
                     listPack.map((item, index) => {
-                        let calssName = `pack flex justify-between items-center ${selectedPack.value === item.value ? 'active' : ''}`
+                        let className = `pack flex justify-between items-center ${selectedPack.value === item.value ? 'active' : ''}`
                         if (item.amount > countMintPass()) {
-                            calssName = `${calssName} disabled`
+                            className = `${className} disabled`
                         }
+
                         return (
-                            <li key={index} className={calssName} onClick={() => onChangePack(item)}>
+                            <li key={index} className={className} onClick={() => onChangePack(item)}>
                                 <div className='left flex items-center'>
-                                    <img src={renderPackIcon(item.type)}/>
+                                    <img src={_renderPackIcon(item.type)} alt={item.type}/>
                                     <div className='pack-label ml-3'>
                                         <p className='flex text-[14px] race-sport-font mb-0'><span
                                             className='mr-2'>{item.label}</span>
                                             <Tooltip className='pack-tooltip' placement="top" title={item.tooltip}>
-                                                <img src={QuestionIcon}/>
+                                                <img src={QuestionIcon} alt="ask"/>
                                             </Tooltip>
                                         </p>
-                                        {item.discount && <p className='text-[15px] sub-label'>
-                                            <span>{item.value} x {item.amount}</span> <span
-                                            className='text-[#EF2763]'>(-{item.discount}%)</span></p>}
+                                        {item.discount && (
+                                            <p className='text-[15px] sub-label'>
+                                                <span>{item.value} x {item.amount}</span> <span
+                                                className='text-[#EF2763]'>(-{item.discount}%)</span>
+                                            </p>
+                                        )}
                                     </div>
                                 </div>
                                 <div className='right flex items-center'>
-                                    <img className='mr-3' src={Moonbeam}/> <span
+                                    <img className='mr-3' src={Moonbeam} alt="GLMR"/> <span
                                     className='font-bold text-[20px] text-[#4CCBC9]'>{item.value}</span>
                                 </div>
                                 {item.isRecommend && <div className='badge-recommend'><span
@@ -174,10 +279,14 @@ const NFTSaleMoonBestInfo = (props) => {
                 <div className='left'>
                     <span className='text-[16px] text-[#A8ADC3]'>FEE:</span>
                     <p className='text-[20px] text-[#4CCBC9] race-sport-font'>
-                        {selectedPack.tab === tab && selectedPack.value ? `${selectedPack.value} $GLMR` : '\u00A0' }
+                        {selectedPack.tab === tab && selectedPack.value ? `${selectedPack.value} $GLMR` : '\u00A0'}
                     </p>
                 </div>
-                <div className='right'>
+
+                <div className='right'
+                     data-count-mint-pass={countMintPass()}
+                     data-available-mint-pass={props.availableMintPass}
+                     data-total-mint-pass={props.totalMintPass}>
                     {_renderButton()}
                 </div>
             </div>

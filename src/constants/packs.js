@@ -1,3 +1,18 @@
+import configs from '../configs'
+import BigNumber from "bignumber.js";
+
+const mapEnv = item => {
+    item.price = item.value
+    item.pack = item.amount
+
+    if (configs.env === 'development') {
+        item.price = new BigNumber(item.value, 10).dividedBy(10 ** 5, 10)
+    }
+
+    item.price = new BigNumber(item.price, 10).multipliedBy(10 ** 18).toNumber()
+
+    return item
+}
 export const WITH_MINT_PASS_PACK = [
     {
         type: 'pack1',
@@ -30,7 +45,7 @@ export const WITH_MINT_PASS_PACK = [
         label: 'Pack 13',
         tooltip: '13 NFT is equivalent to 10km target - recommend for 10K runner'
     }
-]
+].map(mapEnv)
 
 export const WITHOUT_MINT_PASS_PACK = [
     {
@@ -64,4 +79,4 @@ export const WITHOUT_MINT_PASS_PACK = [
         label: 'Pack 13',
         tooltip: '13 NFT is equivalent to 10km target - recommend for 10K runner'
     }
-]
+].map(mapEnv)
