@@ -39,7 +39,7 @@ export const getGasNetwork = () => web3.eth.getGasPrice()
 export const buyNFT = async (provider, connector, contract, tx) => {
     const balance = await web3.eth.getBalance(tx.from)
 
-    if (new BigNumber(tx.value).gt(new BigNumber(balance))) {
+    if (tx.value && new BigNumber(tx.value).gt(new BigNumber(balance))) {
         throw new Error ('Insufficient balance.')
     }
 

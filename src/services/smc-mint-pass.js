@@ -37,6 +37,14 @@ export const fetchMintPassByAccount = async (account) => {
     }, {concurrency: 2})
 }
 
+export const checkApprove = async (owner, address) => {
+    return mintPassContract.methods.isApprovedForAll(owner, address).call()
+}
+
+export const setApprovalForAll = async (address, approved) => {
+    return mintPassContract.methods.setApprovalForAll(address, approved).encodeABI()
+}
+
 export const addAvailableSlotForCurrenSale = async (mintPasses) => {
     const {nftPerPass} = NFT_SALE_CURRENT_INFO
 

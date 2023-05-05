@@ -12,12 +12,17 @@ import Pack5 from '../../assets/images/icons/pack-5.svg'
 import Pack13 from '../../assets/images/icons/pack-13.svg'
 import LockMintPass from '../../assets/images/icons/lock-mintpass.svg'
 import {WITHOUT_MINT_PASS_PACK, WITH_MINT_PASS_PACK} from '../../constants/packs'
-import {mintNFTWithoutMintPassData, NFT_SALE_ADDRESS, smcContract} from "../../services/smc-ntf-sale-round-34";
+import {
+    mintNFTWithMintPassData,
+    mintNFTWithoutMintPassData,
+    lockMintPass,
+    unlockMintPass,
+    NFT_SALE_ADDRESS,
+    smcContract
+} from "../../services/smc-ntf-sale-round-34";
 import {buyNFT, getTransactionReceipt} from "../../services/smc-common";
 import * as notification from "../../utils/notification";
-import {getMainMessage} from "../../utils/tx-error";
 import Bluebird from "bluebird";
-import {sentTransactionSuccess} from "../../utils/notification";
 
 const NFTSaleMoonBestInfo = (props) => {
     const {isConnected, wallet, provider, connector, showWalletSelectModal} = useContext(WalletAuthContext)
@@ -27,9 +32,6 @@ const NFTSaleMoonBestInfo = (props) => {
     const [selectedPack, setSelectedPack] = useState({})
     const [oldSelectedPack, setOldSelectedPack] = useState({})
     const [buttonText, setButtonText] = useState('Minting')
-    const [maxMintAmount, setMaxMintAmount] = useState(0)
-
-    const mbRetrieverRef = useRef(0)
 
     useEffect(() => {
         setListPack(tab === 1 ? WITH_MINT_PASS_PACK : WITHOUT_MINT_PASS_PACK)
@@ -104,20 +106,48 @@ const NFTSaleMoonBestInfo = (props) => {
 
     const handleLockMintPass = async () => {
         setLoading(true)
+        setButtonText('Minting')
+        let tx = {
+            to: NFT_SALE_ADDRESS,
+            from: wallet.account,
+            // gasPrice: `${gasPrice}`,
+            maxPriorityFeePerGas: null,
+            maxFeePerGas: null,
+        }
 
         if (tab === 2) {
-            setButtonText('Minting')
             try {
-                const tx = {
-                    to: NFT_SALE_ADDRESS,
-                    from: wallet.account,
-                    // gasPrice: `${gasPrice}`,
-                    maxPriorityFeePerGas: null,
-                    maxFeePerGas: null,
+                tx = {
+                    ...tx,
                     value: selectedPack.price.toString(),
                     data: mintNFTWithoutMintPassData(selectedPack.pack)
                 }
 
+                setLoading(false)
+            } catch (e) {
+                notification.error(e.message, e)
+                setLoading(false)
+                return
+            }
+        } else {
+            if (props.availableMintPass < selectedPack.pack) {
+                setButtonText('Locking')
+                tx = {
+                    ...tx,
+                    value: selectedPack.price.toString(),
+                    data: lockMintPass([195])
+                }
+            } else {
+                tx = {
+                    ...tx,
+                    value: selectedPack.price.toString(),
+                    data: mintNFTWithMintPassData(selectedPack.pack)
+                }
+            }
+        }
+
+        if (tx && tx.data) {
+            try {
                 const txHash = await buyNFT(provider, connector, smcContract, tx)
                 props.setMoonBeastMinting(selectedPack.pack)
 
@@ -133,6 +163,19 @@ const NFTSaleMoonBestInfo = (props) => {
                 setLoading(false)
             }
         }
+    }
+
+    window.unlock = async () => {
+        const tx = {
+            to: NFT_SALE_ADDRESS,
+            from: wallet.account,
+            // gasPrice: `${gasPrice}`,
+            maxPriorityFeePerGas: null,
+            maxFeePerGas: null,
+            data: unlockMintPass()
+        }
+
+        await buyNFT(provider, connector, smcContract, tx)
     }
 
     const countMintPass = () => {
@@ -258,8 +301,10 @@ const NFTSaleMoonBestInfo = (props) => {
                                     <img className='mr-3' src={Moonbeam} alt="GLMR"/> <span
                                     className='font-bold text-[20px] text-[#4CCBC9]'>{item.value}</span>
                                 </div>
-                                {item.isRecommend && <div className='badge-recommend'><span
-                                    className='text-[13px] font-semibold normal-case'>Recommended</span></div>}
+                                {
+                                    item.isRecommend && <div className='badge-recommend'><span
+                                    className='text-[13px] font-semibold normal-case'>Recommended</span></div>
+                                }
                             </li>
                         )
                     })

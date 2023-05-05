@@ -23,6 +23,13 @@ export const getAvailableMintPass = async (owner) => {
 
 export const mintNFTWithoutMintPassData = pack => saleContract.methods.mintNFTWithoutMintPassV2(pack).encodeABI()
 
+export const mintNFTWithMintPassData = pack => saleContract.methods.mintNFTWithMintPassV2(pack).encodeABI()
+
+export const lockMintPass = (mintPassIds) => saleContract.methods.lockMintPass(mintPassIds).encodeABI()
+
+export const unlockMintPass = () => saleContract.methods.unlockMintPass2().encodeABI()
+
+
 
 export const getSaleMaxAmount = async () => {
     const value = await saleContract.methods._maxSaleAmount().call()
