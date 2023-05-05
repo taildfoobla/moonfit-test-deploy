@@ -12,6 +12,11 @@ const {MOONBEAST_NETWORK, MINT_PASS_SC} = configs
 
 const web3js = new Web3(MOONBEAST_NETWORK)
 const mintPassContract = new web3js.eth.Contract(mintPassABI.abi, MINT_PASS_SC)
+export const getMintPassBalance= async (account) => {
+    const balance = await balanceOfAccount(mintPassContract, account)
+
+    return parseInt(balance, 10)
+}
 
 export const fetchMintPassByAccount = async (account) => {
     const balance = await balanceOfAccount(mintPassContract, account)

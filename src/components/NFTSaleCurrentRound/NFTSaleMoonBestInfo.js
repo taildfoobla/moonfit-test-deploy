@@ -1,4 +1,5 @@
-import React, {useContext, useEffect, useState} from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
+import BigNumber from 'bignumber.js'
 import {Tooltip} from "antd"
 import LoadingOutlined from "../shared/LoadingOutlined";
 import WalletAuthContext from '../../contexts/WalletAuthContext'
@@ -11,51 +12,57 @@ import Pack5 from '../../assets/images/icons/pack-5.svg'
 import Pack13 from '../../assets/images/icons/pack-13.svg'
 import LockMintPass from '../../assets/images/icons/lock-mintpass.svg'
 import {WITHOUT_MINT_PASS_PACK, WITH_MINT_PASS_PACK} from '../../constants/packs'
+import {buyNFTData, NFT_SALE_ADDRESS, smcContract} from "../../services/smc-ntf-sale";
+import {buyNFT, getTransactionReceipt} from "../../services/smc-common";
+import * as notification from "../../utils/notification";
 
 const NFTSaleMoonBestInfo = (props) => {
-    const {isConnected, showWalletSelectModal} = useContext(WalletAuthContext)
+    const {isConnected, wallet, provider, connector, showWalletSelectModal} = useContext(WalletAuthContext)
     const [tab, setTab] = useState(1)
     const [loading, setLoading] = useState(false)
     const [listPack, setListPack] = useState([])
     const [selectedPack, setSelectedPack] = useState({})
+    const [oldSelectedPack, setOldSelectedPack] = useState({})
+    const [isConfirmedTx, setIsConfirmedTx] = useState(false)
+    const [mintAmount, setMintAmount] = useState(0)
+    const [maxMintAmount, setMaxMintAmount] = useState(0)
+
+    const mbRetrieverRef = useRef(0)
 
     useEffect(() => {
         setListPack(tab === 1 ? WITH_MINT_PASS_PACK : WITHOUT_MINT_PASS_PACK)
     }, [tab])
 
     const renderPackIcon = (type) => {
-        let icon = null
-        switch (type) {
-            case 'pack1':
-                icon = Pack1
-                break
-            case 'pack3':
-                icon = Pack3
-                break
-            case 'pack5':
-                icon = Pack5
-                break
-            case 'pack13':
-                icon = Pack13
-                break
-            default:
-                break
+        const icons = {
+            pack1: Pack1,
+            pack3: Pack3,
+            pack5: Pack5,
+            pack13: Pack13,
         }
-        return icon
+
+        return icons[type]
     }
 
     const onChangePack = (pack) => {
         setSelectedPack({...pack, tab})
+        setOldSelectedPack({
+            ...oldSelectedPack,
+            [tab]: {...pack, tab},
+        })
     }
 
     const onChangeTab = (value) => {
         setTab(value)
+        setSelectedPack({...(oldSelectedPack[value] || {}), tab: value})
     }
 
     const handleLockMintPass = () => {
         setLoading(true)
         setTimeout(() => {
             setLoading(false)
+
+            props.onRefresh()
         }, 2000)
     }
 
@@ -73,12 +80,21 @@ const NFTSaleMoonBestInfo = (props) => {
             )
         }
 
+        if (!selectedPack.amount || selectedPack.tab !== tab) {
+            return (
+                <button className="button button-secondary disabled" type="button" disabled>
+                    <img className="mr-2" src={LockMintPass} alt=""/>
+                    <span>Select a pack</span>
+                </button>
+            )
+        }
+
         if (tab === 1) {
             if (countMintPass() < selectedPack.amount) {
                 return (
                     <button className="button button-secondary disabled" type="button" disabled>
                         <img className="mr-2" src={LockMintPass} alt=""/>
-                        <span>INSUFFICIENT MINTPASS</span>
+                        <span>Insufficient MintPass</span>
                     </button>
                 )
             }
@@ -87,19 +103,10 @@ const NFTSaleMoonBestInfo = (props) => {
                 return (
                     <button className="button button-secondary" type="button" onClick={handleLockMintPass}>
                         <img className="mr-2" src={LockMintPass} alt=""/>
-                        <span>Lock Mintpass</span>
+                        <span>Lock MintPass</span>
                     </button>
                 )
             }
-        }
-
-        if (!selectedPack.amount || selectedPack.tab !== tab) {
-            return (
-                <button className="button button-secondary disabled" type="button" disabled>
-                    <img className="mr-2" src={LockMintPass} alt=""/>
-                    <span>Select a pack</span>
-                </button>
-            )
         }
 
         return (
@@ -110,8 +117,8 @@ const NFTSaleMoonBestInfo = (props) => {
         )
     }
 
-    return (
-        <div className={'card-body-row flex flex-col purchase-moonbest'}>
+    const renderHead = () => {
+        const _head = (
             <div className='text-center normal-case font-semibold mb-5'>
                 <p className='text-white text-[20px] mb-0'>
                     You have {props.availableMintPass || 0} Mint Pass available
@@ -121,6 +128,86 @@ const NFTSaleMoonBestInfo = (props) => {
                     MoonBeast at a discounted price.
                 </p>
             </div>
+        )
+
+        if(props.isLoading)  {
+            return <LoadingOutlined>{_head}</LoadingOutlined>
+        }
+
+        return _head
+    }
+
+    useEffect(() => {
+        if (isConfirmedTx) {
+            // console.log('Effect isConfirmedTx', isConfirmedTx)
+            clearMbInterval()
+            props.setMoonBeastMinting(0)
+        }
+        // return () => clearMbInterval()
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [isConfirmedTx])
+
+    const clearMbInterval = () => {
+        mbRetrieverRef.current && clearInterval(mbRetrieverRef.current)
+        mbRetrieverRef.current = 0
+    }
+
+    const confirmTransaction = async (txHash) => {
+        const receipt = await getTransactionReceipt(txHash)
+
+        if (receipt) {
+            setTimeout(async () => {
+                // if (!isFetching) {
+                //     await fetchData(false)
+                // }
+
+                setIsConfirmedTx(true)
+            }, 500)
+
+            if (!receipt.status) {
+                notification.close(txHash)
+                notification.sentTransactionFailed(txHash)
+            }
+        }
+        return true
+    }
+
+    const handleMintNFT = async () => {
+        // setMintLoading(true)
+        // try {
+        //     let value = await smcContract.methods._price().call()
+        //     value = value * mintAmount
+        //
+        //     const tx = {
+        //         to: NFT_SALE_ADDRESS,
+        //         from: wallet.account,
+        //         // gasPrice: `${gasPrice}`,
+        //         maxPriorityFeePerGas: null,
+        //         maxFeePerGas: null,
+        //         value: value.toString(),
+        //         data: buyNFTData(mintPassTokenIds, mintAmount)
+        //     }
+        //     const txHash = await buyNFT(provider, connector, smcContract, tx)
+        //     console.log("The hash of MFB minting transaction is: ", txHash)
+        //     setMoonBeastMinting(mintAmount)
+        //     setIsConfirmedTx(false)
+        //     clearMbInterval()
+        //     notification.destroy()
+        //
+        //     mbRetrieverRef.current = setInterval(() => confirmTransaction(txHash), 3000)
+        //     notification.sentTransactionSuccess(txHash)
+        //     setMintLoading(false)
+        // } catch (e) {
+        //     setMintLoading(false)
+        //     console.log(e.message);
+        //     notification.error(e.message)
+        //     console.log("!error", e)
+        // }
+    }
+
+    return (
+        <div className={'card-body-row flex flex-col purchase-moonbest'}>
+            {renderHead()}
 
             <div className='flex justify-center normal-case tabs'>
                 <div className={`tab ${tab === 1 ? 'active' : ''}`} onClick={() => onChangeTab(1)}>With Mint Pass</div>
