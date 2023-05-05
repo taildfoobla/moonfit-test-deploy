@@ -125,6 +125,8 @@ const NFTSaleMoonBestInfo = (props) => {
                     notification.sentTransactionFailed(txHash)
                     confirmTransaction(txHash).then()
                 }
+
+                setLoading(false)
             } catch (e) {
                 notification.error(e.message, e)
                 setLoading(false)
