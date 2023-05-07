@@ -44,7 +44,7 @@ const SaleInfo = (props) => {
         if (isConnected && wallet.account) {
             _checkApprove()
         }
-    }, [wallet, isConnected])
+    }, [wallet, isConnected]) // eslint-disable-line
 
 
     function _checkApprove() {
@@ -90,9 +90,7 @@ const SaleInfo = (props) => {
         setSelectedPack({...(oldSelectedPack[value] || {}), tab: value})
     }
 
-    const handleLockMintPass = async () => {
-        setLoading(true)
-        setButtonText(BUTTON_TEXT.MINTING)
+    const _getTransaction = () => {
         let tx = {
             to: NFT_SALE_ADDRESS,
             from: wallet.account,
@@ -102,59 +100,76 @@ const SaleInfo = (props) => {
         }
 
         if (tab === 2) {
-            try {
-                tx = {
+            return {
+                transaction: {
                     ...tx,
                     value: selectedPack.price.toString(),
                     data: mintNFTWithoutMintPassData(selectedPack.pack)
-                }
-
-                setLoading(false)
-            } catch (e) {
-                notification.error(e.message, e)
-                setLoading(false)
-                return
-            }
-        } else {
-            if (selectedPack.pack > props.availableMintPass) {
-                setButtonText(BUTTON_TEXT.LOCKING)
-                const lockNumber = selectedPack.pack - props.availableMintPass
-                const tokenIds = props.mintPasses.slice(0, lockNumber).map(item => item.tokenId)
-                console.log(`Lock ${lockNumber} MintPass`, tokenIds)
-                tx = {
-                    ...tx,
-                    value: selectedPack.price.toString(),
-                    data: lockMintPass(tokenIds)
-                }
-            } else {
-                tx = {
-                    ...tx,
-                    value: selectedPack.price.toString(),
-                    data: mintNFTWithMintPassData(selectedPack.pack)
-                }
+                },
+                text: BUTTON_TEXT.MINTING
             }
         }
 
-        if (tx && tx.data) {
-            try {
-                const txHash = await buyNFT(provider, connector, smcContract, tx)
-                props.setMoonBeastMinting(selectedPack.pack)
+        if (selectedPack.pack > props.availableMintPass) {
+            const lockNumber = selectedPack.pack - props.availableMintPass
+            const tokenIds = props.mintPasses.slice(0, lockNumber).map(item => item.tokenId)
+            console.log(`Lock ${lockNumber} MintPass`, tokenIds)
 
-                if (txHash) {
-                    notification.destroy()
-                    notification.sentTransactionSuccess(txHash)
-                    return confirmTransaction(txHash, () => {
-                        props.setMoonBeastMinting(0)
-                        props.onRefresh()
-                        setLoading(false)
-                    }).then()
-                }
-
-                setLoading(false)
-            } catch (e) {
-                notification.error(e.message, e)
-                setLoading(false)
+            return {
+                transaction: {
+                    ...tx,
+                    value: selectedPack.price.toString(),
+                    data: lockMintPass(tokenIds)
+                },
+                text: BUTTON_TEXT.LOCKING
             }
+        }
+
+
+        return {
+            transaction: {
+                ...tx,
+                value: selectedPack.price.toString(),
+                data: mintNFTWithMintPassData(selectedPack.pack)
+            },
+            text: BUTTON_TEXT.MINTING
+        }
+    }
+
+    const handleLockMintPass = async () => {
+        setLoading(true)
+        setButtonText(BUTTON_TEXT.MINTING)
+
+        try {
+            const {transaction, text} = await _getTransaction()
+            setButtonText(text)
+            if (BUTTON_TEXT.MINTING === text) {
+                props.setMoonBeastMinting(selectedPack.pack)
+            }
+
+            if (transaction && transaction.data) {
+                try {
+                    const txHash = await buyNFT(provider, connector, smcContract, transaction)
+
+                    if (txHash) {
+                        notification.destroy()
+                        notification.sentTransactionSuccess(txHash)
+                        return confirmTransaction(txHash, () => {
+                            props.setMoonBeastMinting(0)
+                            props.onRefresh()
+                            setLoading(false)
+                        }).then()
+                    }
+
+                    setLoading(false)
+                } catch (e) {
+                    notification.error(e.message, e)
+                    setLoading(false)
+                }
+            }
+        } catch (e) {
+            notification.error(e.message, e)
+            setLoading(false)
         }
     }
 
@@ -229,7 +244,7 @@ const SaleInfo = (props) => {
         if (loading) {
             return (
                 <button className="button button-secondary" type="button">
-                    <LoadingOutlined className='text-white'/>
+                    <LoadingOutlined className='text-white' size={20}/>
                     <span className='ml-2'>{buttonText}</span>
                 </button>
             )
@@ -247,7 +262,8 @@ const SaleInfo = (props) => {
         if (tab === 1) {
             if (!mintPassApprove) {
                 return (
-                    <button className="button button-secondary" type="button" onClick={() => _approvalForAllMintPass(true)}>
+                    <button className="button button-secondary" type="button"
+                            onClick={() => _approvalForAllMintPass(true)}>
                         <img className="mr-2" src={LockMintPass} alt=""/>
                         <span>Approve to Looking MintPass</span>
                     </button>
@@ -282,7 +298,8 @@ const SaleInfo = (props) => {
     }
 
     const renderHead = () => {
-        const availableMintPass = props.isLoading || Number.isNaN(props.availableMintPass) ? <span className="dot-flashing" /> : props.availableMintPass
+        const availableMintPass = props.isLoading || Number.isNaN(props.availableMintPass) ?
+            <span className="dot-flashing"/> : props.availableMintPass
 
         return (
             <div className='text-center normal-case font-semibold mb-5'>
@@ -320,7 +337,8 @@ const SaleInfo = (props) => {
                         }
 
                         return (
-                            <PackItemInfo key={index} className={className} item={item} onClick={() => onChangePack(item)} />
+                            <PackItemInfo key={index} className={className} item={item}
+                                          onClick={() => onChangePack(item)}/>
                         )
                     })
                 }
