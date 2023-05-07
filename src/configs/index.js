@@ -1,3 +1,4 @@
+import BigNumber from 'bignumber.js'
 import {getReactEnv} from "../utils/env"
 
 const getConfigs = () => {
@@ -51,6 +52,19 @@ const getConfigs = () => {
             }
     }
 }
+
+export const BIG_NUMBER_FORMAT = {
+    prefix: '',
+    decimalSeparator: ',',
+    groupSeparator: '.',
+    groupSize: 3,
+    secondaryGroupSize: 0,
+    fractionGroupSeparator: ' ',
+    fractionGroupSize: 0,
+    suffix: ''
+}
+
+BigNumber.config({ FORMAT: BIG_NUMBER_FORMAT })
 
 const env = getConfigs()
 

@@ -1,49 +1,67 @@
-import React, { useContext, useEffect, useRef, useState } from 'react'
-import BigNumber from 'bignumber.js'
-import {Tooltip} from "antd"
+import React, {useContext, useEffect, useState} from 'react'
 import LoadingOutlined from "../shared/LoadingOutlined";
 import WalletAuthContext from '../../contexts/WalletAuthContext'
-import wallet from "../../assets/images/icons/Wallet.svg"
-import QuestionIcon from '../../assets/images/icons/question.svg'
-import Moonbeam from '../../assets/images/icons/moonbeam.svg'
-import Pack1 from '../../assets/images/icons/pack-1.svg'
-import Pack3 from '../../assets/images/icons/pack-3.svg'
-import Pack5 from '../../assets/images/icons/pack-5.svg'
-import Pack13 from '../../assets/images/icons/pack-13.svg'
+import PackItemInfo from './PackItemInfo'
 import LockMintPass from '../../assets/images/icons/lock-mintpass.svg'
-import {WITHOUT_MINT_PASS_PACK, WITH_MINT_PASS_PACK} from '../../constants/packs'
+import {WITH_MINT_PASS_PACK, WITHOUT_MINT_PASS_PACK} from '../../constants/packs'
 import {
+    lockMintPass,
     mintNFTWithMintPassData,
     mintNFTWithoutMintPassData,
-    lockMintPass,
-    unlockMintPass,
     NFT_SALE_ADDRESS,
-    smcContract
+    smcContract,
+    unlockMintPass
 } from "../../services/smc-ntf-sale-round-34";
 import {buyNFT, getTransactionReceipt} from "../../services/smc-common";
+import {checkApprove, MINT_PASS_ADDRESS, setApprovalForAllData} from "../../services/smc-mint-pass";
 import * as notification from "../../utils/notification";
 import Bluebird from "bluebird";
+import BigNumber from "bignumber.js";
 
-const NFTSaleMoonBestInfo = (props) => {
+const BUTTON_TEXT = {
+    MINTING: 'Minting',
+    LOCKING: 'Locking',
+    UNLOCKING: 'Unlocking',
+    APPROVING: 'Approving',
+    REJECTING: 'Rejecting',
+}
+
+const SaleInfo = (props) => {
     const {isConnected, wallet, provider, connector, showWalletSelectModal} = useContext(WalletAuthContext)
     const [tab, setTab] = useState(1)
     const [loading, setLoading] = useState(false)
+    const [mintPassApprove, setMintPassApprove] = useState(false)
     const [listPack, setListPack] = useState([])
     const [selectedPack, setSelectedPack] = useState({})
     const [oldSelectedPack, setOldSelectedPack] = useState({})
-    const [buttonText, setButtonText] = useState('Minting')
+    const [buttonText, setButtonText] = useState(BUTTON_TEXT.MINTING)
 
     useEffect(() => {
         setListPack(tab === 1 ? WITH_MINT_PASS_PACK : WITHOUT_MINT_PASS_PACK)
     }, [tab])
 
-    const confirmTransaction = async (txHash) => {
+    useEffect(() => {
+        if (isConnected && wallet.account) {
+            _checkApprove()
+        }
+    }, [wallet, isConnected])
+
+
+    function _checkApprove() {
+        checkApprove(wallet.account, NFT_SALE_ADDRESS).then(approve => {
+            setMintPassApprove(approve)
+        })
+    }
+
+    const confirmTransaction = async (txHash, callback) => {
         const receipt = await getTransactionReceipt(txHash)
 
         if (receipt) {
-            props.setMoonBeastMinting(0)
+            if (typeof callback === 'function') {
+                callback()
+            }
+
             notification.close(txHash)
-            props.onRefresh()
 
             if (!receipt.status) {
                 notification.sentTransactionFailed(txHash)
@@ -56,41 +74,9 @@ const NFTSaleMoonBestInfo = (props) => {
 
         await Bluebird.delay(3000)
 
-        return confirmTransaction(txHash)
+        return confirmTransaction(txHash, callback)
     }
 
-    const handleMintNFT = async () => {
-        // setMintLoading(true)
-        // try {
-        //     let value = await smcContract.methods._price().call()
-        //     value = value * mintAmount
-        //
-        //     const tx = {
-        //         to: NFT_SALE_ADDRESS,
-        //         from: wallet.account,
-        //         // gasPrice: `${gasPrice}`,
-        //         maxPriorityFeePerGas: null,
-        //         maxFeePerGas: null,
-        //         value: value.toString(),
-        //         data: buyNFTData(mintPassTokenIds, mintAmount)
-        //     }
-        //     const txHash = await buyNFT(provider, connector, smcContract, tx)
-        //     console.log("The hash of MFB minting transaction is: ", txHash)
-        //     setMoonBeastMinting(mintAmount)
-        //     setIsConfirmedTx(false)
-        //     clearMbInterval()
-        //     notification.destroy()
-        //
-        //     mbRetrieverRef.current = setInterval(() => confirmTransaction(txHash), 3000)
-        //     notification.sentTransactionSuccess(txHash)
-        //     setMintLoading(false)
-        // } catch (e) {
-        //     setMintLoading(false)
-        //     console.log(e.message);
-        //     notification.error(e.message)
-        //     console.log("!error", e)
-        // }
-    }
     const onChangePack = (pack) => {
         setSelectedPack({...pack, tab})
         setOldSelectedPack({
@@ -106,7 +92,7 @@ const NFTSaleMoonBestInfo = (props) => {
 
     const handleLockMintPass = async () => {
         setLoading(true)
-        setButtonText('Minting')
+        setButtonText(BUTTON_TEXT.MINTING)
         let tx = {
             to: NFT_SALE_ADDRESS,
             from: wallet.account,
@@ -130,12 +116,15 @@ const NFTSaleMoonBestInfo = (props) => {
                 return
             }
         } else {
-            if (props.availableMintPass < selectedPack.pack) {
-                setButtonText('Locking')
+            if (selectedPack.pack > props.availableMintPass) {
+                setButtonText(BUTTON_TEXT.LOCKING)
+                const lockNumber = selectedPack.pack - props.availableMintPass
+                const tokenIds = props.mintPasses.slice(0, lockNumber).map(item => item.tokenId)
+                console.log(`Lock ${lockNumber} MintPass`, tokenIds)
                 tx = {
                     ...tx,
                     value: selectedPack.price.toString(),
-                    data: lockMintPass([195])
+                    data: lockMintPass(tokenIds)
                 }
             } else {
                 tx = {
@@ -154,7 +143,11 @@ const NFTSaleMoonBestInfo = (props) => {
                 if (txHash) {
                     notification.destroy()
                     notification.sentTransactionSuccess(txHash)
-                    confirmTransaction(txHash).then()
+                    return confirmTransaction(txHash, () => {
+                        props.setMoonBeastMinting(0)
+                        props.onRefresh()
+                        setLoading(false)
+                    }).then()
                 }
 
                 setLoading(false)
@@ -165,7 +158,9 @@ const NFTSaleMoonBestInfo = (props) => {
         }
     }
 
-    window.unlock = async () => {
+    const _unlockMintPass = async () => {
+        setButtonText(BUTTON_TEXT.UNLOCKING)
+        setLoading(true)
         const tx = {
             to: NFT_SALE_ADDRESS,
             from: wallet.account,
@@ -175,22 +170,59 @@ const NFTSaleMoonBestInfo = (props) => {
             data: unlockMintPass()
         }
 
-        await buyNFT(provider, connector, smcContract, tx)
+        try {
+            const txHash = await buyNFT(provider, connector, smcContract, tx)
+
+            if (txHash) {
+                notification.sentTransactionSuccess(txHash)
+                return confirmTransaction(txHash, () => {
+                    props.onRefresh()
+                    setLoading(false)
+                }).then()
+            }
+
+            setLoading(false)
+        } catch (e) {
+            notification.error(e.message, e)
+            setLoading(false)
+        }
     }
 
-    const countMintPass = () => {
-        return props.availableMintPass + props.totalMintPass
-    }
+    const _approvalForAllMintPass = async status => {
+        setLoading(true)
+        setButtonText(status ? BUTTON_TEXT.APPROVING : BUTTON_TEXT.REJECTING)
 
-    const _renderPackIcon = (type) => {
-        const icons = {
-            pack1: Pack1,
-            pack3: Pack3,
-            pack5: Pack5,
-            pack13: Pack13,
+        const tx = {
+            to: MINT_PASS_ADDRESS,
+            from: wallet.account,
+            maxPriorityFeePerGas: null,
+            maxFeePerGas: null,
+            data: setApprovalForAllData(NFT_SALE_ADDRESS, !!status)
         }
 
-        return icons[type]
+        try {
+            const txHash = await buyNFT(provider, connector, smcContract, tx)
+
+            if (txHash) {
+                notification.sentTransactionSuccess(txHash)
+                return confirmTransaction(txHash, () => {
+                    _checkApprove()
+                    setLoading(false)
+                }).then()
+            }
+
+            setLoading(false)
+        } catch (e) {
+            notification.error(e.message, e)
+            setLoading(false)
+        }
+    }
+
+    window.unlockMintPass = _unlockMintPass
+    window.approvalForAllMintPass = _approvalForAllMintPass
+
+    const countMintPass = () => {
+        return props.availableMintPass + props.mintPasses.length
     }
 
     const _renderButton = () => {
@@ -213,6 +245,15 @@ const NFTSaleMoonBestInfo = (props) => {
         }
 
         if (tab === 1) {
+            if (!mintPassApprove) {
+                return (
+                    <button className="button button-secondary" type="button" onClick={() => _approvalForAllMintPass(true)}>
+                        <img className="mr-2" src={LockMintPass} alt=""/>
+                        <span>Approve to Looking MintPass</span>
+                    </button>
+                )
+            }
+
             if (countMintPass() < selectedPack.amount) {
                 return (
                     <button className="button button-secondary disabled" type="button" disabled>
@@ -222,11 +263,11 @@ const NFTSaleMoonBestInfo = (props) => {
                 )
             }
 
-            if (props.availableMintPass < selectedPack.amount) {
+            if (selectedPack.amount > props.availableMintPass) {
                 return (
                     <button className="button button-secondary" type="button" onClick={handleLockMintPass}>
                         <img className="mr-2" src={LockMintPass} alt=""/>
-                        <span>Lock MintPass</span>
+                        <span>Lock {selectedPack.amount - props.availableMintPass} MintPass</span>
                     </button>
                 )
             }
@@ -241,10 +282,12 @@ const NFTSaleMoonBestInfo = (props) => {
     }
 
     const renderHead = () => {
-        const _head = (
+        const availableMintPass = props.isLoading || Number.isNaN(props.availableMintPass) ? <span className="dot-flashing" /> : props.availableMintPass
+
+        return (
             <div className='text-center normal-case font-semibold mb-5'>
                 <p className='text-white text-[20px] mb-0'>
-                    You have {props.availableMintPass || 0} Mint Pass available
+                    You have {availableMintPass} Mint Pass available
                 </p>
                 <p className='text-[#A8ADC3] text-[18px] w-3/4 m-auto'>
                     Each mint pass is one-time use only for buying 1
@@ -252,12 +295,10 @@ const NFTSaleMoonBestInfo = (props) => {
                 </p>
             </div>
         )
+    }
 
-        if(props.isLoading)  {
-            return <LoadingOutlined>{_head}</LoadingOutlined>
-        }
-
-        return _head
+    const numberFormat = (number) => {
+        return new BigNumber(number).toFormat(0)
     }
 
     return (
@@ -279,33 +320,7 @@ const NFTSaleMoonBestInfo = (props) => {
                         }
 
                         return (
-                            <li key={index} className={className} onClick={() => onChangePack(item)}>
-                                <div className='left flex items-center'>
-                                    <img src={_renderPackIcon(item.type)} alt={item.type}/>
-                                    <div className='pack-label ml-3'>
-                                        <p className='flex text-[14px] race-sport-font mb-0'><span
-                                            className='mr-2'>{item.label}</span>
-                                            <Tooltip className='pack-tooltip' placement="top" title={item.tooltip}>
-                                                <img src={QuestionIcon} alt="ask"/>
-                                            </Tooltip>
-                                        </p>
-                                        {item.discount && (
-                                            <p className='text-[15px] sub-label'>
-                                                <span>{item.value} x {item.amount}</span> <span
-                                                className='text-[#EF2763]'>(-{item.discount}%)</span>
-                                            </p>
-                                        )}
-                                    </div>
-                                </div>
-                                <div className='right flex items-center'>
-                                    <img className='mr-3' src={Moonbeam} alt="GLMR"/> <span
-                                    className='font-bold text-[20px] text-[#4CCBC9]'>{item.value}</span>
-                                </div>
-                                {
-                                    item.isRecommend && <div className='badge-recommend'><span
-                                    className='text-[13px] font-semibold normal-case'>Recommended</span></div>
-                                }
-                            </li>
+                            <PackItemInfo key={index} className={className} item={item} onClick={() => onChangePack(item)} />
                         )
                     })
                 }
@@ -315,14 +330,15 @@ const NFTSaleMoonBestInfo = (props) => {
                 <div className='left'>
                     <span className='text-[16px] text-[#A8ADC3]'>FEE:</span>
                     <p className='text-[20px] text-[#4CCBC9] race-sport-font'>
-                        {selectedPack.tab === tab && selectedPack.value ? `${selectedPack.value} $GLMR` : '\u00A0'}
+                        {selectedPack.tab === tab && selectedPack.value ? `${numberFormat(selectedPack.value)} $GLMR` : '\u00A0'}
                     </p>
                 </div>
 
                 <div className='right'
                      data-count-mint-pass={countMintPass()}
                      data-available-mint-pass={props.availableMintPass}
-                     data-total-mint-pass={props.totalMintPass}>
+                     data-unlock-mint-pass={props.mintPasses.length}
+                     data-mint-pass={props.mintPasses.map(item => item.tokenId).join(',')}>
                     {_renderButton()}
                 </div>
             </div>
@@ -342,4 +358,4 @@ const NFTSaleMoonBestInfo = (props) => {
     )
 }
 
-export default NFTSaleMoonBestInfo
+export default SaleInfo

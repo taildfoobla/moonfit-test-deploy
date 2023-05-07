@@ -8087,6 +8087,13 @@ memfs@^3.1.2, memfs@^3.4.3:
   dependencies:
     fs-monkey "^1.0.3"
 
+memfs@^3.4.12:
+  version "3.5.1"
+  resolved "https://registry.yarnpkg.com/memfs/-/memfs-3.5.1.tgz#f0cd1e2bfaef58f6fe09bfb9c2288f07fea099ec"
+  integrity sha512-UWbFJKvj5k+nETdteFndTpYxdeTMox/ULeqX5k/dpaQJCCFmj5EeKv3dBcyO2xmkRAx2vppRu5dVG7SOtsGOzA==
+  dependencies:
+    fs-monkey "^1.0.3"
+
 meow@^9.0.0:
   version "9.0.0"
   resolved "https://registry.yarnpkg.com/meow/-/meow-9.0.0.tgz#cd9510bc5cac9dee7d03c73ee1f9ad959f4ea364"
@@ -12406,6 +12413,17 @@ webpack-dev-middleware@^5.3.1:
   dependencies:
     colorette "^2.0.10"
     memfs "^3.4.3"
+    mime-types "^2.1.31"
+    range-parser "^1.2.1"
+    schema-utils "^4.0.0"
+
+webpack-dev-middleware@^6.1.0:
+  version "6.1.0"
+  resolved "https://registry.yarnpkg.com/webpack-dev-middleware/-/webpack-dev-middleware-6.1.0.tgz#307a537e6cc66b7b5db5ddea85505c79fb8f26ec"
+  integrity sha512-H7I+YAlKeKwMK0IidkwqpunHhYc/LKJlh5UxCdaLgkhIqwUfebP4rrC131+ddcCZ7LBDBMV9+bkisdbR4zhKhw==
+  dependencies:
+    colorette "^2.0.10"
+    memfs "^3.4.12"
     mime-types "^2.1.31"
     range-parser "^1.2.1"
     schema-utils "^4.0.0"

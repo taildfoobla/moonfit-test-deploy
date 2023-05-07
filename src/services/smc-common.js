@@ -49,6 +49,7 @@ export const buyNFT = async (provider, connector, contract, tx) => {
 
     const _gasLimit = await web3.eth.estimateGas(tx).catch(e => {
         e.funcName = 'estimateGas'
+        console.log(tx)
 
         throw e
     })
@@ -60,7 +61,7 @@ export const buyNFT = async (provider, connector, contract, tx) => {
     tx.gas = web3.utils.numberToHex(gasLimit).toString()
 
     console.log(tx)
-    console.log('GLMR', web3.utils.fromWei(getStringOfBigNumber(tx.value), 'ether'))
+    console.log('GLMR', web3.utils.fromWei(getStringOfBigNumber(tx.value || '0'), 'ether'))
     console.log('GAS', web3.utils.hexToNumber(gasLimit))
 
     const txHash = await sendTransaction(provider, connector, tx)

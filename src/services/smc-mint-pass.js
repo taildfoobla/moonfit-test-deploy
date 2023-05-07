@@ -41,7 +41,7 @@ export const checkApprove = async (owner, address) => {
     return mintPassContract.methods.isApprovedForAll(owner, address).call()
 }
 
-export const setApprovalForAll = async (address, approved) => {
+export const setApprovalForAllData = (address, approved) => {
     return mintPassContract.methods.setApprovalForAll(address, approved).encodeABI()
 }
 
@@ -68,3 +68,5 @@ export const addAvailableSlotForCurrenSale = async (mintPasses) => {
 
     return _mintPasses
 }
+
+export const MINT_PASS_ADDRESS = MINT_PASS_SC

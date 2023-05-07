@@ -10,17 +10,17 @@ import NFTStages from "../components/NFTStages"
 import Header from '../components/NFTSaleCurrentRound/Header'
 import MoonBeasts from '../components/NFTSaleCurrentRound/MoonBeastsV2/index'
 
-import {getMintPassBalance} from "../services/smc-mint-pass"
+import {fetchMintPassByAccount} from "../services/smc-mint-pass"
 import {fetchMoonBeastIdsByAccount} from '../services/smc-moon-beast'
 import {getAvailableMintPass, getAvailableSlots} from '../services/smc-ntf-sale-round-34'
 import CurveBGWrapper from '../wrappers/CurveBG'
-import NFTSaleMoonBestInfo from '../components/NFTSaleCurrentRound/NFTSaleMoonBestInfo'
+import NFTSaleMoonBestInfo from '../components/NFTSaleRoundThree/SaleInfo'
 
 const NFTSaleRoundThree = () => {
     const [availableMintPass, setAvailableMintPass] = useState(0)
     const [moonBeastLoading, setMoonBeastLoading] = useState(true)
     const [saleLoading, setSaleLoading] = useState(true)
-    const [mintPassBalance, setMintPassBalance] = useState(0)
+    const [mintPasses, setMintPasses] = useState([])
     const [moonBeasts, setMoonBeasts] = useState([])
     const [saleAmount, setSaleAmount] = useState(NaN)
     const [moonBeastMinting, setMoonBeastMinting] = useState(0)
@@ -56,10 +56,10 @@ const NFTSaleRoundThree = () => {
 
         const [_availableMintPass, _mintPassesBalance] = await Promise.all([
             getAvailableMintPass(wallet.account),
-            getMintPassBalance(wallet.account),
+            fetchMintPassByAccount(wallet.account),
         ])
 
-        setMintPassBalance(_mintPassesBalance)
+        setMintPasses(_mintPassesBalance)
         setAvailableMintPass(_availableMintPass)
 
         setSaleLoading(false)
@@ -133,7 +133,7 @@ const NFTSaleRoundThree = () => {
                                 <div className={'mt-4 mb-6 lg:mt-8'}>
                                     <NFTSaleMoonBestInfo
                                         availableMintPass={availableMintPass}
-                                        totalMintPass={mintPassBalance}
+                                        mintPasses={mintPasses}
                                         onRefresh={(e) => handleRefresh(e)}
                                         isLoading={saleLoading}
                                         setMoonBeastMinting={val => setMoonBeastMinting(val)}
