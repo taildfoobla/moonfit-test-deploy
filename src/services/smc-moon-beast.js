@@ -40,6 +40,10 @@ export const fetchMoonBeastIdsByAccount = async (account, maxLength = Number.MAX
 
     let data = range(0, balance - 1)
 
+    if (fromTokenId) {
+        data.reverse()
+    }
+
     if (balance > maxLength) {
         data = data.slice(-maxLength)
     }
