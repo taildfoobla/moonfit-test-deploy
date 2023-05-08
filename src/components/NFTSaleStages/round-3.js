@@ -11,9 +11,7 @@ import { NFT_SALE_ROUNDS_INFO } from '../../constants/blockchain'
 import {
     getAvailableSlots,
     getSaleMaxAmount,
-    subscribeUpdateSaleAmount,
-} from "../../services/smc-ntf-world-cup-sale";
-import EventBus from "../../utils/event-bus";
+} from "../../services/smc-ntf-sale-round-34";
 
 const currentRoundSale = NFT_SALE_ROUNDS_INFO.R3
 
@@ -30,15 +28,6 @@ const Round3 = () => {
 
     const init = async () => {
         setIsLoading(true)
-        EventBus.$on(currentRoundSale.eventUpdateSaleAmountName, (data) => {
-            if (data.soldAmount && data.maxSaleAmount) {
-                setBound(data.soldAmount)
-                setMaxAmountRound(data.maxSaleAmount)
-                setIsSoldOut(data.availableSlot === 0)
-            }
-        })
-
-        subscribeUpdateSaleAmount()
 
         const data = await Promise.all([
             getAvailableSlots(),

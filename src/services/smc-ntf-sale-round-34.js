@@ -15,6 +15,13 @@ export const getAvailableSlots = async () => {
     return parseInt(value)
 }
 
+export const getSaleMaxAmount = async () => {
+    const value = await saleContract.methods._maxSaleAmount().call()
+
+    return parseInt(value)
+}
+
+
 export const getAvailableMintPass = async (owner) => {
     const value = await saleContract.methods.countMintPassLooking(owner).call()
 
@@ -32,10 +39,6 @@ export const unlockMintPass2 = () => saleContract.methods.unlockMintPass2().enco
 
 export const getMintPassLooking = async (owner) => {
     return saleContract.methods.getMintPassLooking(owner).call()
-}
-
-export const getMoonBeast = async (wallet) => {
-    return _getMoonBeast(moonBeastContract, saleContract, wallet)
 }
 
 export const NFT_SALE_ADDRESS = configs.R34_NFT_SALE_SC

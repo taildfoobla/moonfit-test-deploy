@@ -98,6 +98,7 @@ const RoundWorldCup = () => {
         return null
     }
 
+    // eslint-disable-next-line no-unused-vars
     const renderFooter = () => {
         if (isLoading) {
             return (
@@ -144,7 +145,7 @@ const RoundWorldCup = () => {
                                     </span>
                 </div>
                 <span className="description">{currentRoundSale.description}</span>
-                {renderFooter()}
+                {/*{renderFooter()}*/}
             </div>
             {joinButton()}
         </div>
