@@ -128,7 +128,7 @@ const Round3 = () => {
                 </div>
                 <h4 className="mt-5 mb-3">{currentRoundSale.title}</h4>
                 <div className="flex mb-2">
-                    <img className="arrow-right" src={arrowFatRight} alt="" /> QUANTITY: <span className="text-white ml-1"> {maxAmountRound} NFTs</span>
+                    <img className="arrow-right" src={arrowFatRight} alt="" /> QUANTITY: <span className="text-white ml-1">UP TO {maxAmountRound} NFTs</span>
                 </div>
                 <div className="flex mb-3">
                     <img className="arrow-right" src={arrowFatRight} alt="" /> PRICE:
