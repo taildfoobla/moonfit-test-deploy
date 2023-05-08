@@ -266,7 +266,7 @@ export const NFT_SALE_ROUNDS_INFO = {
         mintPass: 1,
         nftPerPass: 1,
         description: 'Buy max 1 Moonbeast with discounted price per Mintpass',
-        dateMsg: '12th October',
+        dateMsg: '01st April',
         eventUpdateSaleAmountName: 'R3UpdateSaleAmount',
         time: 1665583200000,
         specialRound: false,

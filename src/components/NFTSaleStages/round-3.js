@@ -64,21 +64,21 @@ const Round3 = () => {
     const joinButton = () => {
         if (isSoldOut) {
             return (
-                <Link to={Paths.NFTSaleRoundThree.path} className="flex items-center header-button button button-secondary w-100 mt-20">
+                <Link to={Paths.NFTSaleRoundThree.path} className="flex items-center header-button button button-secondary w-100" style={{marginTop: '7rem'}}>
                     <span className="nav-text">View detail</span>
                 </Link>
             )
         }
         if (isConnected) {
             return (
-                <Link to={Paths.NFTSaleRoundThree.path} className="flex items-center header-button button button-secondary w-100 mt-20">
+                <Link to={Paths.NFTSaleRoundThree.path} className="flex items-center header-button button button-secondary w-100" style={{marginTop: '7rem'}}>
                     <span className="nav-text">Join now</span>
                 </Link>
             )
         }
 
         return (
-            <button type="button" className="flex items-center header-button button button-secondary w-100 mt-20"
+            <button type="button" className="flex items-center header-button button button-secondary w-100" style={{marginTop: '7rem'}}
                     onClick={showWalletSelectModal}>
                 Login
             </button>
@@ -86,17 +86,17 @@ const Round3 = () => {
     }
 
     const renderFooter = () => {
-        if (isLoading) {
-            return (
-                <div className="flex justify-center mt-5 mb-5">
-                    <LoadingOutlined />
-                </div>
-            )
-        }
+        // if (isLoading) {
+        //     return (
+        //         <div className="flex justify-center mt-5 mb-5">
+        //             <LoadingOutlined />
+        //         </div>
+        //     )
+        // }
 
         return (
             <>
-                <div className={'flex flex-col text-[#4ccbc9] mt-5'}>
+                {/* <div className={'flex flex-col text-[#4ccbc9] mt-5'}>
                     <div className="flex justify-between items-center">
                         <Progress
                             strokeColor={{ from: '#4ccbc9', to: '#e4007b' }}
@@ -109,7 +109,7 @@ const Round3 = () => {
                 <div className="flex justify-between mint-sold">
                     <span>{bought} / {maxAmountRound} SOLD</span>
                     <span>{getProgressPercent(bought, maxAmountRound)}%</span>
-                </div>
+                </div> */}
             </>
         )
     }
@@ -120,12 +120,7 @@ const Round3 = () => {
                 isSoldOut && <Tag className="badge" color="#541C8D">SOLD OUT</Tag>
             }
             <div className="stage-content">
-                <div className="flex items-center mb-5">
-                    <div className="pt-3">
-                        <h2 className="mb-2">Mint Now</h2>
-                        <h3 className="mb-2">in MoonFit App</h3>
-                    </div>
-                </div>
+                {dateTitle(currentRoundSale.dateMsg)}
                 <h4 className="mt-5 mb-3">{currentRoundSale.title}</h4>
                 <div className="flex mb-2">
                     <img className="arrow-right" src={arrowFatRight} alt="" /> QUANTITY: <span className="text-white ml-1">UP TO {maxAmountRound} NFTs</span>
