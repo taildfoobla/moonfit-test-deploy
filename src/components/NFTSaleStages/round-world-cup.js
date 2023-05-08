@@ -1,60 +1,24 @@
 import React, { useEffect, useState } from "react"
-import { Progress, Tag } from "antd"
+import { Tag } from "antd"
 import arrowFatRight from "../../assets/images/icons/ArrowFatRight.svg"
 import moonBeam from "../../assets/images/icons/moonbeam.svg"
-import LoadingOutlined from "../../components/shared/LoadingOutlined";
 
 import { NFT_SALE_ROUNDS_INFO } from '../../constants/blockchain'
-import {
-    getAvailableSlots,
-    getSaleMaxAmount,
-    subscribeUpdateSaleAmount,
-} from "../../services/smc-ntf-world-cup-sale";
-import EventBus from "../../utils/event-bus";
 
 const currentRoundSale = NFT_SALE_ROUNDS_INFO.WC
 
 const RoundWorldCup = () => {
-    const [isLoading, setIsLoading] = useState(true)
-    // eslint-disable-next-line no-unused-vars
     const [isSoldOut, setIsSoldOut] = useState(true)
-    const [bought, setBound] = useState(0)
     const [maxAmountRound, setMaxAmountRound] = useState(currentRoundSale.amount)
+
 
     useEffect(() => {
         init().then()
     }, [])
 
     const init = async () => {
-        setIsLoading(true)
-        EventBus.$on(currentRoundSale.eventUpdateSaleAmountName, (data) => {
-            if (data.soldAmount && data.maxSaleAmount) {
-                setBound(data.soldAmount)
-                setMaxAmountRound(data.maxSaleAmount)
-                // setIsSoldOut(data.availableSlot === 0)
-            }
-        })
-
-        subscribeUpdateSaleAmount()
-
-        const data = await Promise.all([
-            getAvailableSlots(),
-            getSaleMaxAmount(),
-        ])
-
-        setBound(data[1] - data[0])
-        setMaxAmountRound(data[1])
-        // setIsSoldOut(data[0] === 0)
-
-        setTimeout(() => {setIsLoading(false)}, 0)
-    }
-
-    const getProgressPercent = (mintedSlots, maxSaleSlots) => {
-        if (maxSaleSlots === 0) {
-            return 0
-        }
-
-        return Math.floor((mintedSlots || 0) / maxSaleSlots * 10000) / 100
+        setMaxAmountRound(currentRoundSale.amount)
+        setIsSoldOut(true)
     }
 
     const dateTitle = (dateMsg) => {
@@ -69,61 +33,6 @@ const RoundWorldCup = () => {
                     <h3 className="pt-2">{ordinalNumber}</h3>
                 </div>
                 <h3>{month}</h3>
-            </>
-        )
-    }
-
-    const joinButton = () => {
-        // if (isSoldOut) {
-        //     return (
-        //         <Link to={Paths.NFTSaleRoundWorldCup.path} className="flex items-center header-button button button-secondary w-100 mt-20">
-        //             <span className="nav-text">View detail</span>
-        //         </Link>
-        //     )
-        // }
-        // if (isConnected) {
-        //     return (
-        //         <Link to={Paths.NFTSaleRoundWorldCup.path} className="flex items-center header-button button button-secondary w-100 mt-4">
-        //             <span className="nav-text">Join now</span>
-        //         </Link>
-        //     )
-        // }
-
-        // return (
-        //     <button type="button" className="flex items-center header-button button button-secondary w-100 mt-4"
-        //             onClick={showWalletSelectModal}>
-        //         Login
-        //     </button>
-        // )
-        return null
-    }
-
-    // eslint-disable-next-line no-unused-vars
-    const renderFooter = () => {
-        if (isLoading) {
-            return (
-                <div className="flex justify-center mt-5 mb-5">
-                    <LoadingOutlined />
-                </div>
-            )
-        }
-
-        return (
-            <>
-                <div className={'flex flex-col text-[#4ccbc9] mt-5'}>
-                    <div className="flex justify-between items-center">
-                        <Progress
-                            strokeColor={{ from: '#4ccbc9', to: '#e4007b' }}
-                            percent={getProgressPercent(bought, maxAmountRound)}
-                            status="active"
-                            showInfo={false}
-                        />
-                    </div>
-                </div>
-                <div className="flex justify-between mint-sold">
-                    <span>{bought} / {maxAmountRound} SOLD</span>
-                    <span>{getProgressPercent(bought, maxAmountRound)}%</span>
-                </div>
             </>
         )
     }
@@ -145,9 +54,7 @@ const RoundWorldCup = () => {
                                     </span>
                 </div>
                 <span className="description">{currentRoundSale.description}</span>
-                {/*{renderFooter()}*/}
             </div>
-            {joinButton()}
         </div>
     )
 }

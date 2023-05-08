@@ -1,8 +1,6 @@
 import configs from '../configs'
 import Web3 from "web3";
 import nftSaleABI from "../abis/MoonBeastNFTSaleRound34.json";
-import {moonBeastContract} from "./smc-moon-beast";
-import {getMoonBeast as _getMoonBeast} from "./smc-common";
 
 const {MOONBEAM_WSS_URL} = configs
 

@@ -10,7 +10,6 @@ import { Link } from "react-router-dom";
 import { NFT_SALE_ROUNDS_INFO } from '../../constants/blockchain'
 import {
     getAvailableSlots,
-    getSaleMaxAmount,
 } from "../../services/smc-ntf-sale-round-34";
 
 const currentRoundSale = NFT_SALE_ROUNDS_INFO.R3
@@ -20,7 +19,7 @@ const Round3 = () => {
     const [isLoading, setIsLoading] = useState(true)
     const [isSoldOut, setIsSoldOut] = useState(false)
     const [bought, setBound] = useState(0)
-    const [maxAmountRound, setMaxAmountRound] = useState(currentRoundSale.amount)
+    const maxAmountRound = currentRoundSale.amount
 
     useEffect(() => {
         init().then()
@@ -29,14 +28,10 @@ const Round3 = () => {
     const init = async () => {
         setIsLoading(true)
 
-        const data = await Promise.all([
-            getAvailableSlots(),
-            getSaleMaxAmount(),
-        ])
+        const availableSlots = await getAvailableSlots()
 
-        setBound(data[1] - data[0])
-        setMaxAmountRound(data[1])
-        setIsSoldOut(data[0] === 0)
+        setBound((maxAmountRound - availableSlots) + currentRoundSale.bound)
+        setIsSoldOut(availableSlots === 0)
 
         setTimeout(() => {setIsLoading(false)}, 0)
     }
