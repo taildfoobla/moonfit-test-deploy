@@ -27,7 +27,8 @@ export const mintNFTWithMintPassData = pack => saleContract.methods.mintNFTWithM
 
 export const lockMintPass = (mintPassIds) => saleContract.methods.lockMintPass(mintPassIds).encodeABI()
 
-export const unlockMintPass = () => saleContract.methods.unlockMintPass2().encodeABI()
+export const unlockMintPass = () => saleContract.methods.unlockMintPass().encodeABI()
+export const unlockMintPass2 = () => saleContract.methods.unlockMintPass2().encodeABI()
 
 export const getMintPassLooking = async (owner) => {
     return saleContract.methods.getMintPassLooking(owner).call()

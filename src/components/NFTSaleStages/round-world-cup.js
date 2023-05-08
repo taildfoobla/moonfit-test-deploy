@@ -1,12 +1,9 @@
-import React, { useContext, useEffect, useState } from "react"
+import React, { useEffect, useState } from "react"
 import { Progress, Tag } from "antd"
-import WalletAuthContext from "../../contexts/WalletAuthContext";
 import arrowFatRight from "../../assets/images/icons/ArrowFatRight.svg"
 import moonBeam from "../../assets/images/icons/moonbeam.svg"
 import LoadingOutlined from "../../components/shared/LoadingOutlined";
 
-import Paths from "../../routes/Paths"
-import { Link } from "react-router-dom";
 import { NFT_SALE_ROUNDS_INFO } from '../../constants/blockchain'
 import {
     getAvailableSlots,
@@ -18,8 +15,8 @@ import EventBus from "../../utils/event-bus";
 const currentRoundSale = NFT_SALE_ROUNDS_INFO.WC
 
 const RoundWorldCup = () => {
-    const { isConnected, showWalletSelectModal } = useContext(WalletAuthContext)
     const [isLoading, setIsLoading] = useState(true)
+    // eslint-disable-next-line no-unused-vars
     const [isSoldOut, setIsSoldOut] = useState(true)
     const [bought, setBound] = useState(0)
     const [maxAmountRound, setMaxAmountRound] = useState(currentRoundSale.amount)
