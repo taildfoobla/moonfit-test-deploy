@@ -257,7 +257,7 @@ export const NFT_SALE_ROUNDS_INFO = {
         title: 'NFT Sale 3',
         timelineTitle: 'Whitelist Sale #3',
         isSoldOut: false,
-        activeSoldOut: false,
+        activeSoldOut: true,
         NFT_SALE_SC: configs.R34_NFT_SALE_SC,
         amount: 7981,
         fromTokenID: 2001,
@@ -267,11 +267,7 @@ export const NFT_SALE_ROUNDS_INFO = {
         description: 'Buy max 1 MoonBeast per MintPass',
         dateMsg: '12th October',
         eventUpdateSaleAmountName: 'R3UpdateSaleAmount',
-        time: 1665583200000, // Date and time (GMT): Wednesday, October 12, 2022 2:00:00 PM
-        ...(isDev ? {
-            time: Date.now(),
-            price: 0.00159,
-        } : {}),
+        time: Date.now() + 30 * 24 * 60 * 60 * 1000,
         specialRound: false
     },
     R4: {
@@ -281,7 +277,7 @@ export const NFT_SALE_ROUNDS_INFO = {
         timelineTitle: 'Public Sale',
         isSoldOut: false,
         activeSoldOut: true,
-        NFT_SALE_SC: configs.R4_NFT_SALE_SC,
+        NFT_SALE_SC: configs.R34_NFT_SALE_SC,
         amount: 5000,
         fromTokenID: 50001,
         price: 219,

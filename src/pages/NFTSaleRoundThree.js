@@ -159,7 +159,7 @@ const NFTSaleRoundThree = () => {
                         {
                             [
                                 <Header availableSlots={saleAmount} isLoading={isNaN(saleAmount)} roundInfo={{
-                                    number: '3&4',
+                                    number: '3',
                                     hideDate: true,
                                 }} key="Header"/>,
                                 _renderContainer()
