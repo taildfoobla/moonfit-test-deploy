@@ -19,7 +19,7 @@ export const WITH_MINT_PASS_PACK = [
         amount: 1,
         value: 159,
         label: 'Pack 1',
-        tooltip: '1 NFT is equivalent to 1km target - recommend for 1K runner'
+        tooltip: '1 NFT is equivalent to 1km target - recommend for 1K Runner'
     },
     {
         type: 'pack3',
@@ -28,7 +28,7 @@ export const WITH_MINT_PASS_PACK = [
         discount: 10,
         label: 'Pack 3',
         isRecommend: true,
-        tooltip: '3 NFT is equivalent to 3km target - recommend for 3K runner'
+        tooltip: '3 NFTs is equivalent to 3km target - recommend for 3K Runner'
     },
     {
         type: 'pack5',
@@ -36,14 +36,14 @@ export const WITH_MINT_PASS_PACK = [
         value: 635,
         discount: 15,
         label: 'Pack 5',
-        tooltip: '5 NFT is equivalent to 5km target - recommend for 5K runner'
+        tooltip: '5 NFTs is equivalent to 5km target - recommend for 5K Runner'
     }, {
         type: 'pack13',
         amount: 13,
         value: 1347,
         discount: 20,
         label: 'Pack 13',
-        tooltip: '13 NFT is equivalent to 10km target - recommend for 10K runner'
+        tooltip: '13 NFTs is equivalent to 10km target - recommend for 10K Runner'
     }
 ].map(mapEnv)
 
@@ -53,7 +53,7 @@ export const WITHOUT_MINT_PASS_PACK = [
         amount: 1,
         value: 199,
         label: 'Pack 1',
-        tooltip: '1 NFT is equivalent to 1km target - recommend for 1K runner'
+        tooltip: '1 NFT is equivalent to 1km target - recommend for 1K Runner'
     },
     {
         type: 'pack3',
@@ -62,7 +62,7 @@ export const WITHOUT_MINT_PASS_PACK = [
         discount: 10,
         label: 'Pack 3',
         isRecommend: true,
-        tooltip: '3 NFT is equivalent to 3km target - recommend for 3K runner'
+        tooltip: '3 NFTs is equivalent to 3km target - recommend for 3K Runner'
     },
     {
         type: 'pack5',
@@ -70,13 +70,13 @@ export const WITHOUT_MINT_PASS_PACK = [
         value: 835,
         discount: 15,
         label: 'Pack 5',
-        tooltip: '5 NFT is equivalent to 5km target - recommend for 5K runner'
+        tooltip: '5 NFTs is equivalent to 5km target - recommend for 5K Runner'
     }, {
         type: 'pack13',
         amount: 13,
         value: 2067,
         discount: 20,
         label: 'Pack 13',
-        tooltip: '13 NFT is equivalent to 10km target - recommend for 10K runner'
+        tooltip: '13 NFTs is equivalent to 10km target - recommend for 10K Runner'
     }
 ].map(mapEnv)
