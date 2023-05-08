@@ -327,7 +327,7 @@ const SaleInfo = (props) => {
 
     const renderHead = () => {
         const availableMintPass = props.isLoading || Number.isNaN(props.availableMintPass) ?
-            <span className="dot-flashing"/> : props.availableMintPass
+            <span className="dot-flashing"/> : (props.availableMintPass + props.mintPasses.length)
 
         return (
             <div className='text-center normal-case font-semibold mb-5'>
