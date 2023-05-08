@@ -87,7 +87,7 @@ const NFTSaleRoundWorldCup = () => {
         console.log(1);
         setIsNFTLoading(true)
         try {
-            const _moonBeasts = await fetchMoonBeastIdsByAccount(wallet.account, 50).then(async tokenIds => {
+            const _moonBeasts = await fetchMoonBeastIdsByAccount(wallet.account, 150).then(async tokenIds => {
                 const response = await getMoonBeatInfo(tokenIds)
 
                 return response.data.moonBeasts.map(item => {

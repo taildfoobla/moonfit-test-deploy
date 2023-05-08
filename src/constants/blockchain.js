@@ -269,7 +269,10 @@ export const NFT_SALE_ROUNDS_INFO = {
         dateMsg: '12th October',
         eventUpdateSaleAmountName: 'R3UpdateSaleAmount',
         time: 1665583200000,
-        specialRound: false
+        specialRound: false,
+        ...(isDev ? {
+            fromTokenID: 5773,
+        } : {}),
     },
 }
 
