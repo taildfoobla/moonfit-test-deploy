@@ -356,7 +356,7 @@ const SaleInfo = (props) => {
                 </div>
             </div>
 
-            <ul className='packs p-0'>
+            <ul className='packs mb-2 p-0'>
                 {
                     listPack.map((item, index) => {
                         let className = `pack ${selectedPack.value === item.value ? 'active' : ''}`
