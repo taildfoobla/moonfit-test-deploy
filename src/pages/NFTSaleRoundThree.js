@@ -13,6 +13,7 @@ import MoonBeasts from '../components/NFTSaleCurrentRound/MoonBeastsV2/index'
 import {fetchMintPassByAccount} from "../services/smc-mint-pass"
 import {fetchMoonBeastIdsByAccount} from '../services/smc-moon-beast'
 import {getAvailableMintPass, getAvailableSlots} from '../services/smc-ntf-sale-round-34'
+import { NFT_SALE_ROUNDS_INFO } from '../constants/blockchain'
 import CurveBGWrapper from '../wrappers/CurveBG'
 import NFTSaleMoonBestInfo from '../components/NFTSaleRoundThree/SaleInfo'
 
@@ -69,7 +70,7 @@ const NFTSaleRoundThree = () => {
         setMoonBeastLoading(true)
 
         try {
-            const _moonBeasts = await fetchMoonBeastIdsByAccount(wallet.account, 150)
+            const _moonBeasts = await fetchMoonBeastIdsByAccount(wallet.account, 150, NFT_SALE_ROUNDS_INFO.R3.fromTokenID)
 
             setMoonBeasts(_moonBeasts.map(tokenId => ({tokenId})))
         } catch (e) {
@@ -158,7 +159,7 @@ const NFTSaleRoundThree = () => {
                     <NFTStages>
                         {
                             [
-                                <Header availableSlots={saleAmount} isLoading={isNaN(saleAmount)} roundInfo={{
+                                <Header availableSlots={saleAmount} isLoading={Number.isNaN(saleAmount)} roundInfo={{
                                     number: '3',
                                     hideDate: true,
                                 }} key="Header"/>,

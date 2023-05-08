@@ -50,8 +50,8 @@ const RoundWorldCup = () => {
                 </div>
                 <div className="flex mb-3">
                     <img className="arrow-right" src={arrowFatRight} alt="" /> PRICE:
-                    <img className="ic-moonbeam" src={moonBeam} alt="" /> <span className="text-[#4ccbc9] mr-1">{currentRoundSale.price}
-                                    </span>
+                    <img className="ic-moonbeam" src={moonBeam} alt="" />
+                    <span className="text-[#4ccbc9] mr-1">{currentRoundSale.price}</span>
                 </div>
                 <span className="description">{currentRoundSale.description}</span>
             </div>
