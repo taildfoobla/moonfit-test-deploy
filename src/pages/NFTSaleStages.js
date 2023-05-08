@@ -2,7 +2,6 @@ import React from "react"
 import CurveBGWrapper from "../wrappers/CurveBG"
 import RoundSoldOut from "../components/NFTSaleStages/round-sold-out";
 import RoundWorldCup from "../components/NFTSaleStages/round-world-cup";
-import RoundComingSoon from "../components/NFTSaleStages/round-coming-soon";
 
 import { NFT_SALE_ROUNDS_INFO } from '../constants/blockchain'
 import Round3 from "../components/NFTSaleStages/round-3";

@@ -11,6 +11,7 @@ import {
     smcContract,
     lockMintPass,
     unlockMintPass,
+    unlockMintPass2,
     getMintPassLooking,
 } from "../../services/smc-ntf-sale-round-34";
 import {buyNFT, getTransactionReceipt} from "../../services/smc-common";
@@ -185,16 +186,17 @@ const SaleInfo = (props) => {
         }
     }
 
-    const _unlockMintPass = async () => {
+    const _unlockMintPass = async (contractAddress = NFT_SALE_ADDRESS, version = 2) => {
         setButtonText(BUTTON_TEXT.UNLOCKING)
         setLoading(true)
+        console.log('Unlock', {contractAddress, version})
         const tx = {
-            to: NFT_SALE_ADDRESS,
+            to: contractAddress,
             from: wallet.account,
             // gasPrice: `${gasPrice}`,
             maxPriorityFeePerGas: null,
             maxFeePerGas: null,
-            data: unlockMintPass()
+            data: version  === 1 ? unlockMintPass() : unlockMintPass2(),
         }
 
         try {

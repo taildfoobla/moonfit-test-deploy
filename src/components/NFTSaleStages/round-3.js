@@ -60,6 +60,7 @@ const Round3 = () => {
         return Math.floor((mintedSlots || 0) / maxSaleSlots * 10000) / 100
     }
 
+    // eslint-disable-next-line no-unused-vars
     const dateTitle = (dateMsg) => {
         const day = dateMsg.substring(0, 2)
         const ordinalNumber = dateMsg.substring(2, 4)
