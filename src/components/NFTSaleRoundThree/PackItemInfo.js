@@ -67,7 +67,7 @@ const PackItemInfo = ({ item = {}, ...rootDOMAttributes }) => {
                     </div>
                 </div>
                 <div className='right flex items-center'>
-                    <img className='mr-3' src={Moonbeam} alt="GLMR" />
+                    <img className='mr-1' src={Moonbeam} alt="GLMR" />
                     <span className={`font-bold text-[20px] text-[#4CCBC9] num-with-${item.value.toString().length}`}>
                         {numberFormat(item.value)}
                     </span>
