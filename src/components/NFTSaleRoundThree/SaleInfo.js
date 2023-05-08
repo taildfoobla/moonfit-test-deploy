@@ -357,7 +357,7 @@ const SaleInfo = (props) => {
             <ul className='packs p-0'>
                 {
                     listPack.map((item, index) => {
-                        let className = `pack flex justify-between items-center ${selectedPack.value === item.value ? 'active' : ''}`
+                        let className = `pack ${selectedPack.value === item.value ? 'active' : ''}`
                         if (item.amount > countMintPass()) {
                             className = `${className} disabled`
                         }
