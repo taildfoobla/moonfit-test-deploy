@@ -49,12 +49,12 @@ const MoonBeasts = ({
     }
 
     return (
-        <div className={'card-body-row flex flex-col mt-3'}>
+        <div className={'card-body-row flex flex-col mt-3 minted-nft'}>
             <div className="flex justify-between cursor-pointer" onClick={() => handleRefresh(true)}>
-                <div className={'flex card-body-row-title'}>
+                <div className={'flex card-body-row-title left'}>
                     Your minted NFTs
                 </div>
-                <div className={'flex card-body-row-title'}>Total {total}
+                <div className={'flex card-body-row-title right'}>Total {total}
                 </div>
             </div>
             <MoonBeastList moonBeasts={moonBeasts} moonBeastMinting={moonBeastMinting} isExpired={isExpired} isLoading={isLoading} />

@@ -118,7 +118,7 @@ const NFTSaleRoundThree = () => {
                                 <div
                                     className={'flex w-full lg:w-auto justify-center lg:justify-start mt-4 lg:mt-0'}>
                                     {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
-                                    <a href="#" className={'text-[18px] font-extrabold inline primary-color darker-grotesque-font'}
+                                    <a href="#" className={'text-[18px] font-extrabold inline primary-color darker-grotesque-font leading-refresh'}
                                        type="button" onClick={e => handleRefresh(e)}>
                                         <svg className="w-4 h-4 inline mr-1" fill="none" stroke="currentColor"
                                              viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
