@@ -5,12 +5,13 @@ import PackItemInfo from './PackItemInfo'
 import LockMintPass from '../../assets/images/icons/lock-mintpass.svg'
 import {WITH_MINT_PASS_PACK, WITHOUT_MINT_PASS_PACK} from '../../constants/packs'
 import {
-    lockMintPass,
     mintNFTWithMintPassData,
     mintNFTWithoutMintPassData,
     NFT_SALE_ADDRESS,
     smcContract,
-    unlockMintPass
+    lockMintPass,
+    unlockMintPass,
+    getMintPassLooking,
 } from "../../services/smc-ntf-sale-round-34";
 import {buyNFT, getTransactionReceipt} from "../../services/smc-common";
 import {checkApprove, MINT_PASS_ADDRESS, setApprovalForAllData} from "../../services/smc-mint-pass";
@@ -53,10 +54,11 @@ const SaleInfo = (props) => {
         })
     }
 
-    const confirmTransaction = async (txHash, callback) => {
+    const confirmTransaction = async (txHash, options, callback) => {
         const receipt = await getTransactionReceipt(txHash)
 
         if (receipt) {
+            console.log(receipt);
             if (typeof callback === 'function') {
                 callback()
             }
@@ -64,9 +66,9 @@ const SaleInfo = (props) => {
             notification.close(txHash)
 
             if (!receipt.status) {
-                notification.sentTransactionFailed(txHash)
+                notification.sentTransactionFailed(txHash, {...options, message: 'Transaction Failed'})
             } else {
-                notification.sentTransactionSuccess(txHash)
+                notification.sentTransactionSuccess(txHash, options)
             }
 
             return
@@ -74,7 +76,7 @@ const SaleInfo = (props) => {
 
         await Bluebird.delay(3000)
 
-        return confirmTransaction(txHash, callback)
+        return confirmTransaction(txHash, options, callback)
     }
 
     const onChangePack = (pack) => {
@@ -106,7 +108,8 @@ const SaleInfo = (props) => {
                     value: selectedPack.price.toString(),
                     data: mintNFTWithoutMintPassData(selectedPack.pack)
                 },
-                text: BUTTON_TEXT.MINTING
+                text: BUTTON_TEXT.MINTING,
+                txText: 'mint'
             }
         }
 
@@ -121,7 +124,8 @@ const SaleInfo = (props) => {
                     value: selectedPack.price.toString(),
                     data: lockMintPass(tokenIds)
                 },
-                text: BUTTON_TEXT.LOCKING
+                text: BUTTON_TEXT.LOCKING,
+                txText: `lock ${lockNumber} MintPass`
             }
         }
 
@@ -132,7 +136,8 @@ const SaleInfo = (props) => {
                 value: selectedPack.price.toString(),
                 data: mintNFTWithMintPassData(selectedPack.pack)
             },
-            text: BUTTON_TEXT.MINTING
+            text: BUTTON_TEXT.MINTING,
+            txText: `mint`
         }
     }
 
@@ -141,7 +146,7 @@ const SaleInfo = (props) => {
         setButtonText(BUTTON_TEXT.MINTING)
 
         try {
-            const {transaction, text} = await _getTransaction()
+            const {transaction, text, txText} = await _getTransaction()
             setButtonText(text)
             if (BUTTON_TEXT.MINTING === text) {
                 props.setMoonBeastMinting(selectedPack.pack)
@@ -152,9 +157,14 @@ const SaleInfo = (props) => {
                     const txHash = await buyNFT(provider, connector, smcContract, transaction)
 
                     if (txHash) {
-                        notification.destroy()
-                        notification.sentTransactionSuccess(txHash)
-                        return confirmTransaction(txHash, () => {
+                        notification.sentTransactionSuccess(txHash, {
+                            message: 'Transaction Sending...',
+                            description: `The hash of ${txText} transaction is`
+                        })
+                        return confirmTransaction(txHash, {
+                            message: 'Transaction Sent',
+                            description: `The hash of ${txText} transaction is`
+                        }, () => {
                             props.setMoonBeastMinting(0)
                             props.onRefresh()
                             setLoading(false)
@@ -163,11 +173,13 @@ const SaleInfo = (props) => {
 
                     setLoading(false)
                 } catch (e) {
+                    props.setMoonBeastMinting(0)
                     notification.error(e.message, e)
                     setLoading(false)
                 }
             }
         } catch (e) {
+            props.setMoonBeastMinting(0)
             notification.error(e.message, e)
             setLoading(false)
         }
@@ -189,8 +201,14 @@ const SaleInfo = (props) => {
             const txHash = await buyNFT(provider, connector, smcContract, tx)
 
             if (txHash) {
-                notification.sentTransactionSuccess(txHash)
-                return confirmTransaction(txHash, () => {
+                notification.sentTransactionSuccess(txHash, {
+                    message: 'Transaction Sending...',
+                    description: `The hash of unlock MintPass transaction is`
+                })
+                return confirmTransaction(txHash, {
+                    message: 'Transaction Sent',
+                    description: `The hash of unlock MintPass transaction is`
+                }, () => {
                     props.onRefresh()
                     setLoading(false)
                 }).then()
@@ -204,8 +222,9 @@ const SaleInfo = (props) => {
     }
 
     const _approvalForAllMintPass = async status => {
+        const text = status ? BUTTON_TEXT.APPROVING : BUTTON_TEXT.REJECTING
         setLoading(true)
-        setButtonText(status ? BUTTON_TEXT.APPROVING : BUTTON_TEXT.REJECTING)
+        setButtonText(text)
 
         const tx = {
             to: MINT_PASS_ADDRESS,
@@ -219,8 +238,14 @@ const SaleInfo = (props) => {
             const txHash = await buyNFT(provider, connector, smcContract, tx)
 
             if (txHash) {
-                notification.sentTransactionSuccess(txHash)
-                return confirmTransaction(txHash, () => {
+                notification.sentTransactionSuccess(txHash, {
+                    message: 'Transaction Sending...',
+                    description: `The hash of ${text} for all MintPass transaction is`
+                })
+                return confirmTransaction(txHash, {
+                    message: 'Transaction Sent',
+                    description: `The hash of ${text} for all MintPass transaction is`
+                }, () => {
                     _checkApprove()
                     setLoading(false)
                 }).then()
@@ -233,6 +258,7 @@ const SaleInfo = (props) => {
         }
     }
 
+    window.getMintPassLooking = () => getMintPassLooking(wallet.account)
     window.unlockMintPass = _unlockMintPass
     window.approvalForAllMintPass = _approvalForAllMintPass
 

@@ -5,22 +5,23 @@ import {getMainMessage} from "./tx-error";
 
 export const destroy = () => notification.destroy()
 
-export const sentTransactionSuccess = (txHash) => {
+export const sentTransactionSuccess = (txHash, options = {}) => {
     return notification.success({
         key: txHash,
-        message: 'Transaction Sent',
+        message: options.message || 'Transaction Sent',
         description: (
             <div>
-                The hash of deposit transaction is: <br/>
+                {options.description || 'The hash of deposit transaction is'}: <br/>
                 <a target="_blank" rel="noreferrer"
                    className={'text-blue-600'}
                    href={getTxScanUrl(txHash)}>{getShortAddress(txHash, 8)}</a>
             </div>
         ),
         placement: 'bottomRight',
-        duration: 60
+        duration: 120
     })
 }
+
 export const sentTransactionDepositSuccess = (txHash) => {
     return notification.success({
         key: txHash,
@@ -56,20 +57,20 @@ export const depositSuccess = (txHash, nftType) => {
     })
 }
 
-export const sentTransactionFailed = (txHash) => {
+export const sentTransactionFailed = (txHash, options) => {
     return notification.success({
         key: txHash,
-        message: `Transaction Failed`,
+        message: options.message || 'Transaction Failed',
         description: (
             <div>
-                The hash of MFB minting transaction is: <br/>
+                {options.description || 'The hash of MFB minting transaction is'}: <br/>
                 <a target="_blank" rel="noreferrer"
                    className={'text-blue-600'}
                    href={getTxScanUrl(txHash)}>{getShortAddress(txHash, 8)}</a>
             </div>
         ),
         placement: 'bottomRight',
-        duration: 60
+        duration: 120
     })
 }
 

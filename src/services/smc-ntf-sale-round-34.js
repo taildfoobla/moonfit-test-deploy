@@ -29,16 +29,8 @@ export const lockMintPass = (mintPassIds) => saleContract.methods.lockMintPass(m
 
 export const unlockMintPass = () => saleContract.methods.unlockMintPass2().encodeABI()
 
-
-
-export const getSaleMaxAmount = async () => {
-    const value = await saleContract.methods._maxSaleAmount().call()
-
-    return parseInt(value)
-}
-
-export const buyNFTData = (mintAmount) => {
-    return saleContract.methods.buyNFT(mintAmount).encodeABI()
+export const getMintPassLooking = async (owner) => {
+    return saleContract.methods.getMintPassLooking(owner).call()
 }
 
 export const getMoonBeast = async (wallet) => {
