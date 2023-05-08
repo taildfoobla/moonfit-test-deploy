@@ -14,14 +14,8 @@ const NFTSaleStages = () => {
                 {<RoundSoldOut stage={NFT_SALE_ROUNDS_INFO.R1} />}
                 {<RoundSoldOut stage={NFT_SALE_ROUNDS_INFO.R2} />}
                 {<RoundWorldCup />}
-                {/* {<RoundComingSoon stage={NFT_SALE_ROUNDS_INFO.R3} />} */}
                 <Round3 />
             </div>
-            {/* <div className="flex flex-wrap justify-center grid xs:grid-cols-1 md:grid-cols-1 xl:grid-cols-3 gap-8">
-                {<RoundComingSoon stage={NFT_SALE_ROUNDS_INFO.R3} />}
-                {<RoundComingSoon stage={NFT_SALE_ROUNDS_INFO.R4} />}
-                {<RoundWorldCup />}
-            </div> */}
         </CurveBGWrapper>
     )
 }
