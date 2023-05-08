@@ -14,7 +14,7 @@ const MoonBeasts = ({ moonBeasts, moonBeastMinting = 0, isExpired = false, isLoa
 
     if (moonBeasts.length === 0 && !moonBeastMinting) {
         return (
-            <div className={'mt-8 mb-3'}>
+            <div className={'mt-5 mb-3'}>
                 <div className={'text-center text-white normal-case font-normal'}>
                     { isLoading ? '' : 'No NFTs found!' }
                 </div>

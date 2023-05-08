@@ -1002,7 +1002,9 @@
         padding: 3px;
         background-image: linear-gradient(to right bottom, #4cbfcb, #e4007b);
         box-shadow: 0 4px 50px rgb(161 107 216 / 50%);
-
+        .badge-recommend {
+          top: 6px;
+        }
         .pack-border {
           content: "";
           width: 100%;
@@ -1060,6 +1062,7 @@
       padding-bottom: 8px;
       font-weight: 800;
       line-height: 24.41px;
+      font-size: 18px;
     }
    }  
   }

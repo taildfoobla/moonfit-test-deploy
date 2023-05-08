@@ -293,7 +293,7 @@ const SaleInfo = (props) => {
                     <button className="button button-secondary" type="button"
                             onClick={() => _approvalForAllMintPass(true)}>
                         <img className="mr-2" src={LockMintPass} alt=""/>
-                        <span>Approve to Looking MintPass</span>
+                        <span>Approve</span>
                     </button>
                 )
             }
