@@ -58,7 +58,7 @@ const PackItemInfo = ({ item = {}, ...rootDOMAttributes }) => {
                     <PackIcon pack={item.type} />
                     <div className='pack-label ml-3'>
                         <p className='flex text-[14px] leading-5 race-sport-font mb-2'>
-                            <span className='mr-2'>{item.label}</span>
+                            <span className='mr-2 font-normal'>{item.label}</span>
                             <Tooltip className='pack-tooltip' placement="top" title={item.tooltip}>
                                 <img src={QuestionIcon} alt="ask" />
                             </Tooltip>
