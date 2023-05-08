@@ -934,6 +934,7 @@
     .tab {
       color: #a8adc3;
       font-size: 14px;
+      font-weight: 500;
       line-height: 21px;
       padding: 5px 15px;
       cursor: pointer;
@@ -968,8 +969,16 @@
         min-width: 200px;
       }
 
+      .right {
+        span {
+          line-height: 27px;
+        }
+      }
+
       .sub-label {
         color: #a8adc3;
+        font-weight: 600;
+        line-height: 18px;
       }
 
       .badge-recommend {
@@ -1026,6 +1035,27 @@
       min-width: 50px;
       text-align: right;
     }
+  }
+
+  .unlock-mintpass {
+   .left {
+    .fee-info {
+      font-weight: 600;
+      line-height: 21.7px;
+    }
+    .fee-amount {
+      font-weight: 400;
+      line-height: 26px;
+    }
+   }
+   .right {
+    .button {
+      padding-top: 8px;
+      padding-bottom: 8px;
+      font-weight: 800;
+      line-height: 24.41px;
+    }
+   }  
   }
 
   .dot-flashing {
@@ -1100,4 +1130,12 @@
   border-color: #a16bd8;
   background-color: #a16bd8;
   --antd-arrow-background-color: none;
+}
+
+.minted-nft {
+  .left, .right {
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 21.7px;
+  }
 }

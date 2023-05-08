@@ -329,10 +329,10 @@ const SaleInfo = (props) => {
 
         return (
             <div className='text-center normal-case font-semibold mb-5'>
-                <p className='text-white text-[20px] mb-0'>
+                <p className='text-white text-[18px] leading-normal poppins-font mb-0'>
                     You have {availableMintPass} Mint Pass available
                 </p>
-                <p className='text-[#A8ADC3] text-[18px] w-3/4 m-auto'>
+                <p className='text-[#A8ADC3] leading-7 text-[20px] w-3/4 m-auto'>
                     Each mint pass is one-time use only for buying 1
                     MoonBeast at a discounted price.
                 </p>
@@ -370,10 +370,10 @@ const SaleInfo = (props) => {
                 }
             </ul>
             <hr className={'card-body-separator'}/>
-            <div className='flex justify-between items-center'>
+            <div className='unlock-mintpass flex justify-between items-center'>
                 <div className='left'>
-                    <span className='text-[16px] text-[#A8ADC3]'>FEE:</span>
-                    <p className='text-[20px] text-[#4CCBC9] race-sport-font'>
+                    <span className='text-[16px] text-[#A8ADC3] fee-info'>FEE:</span>
+                    <p className='text-[20px] text-[#4CCBC9] race-sport-font fee-amount'>
                         {selectedPack.tab === tab && selectedPack.value ? `${numberFormat(selectedPack.value)} $GLMR` : '\u00A0'}
                     </p>
                 </div>
