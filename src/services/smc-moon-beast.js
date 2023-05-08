@@ -35,7 +35,7 @@ export const fetchMoonBeastsByAccount = async (account, maxLength = Number.MAX_S
 }
 
 
-export const fetchMoonBeastIdsByAccount = async (account, maxLength = Number.MAX_SAFE_INTEGER) => {
+export const fetchMoonBeastIdsByAccount = async (account, maxLength = Number.MAX_SAFE_INTEGER, fromTokenId = 0) => {
     const balance = await balanceOfAccount(_moonBeastContract, account)
 
     let data = range(0, balance - 1)
@@ -50,9 +50,7 @@ export const fetchMoonBeastIdsByAccount = async (account, maxLength = Number.MAX
         return parseInt(tokenId, 10)
     }, {concurrency: 3})
 
-    console.log({balance, data, result});
-
-    return result;
+    return result.filter(item => !fromTokenId || item >= fromTokenId);
 }
 
 
