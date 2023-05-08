@@ -57,7 +57,7 @@ const PackItemInfo = ({ item = {}, ...rootDOMAttributes }) => {
                 <div className='left flex items-center'>
                     <PackIcon pack={item.type} />
                     <div className='pack-label ml-3'>
-                        <p className='flex text-[14px] leading-5 race-sport-font mb-0'>
+                        <p className='flex text-[14px] leading-5 race-sport-font mb-2'>
                             <span className='mr-2'>{item.label}</span>
                             <Tooltip className='pack-tooltip' placement="top" title={item.tooltip}>
                                 <img src={QuestionIcon} alt="ask" />
@@ -67,7 +67,7 @@ const PackItemInfo = ({ item = {}, ...rootDOMAttributes }) => {
                     </div>
                 </div>
                 <div className='right flex items-center'>
-                    <img className='mr-1' src={Moonbeam} alt="GLMR" />
+                    <img src={Moonbeam} alt="GLMR" />
                     <span className={`font-bold text-[20px] text-[#4CCBC9] num-with-${item.value.toString().length}`}>
                         {numberFormat(item.value)}
                     </span>
