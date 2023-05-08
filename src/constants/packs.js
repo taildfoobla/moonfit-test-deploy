@@ -19,7 +19,7 @@ export const WITH_MINT_PASS_PACK = [
         amount: 1,
         value: 159,
         label: 'Pack 1',
-        tooltip: '1 NFT is equivalent to 1km target - recommend for 1K Runner'
+        tooltip: '1 NFT is equivalent to 1km target - recommend for Beginner'
     },
     {
         type: 'pack3',
@@ -53,7 +53,7 @@ export const WITHOUT_MINT_PASS_PACK = [
         amount: 1,
         value: 199,
         label: 'Pack 1',
-        tooltip: '1 NFT is equivalent to 1km target - recommend for 1K Runner'
+        tooltip: '1 NFT is equivalent to 1km target - recommend for Beginner'
     },
     {
         type: 'pack3',
