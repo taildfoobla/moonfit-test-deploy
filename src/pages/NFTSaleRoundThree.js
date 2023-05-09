@@ -78,7 +78,7 @@ const NFTSaleRoundThree = () => {
 
             if (countMint) {
                 const _moonBeasts = await getMintByOwner(wallet.account, 0, countMint - 1)
-                setMoonBeasts(_moonBeasts)
+                setMoonBeasts(_moonBeasts.reverse())
             }
         } catch (e) {
             console.log('fetch MoonBeasts error', e.message)
