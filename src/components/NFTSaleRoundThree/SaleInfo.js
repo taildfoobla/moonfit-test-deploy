@@ -283,8 +283,8 @@ const SaleInfo = (props) => {
 
         if (!selectedPack.amount || selectedPack.tab !== tab) {
             return (
-                <button className="button button-secondary disabled" type="button" disabled>
-                    <img className="mr-2" src={LockMintPass} alt=""/>
+                <button className="button button-secondary disabled" type="button" disabled style={{padding: '0 10px'}}>
+                    <img className="ml-2" src={LockMintPass} alt=""/>
                     <span>Select a pack</span>
                 </button>
             )
@@ -304,7 +304,7 @@ const SaleInfo = (props) => {
             if (countMintPass() < selectedPack.amount) {
                 return (
                     <button className="button button-secondary disabled" type="button" disabled>
-                        <img className="mr-2" src={LockMintPass} alt=""/>
+                        <img className="ml-3" src={LockMintPass} alt=""/>
                         <span>Insufficient MintPass</span>
                     </button>
                 )
@@ -313,7 +313,7 @@ const SaleInfo = (props) => {
             if (selectedPack.amount > props.availableMintPass) {
                 return (
                     <button className="button button-secondary" type="button" onClick={handleLockMintPass}>
-                        <img className="mr-2" src={LockMintPass} alt=""/>
+                        <img className="ml-3" src={LockMintPass} alt=""/>
                         <span>Lock {selectedPack.amount - props.availableMintPass} MintPass</span>
                     </button>
                 )
