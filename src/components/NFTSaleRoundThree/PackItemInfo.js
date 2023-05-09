@@ -17,7 +17,7 @@ const PackIcon = ({ pack = '' }) => {
     }
 
     return (
-        <img src={icons[pack]} alt={pack} />
+        <img className="pack-icon" src={icons[pack]} alt={pack} />
     )
 }
 

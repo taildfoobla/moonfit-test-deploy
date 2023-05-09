@@ -935,6 +935,7 @@
     border: 2px solid #351c4f;
 
     .tab {
+      text-align: center;
       color: #a8adc3;
       font-size: 14px;
       font-weight: 500;
@@ -1082,6 +1083,50 @@
       .pack {
         .left {
           min-width: auto;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 414px) {
+  .purchase-moonbest {
+    .packs {
+      .pack {
+        .left {
+          .pack-icon {
+            width: 36px;
+          }
+          .pack-label {
+            p {
+              font-size: 11px;
+            }
+          }
+        }
+        .right {
+          img {
+            width: 20px;
+          }
+          span {
+            font-size: 18px;
+          }
+        }
+        .badge-recommend {
+          padding: 0 8px;
+        }
+      }
+    }
+    .unlock-mintpass {
+      .left {
+        .fee-amount {
+          font-size: 16px;
+        }
+      }
+      .right {
+        .button {
+          padding: 0;
+          font-size: 14px;
+          min-width: 120px;
         }
       }
     }
