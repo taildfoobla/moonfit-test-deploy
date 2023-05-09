@@ -22,7 +22,7 @@ const Paths = {
     },
     PrivateSale: {
         path: '/private-sale',
-        env: ['local']
+        env: []
     },
     MintPassMinting: {
         path: '/mint-pass',

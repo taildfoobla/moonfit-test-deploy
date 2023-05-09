@@ -2,7 +2,7 @@ import configs from '../configs'
 import Web3 from "web3";
 import moonBeastABI from "../abis/MoonBeastNFT.json";
 import {range} from "../utils/array";
-import {balanceOfAccount, tokenOfOwnerByIndex} from './smc-common'
+import {balanceOfAccount as _balanceOfAccount, tokenOfOwnerByIndex} from './smc-common'
 import {NFT_SALE_CURRENT_INFO} from '../constants/blockchain'
 import {getNFTInfo} from "../utils/blockchain";
 import Bluebird from "bluebird";
@@ -12,8 +12,10 @@ const {MOONBEAST_NETWORK, MOONBEAST_SC} = configs
 const web3js = new Web3(MOONBEAST_NETWORK)
 const _moonBeastContract = new web3js.eth.Contract(moonBeastABI.abi, MOONBEAST_SC)
 
+export const balanceOfAccount = account => _balanceOfAccount(_moonBeastContract, account)
+
 export const fetchMoonBeastsByAccount = async (account, maxLength = Number.MAX_SAFE_INTEGER) => {
-    const balance = await balanceOfAccount(_moonBeastContract, account)
+    const balance = await balanceOfAccount( account)
 
     let data = range(0, balance - 1)
 
@@ -36,7 +38,7 @@ export const fetchMoonBeastsByAccount = async (account, maxLength = Number.MAX_S
 
 
 export const fetchMoonBeastIdsByAccount = async (account, maxLength = Number.MAX_SAFE_INTEGER, fromTokenId = 0) => {
-    const balance = await balanceOfAccount(_moonBeastContract, account)
+    const balance = await balanceOfAccount(account)
 
     let data = range(0, balance - 1)
 
