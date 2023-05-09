@@ -15,7 +15,9 @@ const MoonBeastsV2 = ({moonBeasts, isLoading, moonBeastMinting = 0, handleRefres
     useEffect(() => {
         init()
         EventBus.$on('buyNFT', () => {
+            console.log('$on buyNFT')
             setCurrentPage(1)
+            init(true)
         })
     })
 
@@ -24,28 +26,29 @@ const MoonBeastsV2 = ({moonBeasts, isLoading, moonBeastMinting = 0, handleRefres
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [moonBeasts, moonBeastMinting])
 
-    const init = () => {
-        if (data.length) {
-            return
-        }
+    const _getData = () => {
+        let from = (currentPage - 1) * pageSize - moonBeastMinting
+        const to = from + pageSize
+        from = from < 0 ? 0 : from
 
-        if (moonBeasts.length <= pageSize) {
-            setData(moonBeasts)
-        } else {
-            setData(moonBeasts.slice(0, pageSize))
+        return moonBeasts.slice(from, to)
+    }
+
+    const init = () => {
+        const _newData = moonBeasts.length <= pageSize ? moonBeasts : _getData()
+        const updated = JSON.stringify(_newData) !== JSON.stringify(data)
+
+        if (updated) {
+            setData(_newData)
         }
     }
 
-    const onChangePage = (page, pageSize) => {
+    const onChangePage = (page) => {
         if (page === currentPage) {
             return
         }
 
-        let from = (page - 1) * pageSize - moonBeastMinting
-        const to = from + pageSize
-        from = from < 0 ? 0 : from
-
-        setData(moonBeasts.slice(from, to))
+        setData(_getData)
         setCurrentPage(page)
 
         setTimeout(() => {

@@ -19,6 +19,7 @@ import {checkApprove, MINT_PASS_ADDRESS, setApprovalForAllData} from "../../serv
 import * as notification from "../../utils/notification";
 import Bluebird from "bluebird";
 import BigNumber from "bignumber.js";
+import EventBus from "../../utils/event-bus";
 
 const BUTTON_TEXT = {
     MINTING: 'Minting',
@@ -171,6 +172,7 @@ const SaleInfo = (props) => {
                         }, () => {
                             props.setMoonBeastMinting(0)
                             props.onRefresh()
+                            EventBus.$dispatch('buyNFT', {})
                             setLoading(false)
                         }).then()
                     }

@@ -272,7 +272,7 @@ export const NFT_SALE_ROUNDS_INFO = {
         time: 1665583200000,
         specialRound: false,
         ...(isDev ? {
-            fromTokenID: 5918,
+            fromTokenID: 6119,
         } : {}),
     },
 }
