@@ -1,9 +1,8 @@
 import React, { useContext, useEffect, useState } from "react"
-import { Progress, Tag } from "antd"
+import { Tag } from "antd"
 import WalletAuthContext from "../../contexts/WalletAuthContext";
 import arrowFatRight from "../../assets/images/icons/ArrowFatRight.svg"
 import moonBeam from "../../assets/images/icons/moonbeam.svg"
-import LoadingOutlined from "../shared/LoadingOutlined";
 
 import Paths from "../../routes/Paths"
 import { Link } from "react-router-dom";
@@ -16,9 +15,9 @@ const currentRoundSale = NFT_SALE_ROUNDS_INFO.R3
 
 const Round3 = () => {
     const { isConnected, showWalletSelectModal } = useContext(WalletAuthContext)
+    // eslint-disable-next-line no-unused-vars
     const [isLoading, setIsLoading] = useState(true)
     const [isSoldOut, setIsSoldOut] = useState(false)
-    const [bought, setBound] = useState(0)
     const maxAmountRound = currentRoundSale.amount
 
     useEffect(() => {
@@ -30,18 +29,9 @@ const Round3 = () => {
 
         const availableSlots = await getAvailableSlots()
 
-        setBound((maxAmountRound - availableSlots) + currentRoundSale.bound)
         setIsSoldOut(availableSlots === 0)
 
         setTimeout(() => {setIsLoading(false)}, 0)
-    }
-
-    const getProgressPercent = (mintedSlots, maxSaleSlots) => {
-        if (maxSaleSlots === 0) {
-            return 0
-        }
-
-        return Math.floor((mintedSlots || 0) / maxSaleSlots * 10000) / 100
     }
 
     // eslint-disable-next-line no-unused-vars
@@ -85,35 +75,6 @@ const Round3 = () => {
         )
     }
 
-    const renderFooter = () => {
-        // if (isLoading) {
-        //     return (
-        //         <div className="flex justify-center mt-5 mb-5">
-        //             <LoadingOutlined />
-        //         </div>
-        //     )
-        // }
-
-        return (
-            <>
-                {/* <div className={'flex flex-col text-[#4ccbc9] mt-5'}>
-                    <div className="flex justify-between items-center">
-                        <Progress
-                            strokeColor={{ from: '#4ccbc9', to: '#e4007b' }}
-                            percent={getProgressPercent(bought, maxAmountRound)}
-                            status="active"
-                            showInfo={false}
-                        />
-                    </div>
-                </div>
-                <div className="flex justify-between mint-sold">
-                    <span>{bought} / {maxAmountRound} SOLD</span>
-                    <span>{getProgressPercent(bought, maxAmountRound)}%</span>
-                </div> */}
-            </>
-        )
-    }
-
     return (
         <div className={`stage${isSoldOut && !currentRoundSale.activeSoldOut ? " sold-out" : ""}`}>
             {
@@ -123,15 +84,17 @@ const Round3 = () => {
                 {dateTitle(currentRoundSale.dateMsg)}
                 <h4 className="mt-5 mb-3">{currentRoundSale.title}</h4>
                 <div className="flex mb-2">
-                    <img className="arrow-right" src={arrowFatRight} alt="" /> QUANTITY: <span className="text-white ml-1">UP TO {maxAmountRound} NFTs</span>
+                    <img className="arrow-right" src={arrowFatRight} alt="" />
+                    QUANTITY:
+                    <span className="text-white ml-1">UP TO {maxAmountRound} NFTs</span>
                 </div>
                 <div className="flex mb-3">
-                    <img className="arrow-right" src={arrowFatRight} alt="" /> PRICE:
-                    <img className="ic-moonbeam" src={moonBeam} alt="" /> <span className="text-[#4ccbc9] mr-1">FROM {currentRoundSale.price}
-                                    </span>
+                    <img className="arrow-right" src={arrowFatRight} alt="" />
+                    PRICE:
+                    <img className="ic-moonbeam" src={moonBeam} alt="" />
+                    <span className="text-[#4ccbc9] mr-1">FROM {currentRoundSale.price}</span>
                 </div>
                 <span className="description">{currentRoundSale.description}</span>
-                {renderFooter()}
             </div>
             {joinButton()}
         </div>

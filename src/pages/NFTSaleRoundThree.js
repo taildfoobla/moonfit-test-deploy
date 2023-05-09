@@ -9,11 +9,15 @@ import WalletAuthRequiredNFTSale from "../components/WalletAuthRequiredNFTSale"
 import NFTStages from "../components/NFTStages"
 import Header from '../components/NFTSaleCurrentRound/Header'
 import MoonBeasts from '../components/NFTSaleCurrentRound/MoonBeastsV2/index'
-
 import {fetchMintPassByAccount} from "../services/smc-mint-pass"
-import {fetchMoonBeastIdsByAccount} from '../services/smc-moon-beast'
-import {getAvailableMintPass, getAvailableSlots} from '../services/smc-ntf-sale-round-34'
-import { NFT_SALE_ROUNDS_INFO } from '../constants/blockchain'
+import {balanceOfAccount} from "../services/smc-moon-beast"
+import {
+    getAvailableMintPass,
+    getAvailableSlots,
+    getMoonBeastByOwner,
+    firstTokenId,
+    lastTokenId,
+} from '../services/smc-ntf-sale-round-34'
 import CurveBGWrapper from '../wrappers/CurveBG'
 import NFTSaleMoonBestInfo from '../components/NFTSaleRoundThree/SaleInfo'
 
@@ -70,9 +74,19 @@ const NFTSaleRoundThree = () => {
         setMoonBeastLoading(true)
 
         try {
-            const _moonBeasts = await fetchMoonBeastIdsByAccount(wallet.account, 150, NFT_SALE_ROUNDS_INFO.R3.fromTokenID)
+            const countMoonBeasts =  await balanceOfAccount(wallet.account)
+            console.log({countMoonBeasts})
 
-            setMoonBeasts(_moonBeasts.map(tokenId => ({tokenId})))
+            if (countMoonBeasts) {
+                const result = await getMoonBeastByOwner(wallet.account, 0, countMoonBeasts - 1)
+                console.log(result)
+                const _moonBeasts = Array.from(result[0])
+                    .map(tokenId => ({tokenId: parseInt(tokenId, 10)}))
+                    .filter(item => item.tokenId >= firstTokenId && item.tokenId <= lastTokenId)
+                _moonBeasts.reverse()
+                console.log({_moonBeasts})
+                setMoonBeasts(_moonBeasts)
+            }
         } catch (e) {
             console.log('fetch MoonBeasts error', e.message)
 

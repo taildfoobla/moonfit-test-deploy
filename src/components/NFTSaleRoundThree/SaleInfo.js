@@ -34,9 +34,13 @@ const SaleInfo = (props) => {
     const [loading, setLoading] = useState(false)
     const [mintPassApprove, setMintPassApprove] = useState(false)
     const [listPack, setListPack] = useState([])
-    const [selectedPack, setSelectedPack] = useState({})
-    const [oldSelectedPack, setOldSelectedPack] = useState({})
     const [buttonText, setButtonText] = useState(BUTTON_TEXT.MINTING)
+    const _oldSelectedPack = {
+        1: {tab: 1, ...(WITH_MINT_PASS_PACK.find(item => item.isRecommend))},
+        2: {tab: 2, ...(WITH_MINT_PASS_PACK.find(item => item.isRecommend))},
+    }
+    const [selectedPack, setSelectedPack] = useState(_oldSelectedPack[1])
+    const [oldSelectedPack, setOldSelectedPack] = useState(_oldSelectedPack)
 
     useEffect(() => {
         setListPack(tab === 1 ? WITH_MINT_PASS_PACK : WITHOUT_MINT_PASS_PACK)
@@ -129,7 +133,6 @@ const SaleInfo = (props) => {
                 txText: `lock ${lockNumber} MintPass`
             }
         }
-
 
         return {
             transaction: {
@@ -327,7 +330,7 @@ const SaleInfo = (props) => {
 
     const renderHead = () => {
         const availableMintPass = props.isLoading || Number.isNaN(props.availableMintPass) ?
-            <span className="dot-flashing"/> : props.availableMintPass
+            <span className="dot-flashing"/> : (props.availableMintPass + props.mintPasses.length)
 
         return (
             <div className='text-center normal-case font-semibold mb-5'>
@@ -359,7 +362,7 @@ const SaleInfo = (props) => {
             <ul className='packs mb-2 p-0'>
                 {
                     listPack.map((item, index) => {
-                        let className = `pack ${selectedPack.value === item.value ? 'active' : ''}`
+                        let className = `pack ${selectedPack.amount === item.amount ? 'active' : ''}`
                         if (item.amount > countMintPass()) {
                             className = `${className} disabled`
                         }

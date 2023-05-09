@@ -262,6 +262,7 @@ export const NFT_SALE_ROUNDS_INFO = {
         amount: 7981,
         bound: 300,
         fromTokenID: 2020,
+        lastTokenId: 10000,
         price: 119,
         mintPass: 1,
         nftPerPass: 1,
@@ -271,7 +272,7 @@ export const NFT_SALE_ROUNDS_INFO = {
         time: 1665583200000,
         specialRound: false,
         ...(isDev ? {
-            fromTokenID: 5773,
+            fromTokenID: 5918,
         } : {}),
     },
 }
