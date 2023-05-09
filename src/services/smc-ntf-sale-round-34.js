@@ -35,6 +35,11 @@ export const lockMintPass = (mintPassIds) => saleContract.methods.lockMintPass(m
 export const unlockMintPass = () => saleContract.methods.unlockMintPass().encodeABI()
 export const unlockMintPass2 = () => saleContract.methods.unlockMintPass2().encodeABI()
 
+export const countMintByOwner = (owner) => saleContract.methods.countMintByOwner(owner).call()
+export const getMintByOwner = (owner, from, to) => saleContract.methods.getMintByOwner(owner, from, to).call()
+
+window.getMintByOwner = getMintByOwner
+
 export const getMintPassLooking = async (owner) => {
     return saleContract.methods.getMintPassLooking(owner).call()
 }
