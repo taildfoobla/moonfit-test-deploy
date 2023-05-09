@@ -37,7 +37,7 @@ const SaleInfo = (props) => {
     const [buttonText, setButtonText] = useState(BUTTON_TEXT.MINTING)
     const _oldSelectedPack = {
         1: {tab: 1, ...(WITH_MINT_PASS_PACK.find(item => item.isRecommend))},
-        2: {tab: 2, ...(WITH_MINT_PASS_PACK.find(item => item.isRecommend))},
+        2: {tab: 2, ...(WITHOUT_MINT_PASS_PACK.find(item => item.isRecommend))},
     }
     const [selectedPack, setSelectedPack] = useState(_oldSelectedPack[1])
     const [oldSelectedPack, setOldSelectedPack] = useState(_oldSelectedPack)
