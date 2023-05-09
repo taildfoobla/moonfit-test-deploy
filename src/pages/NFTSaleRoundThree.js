@@ -11,7 +11,6 @@ import Header from '../components/NFTSaleCurrentRound/Header'
 import MoonBeasts from '../components/NFTSaleCurrentRound/MoonBeastsV2/index'
 
 import {fetchMintPassByAccount} from "../services/smc-mint-pass"
-import {fetchMoonBeastIdsByAccount} from '../services/smc-moon-beast'
 import {
     getAvailableMintPass,
     getAvailableSlots,
@@ -72,18 +71,15 @@ const NFTSaleRoundThree = () => {
 
     const _fetchMoonBeasts = async () => {
         setMoonBeastLoading(true)
-        const countMint =  await countMintByOwner(wallet.account)
-        console.log(countMint)
-
-        if (countMint) {
-            const data = await getMintByOwner(wallet.account, 0, countMint - 1)
-            console.log(data)
-        }
 
         try {
-            const _moonBeasts = await fetchMoonBeastIdsByAccount(wallet.account, 150)
+            const countMint =  await countMintByOwner(wallet.account)
+            console.log({countMint})
 
-            setMoonBeasts(_moonBeasts.map(tokenId => ({tokenId})))
+            if (countMint) {
+                const _moonBeasts = await getMintByOwner(wallet.account, 0, countMint - 1)
+                setMoonBeasts(_moonBeasts)
+            }
         } catch (e) {
             console.log('fetch MoonBeasts error', e.message)
 
