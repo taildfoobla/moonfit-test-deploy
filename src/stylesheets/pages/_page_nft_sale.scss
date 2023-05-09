@@ -1076,6 +1076,18 @@
   }
 }
 
+@media (max-width: 768px) {
+  .purchase-moonbest {
+    .packs {
+      .pack {
+        .left {
+          min-width: auto;
+        }
+      }
+    }
+  }
+}
+
 
 /**
  * ==============================================
