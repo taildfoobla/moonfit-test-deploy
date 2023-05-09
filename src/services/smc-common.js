@@ -11,7 +11,9 @@ const {MOONBEAST_NETWORK, MOONBEAM_SCAN_URL} = configs
 const web3 = new Web3(MOONBEAST_NETWORK)
 
 export const balanceOfAccount = async (contract, account) => {
-    return contract.methods.balanceOf(account).call()
+    const balance = await contract.methods.balanceOf(account).call()
+
+    return parseInt(balance, 10)
 }
 
 export const tokenOfOwnerByIndex = async (contract, account, index) => {
