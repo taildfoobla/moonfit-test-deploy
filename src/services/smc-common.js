@@ -38,10 +38,13 @@ export const fromWeiToEther = (value) => web3.utils.fromWei(getStringOfBigNumber
 
 export const getGasNetwork = () => web3.eth.getGasPrice()
 
-export const buyNFT = async (provider, connector, contract, tx) => {
+export const buyNFT = async (provider, connector, contract, tx, checkBalance = true) => {
     const balance = await web3.eth.getBalance(tx.from)
 
     if (tx.value && new BigNumber(tx.value).gt(new BigNumber(balance))) {
+        console.log(tx)
+        console.log(new BigNumber(tx.value).toNumber())
+        console.log(balance)
         throw new Error ('Insufficient balance.')
     }
 
