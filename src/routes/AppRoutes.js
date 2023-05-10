@@ -44,12 +44,12 @@ export const AppRoutes = [
         env: Paths.PrivateSale.env
     },
     {
-        path: "https://tofunft.com/collection/moonfit-beast-and-beauty/items",
-        title: "Buy MoonBeast",
+        path: "https://whitepaper.moonfit.xyz",
+        title: "Whitepaper",
         external: true,
         env: ['local', 'development', 'production']
     },
-     {
+    {
         path: "https://tofunft.com/collection/moonfit-beast-and-beauty/items",
         title: "Buy MoonBeast",
         external: true,
