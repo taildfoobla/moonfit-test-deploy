@@ -13,11 +13,12 @@ import NFTItem from '../components/DepositNFT/NFTItem'
 import {loginByWallet} from "../utils/api"
 
 import {fetchMintPassByAccount} from '../services/smc-mint-pass'
-import {fetchMoonBeastIdsByAccount} from '../services/smc-moon-beast'
+import {balanceOfAccount} from '../services/smc-moon-beast'
 import CurveBGWrapper from '../wrappers/CurveBG'
 import walletIcon from "../assets/images/icons/Wallet.svg";
 import {depositToMobileApp} from "../components/DepositNFT/_depositToMobileApp";
 import {getMoonBeatInfo} from '../utils/api'
+import {getMoonBeastByOwner} from "../services/smc-ntf-sale-round-34";
 
 const NFTSaleRoundWorldCup = () => {
     const [loading, setLoading] = useState(false)
@@ -87,10 +88,17 @@ const NFTSaleRoundWorldCup = () => {
         console.log(1);
         setIsNFTLoading(true)
         try {
-            const _moonBeasts = await fetchMoonBeastIdsByAccount(wallet.account, 150).then(async tokenIds => {
-                const response = await getMoonBeatInfo(tokenIds)
+            const countMoonBeasts = await balanceOfAccount(wallet.account)
+            console.log({ countMoonBeasts })
 
-                return response.data.moonBeasts.map(item => {
+            if (countMoonBeasts) {
+                const result = await getMoonBeastByOwner(wallet.account, 0, countMoonBeasts - 1)
+
+                const tokenIds = Array.from(result[0])
+                    .map(tokenId => parseInt(tokenId, 10))
+
+                const response = await getMoonBeatInfo(tokenIds)
+                const _moonBeasts = response.data.moonBeasts.map(item => {
                     return {
                         ...item,
                         tokenId: item.token_id,
@@ -98,12 +106,13 @@ const NFTSaleRoundWorldCup = () => {
                         type: 'MoonBeast',
                     }
                 })
-            })
+                console.log(_moonBeasts)
+                setMoonBeasts(_moonBeasts)
+            }
+
             const _mintPass = await fetchMintPassByAccount(wallet.account)
-            console.log(_moonBeasts)
             console.log(_mintPass);
 
-            setMoonBeasts(_moonBeasts)
             setMintPass(_mintPass)
         } catch (e) {
             console.log(e);
