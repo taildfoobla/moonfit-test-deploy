@@ -42,7 +42,7 @@ const getConfigs = () => {
                 R1_NFT_SALE_SC: '0x1Cc5d866BdbD9b3Fd9d22493D29Da3D5cA97b174',
                 R2_NFT_SALE_SC: '0x775282a995ac37410Bbc053a91bc01221a71c50f',
                 WC_NFT_SALE_SC: '0x5c0101b04F2b7dc186356e4cd934855db658eEf4',
-                R34_NFT_SALE_SC: '0x512DA0D71e72c0A9B1Ec8EE5E38Fe8069036C819',
+                R34_NFT_SALE_SC: '0x5420A2958e9E1a702e326bb113787D1204b56Dc2',
             }
         case 'development':
         default:
