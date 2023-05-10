@@ -15,7 +15,7 @@ export const AppRoutes = [
     },
     {
         path: Paths.NFTSaleRoundThree.path,
-        title: "NFT Sale",
+        title: "Mint NFT",
         external: false,
         env: Paths.NFTSaleRoundThree.env,
         actives: [
@@ -24,7 +24,7 @@ export const AppRoutes = [
     },
     {
         path: Paths.Deposit.path,
-        title: "Deposit Into App",
+        title: "Deposit Assets",
         external: false,
         env: Paths.Deposit.env,
         actives: [
@@ -49,12 +49,24 @@ export const AppRoutes = [
         external: true,
         env: ['local', 'development', 'production']
     },
-    {
-        path: "https://moonfit.xyz/litepaper",
-        title: "Litepaper",
+     {
+        path: "https://tofunft.com/collection/moonfit-beast-and-beauty/items",
+        title: "Buy MoonBeast",
         external: true,
         env: ['local', 'development', 'production']
     },
+     {
+        path: "https://tofunft.com/collection/moonfit-mint-pass/items",
+        title: "Buy MintPass",
+        external: true,
+        env: ['local', 'development', 'production']
+    },
+    // {
+    //     path: "https://moonfit.xyz/litepaper",
+    //     title: "Litepaper",
+    //     external: true,
+    //     env: ['local', 'development', 'production']
+    // },
 ]
 
 export const HomeActions = [
