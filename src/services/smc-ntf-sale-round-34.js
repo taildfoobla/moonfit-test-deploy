@@ -38,7 +38,10 @@ export const unlockMintPass2 = () => saleContract.methods.unlockMintPass2().enco
 
 export const countMintByOwner = (owner) => saleContract.methods.countMintByOwner(owner).call().then(value => parseInt(value, 10))
 export const getMintByOwner = (owner, from, to) => saleContract.methods.getMintByOwner(owner, from, to).call()
-export const getMoonBeastByOwner = (owner, from, to) => saleContract.methods.getMoonBeastByOwner(owner, from, to).call()
+export const getMoonBeastByOwner = (owner, from, to) => {
+    console.log({owner, from, to})
+    return saleContract.methods.getMoonBeastByOwner(owner, from, to).call()
+}
 
 export const getMintPassLooking = async (owner) => {
     return saleContract.methods.getMintPassLooking(owner).call()

@@ -90,7 +90,7 @@ const NFTSaleRoundThree = () => {
         } catch (e) {
             console.log('fetch MoonBeasts error', e.message)
 
-            await Bluebird.delay(3000)
+            await Bluebird.delay(5000)
             return _fetchMoonBeasts()
         }
 

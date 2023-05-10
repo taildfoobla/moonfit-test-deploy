@@ -19,6 +19,7 @@ import {checkApprove, MINT_PASS_ADDRESS, setApprovalForAllData} from "../../serv
 import * as notification from "../../utils/notification";
 import Bluebird from "bluebird";
 import BigNumber from "bignumber.js";
+import EventBus from "../../utils/event-bus";
 
 const BUTTON_TEXT = {
     MINTING: 'Minting',
@@ -37,7 +38,7 @@ const SaleInfo = (props) => {
     const [buttonText, setButtonText] = useState(BUTTON_TEXT.MINTING)
     const _oldSelectedPack = {
         1: {tab: 1, ...(WITH_MINT_PASS_PACK.find(item => item.isRecommend))},
-        2: {tab: 2, ...(WITH_MINT_PASS_PACK.find(item => item.isRecommend))},
+        2: {tab: 2, ...(WITHOUT_MINT_PASS_PACK.find(item => item.isRecommend))},
     }
     const [selectedPack, setSelectedPack] = useState(_oldSelectedPack[1])
     const [oldSelectedPack, setOldSelectedPack] = useState(_oldSelectedPack)
@@ -126,7 +127,6 @@ const SaleInfo = (props) => {
             return {
                 transaction: {
                     ...tx,
-                    value: selectedPack.price.toString(),
                     data: lockMintPass(tokenIds)
                 },
                 text: BUTTON_TEXT.LOCKING,
@@ -171,6 +171,7 @@ const SaleInfo = (props) => {
                         }, () => {
                             props.setMoonBeastMinting(0)
                             props.onRefresh()
+                            EventBus.$dispatch('buyNFT', {})
                             setLoading(false)
                         }).then()
                     }

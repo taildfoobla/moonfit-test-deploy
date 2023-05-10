@@ -25,7 +25,7 @@ export const WITH_MINT_PASS_PACK = [
         type: 'pack3',
         amount: 3,
         value: 405,
-        discount: 10,
+        discount: 15,
         label: 'Pack 3',
         isRecommend: true,
         tooltip: '3 NFTs is equivalent to 3km target - recommend for 3K Runner'
@@ -34,14 +34,14 @@ export const WITH_MINT_PASS_PACK = [
         type: 'pack5',
         amount: 5,
         value: 635,
-        discount: 15,
+        discount: 20,
         label: 'Pack 5',
         tooltip: '5 NFTs is equivalent to 5km target - recommend for 5K Runner'
     }, {
         type: 'pack13',
         amount: 13,
-        value: 1347,
-        discount: 20,
+        value: 1547,
+        discount: 25,
         label: 'Pack 13',
         tooltip: '13 NFTs is equivalent to 10km target - recommend for 10K Runner'
     }
@@ -59,7 +59,7 @@ export const WITHOUT_MINT_PASS_PACK = [
         type: 'pack3',
         amount: 3,
         value: 525,
-        discount: 10,
+        discount: 12,
         label: 'Pack 3',
         isRecommend: true,
         tooltip: '3 NFTs is equivalent to 3km target - recommend for 3K Runner'
@@ -68,7 +68,7 @@ export const WITHOUT_MINT_PASS_PACK = [
         type: 'pack5',
         amount: 5,
         value: 835,
-        discount: 15,
+        discount: 16,
         label: 'Pack 5',
         tooltip: '5 NFTs is equivalent to 5km target - recommend for 5K Runner'
     }, {
