@@ -127,7 +127,6 @@ const SaleInfo = (props) => {
             return {
                 transaction: {
                     ...tx,
-                    value: selectedPack.price.toString(),
                     data: lockMintPass(tokenIds)
                 },
                 text: BUTTON_TEXT.LOCKING,
