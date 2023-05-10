@@ -165,8 +165,10 @@ blockquote {
 .leading-refresh {
 	line-height: 24.41px;
 	svg {
+		display: inline;
 		width: 18px;
 		height: 21.66px;
+		margin-right: 6px;
 	}
 }
 

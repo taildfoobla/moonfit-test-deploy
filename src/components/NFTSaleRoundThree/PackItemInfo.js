@@ -2,7 +2,7 @@ import React from 'react'
 import BigNumber from 'bignumber.js'
 import { Tooltip } from "antd";
 import QuestionIcon from "../../assets/images/icons/question.svg";
-import Moonbeam from "../../assets/images/icons/moonbeam.svg";
+import Moonbeam from "../../assets/images/icons/moonbeam2.svg";
 import Pack1 from "../../assets/images/icons/pack-1.svg";
 import Pack3 from "../../assets/images/icons/pack-3.svg";
 import Pack5 from "../../assets/images/icons/pack-5.svg";
@@ -68,7 +68,7 @@ const PackItemInfo = ({ item = {}, ...rootDOMAttributes }) => {
                 </div>
                 <div className='right flex items-center'>
                     <img src={Moonbeam} alt="GLMR" />
-                    <span className={`font-bold text-[20px] text-[#4CCBC9] num-with-${item.value.toString().length}`}>
+                    <span className={`font-bold text-[24px] text-[#4CCBC9] num-with-${item.value.toString().length}`}>
                         {numberFormat(item.value)}
                     </span>
                 </div>
