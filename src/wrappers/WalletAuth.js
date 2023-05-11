@@ -3,7 +3,7 @@ import WalletAuthContext from "../contexts/WalletAuthContext"
 import { switchNetwork } from "../utils/blockchain"
 import Web3 from "web3"
 import { getLocalStorage, LOCALSTORAGE_KEY, removeLocalStorage, setLocalStorage } from "../utils/storage"
-import { EVM_WALLETS, PROVIDER_NAME, SUPPORTED_NETWORKS, WEB3_METHODS, getPersonalSignMessage } from "../constants/blockchain"
+import { EVM_WALLETS, PROVIDER_NAME, SUPPORTED_NETWORKS, WALLET_CONNECT, WEB3_METHODS, getPersonalSignMessage } from "../constants/blockchain"
 import { Modal } from "antd"
 import CloseIcon from "../components/shared/CloseIcon"
 import { useLocalStorage } from "../hooks/useLocalStorage"
@@ -403,8 +403,8 @@ const WalletAuthWrapper = ({ children }) => {
                 footer={false}
             >
                 <div className={'evm-wallet'}>
-                    {/* {
-                        isMobileOrTablet() && !isMetaMaskBrowser && (
+                    {
+                        // isMobileOrTablet() && !isMetaMaskBrowser && (
                             <div>
                                 <div className={'evm-wallet-item'}
                                     onClick={onWCConnect}>
@@ -414,8 +414,8 @@ const WalletAuthWrapper = ({ children }) => {
                                     <div className="wallet-title">{WALLET_CONNECT.title}</div>
                                 </div>
                             </div>
-                        )
-                    } */}
+                        // )
+                    }
                     {
                         EVM_WALLETS.map((wallet, index) => {
                             const isInstalled = window[wallet.extensionName] && window[wallet.extensionName][wallet.isSetGlobalString]
