@@ -52,6 +52,7 @@ export const buyNFTData = (mintPassTokenIds, mintAmount) => {
 }
 
 export const getMintPass = async (wallet, sort = true) => {
+    console.log(wallet);
     const data = await saleContract.methods.getMintPass(wallet).call()
 
     const mintPass = data.map(item => {

@@ -231,10 +231,10 @@ export const NFT_SALE_ROUNDS_INFO = {
         headerTitle: 'World cup 2022',
         title: 'SPECIAL EDITION',
         timelineTitle: 'World cup Sale',
-        isSoldOut: false,
-        activeSoldOut: true,
+        isSoldOut: true,
+        activeSoldOut: false,
         NFT_SALE_SC: configs.WC_NFT_SALE_SC,
-        amount: 1000,
+        amount: 19,
         fromTokenID: 2001,
         price: 399,
         mintPass: 0,
@@ -258,49 +258,27 @@ export const NFT_SALE_ROUNDS_INFO = {
         timelineTitle: 'Whitelist Sale #3',
         isSoldOut: false,
         activeSoldOut: true,
-        NFT_SALE_SC: configs.R3_NFT_SALE_SC,
-        amount: 2000,
-        fromTokenID: 2001,
-        price: 159,
+        NFT_SALE_SC: configs.R34_NFT_SALE_SC,
+        amount: 7981,
+        bound: 300,
+        fromTokenID: 2020,
+        lastTokenId: 10000,
+        price: 119,
         mintPass: 1,
-        nftPerPass: 2,
-        description: 'Buy max 2 MoonBeasts per MintPass',
-        dateMsg: '12th October',
+        nftPerPass: 1,
+        description: 'Buy max 1 Moonbeast with discounted price per Mintpass',
+        dateMsg: '01st April',
         eventUpdateSaleAmountName: 'R3UpdateSaleAmount',
-        time: 1665583200000, // Date and time (GMT): Wednesday, October 12, 2022 2:00:00 PM
+        time: 1665583200000,
+        specialRound: false,
         ...(isDev ? {
-            time: Date.now(),
-            price: 0.00159,
+            fromTokenID: 6119,
         } : {}),
-        specialRound: false
     },
-    R4: {
-        index: 5,
-        number: 4,
-        title: 'Public Sale',
-        timelineTitle: 'Public Sale',
-        isSoldOut: false,
-        activeSoldOut: true,
-        NFT_SALE_SC: configs.R4_NFT_SALE_SC,
-        amount: 5000,
-        fromTokenID: 50001,
-        price: 219,
-        mintPass: 0,
-        nftPerPass: null,
-        description: 'No MintPass required',
-        dateMsg: '12th October',
-        eventUpdateSaleAmountName: 'R4UpdateSaleAmount',
-        time: 1665583200000, // Date and time (GMT): Wednesday, October 12, 2022 2:00:00 PM
-        ...(isDev ? {
-            time: Date.now(),
-            price: 0.00219,
-        } : {}),
-        specialRound: false
-    }
 }
 
 export const NFT_SALE_CURRENT_INFO = {
-    ...NFT_SALE_ROUNDS_INFO.WC,
+    ...NFT_SALE_ROUNDS_INFO.R3,
 }
 
 export const SUPPORTED_NETWORKS = [

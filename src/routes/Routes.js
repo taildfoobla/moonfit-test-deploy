@@ -6,7 +6,7 @@ import MintPassMinting from "../pages/MintPassMinting"
 // import NFTSale from "../pages/NFTSaleCurrentRound"
 import NFTSaleStages from "../pages/NFTSaleStages"
 import Deposit from "../pages/Deposit"
-// import NFTSaleRoundThree from "../pages/NFTSaleRoundThree"
+import NFTSaleRoundThree from "../pages/NFTSaleRoundThree"
 // import NFTSaleRoundFour from "../pages/NFTSaleRoundFour"
 import NFTSaleRoundWorldCup from "../pages/NFTSaleRoundWorldCup"
 import Home from "../pages/Home"
@@ -21,11 +21,11 @@ const routes = [
                 exact: true,
                 component: Home
             },
-            // {
-            //     path: Paths.NFTSaleRoundThree.path,
-            //     exact: true,
-            //     component: NFTSaleRoundThree
-            // },
+            {
+                path: Paths.NFTSaleRoundThree.path,
+                exact: true,
+                component: NFTSaleRoundThree
+            },
             // {
             //     path: Paths.NFTPublicSale.path,
             //     exact: true,

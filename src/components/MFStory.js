@@ -72,10 +72,10 @@ const MFStory = () => {
                             <img src={videoPreview} alt="preview" />
                         </div>
                         <div className="flex justify-center list-store">
-                            <a href="https://play.google.com/store/apps/details?id=xyz.moonfit.app&hl=en&gl=US" target="_blank">
-                                <img src={chPlay} alt="Chplay" />
+                            <a rel="noreferrer" href="https://play.google.com/apps/testing/xyz.moonfit.app" target="_blank">
+                                <img src={chPlay} alt="GooglePlay" />
                             </a>
-                            <a rel={'noreferrer'} href="https://testflight.apple.com/join/lfXF5Lbd" target="_blank">
+                            <a  rel="noreferrer" href="https://testflight.apple.com/join/lfXF5Lbd" target="_blank">
                                 <img src={appStore} alt="AppStore" />
                             </a>
                         </div>

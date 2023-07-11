@@ -6,12 +6,14 @@ import {sendTransaction} from "../utils/blockchain";
 import {chunk} from "../utils/array";
 import MoonBeast from "../utils/MoonBeast";
 import BigNumber from "bignumber.js"
-const {MOONBEAST_NETWORK} = configs
+const {MOONBEAST_NETWORK, MOONBEAM_SCAN_URL} = configs
 
 const web3 = new Web3(MOONBEAST_NETWORK)
 
 export const balanceOfAccount = async (contract, account) => {
-    return contract.methods.balanceOf(account).call()
+    const balance = await contract.methods.balanceOf(account).call()
+
+    return parseInt(balance, 10)
 }
 
 export const tokenOfOwnerByIndex = async (contract, account, index) => {
@@ -36,10 +38,13 @@ export const fromWeiToEther = (value) => web3.utils.fromWei(getStringOfBigNumber
 
 export const getGasNetwork = () => web3.eth.getGasPrice()
 
-export const buyNFT = async (provider, connector, contract, tx) => {
+export const buyNFT = async (provider, connector, contract, tx, checkBalance = true) => {
     const balance = await web3.eth.getBalance(tx.from)
 
-    if (new BigNumber(tx.value).gt(new BigNumber(balance))) {
+    if (tx.value && new BigNumber(tx.value).gt(new BigNumber(balance))) {
+        console.log(tx)
+        console.log(new BigNumber(tx.value).toNumber())
+        console.log(balance)
         throw new Error ('Insufficient balance.')
     }
 
@@ -49,26 +54,24 @@ export const buyNFT = async (provider, connector, contract, tx) => {
 
     const _gasLimit = await web3.eth.estimateGas(tx).catch(e => {
         e.funcName = 'estimateGas'
+        console.log(tx)
 
         throw e
     })
 
-    // const walletEx = EVM_WALLETS.find(item => item.extensionName === walletExtKey)
     let gasLimit = _gasLimit
-    // gasLimit = gasLimit < 20999 ? 20999 : gasLimit
-    // gasLimit = gasLimit > 7920027 ? 7920027 : gasLimit
 
     console.log({_gasLimit, gasLimit, x: typeof _gasLimit})
 
     tx.gas = web3.utils.numberToHex(gasLimit).toString()
 
     console.log(tx)
-    console.log('GLMR', web3.utils.fromWei(getStringOfBigNumber(tx.value), 'ether'))
+    console.log('GLMR', web3.utils.fromWei(getStringOfBigNumber(tx.value || '0'), 'ether'))
     console.log('GAS', web3.utils.hexToNumber(gasLimit))
 
     const txHash = await sendTransaction(provider, connector, tx)
 
-    console.log('transaction hash:', 'txHash')
+    console.log('transaction hash:', `${MOONBEAM_SCAN_URL}/tx/${txHash}`)
 
     return txHash
 }

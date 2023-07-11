@@ -31,10 +31,9 @@
           padding-top: 10px;
         }
 
-
         .marker {
-          background: #E4007B;
-          box-shadow: 0px 0px 14px #E4007B;
+          background: #e4007b;
+          box-shadow: 0px 0px 14px #e4007b;
 
           //&:after {
           //  background: radial-gradient(50% 50% at 50% 50%, rgba(161, 107, 216, 0) 0%, rgba(161, 107, 216, 0.261) 100%);
@@ -73,7 +72,7 @@
       &.is-out-of-slot {
         cursor: not-allowed;
 
-        >div {
+        > div {
           opacity: 0.4;
         }
       }
@@ -88,7 +87,7 @@
       color: white;
       z-index: 2;
       margin: 4px;
-      background-color: #5D5FEF;
+      background-color: #5d5fef;
       text-transform: uppercase;
       padding: 2px 9px;
       font-size: 16px;
@@ -136,12 +135,11 @@
       width: 100%;
       margin-top: 10px;
       background: rgb(161 107 216 / 15%);
-      ;
       border-radius: 5px;
       padding: 10px 0 5px;
 
       &:after {
-        content: '';
+        content: "";
         clear: both;
       }
     }
@@ -159,7 +157,7 @@
       text-align: center;
 
       &:after {
-        content: '';
+        content: "";
         position: absolute;
         border-right: 1px solid rgb(144 130 157 / 20%);
         height: 75%;
@@ -169,6 +167,7 @@
       &:last-child:after {
         border-right: none;
       }
+
       // .attribute-value {
       //   font-size: 14px;
       // }
@@ -194,13 +193,12 @@
       padding: 1px 10px 5px 10px;
       text-transform: none;
 
-      background: #EFAA5D;
+      background: #efaa5d;
 
       &.uncommon {
-        background: #48C8F0;
+        background: #48c8f0;
       }
     }
-
 
     .nft-gender {
       min-width: 100px;
@@ -226,7 +224,7 @@
 .page-nft-sale {
   .ant-pagination {
     margin-top: 30px;
-    color: #A8ADC3;
+    color: #a8adc3;
     display: flex;
     justify-content: center;
     align-items: flex-end;
@@ -235,7 +233,7 @@
 
   .ant-pagination-disabled,
   .ant-pagination-disabled:hover {
-    opacity: 0.4
+    opacity: 0.4;
   }
 
   .ant-pagination-item-link-icon {
@@ -250,7 +248,7 @@
   .ant-pagination-prev,
   .ant-pagination-next,
   .ant-pagination-item-ellipsis {
-    color: #A8ADC3 !important;
+    color: #a8adc3 !important;
   }
 
   .ant-pagination-item {
@@ -258,13 +256,13 @@
     background-color: transparent;
 
     a {
-      color: #A8ADC3;
+      color: #a8adc3;
       font-weight: 700;
     }
   }
 
   .ant-pagination-item-active {
-    background-color: #4CCBC9;
+    background-color: #4ccbc9;
     border-radius: 50%;
 
     a {
@@ -310,7 +308,6 @@
   }
 }
 
-
 .mp-verify {
   &__title {
     svg {
@@ -327,17 +324,17 @@
     line-height: 22px;
     margin-bottom: 13px;
     text-transform: uppercase;
-    color: #A8ADC3;
+    color: #a8adc3;
   }
 
   &__body {
-    background: #2A1143;
+    background: #2a1143;
     border-radius: 7px;
     padding: 14px 22px;
   }
 
   &__info {
-    color: #90829D;
+    color: #90829d;
     text-transform: none;
     font-weight: 500;
     font-size: 16px;
@@ -347,8 +344,8 @@
   }
 
   &__input {
-    background-color: #1C0532 !important;
-    color: #A8ADC3 !important;
+    background-color: #1c0532 !important;
+    color: #a8adc3 !important;
     border: none !important;
     outline: none !important;
     border-radius: 10px 0 0 10px !important;
@@ -369,7 +366,7 @@
     font-weight: 800;
     font-size: 18px;
     color: white !important;
-    background-color: #E4007B !important;
+    background-color: #e4007b !important;
     border: none !important;
     outline: none !important;
     border-radius: 5px !important;
@@ -385,7 +382,7 @@
     }
 
     &:hover {
-      transform: none
+      transform: none;
     }
   }
 
@@ -395,7 +392,7 @@
     font-weight: 600;
     font-size: 18px;
     line-height: 28px;
-    color: #EFAA5D;
+    color: #efaa5d;
 
     svg {
       display: inline-block;
@@ -404,19 +401,18 @@
     }
 
     &.warning {
-      color: #EFAA5D;
+      color: #efaa5d;
     }
 
     &.success {
-      color: #A5D990;
+      color: #a5d990;
     }
 
     &.error {
-      color: #EF2763;
+      color: #ef2763;
     }
   }
 }
-
 
 @media screen and (max-width: 1600px) {
   .page-nft-sale {
@@ -439,7 +435,6 @@
       padding-right: 5px;
     }
   }
-
 
   .worldcup-card-inner {
     .form-mint {
@@ -472,15 +467,18 @@
         font-size: 18px;
         cursor: pointer;
       }
+
       .team-select-detail {
         span {
           font-size: 18px;
         }
+
         img {
           max-width: 300px;
           cursor: pointer;
         }
       }
+
       @media (max-width: 600px) {
         .team-select-detail {
           span {
@@ -494,14 +492,13 @@
 
 .form-mint {
   &__fee {
-
     &-label {
       display: block;
       font-weight: 600;
       font-size: 16px;
       line-height: 22px;
       text-transform: uppercase;
-      color: #A8ADC3;
+      color: #a8adc3;
     }
   }
 
@@ -513,7 +510,7 @@
     width: 115px;
     height: 50px;
     user-select: none;
-    background: #1C0532;
+    background: #1c0532;
     border-radius: 5px;
   }
 
@@ -594,10 +591,9 @@
       font-size: 22px;
       line-height: 32px;
       font-weight: 500;
-      margin-bottom: 0.5rem
+      margin-bottom: 0.5rem;
     }
   }
-
 
   .list-store {
     img {
@@ -618,7 +614,6 @@
 
 @media (max-width: 768px) {
   .story-section {
-
     .moonfit-description,
     .youtube-video {
       height: 90%;
@@ -692,7 +687,7 @@
           margin: -2px;
           border-radius: inherit;
           background-color: #020722;
-          background-image: linear-gradient(to right bottom, #4cbfcb, #E4007B);
+          background-image: linear-gradient(to right bottom, #4cbfcb, #e4007b);
           opacity: 0.7;
         }
       }
@@ -702,12 +697,11 @@
         box-shadow: 0 4px 50px rgb(161 7 216 / 50%);
 
         .block-game-feature-title {
-          color: #4CCBC9;
+          color: #4ccbc9;
         }
       }
     }
   }
-
 }
 
 .section-web3-nft {
@@ -739,8 +733,20 @@
 
   .block-heading-frame {
     position: absolute;
-    background: linear-gradient(45deg, #4ccbc9, rgba(43, 54, 28, 0) 70%, rgba(43, 54, 28, 0) 82%, #4ccbc9);
-    background: -webkit-linear-gradient(135deg, #4ccbc9, rgba(43, 54, 28, 0) 70%, rgba(43, 54, 28, 0) 82%, #4ccbc9);
+    background: linear-gradient(
+      45deg,
+      #4ccbc9,
+      rgba(43, 54, 28, 0) 70%,
+      rgba(43, 54, 28, 0) 82%,
+      #4ccbc9
+    );
+    background: -webkit-linear-gradient(
+      135deg,
+      #4ccbc9,
+      rgba(43, 54, 28, 0) 70%,
+      rgba(43, 54, 28, 0) 82%,
+      #4ccbc9
+    );
     box-shadow: 0 4px 10px rgb(37 240 235 / 40%);
     padding: 27px 22px 20px;
     text-align: left;
@@ -763,7 +769,7 @@
       z-index: 2;
 
       .title {
-        color: #4CCBC9;
+        color: #4ccbc9;
         font-size: 16px;
         font-weight: 400;
       }
@@ -805,7 +811,7 @@
       width: 100%;
       margin: 0 0 30px;
 
-      >svg {
+      > svg {
         display: none;
       }
     }
@@ -916,4 +922,291 @@
   line-height: 32px;
   font-weight: 600;
   text-transform: initial;
+}
+
+.purchase-moonbest {
+  .card-body-separator {
+    margin: 30px 0 20px !important;
+  }
+  .tabs {
+    margin: auto;
+    padding: 5px;
+    border-radius: 10px;
+    border: 2px solid #351c4f;
+
+    .tab {
+      text-align: center;
+      color: #a8adc3;
+      font-size: 14px;
+      font-weight: 500;
+      line-height: 21px;
+      padding: 5px 15px;
+      cursor: pointer;
+      font-family: "Poppins", sans-serif;
+
+      &.active {
+        color: #4ccbc9;
+        border-radius: 7px;
+        background-color: #351c4f;
+        box-shadow: 0px 10px 74px rgba(0, 0, 0, 0.49);
+        transition: 0.3s linear ease-in-out;
+      }
+
+      &:hover {
+        opacity: 0.8;
+      }
+    }
+  }
+
+  .packs {
+    .pack {
+      position: relative;
+      border-radius: 10px;
+      background: #351c4f;
+      cursor: pointer;
+      padding: 16px 15px 16px 10px;
+      border: 0px solid transparent;
+      position: relative;
+      background-clip: padding-box !important;
+
+      .left {
+        min-width: 200px;
+      }
+
+      .right {
+        img {
+          width: 24px;
+          height: 24px;
+          margin-top: 5px;
+          margin-right: 5px;
+        }
+        span {
+          line-height: 27px;
+        }
+      }
+
+      .sub-label {
+        color: #a8adc3;
+        font-weight: 600;
+        line-height: 18px;
+      }
+
+      .badge-recommend {
+        position: absolute;
+        top: 4px;
+        right: -12px;
+        background-color: #e4007b;
+        padding: 3px 14px;
+        border-radius: 3px;
+        display: flex;
+        align-items: center;
+      }
+
+      &.active {
+        padding: 3px;
+        background-image: linear-gradient(to right bottom, #4cbfcb, #e4007b);
+        box-shadow: 0 4px 50px rgb(161 107 216 / 50%);
+        .badge-recommend {
+          top: 6px;
+        }
+        .pack-border {
+          content: "";
+          width: 100%;
+          background-size: cover !important;
+          background: url(./../../assets/images/active-pack-bg.png) no-repeat  center;
+          padding: 24px 12px 24px 8px;
+          background-color: #250e3a;
+          border-radius: 8px;
+          &:before {
+            width: 100%;
+            height: 100%;
+          }
+        }
+
+        .race-sport-font {
+          color: #4ccbc9;
+        }
+
+        .sub-label {
+          color: #fff;
+        }
+      }
+      // &:hover {
+      //   opacity: 0.8;
+      // }
+    }
+
+    .num-with-3 {
+      display: inline-block;
+      min-width: 35px;
+      text-align: right;
+    }
+
+    .num-with-4 {
+      display: inline-block;
+      min-width: 50px;
+      text-align: right;
+    }
+  }
+
+  .unlock-mintpass {
+   .left {
+    .fee-info {
+      font-weight: 600;
+      line-height: 21.7px;
+    }
+    .fee-amount {
+      font-weight: 400;
+      line-height: 26px;
+    }
+   }
+   .right {
+    .button {
+      padding-top: 8px;
+      padding-bottom: 8px;
+      font-weight: 800;
+      line-height: 24.41px;
+      font-size: 18px;
+    }
+   }  
+  }
+
+  .dot-flashing {
+    display: inline-block;
+    margin: 0 18px;
+  }
+}
+
+@media (max-width: 768px) {
+  .purchase-moonbest {
+    .packs {
+      .pack {
+        .left {
+          min-width: auto;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 414px) {
+  .purchase-moonbest {
+    .packs {
+      .pack {
+        .left {
+          .pack-icon {
+            width: 36px;
+          }
+          .pack-label {
+            p {
+              font-size: 11px;
+            }
+          }
+        }
+        .right {
+          img {
+            width: 20px;
+          }
+          span {
+            font-size: 18px;
+          }
+        }
+        .badge-recommend {
+          padding: 0 8px;
+        }
+      }
+    }
+    .unlock-mintpass {
+      .left {
+        .fee-amount {
+          font-size: 16px;
+        }
+      }
+      .right {
+        .button {
+          padding: 0;
+          font-size: 14px;
+          line-height: 16px;
+          min-width: 120px;
+        }
+      }
+    }
+  }
+}
+
+
+/**
+ * ==============================================
+ * Dot Flashing
+ * ==============================================
+ */
+.dot-flashing {
+  position: relative;
+  width: 10px;
+  height: 10px;
+  border-radius: 5px;
+  background-color: #ffffff;
+  color: #ffffff;
+  animation: dot-flashing 1s infinite linear alternate;
+  animation-delay: 0.5s;
+}
+.dot-flashing::before, .dot-flashing::after {
+  content: "";
+  display: inline-block;
+  position: absolute;
+  top: 0;
+}
+.dot-flashing::before {
+  left: -15px;
+  width: 10px;
+  height: 10px;
+  border-radius: 5px;
+  background-color: #ffffff;
+  color: #ffffff;
+  animation: dot-flashing 1s infinite alternate;
+  animation-delay: 0s;
+}
+.dot-flashing::after {
+  left: 15px;
+  width: 10px;
+  height: 10px;
+  border-radius: 5px;
+  background-color: #ffffff;
+  color: #ffffff;
+  animation: dot-flashing 1s infinite alternate;
+  animation-delay: 1s;
+}
+
+@keyframes dot-flashing {
+  0% {
+    background-color: #ffffff;
+  }
+  50%, 100% {
+    background-color: rgba(152, 128, 255, 0.2);
+  }
+}
+
+.ant-tooltip-inner {
+  color: #fff;
+  background-color: #a16bd8;
+  text-align: center;
+  text-transform: none;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 18px;
+  width: 90%;
+}
+
+.ant-tooltip-arrow .ant-tooltip-arrow-content {
+  border-color: #a16bd8;
+  background-color: #a16bd8;
+  --antd-arrow-background-color: none;
+}
+
+.minted-nft {
+  .left, .right {
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 21.7px;
+  }
 }

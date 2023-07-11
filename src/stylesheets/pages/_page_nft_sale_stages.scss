@@ -5,7 +5,7 @@
     position: relative;
     background-clip: padding-box;
     border: solid 2px transparent;
-    min-width: 260px;
+    width: 290px;
     min-height: 350px;
 
     &:before {
@@ -56,6 +56,10 @@
     }
     h1 {
         margin: 0 0 -10px 0;
+        color: #E4007B;
+    }
+    h2 {
+        font-size: 24px;
         color: #E4007B;
     }
     h3 {

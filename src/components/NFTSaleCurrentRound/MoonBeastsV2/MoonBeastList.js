@@ -3,7 +3,7 @@ import { range } from "../../../utils/array"
 import MoonBeastItem from './MoonBeastItem';
 import MoonBeastItemMinting from './MoonBeastItemMinting';
 
-const MoonBeasts = ({ moonBeasts, moonBeastMinting = 0, isExpired = false }) => {
+const MoonBeasts = ({ moonBeasts, moonBeastMinting = 0, isExpired = false, isLoading = true }) => {
     const _renderMinting = () => {
         if (!moonBeastMinting) {
             return null
@@ -14,14 +14,12 @@ const MoonBeasts = ({ moonBeasts, moonBeastMinting = 0, isExpired = false }) => 
 
     if (moonBeasts.length === 0 && !moonBeastMinting) {
         return (
-            <div className={'mt-8 mb-3'}>
-                {/* <div className={'text-center text-white normal-case'}>You don't own any beast/beauty yet.</div> */}
-                {/* <div className={'text-center text-white normal-case'}>
-                    If you have a pass, please click "MINT NFT" button to mint one.
-                </div> */}
-                {/* <div className={'text-center text-white normal-case font-normal'}>Please pick a team and enter the amount of Beast & Beauty</div> */}
-                <div className={'text-center text-white normal-case font-normal'}>
-                    {isExpired ? `No NFTs found!` : `Please pick a team and enter the amount of Beast you want to mint, then click the "MINT NFT" button`}
+            <div className={'mt-5 mb-3'}>
+                <div className={'text-center text-white normal-case font-semibold text-[18px] leading-normal'}>
+                    { isLoading ? '' : <>
+                        <p className="mb-0">Please lock your Mint Pass to secure your purchase first,</p>
+                        <p>then click "MINT NFT" button to mint your NFT.</p>
+                    </> }
                 </div>
             </div>
         )
