@@ -2,7 +2,8 @@ import BigNumber from 'bignumber.js'
 import {getReactEnv} from "../utils/env"
 
 const getConfigs = () => {
-    const env = getReactEnv('ENV')
+    // const env = getReactEnv('ENV')
+    const env = 'development'
     const config = {
         API_URL: 'https://api-dev.moonfit.xyz/v1',
         APP_URI: window.location.host,
