@@ -34,6 +34,7 @@ import { ReactComponent as RunningIcon } from "../assets/images/running-icon.svg
 import { ReactComponent as GiftIcon } from "../assets/images/gift-icon.svg";
 import { ReactComponent as SpeedometerIcon } from "../assets/images/speedometer-icon.svg";
 import { ReactComponent as BackIcon } from "../assets/images/ArrowCircleLeft.svg";
+import {loadAccess} from '../services/loadAccess'
 
 const NFTSaleRoundWorldCup = () => {
     const [loading, setLoading] = useState(false)
@@ -42,10 +43,12 @@ const NFTSaleRoundWorldCup = () => {
     const [isNFTLoading, setIsNFTLoading] = useState(false)
     const [moonBeasts, setMoonBeasts] = useState([])
     const [mintPass, setMintPass] = useState([])
+    const [nftData, setNftData] = useState([])
     const [user, setUser] = useState({})
     const [isLogin, setIsLogin] = useState(true)
     const [loginMessage, setLoginMessage] = useState('')
     const [glmrValue, setGlmrValue] = useState(0)
+    const [tokens, setTokens] = useState([])
     const [isDeposited, setIsDeposited] = useState(false)
     const [isChooseAcc, setIsChooseAcc] = useState(false)
     const [listAccount, setListAccount] = useState([])
@@ -69,7 +72,7 @@ const NFTSaleRoundWorldCup = () => {
         fetchData().then()
         notification.destroy()
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [wallet.account])
+    }, [wallet.account, user.id])
 
     useEffect(() => {
         if (isSignature && signatureData && Object.keys(signatureData).length) {
@@ -91,8 +94,8 @@ const NFTSaleRoundWorldCup = () => {
                 // console.log('users: ', users)
                 if(users.length === 1){
                     setUser(users[0])
-                    _fetchMoonFitNT().then()
-                }else{
+                    // _fetchMoonFitNT().then()
+                } else {
                     setIsChooseAcc(true)
                     setUserIdSelected(users[0].id)
                     setListAccount(users)
@@ -150,7 +153,7 @@ const NFTSaleRoundWorldCup = () => {
     }
 
     const fetchData = async (loading = true) => {
-        if (!user.id) {
+        if (!user.id || !wallet.account) {
             return null
         }
         setIsFetching(true)
@@ -159,8 +162,13 @@ const NFTSaleRoundWorldCup = () => {
         provider && await switchNetwork(provider)
 
         loading && setLoading(false)
-        await _fetchMoonFitNT(loading)
-
+        // await _fetchMoonFitNT(loading)
+        const response = await loadAccess(wallet.account)
+        setTokens(response.tokens)
+        setNftData(response.nfts)
+        console.log('\n\n\n-------------------------------------')
+        console.log(response)
+        console.log('-------------------------------------\n\n')
         loading && setLoading(false)
         setIsFetching(false)
     }
@@ -202,53 +210,8 @@ const NFTSaleRoundWorldCup = () => {
         console.log('valueeee', value)
     }
 
-    const tokensFake = [
-        {
-            id: 'token1',
-            name: 'MFG',
-            image: 'https://cdn.moonfit.xyz/image/300/avatar/default3.png',
-            value: '23.34'
-        },
-        {
-            id: 'token2',
-            name: 'GLMR',
-            image: 'https://cdn.moonfit.xyz/image/300/avatar/default3.png',
-            value: '456.08'
-        },
-        {
-            id: 'token3',
-            name: 'ASTR',
-            image: 'https://cdn.moonfit.xyz/image/300/avatar/default3.png',
-            value: '12,345.34'
-        },
-        {
-            id: 'token4',
-            name: 'BNB',
-            image: 'https://cdn.moonfit.xyz/image/300/avatar/default3.png',
-            value: '0.01561'
-        }
-    ]
-
-    const nftsFake = [
-        {
-            id: 'nft1',
-            name: 'Beauty',
-            image: 'https://cdn.moonfit.xyz/image/300/avatar/default3.png'
-        },
-        {
-            id: 'nft2',
-            name: 'Beast',
-            image: 'https://cdn.moonfit.xyz/image/300/avatar/default3.png'
-        },
-        {
-            id: 'nft1',
-            name: 'Beaury',
-            image: 'https://cdn.moonfit.xyz/image/300/avatar/default3.png'
-        }
-    ]
-
-    const dataOption = [].concat(tokensFake,nftsFake)
-    console.log('data options: ', dataOption)
+    const dataOption = [].concat(tokens, nftData)
+    // console.log('data options: ', dataOption)
     let listOption = []
     listOption = dataOption.map(item => {
         const itemOption = {
@@ -260,7 +223,7 @@ const NFTSaleRoundWorldCup = () => {
         return itemOption
     })
 
-    console.log('list option: ', listOption)
+    // console.log('list option: ', listOption)
 
     const _renderUserInfo = () => {
         if (isLogin) {
@@ -387,13 +350,13 @@ const NFTSaleRoundWorldCup = () => {
                     <div className='tokens-title'>TOKENS</div>
                     <ul className="token-list">
                         {
-                            tokensFake.map(token => (
-                                <li key={token.id} className="token-item" onClick={() => handleDisplayDeposit(token.id)}>
+                            tokens.map(token => (
+                                <li key={token.symbol} className="token-item" onClick={() => handleDisplayDeposit(token.id)}>
                                     <div className="token-info">
                                         <span className='token-image'>
-                                            <img src={token.image} alt={token.name}/>
+                                            <img src={token.symbolIcon} alt={token.name}/>
                                         </span>
-                                        {token.name}
+                                        {token.symbol}
                                     </div>
                                     <div className="token-amount">
                                         {token.value}
@@ -411,14 +374,14 @@ const NFTSaleRoundWorldCup = () => {
                     </div>
                     <ul className="nft-list">
                         {
-                            nftsFake.map(nft => (
+                            nftData.map(nft => (
                                 <li key={nft.id} className="nft-item" onClick={() => handleDisplayDeposit(nft.id)}>
                                     <div className="nft-image">
                                         <span className='nft-image-box'>
-                                            <img src={imageBeast} alt="account-image"/>
+                                            <img src={nft.imageUrl} alt="account-image"/>
                                         </span>
                                         <span className='nft-tag'>Uncommon</span>
-                                        <span className='nft-mask'><img src={iconMask} alt="account-image"/></span>
+                                        <span className='nft-mask'><img src={nft.chainIcon} alt="account-image"/></span>
                                     </div>
                                     <div className="nft-stats">
                                         <div className='nft-stats-box'>
@@ -464,7 +427,7 @@ const NFTSaleRoundWorldCup = () => {
                                         </div>
                                     </div>
                                     <h3 className='nft-name'>
-                                        Beast<span className='code'>#G0019009</span>
+                                        {nft.names[0]}<span className='code'>{nft.names[1]}</span>
                                     </h3>
                                 </li>
                             ))
