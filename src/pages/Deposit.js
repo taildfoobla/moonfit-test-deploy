@@ -20,6 +20,20 @@ import { ReactComponent as ExchangeIcon } from "../assets/images/icons/exchange.
 import { depositToMobileApp } from "../components/DepositNFT/_depositToMobileApp";
 import { getMoonBeatInfo } from '../utils/api'
 import MFAssetSelect from '../components/shared/MFAssetSelect';
+import {Col, Row, Radio, Button} from 'antd'
+import moonfitLogo from "../assets/images/logo3.png"
+import imageStep1 from "../assets/images/iPhone.png"
+import imageStep2 from "../assets/images/iPhone1.png"
+import imageStep3 from "../assets/images/iPhone2.png"
+import imageStep4 from "../assets/images/iPhone3.png"
+import imageBeast from "../assets/images/beast.png"
+import iconMask from "../assets/images/mask.png"
+import { ReactComponent as CheckIcon } from "../assets/images/Check.svg";
+import { ReactComponent as UserIcon } from "../assets/images/user-icon.svg";
+import { ReactComponent as RunningIcon } from "../assets/images/running-icon.svg";
+import { ReactComponent as GiftIcon } from "../assets/images/gift-icon.svg";
+import { ReactComponent as SpeedometerIcon } from "../assets/images/speedometer-icon.svg";
+import { ReactComponent as BackIcon } from "../assets/images/ArrowCircleLeft.svg";
 
 const NFTSaleRoundWorldCup = () => {
     const [loading, setLoading] = useState(false)
@@ -33,6 +47,11 @@ const NFTSaleRoundWorldCup = () => {
     const [loginMessage, setLoginMessage] = useState('')
     const [glmrValue, setGlmrValue] = useState(0)
     const [isDeposited, setIsDeposited] = useState(false)
+    const [isChooseAcc, setIsChooseAcc] = useState(false)
+    const [listAccount, setListAccount] = useState([])
+    const [userIdSelected, setUserIdSelected] = useState('')
+    const [isDisplayDeposit, setIsDisplayDeposit] = useState(false)
+    const [assetSelected, setAssetSelected] = useState('')
 
     const {
         isSignature,
@@ -66,9 +85,21 @@ const NFTSaleRoundWorldCup = () => {
 
         loginByWallet(signatureData).then(response => {
             setIsLogin(false)
+            console.log('response: ', response)
             if (response.success) {
-                setUser(response.data.user)
-                _fetchMoonFitNT().then()
+                const users = response.data.users
+                // console.log('users: ', users)
+                if(users.length === 1){
+                    setUser(users[0])
+                    _fetchMoonFitNT().then()
+                }else{
+                    setIsChooseAcc(true)
+                    setUserIdSelected(users[0].id)
+                    setListAccount(users)
+                    // setUser(response.data.user)
+                }
+                // setUser(response.data.user)
+                // _fetchMoonFitNT().then()
             } else {
                 setLoginMessage(response.message)
             }
@@ -140,45 +171,471 @@ const NFTSaleRoundWorldCup = () => {
         await _fetchMoonFitNT(true)
     }
 
+    const onChangeAccount = ({ target: { value } }) => {
+        // console.log('radio1 checked', value);
+        setUserIdSelected(value)
+    }
+
+    const handleConfirm = () => {
+        // console.log('confirm click')
+        const userSelected = listAccount.filter(user => user.id === userIdSelected)
+        setUser(userSelected[0])
+        setIsChooseAcc(false)
+    }
+
+    const handleChangeAccount = () => {
+        setIsChooseAcc(true)
+    }
+
+    const handleDisplayDeposit = (value) => {
+        console.log('display deposit', value);
+        setAssetSelected(value)
+        setIsDisplayDeposit(true);
+    }
+
+    const handleBackDeposit = () => {
+        setIsDisplayDeposit(false);
+    }
+
+    const handleChangeAsset = (value) => {
+        setAssetSelected(value)
+        console.log('valueeee', value)
+    }
+
+    const tokensFake = [
+        {
+            id: 'token1',
+            name: 'MFG',
+            image: 'https://cdn.moonfit.xyz/image/300/avatar/default3.png',
+            value: '23.34'
+        },
+        {
+            id: 'token2',
+            name: 'GLMR',
+            image: 'https://cdn.moonfit.xyz/image/300/avatar/default3.png',
+            value: '456.08'
+        },
+        {
+            id: 'token3',
+            name: 'ASTR',
+            image: 'https://cdn.moonfit.xyz/image/300/avatar/default3.png',
+            value: '12,345.34'
+        },
+        {
+            id: 'token4',
+            name: 'BNB',
+            image: 'https://cdn.moonfit.xyz/image/300/avatar/default3.png',
+            value: '0.01561'
+        }
+    ]
+
+    const nftsFake = [
+        {
+            id: 'nft1',
+            name: 'Beauty',
+            image: 'https://cdn.moonfit.xyz/image/300/avatar/default3.png'
+        },
+        {
+            id: 'nft2',
+            name: 'Beast',
+            image: 'https://cdn.moonfit.xyz/image/300/avatar/default3.png'
+        },
+        {
+            id: 'nft1',
+            name: 'Beaury',
+            image: 'https://cdn.moonfit.xyz/image/300/avatar/default3.png'
+        }
+    ]
+
+    const dataOption = [].concat(tokensFake,nftsFake)
+    console.log('data options: ', dataOption)
+    let listOption = []
+    listOption = dataOption.map(item => {
+        const itemOption = {
+            value: item.id,
+            text: item.name,
+            image: item.image
+        }
+
+        return itemOption
+    })
+
+    console.log('list option: ', listOption)
+
     const _renderUserInfo = () => {
         if (isLogin) {
             return <LoadingOutlined />
         }
 
         if (loginMessage) {
-            return <p>{loginMessage}</p>
+            return (
+                <Fragment>
+                    <div className='section-connected-wallet'>
+                        <div className='section-connected-massage'>
+                            <p>{loginMessage}</p>
+                        </div>
+                        <div className='section-connected-guide'>
+                            <div className='guide-title'>
+                                <img src={moonfitLogo} alt="MoonFit app"/>
+                                <p>Kindly open MoonFit app <br/> and connect your wallet first.</p>
+                            </div>
+                            <div className='guide-steps'>
+                                <Row gutter={20}>
+                                    <Col className='gutter-row' span={12}>
+                                        <div className='step step-1'>
+                                            <span>Step 1</span>
+                                            <div className='step-image'>
+                                                <img src={imageStep1} alt="step 1"/>
+                                            </div>
+                                        </div>
+                                    </Col>
+
+                                    <Col className='gutter-row' span={12}>
+                                        <div className='step step-2'>
+                                            <span>Step 2</span>
+                                            <div className='step-image'>
+                                                <img src={imageStep3} alt="step 2"/>
+                                            </div>
+                                        </div>
+                                    </Col>
+                                </Row>
+
+                                <Row gutter={20}>
+                                    <Col className='gutter-row' span={12}>
+                                        <div className='step step-3'>
+                                            <span>Step 3</span>
+                                            <div className='step-image'>
+                                                <img src={imageStep2} alt="step 3"/>
+                                            </div>
+                                        </div>
+                                    </Col>
+
+                                    <Col className='gutter-row' span={12}>
+                                        <div className='step step-4'>
+                                            <span>Step 4</span>
+                                            <div className='step-image'>
+                                                <img src={imageStep4} alt="step 4"/>
+                                            </div>
+                                        </div>
+                                    </Col>
+                                </Row>
+                            </div>
+                        </div>
+                    </div>
+                </Fragment>
+            )
+        }
+
+        if(isChooseAcc){
+            
+            return (
+                <div className="section-choose-account">
+                    <Radio.Group name="radiogroup" value={userIdSelected} onChange={onChangeAccount}>
+                        {
+                            listAccount.map(item => (
+                                <Radio key={item.id} value={item.id}>
+                                    <div className='Radio-text'>
+                                        <div className='account-image'>
+                                            <div className='account-image-box'>
+                                                <img src={item.avatar} alt={item.name}/>
+                                            </div>
+                                        </div>
+                                        
+                                        <div className='account-info'>
+                                            <span className='account-name'>{item.name}</span>
+                                            <span className='account-email'>{item.email}</span>
+                                        </div>
+                                    </div>
+                                </Radio>
+                            ))
+                        }
+                    </Radio.Group>
+    
+                    <Button type="primary" className="confirm" onClick={handleConfirm}>
+                        <span className="confirm-icon" >
+                            <CheckIcon width={12} height={12} />
+                        </span>
+                        <span className='confirm-text'>
+                            Confirm
+                        </span>
+                    </Button>
+                </div>
+            )
         }
 
         return (
             <Fragment>
-                <div className="section-inner p-2.5 relative flex items-center">
+                <div className="section-inner relative flex items-center section-info">
                     <div className="avatar">
-                        <Avatar size={84} src={user.avatar || 'https://cdn.moonfit.xyz/image/300/avatar/default3.png'} />
-                    </div>
-                    <div className="ml-3">
-                        <p className="mb-0">Email: {user.email || ''}</p>
-                        <p className="mb-0">Name: {user.name || ''}</p>
-                        <p className="mb-0">Wallet connected: {user.wallet_address ? getShortAddress(user.wallet_address, 6) : ''}</p>
-
-
-                    </div>
-                    <div className="absolute top-2 right-4">
-                        <div className={'flex items-center normal-case text-base cursor-pointer rounded-[32px] pt-1 pb-2 px-3 bg-[#A16BD8] text-white hover:opacity-70'}>
-                            <RefreshIcon className="mt-1 mr-1" width={18} height={18} /> Change
+                        <div className='avatar-box'>
+                            <Avatar size={84} src={user.avatar || 'https://cdn.moonfit.xyz/image/300/avatar/default3.png'} />
                         </div>
                     </div>
+                    <div className="info">
+                        <p className="email">Email: {user.email || ''}</p>
+                        <p className="name">Name: {user.name || ''}</p>
+                        <p className="address">Wallet connected: {user.wallet_address ? getShortAddress(user.wallet_address, 6) : ''}</p>
+                    </div>
+                    <div className="button-change">
+                        <div className={'flex items-center normal-case text-base cursor-pointer rounded-[32px] pt-1 pb-2 px-3 bg-[#A16BD8] text-white hover:opacity-70'} onClick={handleChangeAccount}>
+                            <RefreshIcon className="mt-1 mr-1" width={18} height={18} /> Change
+                        </div>
+
+                    </div>
                 </div>
-                <div className="section-inner p-2.5 mt-3">
-                    <p>TOKENS</p>
-                    <ul className="token-list p-0">
-                        <li className="flex items-center justify-between">
-                            <div className="token-info">
-                                MFG
+                <div className="section-inner mt-3 section-tokens">
+                    <div className='tokens-title'>TOKENS</div>
+                    <ul className="token-list">
+                        {
+                            tokensFake.map(token => (
+                                <li key={token.id} className="token-item" onClick={() => handleDisplayDeposit(token.id)}>
+                                    <div className="token-info">
+                                        <span className='token-image'>
+                                            <img src={token.image} alt={token.name}/>
+                                        </span>
+                                        {token.name}
+                                    </div>
+                                    <div className="token-amount">
+                                        {token.value}
+                                    </div>
+                                </li>
+                            ))
+                        }
+                    </ul>
+                </div>
+
+                <div className="section-inner mt-3 section-nfts">
+                    <div className='nft-title'>
+                        <span>Your NFTS</span>
+                        <span>Total 3</span>
+                    </div>
+                    <ul className="nft-list">
+                        {
+                            nftsFake.map(nft => (
+                                <li key={nft.id} className="nft-item" onClick={() => handleDisplayDeposit(nft.id)}>
+                                    <div className="nft-image">
+                                        <span className='nft-image-box'>
+                                            <img src={imageBeast} alt="account-image"/>
+                                        </span>
+                                        <span className='nft-tag'>Uncommon</span>
+                                        <span className='nft-mask'><img src={iconMask} alt="account-image"/></span>
+                                    </div>
+                                    <div className="nft-stats">
+                                        <div className='nft-stats-box'>
+                                            <div className='stat-item'>
+                                                <div className='stat-item-box'>
+                                                    <div className='stat-icon user'>
+                                                        <UserIcon width={12} height={12} />
+                                                    </div>
+
+                                                    <span className='stat-value'>123</span>
+                                                </div>
+                                            </div>
+
+                                            <div className='stat-item'>
+                                                <div className='stat-item-box'>
+                                                    <div className='stat-icon running'>
+                                                        <RunningIcon width={12} height={12} />
+                                                    </div>
+
+                                                    <span className='stat-value'>123</span>
+                                                </div>
+                                            </div>
+
+                                            <div className='stat-item'>
+                                                <div className='stat-item-box'>
+                                                    <div className='stat-icon gift'>
+                                                        <GiftIcon width={12} height={12} />
+                                                    </div>
+
+                                                    <span className='stat-value'>123</span>
+                                                </div>  
+                                            </div>
+
+                                            <div className='stat-item'>
+                                                <div className='stat-item-box'>
+                                                    <div className='stat-icon speed'>
+                                                        <SpeedometerIcon width={12} height={12} />
+                                                    </div>
+
+                                                    <span className='stat-value'>123</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <h3 className='nft-name'>
+                                        Beast<span className='code'>#G0019009</span>
+                                    </h3>
+                                </li>
+                            ))
+                        }
+                        {/* <li className="nft-item" onClick={handleDisplayDeposit}>
+                            <div className="nft-image">
+                                <span className='nft-image-box'>
+                                    <img src={imageBeast} alt="account-image"/>
+                                </span>
+                                <span className='nft-tag'>Uncommon</span>
+                                <span className='nft-mask'><img src={iconMask} alt="account-image"/></span>
                             </div>
-                            <div className="token-amount">
-                                23.34
+                            <div className="nft-stats">
+                                <div className='nft-stats-box'>
+                                    <div className='stat-item'>
+                                        <div className='stat-item-box'>
+                                            <div className='stat-icon user'>
+                                                <UserIcon width={12} height={12} />
+                                            </div>
+
+                                            <span className='stat-value'>123</span>
+                                        </div>
+                                    </div>
+
+                                    <div className='stat-item'>
+                                        <div className='stat-item-box'>
+                                            <div className='stat-icon running'>
+                                                <RunningIcon width={12} height={12} />
+                                            </div>
+
+                                            <span className='stat-value'>123</span>
+                                        </div>
+                                    </div>
+
+                                    <div className='stat-item'>
+                                        <div className='stat-item-box'>
+                                            <div className='stat-icon gift'>
+                                                <GiftIcon width={12} height={12} />
+                                            </div>
+
+                                            <span className='stat-value'>123</span>
+                                        </div>  
+                                    </div>
+
+                                    <div className='stat-item'>
+                                        <div className='stat-item-box'>
+                                            <div className='stat-icon speed'>
+                                                <SpeedometerIcon width={12} height={12} />
+                                            </div>
+
+                                            <span className='stat-value'>123</span>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
+                            <h3 className='nft-name'>
+                                Beast<span className='code'>#G0019009</span>
+                            </h3>
                         </li>
+
+                        <li className="nft-item" onClick={handleDisplayDeposit}>
+                            <div className="nft-image">
+                                <span className='nft-image-box'>
+                                    <img src={imageBeast} alt="account-image"/>
+                                </span>
+                                <span className='nft-tag'>Uncommon</span>
+                                <span className='nft-mask'><img src={iconMask} alt="account-image"/></span>
+                            </div>
+                            <div className="nft-stats">
+                                <div className='nft-stats-box'>
+                                    <div className='stat-item'>
+                                        <div className='stat-item-box'>
+                                            <div className='stat-icon user'>
+                                                <UserIcon width={12} height={12} />
+                                            </div>
+
+                                            <span className='stat-value'>123</span>
+                                        </div>
+                                    </div>
+
+                                    <div className='stat-item'>
+                                        <div className='stat-item-box'>
+                                            <div className='stat-icon running'>
+                                                <RunningIcon width={12} height={12} />
+                                            </div>
+
+                                            <span className='stat-value'>123</span>
+                                        </div>
+                                    </div>
+
+                                    <div className='stat-item'>
+                                        <div className='stat-item-box'>
+                                            <div className='stat-icon gift'>
+                                                <GiftIcon width={12} height={12} />
+                                            </div>
+
+                                            <span className='stat-value'>123</span>
+                                        </div>  
+                                    </div>
+
+                                    <div className='stat-item'>
+                                        <div className='stat-item-box'>
+                                            <div className='stat-icon speed'>
+                                                <SpeedometerIcon width={12} height={12} />
+                                            </div>
+
+                                            <span className='stat-value'>123</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <h3 className='nft-name'>
+                                Beast<span className='code'>#G0019009</span>
+                            </h3>
+                        </li>
+
+                        <li className="nft-item" onClick={handleDisplayDeposit}>
+                            <div className="nft-image">
+                                <span className='nft-image-box'>
+                                    <img src={imageBeast} alt="account-image"/>
+                                </span>
+                                <span className='nft-tag'>Uncommon</span>
+                                <span className='nft-mask'><img src={iconMask} alt="account-image"/></span>
+                            </div>
+                            <div className="nft-stats">
+                                <div className='nft-stats-box'>
+                                    <div className='stat-item'>
+                                        <div className='stat-item-box'>
+                                            <div className='stat-icon user'>
+                                                <UserIcon width={12} height={12} />
+                                            </div>
+
+                                            <span className='stat-value'>123</span>
+                                        </div>
+                                    </div>
+
+                                    <div className='stat-item'>
+                                        <div className='stat-item-box'>
+                                            <div className='stat-icon running'>
+                                                <RunningIcon width={12} height={12} />
+                                            </div>
+
+                                            <span className='stat-value'>123</span>
+                                        </div>
+                                    </div>
+
+                                    <div className='stat-item'>
+                                        <div className='stat-item-box'>
+                                            <div className='stat-icon gift'>
+                                                <GiftIcon width={12} height={12} />
+                                            </div>
+
+                                            <span className='stat-value'>123</span>
+                                        </div>  
+                                    </div>
+
+                                    <div className='stat-item'>
+                                        <div className='stat-item-box'>
+                                            <div className='stat-icon speed'>
+                                                <SpeedometerIcon width={12} height={12} />
+                                            </div>
+
+                                            <span className='stat-value'>123</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <h3 className='nft-name'>
+                                Beast<span className='code'>#G0019009</span>
+                            </h3>
+                        </li> */}
                     </ul>
                 </div>
             </Fragment>
@@ -195,7 +652,7 @@ const NFTSaleRoundWorldCup = () => {
                     </div>
                     <div className="section-inner py-5 pl-8">
                         <p className="uppercase font-semibold text-base text-[#abadc3] mb-0">to</p>
-                        <p className="font-semibold text-[24px] text-white">0xb36A...a9a332</p>
+                        <p className="font-semibold text-[24px] text-white">Spending Account</p>
                     </div>
                     <div className="absolute top-1/2 left-1/2" style={{ transform: 'translate(-50%, -50%)' }}>
                         <ExchangeIcon width={100} height={100} />
@@ -203,12 +660,12 @@ const NFTSaleRoundWorldCup = () => {
                 </div>
                 <div className="section-inner p-5 mt-3">
                     <div className="assets">
-                        <p className="uppercase font-semibold text-[16px] text-[#abadc3] mb-3">ASSETS</p>
-                        <MFAssetSelect />
+                        <p className="uppercase font-semibold text-[16px] text-[#abadc3] mb-3">ASSET</p>
+                        <MFAssetSelect listOption={listOption} assetSelected={assetSelected} handleChangeAsset={handleChangeAsset}/>
                     </div>
                     <div className="network mt-3">
-                        <p className="uppercase font-semibold text-[16px] text-[#abadc3] mb-3">ASSETS</p>
-                        <MFAssetSelect />
+                        <p className="uppercase font-semibold text-[16px] text-[#abadc3] mb-3">ASSET</p>
+                        {/* <MFAssetSelect /> */}
                     </div>
                 </div>
                 <div className="flex justify-center gap-x-2.5 items-center mt-3">
@@ -220,6 +677,80 @@ const NFTSaleRoundWorldCup = () => {
                     </div>
                 </div>
             </Fragment>
+        )
+    }
+
+    const _renderChooseAccount = () => {
+        return (
+            <div className="section-choose-account">
+                <Radio.Group name="radiogroup" defaultValue={1} onChange={onChangeAccount}>
+                    <Radio value={1}>
+                        <div className='Radio-text'>
+                            <div className='account-image'>
+                                <div className='account-image-box'>
+                                    <img src={moonfitLogo} alt="account-image"/>
+                                </div>
+                            </div>
+                            
+                            <div className='account-info'>
+                                <span className='account-name'>Do Thai Son</span>
+                                <span className='account-email'>sondt@foobla.com</span>
+                            </div>
+                        </div>
+                    </Radio>
+                    <Radio value={2}>
+                        <div className='Radio-text'>
+                            <div className='account-image'>
+                                <div className='account-image-box'>
+                                    <img src={moonfitLogo} alt="account-image"/>
+                                </div>
+                            </div>
+                            
+                            <div className='account-info'>
+                                <span className='account-name'>Do Thai Son</span>
+                                <span className='account-email'>sondt@foobla.com</span>
+                            </div>
+                        </div>
+                    </Radio>
+                    <Radio value={3}>
+                        <div className='Radio-text'>
+                            <div className='account-image'>
+                                <div className='account-image-box'>
+                                    <img src={moonfitLogo} alt="account-image"/>
+                                </div>
+                            </div>
+                            
+                            <div className='account-info'>
+                                <span className='account-name'>Do Thai Son</span>
+                                <span className='account-email'>sondt@foobla.com</span>
+                            </div>
+                        </div>
+                    </Radio>
+                    <Radio value={4}>
+                        <div className='Radio-text'>
+                            <div className='account-image'>
+                                <div className='account-image-box'>
+                                    <img src={moonfitLogo} alt="account-image"/>
+                                </div>
+                            </div>
+                            
+                            <div className='account-info'>
+                                <span className='account-name'>Do Thai Son</span>
+                                <span className='account-email'>sondt@foobla.com</span>
+                            </div>
+                        </div>
+                    </Radio>
+                </Radio.Group>
+
+                <Button type="primary" className="confirm" onClick={handleConfirm}>
+                    <span className="confirm-icon" >
+                        <CheckIcon width={12} height={12} />
+                    </span>
+                    <span className='confirm-text'>
+                        Confirm
+                    </span>
+                </Button>
+            </div>
         )
     }
 
@@ -354,17 +885,32 @@ const NFTSaleRoundWorldCup = () => {
                     <div className="container">
                         <div className="moonfit-card">
                             <div className="moonfit-card-inner">
-                                <div
-                                    className="card-title flex flex-col lg:flex-row justify-center lg:justify-between items-start mx-auto mt-0 mb-5 lg:mb-5">
-                                    <div
-                                        className={'flex text-white justify-center w-full lg:w-auto justify-center lg:justify-start mt-4 lg:mt-0'}>
-                                        User Info
+                                <div className="card-title flex flex-col lg:flex-row justify-center lg:justify-between items-start">
+                                    <div className={'w-full moonfit-card-title'}>
+                                        {/* User Info */}
+                                        <span>
+                                        {
+                                            isChooseAcc ? 'Choose Account' : isDisplayDeposit ? 'Deposit' : 'User Info'
+                                        }
+                                        </span>
+                                        
+                                        {
+                                            isDisplayDeposit && 
+                                            <span className='back-deposit' onClick={handleBackDeposit}>
+                                                <BackIcon width={18} height={18} /> Back
+                                            </span>
+                                        }
+                                        
                                     </div>
                                 </div>
                                 <div className="card-body">
-                                    <div className={`mt-4 mb-6 lg:mt-8 ${isLogin ? 'is-loading' : ''}`}>
+                                    <div className={`card-wrapper ${isLogin ? 'is-loading' : ''}`}>
+                                        {
+                                            isDisplayDeposit ? _renderDepositAsset() : _renderUserInfo()
+                                        }
                                         {/* {_renderUserInfo()} */}
-                                        {_renderDepositAsset()}
+                                        {/* {_renderChooseAccount()} */}
+                                        {/* {_renderDepositAsset()} */}
                                     </div>
                                 </div>
                             </div>

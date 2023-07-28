@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import Select from 'react-select';
 
 const colourOptions = [
@@ -27,6 +27,13 @@ const filterColors = (inputValue) =>
     );
 
 const customStyles = {
+    option: (base, state) => ({
+        ...base,      
+        color: "#1e2022",
+        backgroundColor: state.isSelected || state.isFocused ? "rgba(189,197,209,.3)" : "rgba(189,197,209,0)",
+        padding: ".5rem 3rem .5rem .5rem",
+        cursor: "pointer",
+    }),       
     control: (baseStyles, state) => ({
         ...baseStyles,
         height: 50,
@@ -52,21 +59,52 @@ const customStyles = {
     menu: (provided, state) => ({
         ...provided,
         borderColor: '#1C0532',
-        backgroundColor: '#1C0532',
-        borderColor: state.isFocused ? '#1C053250' : '#1C0532',
+        backgroundColor: 'red',
+        borderColor: state.isFocused ? '#1C0532' : '#1C0532',
         zIndex: 9999
     }),
     menuPortal: provided => ({ ...provided, zIndex: 9999 }),
 }
 
-const MFAssetSelect = () => {
+const MFAssetSelect = (props) => {
+    const {listOption, assetSelected, handleChangeAsset} = props
+    const [selectedOption, setSelectedOption] = useState(null);
+
+    // handle onChange event of the dropdown
+    const handleChange = e => {
+        setSelectedOption(e);
+    }
+    
+    // handle custom filter
+    const filterOption = (option, inputValue) => {
+        return option.data.text.toLowerCase().includes(inputValue.toLowerCase());
+    }
+console.log('selected: ', selectedOption)
     return (
-        <Select
-            cacheOptions
-            defaultOptions
-            options={colourOptions}
-            styles={customStyles}
-        />
+        <>
+            {/* <Select
+                cacheOptions
+                defaultOptions
+                options={colourOptions}
+                styles={customStyles}
+            /> */}
+            <Select
+                placeholder="Select Option"
+                
+                value={selectedOption}
+                options={listOption}
+                onChange={handleChange}
+                getOptionLabel={e => (
+                <div style={{ display: 'flex', alignItems: 'center' }}>
+                    <img src={e.image} alt={e.text} style={{width: '30px', height: '30px', borderRadius: '50%', marginRight: '5px'}}/>
+                    <span style={{ marginLeft: 5 }}>{e.text}</span>
+                </div>
+                )}
+                filterOption={filterOption}
+                styles={customStyles}
+            />
+        </>
+        
     );
 };
 
