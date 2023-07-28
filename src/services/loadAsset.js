@@ -4,7 +4,7 @@ import BigNumber from "bignumber.js"
 import {
     moonBeamNetwork,
     astarNetwork,
-    binanceNetwork, NFT_SALE_CURRENT_INFO,
+    binanceNetwork,
 } from '../constants/blockchain'
 
 import {getStringOfBigNumber} from "../utils/number";
@@ -13,7 +13,7 @@ import {fetchMintPassByAccount} from "./smc-mint-pass";
 import {range} from "../utils/array";
 import Bluebird from "bluebird";
 import {balanceOfAccount as _balanceOfAccount, tokenOfOwnerByIndex} from "./smc-common";
-import {getNFTInfo} from "../utils/blockchain";
+import {getNFTInfo2} from "../utils/blockchain";
 import moonBeastABI from "../abis/MoonBeastNFT.json";
 
 const _pickItem = (item, keys) => {
@@ -57,7 +57,7 @@ const loadNFT = async (network, contractAddress, address, maxLength = Number.MAX
 
         const newData = Bluebird.map(data, async index => {
             const tokenId = await tokenOfOwnerByIndex(_moonBeastContract, address, index)
-            const {name, imageUrl} = await getNFTInfo(_moonBeastContract.methods, tokenId)
+            const {name, imageUrl} = await getNFTInfo2('MoonBeast', _moonBeastContract.methods, tokenId)
             return {name, imageUrl, tokenId, type: 'MoonBeast'}
         }, {concurrency: 5})
 
@@ -71,7 +71,7 @@ const loadNFT = async (network, contractAddress, address, maxLength = Number.MAX
     }
 }
 
-export const loadAccess = async (address) => {
+export const loadAsset = async (address) => {
     const [
         glmrBalance,
         astarBalance,

@@ -34,7 +34,7 @@ import { ReactComponent as RunningIcon } from "../assets/images/running-icon.svg
 import { ReactComponent as GiftIcon } from "../assets/images/gift-icon.svg";
 import { ReactComponent as SpeedometerIcon } from "../assets/images/speedometer-icon.svg";
 import { ReactComponent as BackIcon } from "../assets/images/ArrowCircleLeft.svg";
-import {loadAccess} from '../services/loadAccess'
+import {loadAsset} from '../services/loadAsset'
 
 const NFTSaleRoundWorldCup = () => {
     const [loading, setLoading] = useState(false)
@@ -163,7 +163,7 @@ const NFTSaleRoundWorldCup = () => {
 
         loading && setLoading(false)
         // await _fetchMoonFitNT(loading)
-        const response = await loadAccess(wallet.account)
+        const response = await loadAsset(wallet.account)
         setTokens(response.tokens)
         setNftData(response.nfts)
         console.log('\n\n\n-------------------------------------')
