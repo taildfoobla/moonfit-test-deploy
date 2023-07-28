@@ -125,8 +125,7 @@ const _loadNFTMetadata = async (tokenURI) => {
 
 const _loadNFTInfo = async (methods, tokenId, key) => {
     try {
-        const tokenURI = await methods.tokenURI(tokenId).call()
-        const response = await _loadNFTMetadata(tokenURI)
+        const response = await _loadNFTMetadata(`${configs.IMAGE_CDN_URL}/metadata/${tokenId}.json`)
 
         if (response.name) {
             localStorage.setItem(key, JSON.stringify(response))

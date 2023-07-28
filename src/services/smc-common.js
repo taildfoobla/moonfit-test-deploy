@@ -6,6 +6,7 @@ import {sendTransaction} from "../utils/blockchain";
 import {chunk} from "../utils/array";
 import MoonBeast from "../utils/MoonBeast";
 import BigNumber from "bignumber.js"
+
 const {MOONBEAST_NETWORK, MOONBEAM_SCAN_URL} = configs
 
 const web3 = new Web3(MOONBEAST_NETWORK)
@@ -23,6 +24,9 @@ export const tokenOfOwnerByIndex = async (contract, account, index) => {
         tokenId = await contract.methods.tokenOfOwnerByIndex(account, index).call()
     } catch (e) {
         //
+        await Bluebird.delay(300)
+
+        return tokenOfOwnerByIndex(contract, account, index)
     }
 
     return tokenId
@@ -45,7 +49,7 @@ export const buyNFT = async (provider, connector, contract, tx, checkBalance = t
         console.log(tx)
         console.log(new BigNumber(tx.value).toNumber())
         console.log(balance)
-        throw new Error ('Insufficient balance.')
+        throw new Error('Insufficient balance.')
     }
 
     const nonce = await web3.eth.getTransactionCount(tx.from, 'latest')
@@ -76,9 +80,12 @@ export const buyNFT = async (provider, connector, contract, tx, checkBalance = t
     return txHash
 }
 
-export const getMoonBeast = async (moonBeastContract, saleContract, wallet, options = {mintByContract: true, isOwnerMinted: true}) => {
+export const getMoonBeast = async (moonBeastContract, saleContract, wallet, options = {
+    mintByContract: true,
+    isOwnerMinted: true
+}) => {
     let balance = await moonBeastContract.methods.balanceOf(wallet).call()
-    balance = parseInt(balance , 10)
+    balance = parseInt(balance, 10)
     let _moonBeasts = []
     const arrIndex = Array.from(Array(balance).keys()).reverse()
 
@@ -96,15 +103,15 @@ export const getMoonBeast = async (moonBeastContract, saleContract, wallet, opti
         })
 
         _moonBeasts = _moonBeasts.concat(beasts)
-    }, { concurrency: 1 })
+    }, {concurrency: 1})
 
     _moonBeasts = _moonBeasts.filter(item => {
         if (options && options.isOwnerMinted && !item.isOwnerMinted) {
-            return  false
+            return false
         }
 
         if (options && options.mintByContract && !item.mintByContract) {
-            return  false
+            return false
         }
 
         return true
