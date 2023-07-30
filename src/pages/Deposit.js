@@ -370,7 +370,7 @@ const NFTSaleRoundWorldCup = () => {
                 <div className="section-inner mt-3 section-nfts">
                     <div className='nft-title'>
                         <span>Your NFTS</span>
-                        <span>Total 3</span>
+                        <span>Total {nftData.length}</span>
                     </div>
                     <ul className="nft-list">
                         {

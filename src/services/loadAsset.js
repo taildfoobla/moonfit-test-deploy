@@ -32,11 +32,11 @@ const getBaseBalance = async (rpc, address) => {
     } catch (e) {
         await Bluebird.delay(300)
 
-        return  getBaseBalance(rpc, address)
+        return getBaseBalance(rpc, address)
     }
 }
 
-const loadMintPass = async(address) => {
+const loadMintPass = async (address) => {
     const nfts = await fetchMintPassByAccount(address)
 
     return nfts.map(item => ({
@@ -45,7 +45,7 @@ const loadMintPass = async(address) => {
     }))
 }
 
-const loadNFT = async (network, contractAddress, address, maxLength = Number.MAX_SAFE_INTEGER) => {
+const loadNFT = async (network, contractAddress, address, maxLength = 100) => {
     try {
         const web3js = new Web3(network.rpc)
         const _moonBeastContract = new web3js.eth.Contract(moonBeastABI.abi, contractAddress)
@@ -61,7 +61,7 @@ const loadNFT = async (network, contractAddress, address, maxLength = Number.MAX
         }
 
         const _tokenOfOwnerByIndex = async (address, index) => {
-            return  tokenOfOwnerByIndex(_moonBeastContract, address, index).catch(async e => {
+            return tokenOfOwnerByIndex(_moonBeastContract, address, index).catch(async e => {
                 await Bluebird.delay(300)
 
                 return tokenOfOwnerByIndex(_moonBeastContract, address, index)
@@ -70,8 +70,9 @@ const loadNFT = async (network, contractAddress, address, maxLength = Number.MAX
 
         const newData = Bluebird.map(data, async index => {
             const tokenId = await _tokenOfOwnerByIndex(address, index)
-            const {name, imageUrl} = await getNFTInfo2('MoonBeast', _moonBeastContract.methods, tokenId)
-            return {name, imageUrl, tokenId, type: 'MoonBeast'}
+            const {name, imageUrl, attributes} = await getNFTInfo2('MoonBeast', _moonBeastContract.methods, tokenId)
+
+            return {name, imageUrl, tokenId, attributes, type: 'MoonBeast'}
         }, {concurrency: 5})
 
         return newData.map(item => ({

@@ -83,14 +83,14 @@ export const getNFTInfo = async (methods, tokenId, fetchMetadata = true) => {
 
         if (fetchMetadata) {
             const {data} = await axios.get(tokenURI)
-            const {name, image} = data
+            const {name, image, attributes} = data
             if (image.startsWith('ipfs://')) {
                 const cid = image.replace('ipfs://', '')
                 const imageUrl = `https://${cid}.ipfs.nftstorage.link/`
-                return {name, imageUrl}
+                return {name, imageUrl, attributes}
             }
 
-            return {name, imageUrl: image}
+            return {name, imageUrl: image, attributes}
         }
 
         return {tokenId, tokenURI}
@@ -107,7 +107,7 @@ export const getNFTInfo = async (methods, tokenId, fetchMetadata = true) => {
 
 
 const _loadNFTMetadata = async (tokenURI) => {
-    let name, imageUrl
+    let name, imageUrl, attributes = {}
     try {
         const {data} = await axios.get(tokenURI)
         name = data.name
@@ -116,11 +116,16 @@ const _loadNFTMetadata = async (tokenURI) => {
             const cid = imageUrl.replace('ipfs://', '')
             imageUrl = `https://${cid}.ipfs.nftstorage.link/`
         }
-
+        if (Array.isArray(data.attributes)) {
+            data.attributes.forEach(item => {
+                attributes[item.trait_type] = item.value
+            })
+        }
     } catch (e) {
         console.log(e)
     }
-    return {name, imageUrl}
+    
+    return {name, imageUrl, attributes}
 }
 
 const _loadNFTInfo = async (methods, tokenId, key) => {
@@ -158,8 +163,8 @@ setInterval(async () => {
 }, 2000)
 
 export const getNFTInfo2 = async (nftType, methods, tokenId) => {
-    if (!tokenId) return {
-        name: null, imageUrl: null
+    if (!tokenId) {
+        return {name: null, imageUrl: null, attributes: []}
     }
 
     const key = `NFT_Info_${nftType}_${tokenId}`
