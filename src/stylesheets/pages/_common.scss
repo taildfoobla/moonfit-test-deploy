@@ -289,7 +289,7 @@
   .page-container {
     width: 65%;
     margin: 0 auto;
-    z-index: 1;
+    z-index: 2;
 
     &.not-limit-width {
       width: unset !important;
@@ -731,7 +731,6 @@
     }
 
     p {
-      margin-bottom: 10px;
       text-transform: none;
     }
   }

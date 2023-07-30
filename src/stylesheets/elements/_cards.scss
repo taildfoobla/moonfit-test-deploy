@@ -14,8 +14,8 @@
     color: #fff;
     position: relative;
     background-clip: padding-box;
-    border: solid $border transparent;
-    border-radius: 10px;
+    border: solid 3px transparent;
+    border-radius: 20px;
 
     &:before {
       content: '';
@@ -25,9 +25,15 @@
       bottom: 0;
       left: 0;
       z-index: -1;
-      margin: -$border;
+      margin: -2px;
       border-radius: inherit;
-      background: linear-gradient(to right, #4ccbc9, #e4007b);
+      background: linear-gradient(125deg, #4CCBC9 0%, #E4007B 100%);
+    }
+
+    .section-inner {
+      width: 100%;
+      border-radius: 7px;
+      background-color: #2A1143;
     }
 
     .card-title {
@@ -36,6 +42,33 @@
       font-size: 18px;
       font-weight: 400;
       line-height: 21px;
+      margin-bottom: 18px;
+
+      .moonfit-card-title{
+        font-size: 20px;
+        line-height: 26px;
+        color: #ffffff;
+        display: flex;
+        justify-content: space-between;
+
+        .back-deposit{
+          display: flex;
+          font-size: 18px;
+          line-height: 28px;
+          font-weight: 800;
+          color: #4CCBC9;
+          font-family: "Darker Grotesque", sans-serif;
+
+          svg{
+            margin-top: 7px;
+            margin-right: 6px;
+          }
+
+          &:hover{
+            cursor: pointer;
+          }
+        }
+      }
     }
 
     .card-body {
@@ -59,6 +92,481 @@
           opacity: 0.2;
           //border: 1px solid #90829D;
           margin: 20px 0 3px;
+        }
+      }
+
+      .section-connected-wallet{
+        .section-connected-massage{
+          padding: 18px 20px;
+          background: #2A1143;
+          border-radius: 7px;
+          margin-bottom: 32px;
+
+          p{
+            font-size: 18px;
+            font-weight: 600;
+            line-height: 28px;
+            text-transform: none;
+            color: #ffffff;
+          }
+        }
+
+        .section-connected-guide{
+          .guide-title{
+            text-align: center;
+            margin: 0 0 20px;
+
+            img{
+              margin: 0 auto 10px;
+            }
+
+            p{
+              font-size: 18px;
+              font-weight: 600;
+              line-height: 28px;
+              text-transform: none;
+              color: #fff;
+            }
+          }
+
+          .guide-steps{
+            .step{
+              background: #2A1143;
+              border-radius: 7px;
+              padding: 8px 14px 0 18px;
+              text-align: center;
+              margin: 0 0 20px;
+              display: flex;
+              flex-direction: column;
+
+              span{
+                font-size: 18px;
+                font-weight: 600;
+                line-height: 28px;
+                text-transform: none;
+                color: #fff;
+                margin-bottom: 8px;
+              }
+
+              .step-image{
+                text-align: right;
+                padding-right: 10px;
+
+                img{
+                  display: inline-block
+                }
+              }
+
+              &.step-2{
+                flex-direction: column-reverse;
+                padding: 0px 18px 14px 14px;
+
+                span{
+                  margin-bottom: 2px;
+                }
+
+                .step-image{
+                  text-align: left;
+                  padding-right: 0;
+                  padding-left: 10px;
+                }
+              }
+
+              &.step-4{
+                flex-direction: column-reverse;
+                padding: 0px 18px 14px 14px;
+
+                span{
+                  margin-bottom: 0;
+                  margin-top: 12px;
+                }
+
+                .step-image{
+                  text-align: left;
+                  padding-right: 0;
+                  padding-left: 10px;
+                }
+              }
+            }
+          }
+        }
+      }
+
+      .section-choose-account{
+        margin-bottom: 20px;
+
+        .ant-radio-group{
+          display: block;
+
+          .ant-radio-wrapper{
+            display: flex;
+            flex-direction: row-reverse;
+            justify-content: space-between;
+            align-items: center;
+            background: #2A1143;
+            margin: 0 0 10px;
+            padding: 10px 12px;
+            border-radius: 10px;
+
+            .ant-radio{
+              .ant-radio-input{
+                position: absolute;
+                z-index: 1;
+                cursor: pointer;
+                opacity: 0;
+              }
+
+              .ant-radio-inner{
+                width: 18px;
+                height: 18px;
+                background: none;
+                border-color: #7A678C;
+
+                &::after{
+                  background-color: #4CCBC9;
+                }
+              }
+
+              &.ant-radio-checked:after{
+                content: none;
+              }
+            }
+
+            span.ant-radio+* {
+              flex-grow: 1;
+
+              .Radio-text{
+                color: #fff;
+                display: flex;
+                align-items: center;
+
+                .account-image{
+                  width: 48px;
+                  height: 48px;
+                  position: relative;
+                  padding: 2px;
+                  border-radius: 50%;
+                  background: linear-gradient(125deg, #4CCBC9 0%, #E4007B 100%);
+                  margin-right: 10px;
+
+                  .account-image-box{
+                    background-color: #351C4F;
+                    border-radius: 50%;
+                    padding: 6px;
+
+                    img{
+                      border-radius: 50%;
+                    }
+                  }
+                }
+
+                .account-info{
+                  span{
+                    display: block;
+                    text-transform: none;
+
+                    &.account-name{
+                      font-size: 18px;
+                      font-weight: 700;
+                      line-height: 22px;
+                      color: #ffffff;
+                    }
+
+                    &.account-email{
+                      font-size: 16px;
+                      font-weight: 600;
+                      line-height: 22px;
+                      color: #A8ADC3;
+                    }
+                  }
+                }
+              }
+            }
+
+            &:hover,
+            &.ant-radio-wrapper-checked{
+              background: #351C4F;
+
+              .ant-radio{
+                .ant-radio-inner{
+                  border-color: #4CCBC9;
+                }
+              }
+            }
+          }
+        }
+
+        button.confirm{
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+          justify-content: center;
+          width: 100%;
+          background: #4CCBC9;
+          border-radius: 5px;
+          border: none;
+
+          .confirm-icon{
+            width: 20px;
+            height: 20px;
+            background: rgba(40,7,72,0.2);
+            text-align: center;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 6px;
+          }
+
+          .confirm-text{
+            font-size: 18px;
+            font-weight: 800;
+            line-height: 24px;
+            color: #020722;
+            padding-bottom: 4px;
+          }
+        }
+      }
+
+      .section-info{
+        padding: 21px 22px 19px;
+
+        .avatar{
+          width: 96px;
+          height: 96px;
+          position: relative;
+          padding: 2px;
+          border-radius: 50%;
+          background: linear-gradient(125deg, #4CCBC9 0%, #E4007B 100%);
+          margin-right: 19px;
+  
+          .avatar-box{
+            background-color: #351C4F;
+            border-radius: 50%;
+            padding: 4px;
+          }
+        }
+
+        .info{
+          p{
+            font-size: 18px;
+            font-weight: 600;
+            color: #ffffff;
+            line-height: 28px;
+            text-transform: none;
+            margin: 0;
+            padding: 0;
+          }
+        }
+
+        .button-change{
+          position: absolute;
+          top: 12px;
+          right: 12px;
+        }
+      }
+
+      .section-tokens{
+        padding: 18px 20px 2px 20px;
+
+        .tokens-title{
+          font-size: 16px;
+          font-weight: 600;
+          line-height: 22px;
+          color: #A8ADC3;
+          text-transform: uppercase;
+          margin-bottom: 4px;
+        }
+
+        ul.token-list{
+          margin: 0;
+          padding: 0;
+
+          li.token-item{
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 0;
+            margin: 0;
+            border-bottom: 1px solid rgba(144, 130, 157, 0.2);
+
+            .token-info{
+              display: flex;
+              align-items: center;
+
+              .token-image{
+                width: 28px;
+                height: 28px;
+                border-radius: 50%;
+                margin-right: 8px;
+                overflow: hidden;
+
+                img{
+                  max-width: 100%;
+                }
+              }
+            }
+
+            &:last-child{
+              border: none;
+            }
+
+            &:hover{
+              cursor: pointer;
+              background-color: #351C4F;
+            }
+          }
+        }
+      }
+
+      .section-nfts{
+        padding: 18px 20px;
+
+        .nft-title{
+          font-size: 16px;
+          font-weight: 600;
+          line-height: 22px;
+          color: #A8ADC3;
+          text-transform: uppercase;
+          margin-bottom: 20px;
+          display: flex;
+          justify-content: space-between;
+        }
+
+        .nft-list{
+          margin: 0;
+          padding :0;
+          display: grid;
+          grid-template-columns: 1fr 1fr 1fr;
+          column-gap: 20px;
+          row-gap: 20px;
+
+          .nft-item{
+            margin: 0;
+            padding: 0;
+
+            .nft-image{
+              padding: 2px;
+              border-radius: 5px;
+              background: none; // linear-gradient(125deg, #4CCBC9 0%, #E4007B 100%)
+              position: relative;
+              box-shadow: 0px 4px 30px 0px rgba(228, 0, 123, 0); // 0.5
+              transition: all 0.6s ease 0s;
+
+              .nft-image-box{
+                display: block;
+                padding: 5px;
+                background: rgba(28, 5, 50, 0);
+                border-radius: 5px;
+                transition: all 0.6s ease 0s;
+              }
+
+              .nft-tag{
+                font-size: 14px;
+                line-height: 18px;
+                font-weight: 700;
+                color: #FFFFFF;
+                padding: 2px 6px 4px;
+                text-transform: none;
+                position: absolute;
+                bottom: 10px;
+                left: 11px;
+                display: inline-block;
+                background: #48C8F0;
+                border-radius: 5px;
+              }
+
+              .nft-mask{
+                position: absolute;
+                top: 11px;
+                right: 11px;
+              }
+            }
+
+            .nft-stats{
+              margin: 2px 0 0;
+              padding:0 7px;
+
+              .nft-stats-box{
+                background: rgba(161, 107, 216, 0.15);
+                border-radius: 5px;
+                display: grid;
+                grid-template-columns: 1fr 1fr 1fr 1fr;
+                padding: 8px 0 5px;
+              }
+              
+              .stat-item{
+                border-right: 1px solid rgba(144, 130, 157, 0.2);
+
+                &:last-child{
+                  border: none;
+                }
+
+                .stat-item-box{
+                  text-align: center;
+
+                  .stat-icon{
+                    width: 20px;
+                    height: 20px;
+                    border-radius: 50%;
+                    margin: 0 auto;
+                    background: #A16BD8;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+
+                    &.running{
+                      background: #EFAA5D;
+                    }
+
+                    &.gift{
+                      background: #F0489F;
+                    }
+
+                    &.speed{
+                      background: #A5D990;
+                    }
+                  }
+
+                  .stat-value{
+                    font-size: 14px;
+                    line-height: 18px;
+                    font-weight: 600;
+                    color: #fff;
+                    display: block;
+                  }
+                }
+              }
+            }
+
+            .nft-name{
+              font-size: 12px;
+              font-weight: 400;
+              line-height: 18px;
+              color: #E4007B;
+              text-align: center;
+              margin-top: 13px;
+
+              .code{
+                display: block;
+                color: #4CCBC9;
+              }
+            }
+
+            &:hover{
+              cursor: pointer;
+
+              .nft-image{
+                background: linear-gradient(125deg, #4CCBC9 0%, #E4007B 100%);
+                box-shadow: 0px 4px 30px 0px rgba(228, 0, 123, 0.5);
+  
+                .nft-image-box{
+                  background: rgba(28, 5, 50, 1);
+                }
+              }
+            }
+          }
         }
       }
     }
