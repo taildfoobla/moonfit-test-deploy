@@ -34,7 +34,7 @@ export const fetchMintPassByAccount = async (account) => {
             tokenId,
             type: 'MintPass'
         }
-    }, {concurrency: 2})
+    }, {concurrency: 3})
 }
 
 export const checkApprove = async (owner, address) => {

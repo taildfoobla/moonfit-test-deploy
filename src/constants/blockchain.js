@@ -157,7 +157,7 @@ export const EVM_WALLETS = [
         title: 'SubWallet (EVM)',
         installUrl: 'https://subwallet.app/download.html',
         logo: {
-            src: SubWalletLogo ,
+            src: SubWalletLogo,
             alt: 'SubWallet (EVM)'
         },
         isSetGlobalString: 'isSubWallet',
@@ -187,6 +187,7 @@ export const WALLET_CONNECT = {
 }
 
 const isDev = configs.env === 'development'
+const isTestnet = configs.env === 'development'
 
 export const NFT_SALE_ROUNDS_INFO = {
     R1: {
@@ -281,55 +282,198 @@ export const NFT_SALE_CURRENT_INFO = {
     ...NFT_SALE_ROUNDS_INFO.R3,
 }
 
+
+/**
+ * @param item
+ * @returns {NetworkConfig}
+ */
+function mappingConfigNetwork(item) {
+    return {
+        ...item,
+        isTestnet: !!item.isTestnet,
+        symbolIcon: `${configs.IMAGE_CDN_URL}/image/original/assets/icons/${item.symbol}.png`,
+        chainIcon: `${configs.IMAGE_CDN_URL}/image/original/assets/icons/${item.symbol}.png`,
+    }
+}
+
+const NETWORKS = [
+    {
+        chainId: 1287,
+        chainHex: '0x507',
+        digit: 2,
+        currencyDecimal: 18,
+        networkName: 'Moonbase Alpha',
+        symbol: 'GLMR',
+        currencySymbol: 'DEV',
+        isTestnet: true,
+        scan: 'https://moonbase.moonscan.io',
+        rpc: 'https://rpc.api.moonbase.moonbeam.network',
+        wss: 'wss://wss.api.moonbase.moonbeam.network',
+        _name: 'base_token',
+        MINT_PASS_ADDRESS: '0x7E7d9fee5c5994aA7FC1dAeb231Af015e2FdAD3E',
+        MOON_BEAST_ADDRESS: '0x368a1BBED5Ca2984b0867109e0aeB2B6fAD3B17A',
+        MASTER_ADDRESS: '0xDE485A49e1dde6Ce2e9e77782Be664ECF1Fec2cF',
+        GATEWAY_ADDRESS: '0x8C9Dd68AC16ed12988ace046dc453A7fDCE57F50',
+    },
+    {
+        chainId: 1284,
+        chainHex: '0x504',
+        digit: 2,
+        currencyDecimal: 18,
+        networkName: 'Moonbeam',
+        symbol: 'GLMR',
+        symbolName: 'Glimmer',
+        currencySymbol: 'GLMR',
+        scan: 'https://moonbeam.moonscan.io',
+        rpc: 'https://rpc.api.moonbeam.network',
+        wss: 'wss://wss.api.moonbeam.network',
+        _name: 'base_token',
+        MINT_PASS_ADDRESS: '0x6758053c0b27E478edE1E4882adFF708Fc4FA72D',
+        MOON_BEAST_ADDRESS: '0x02A6DeC99B2Ca768D638fcD87A96F6069F91287c',
+        MASTER_ADDRESS: '0xc7e929d05e52f62c3aa2bd180983fa2bf0abcc54',
+        GATEWAY_ADDRESS: '',
+    },
+    {
+        chainId: 97,
+        chainHex: '0x61',
+        digit: 6,
+        currencyDecimal: 18,
+        networkName: 'Binance Smart Chain Testnet',
+        symbol: 'BNB',
+        currencySymbol: 'BNB',
+        isTestnet: true,
+        scan: 'https://testnet.bscscan.com',
+        rpc: 'https://data-seed-prebsc-1-s1.binance.org:8545',
+        wss: 'wss://testnet-dex.binance.org/api/',
+        _name: 'bnb_token',
+        MINT_PASS_ADDRESS: '',
+        MOON_BEAST_ADDRESS: '0x74f2bdAA4dbEDB6Deced91f3050d5Cd4d7D23b66',
+        MASTER_ADDRESS: '0xa0A0C755D332544Cf9D9c163E820C0FA05A8e73b',
+        GATEWAY_ADDRESS: '0x8Ef1b4518f3EDA3009afc8bDd6E87e4F50e1A079',
+    },
+    {
+        chainId: 56,
+        chainHex: '0x38',
+        digit: 6,
+        currencyDecimal: 18,
+        networkName: 'Binance Smart Chain Mainnet',
+        symbol: 'BNB',
+        currencySymbol: 'BNB',
+        scan: 'https://bscscan.com',
+        rpc: 'https://bsc-dataseed.binance.org',
+        wss: 'wss://dex.binance.org/api/',
+        _name: 'bnb_token',
+        MINT_PASS_ADDRESS: '',
+        MOON_BEAST_ADDRESS: '',
+        MASTER_ADDRESS: '',
+        GATEWAY_ADDRESS: '',
+    },
+    {
+        chainId: 81,
+        chainHex: '0x51',
+        digit: 4,
+        currencyDecimal: 18,
+        networkName: 'Shibuya Network',
+        symbol: 'ASTR',
+        currencySymbol: 'SBY',
+        isTestnet: true,
+        scan: 'https://shibuya.subscan.io',
+        rpc: 'https://evm.shibuya.astar.network',
+        wss: 'wss://rpc.shibuya.astar.network',
+        _name: 'astar_token',
+        MINT_PASS_ADDRESS: '',
+        MOON_BEAST_ADDRESS: '0x739Ac94b10C964945A2363E62E0D8d26b03486DD',
+        MASTER_ADDRESS: '0x095c8Ac658d137a2ea86C7Dd5092f3370dC6E6A7',
+        GATEWAY_ADDRESS: '0x9C10555B0b8eeCC1f26084129D8d964c0ac9A935', // MintBurnGateway
+    },
+    {
+        chainId: 592,
+        chainHex: '0x250',
+        digit: 4,
+        currencyDecimal: 18,
+        networkName: 'Astar Network Mainnet',
+        symbol: 'ASTR',
+        currencySymbol: 'ASTR',
+        scan: 'https://blockscout.com/astar',
+        rpc: 'https://evm.astar.network',
+        wss: 'wss://rpc.astar.network',
+        _name: 'astar_token',
+        MINT_PASS_ADDRESS: '',
+        MOON_BEAST_ADDRESS: '',
+        MASTER_ADDRESS: '',
+        GATEWAY_ADDRESS: '',
+    },
+].map(mappingConfigNetwork)
+    .filter(item => item.isTestnet === isTestnet)
+
+/**
+ * @type {NetworkConfig}
+ */
+export  const moonBeamNetwork = NETWORKS.find(item => item.symbol === 'GLMR' && item.isTestnet === isTestnet)
+
+/**
+ * @type {NetworkConfig}
+ */
+export  const binanceNetwork = NETWORKS.find(item => item.symbol === 'BNB' && item.isTestnet === isTestnet)
+
+/**
+ * @type {NetworkConfig}
+ */
+export  const astarNetwork = NETWORKS.find(item => item.symbol === 'ASTR' && item.isTestnet === isTestnet)
+
+
 export const SUPPORTED_NETWORKS = [
-    {
-      name: "Moonbeam",
-      short_name: "moonbeam",
-      chain: "Moonbeam",
-      network: "mainnet",
-      chain_id: 1284,
-      network_id: 1284,
-      rpc_url: "https://rpc.api.moonbeam.network",
-      native_currency: {
-        symbol: "GLMR",
-        name: "Glimmer",
-        decimals: "18",
-        contractAddress: "",
-        balance: "",
-      },
-    },
-    {
-      name: "Moonriver",
-      short_name: "moonriver",
-      chain: "Moonriver",
-      network: "mainnet",
-      chain_id: 1285,
-      network_id: 1285,
-      rpc_url: "https://rpc.moonriver.moonbeam.network",
-      native_currency: {
-        symbol: "MOVR",
-        name: "Moonriver",
-        decimals: "18",
-        contractAddress: "",
-        balance: "",
-      },
-    },
-    {
-        name: "Moonbase Alpha",
-        short_name: "moonbase",
-        chain: "Moonbase",
-        network: "testnet",
-        chain_id: 1287,
-        network_id: 1287,
-        rpc_url: "https://rpc.api.moonbase.moonbeam.network",
-        native_currency: {
-            symbol: "DEV",
-            name: "DEV",
-            decimals: "18",
-            contractAddress: "",
-            balance: "",
-        },
-    },
+    ...NETWORKS.map(item => {
+        return {
+            name: item.networkName,
+            short_name: item.networkName,
+            chain: item.networkName,
+            network: item.isTestnet ? 'testnet' : 'mainnet',
+            chain_id: item.chainId,
+            network_id: item.chainId,
+            rpc_url: item.rpcUrl,
+            scan_url: item.scan,
+            native_currency: {
+                symbol: item.symbol,
+                name: item.symbolName || item.symbol,
+                decimals: item.currencyDecimal,
+                contractAddress: "",
+                balance: "",
+            },
+        }
+    })
+    // {
+    //   name: "Moonbeam",
+    //   short_name: "moonbeam",
+    //   chain: "Moonbeam",
+    //   network: "mainnet",
+    //   chain_id: 1284,
+    //   network_id: 1284,
+    //   rpc_url: "https://rpc.api.moonbeam.network",
+    //   native_currency: {
+    //     symbol: "GLMR",
+    //     name: "Glimmer",
+    //     decimals: "18",
+    //     contractAddress: "",
+    //     balance: "",
+    //   },
+    // },
+    // {
+    //     name: "Moonbase Alpha",
+    //     short_name: "moonbase",
+    //     chain: "Moonbase",
+    //     network: "testnet",
+    //     chain_id: 1287,
+    //     network_id: 1287,
+    //     rpc_url: "https://rpc.api.moonbase.moonbeam.network",
+    //     native_currency: {
+    //         symbol: "DEV",
+    //         name: "DEV",
+    //         decimals: "18",
+    //         contractAddress: "",
+    //         balance: "",
+    //     },
+    // },
 ];
 
 

@@ -6,6 +6,7 @@ const getConfigs = () => {
     const env = 'development'
     const config = {
         API_URL: 'https://api-dev.moonfit.xyz/v1',
+        IMAGE_CDN_URL: 'https://cdn.moonfit.xyz',
         APP_URI: window.location.host,
 
         MOONBEAST_NETWORK: 'https://rpc.api.moonbase.moonbeam.network/',
@@ -31,6 +32,7 @@ const getConfigs = () => {
         case 'production':
             return {
                 API_URL: 'https://api-prod.moonfit.xyz/v1',
+                IMAGE_CDN_URL: 'https://cdn-prod.moonfit.xyz',
                 APP_URI: window.location.host,
                 env: 'production',
 

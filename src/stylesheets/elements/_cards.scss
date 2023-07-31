@@ -65,6 +65,7 @@
 
           img{
             margin-right: 8px;
+            width: 24px;
           }
         }
       }
@@ -125,6 +126,7 @@
         color: #ffffff;
         display: flex;
         justify-content: space-between;
+        text-align: left;
 
         .back-deposit{
           display: flex;
@@ -465,6 +467,11 @@
           top: 12px;
           right: 12px;
         }
+
+        @media (max-width: 767px){
+          flex-direction: column;
+          align-items: start;
+        }
       }
 
       .section-tokens{
@@ -536,16 +543,16 @@
         }
 
         .nft-list{
-          margin: 0;
-          padding :0;
+          // margin: 0;
+          // padding :0;
           display: grid;
           grid-template-columns: 1fr 1fr 1fr;
           column-gap: 20px;
           row-gap: 20px;
 
-          .nft-item{
-            margin: 0;
-            padding: 0;
+          .nft-list-item{
+            // margin: 0;
+            // padding: 0;
 
             .nft-image{
               padding: 2px;
@@ -582,6 +589,8 @@
                 position: absolute;
                 top: 11px;
                 right: 11px;
+                width: 28px;
+                height: 28px;
               }
             }
 
@@ -667,6 +676,22 @@
                 }
               }
             }
+          }
+
+          @media (max-width: 767px){
+            column-gap: 3px;
+            row-gap: 3px;
+            grid-template-columns: 1fr 1fr;
+          }
+        }
+      }
+
+      .mf-address-change{
+        @media (max-width: 767px) {
+          flex-direction: column;
+          
+          .section-inner{
+            margin-bottom: 10px;
           }
         }
       }
@@ -855,11 +880,33 @@
         }
       }
     }
+
+    @media (max-width: 767px){
+      width: 325px;
+
+      .mf-modal-confirm-content{
+        padding: 15px;
+        
+        .confirm-text{
+          padding: 0;
+        }
+  
+        .confirm-button{
+          .confirm-no{
+            margin: 0 0 10px;
+          }
+        }
+      }
+    }
   }
 
   &.result{
     .mf-modal-confirm-box{
       width: 430px;
+
+      @media (max-width: 767px){
+        width: 325px;
+      }
     }
   }
 }
