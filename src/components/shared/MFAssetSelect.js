@@ -1,5 +1,6 @@
+import { reduce } from 'bluebird';
 import React, {useState} from 'react';
-import Select from 'react-select';
+import Select, { NonceProvider } from 'react-select';
 
 const colourOptions = [
     { value: 'ocean', label: 'Ocean', color: '#00B8D9', isFixed: true },
@@ -29,7 +30,7 @@ const filterColors = (inputValue) =>
 const customStyles = {
     option: (base, state) => ({
         ...base,      
-        color: "#1e2022",
+        color: "#FFF",
         backgroundColor: state.isSelected || state.isFocused ? "rgba(189,197,209,.3)" : "rgba(189,197,209,0)",
         padding: ".5rem 3rem .5rem .5rem",
         cursor: "pointer",
@@ -38,16 +39,24 @@ const customStyles = {
         ...baseStyles,
         height: 50,
         minHeight: 50,
-        borderColor: '#1C0532',
-        backgroundColor: '#1C0532'
+        border: 0,
+        backgroundColor: '#1C0532',
+        color: '#FFF',
+        lineHeight: '50px',
+        padding: 0,
     }),
     valueContainer: (provided, state) => ({
         ...provided,
         height: 50,
+        padding: '0 16px',
+        border: 0,
+        boxShadow: 'none',
     }),
     input: (provided, state) => ({
         ...provided,
         margin: 0,
+        color: '#FFF',
+        padding: 0,
     }),
     indicatorSeparator: state => ({
         display: 'none',
@@ -58,12 +67,19 @@ const customStyles = {
     }),
     menu: (provided, state) => ({
         ...provided,
-        borderColor: '#1C0532',
-        backgroundColor: 'red',
-        borderColor: state.isFocused ? '#1C0532' : '#1C0532',
+        backgroundColor: '#1C0532',
+        border: 'none',
         zIndex: 9999
     }),
     menuPortal: provided => ({ ...provided, zIndex: 9999 }),
+    singleValue: provided => ({
+        ...provided,
+        color: '#FFF'
+      }),
+    placeholder: provided => ({
+        ...provided,
+        color: '#FFF'
+    }),
 }
 
 const MFAssetSelect = (props) => {
@@ -90,10 +106,10 @@ console.log('selected: ', selectedOption)
             /> */}
             <Select
                 placeholder="Select Option"
-                
-                value={selectedOption}
+
+                value={assetSelected}
                 options={listOption}
-                onChange={handleChange}
+                onChange={handleChangeAsset}
                 getOptionLabel={e => (
                 <div style={{ display: 'flex', alignItems: 'center' }}>
                     <img src={e.image} alt={e.text} style={{width: '30px', height: '30px', borderRadius: '50%', marginRight: '5px'}}/>

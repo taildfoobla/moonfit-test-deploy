@@ -34,6 +34,81 @@
       width: 100%;
       border-radius: 7px;
       background-color: #2A1143;
+
+      &.from{
+        .from-value{
+          text-transform: none;
+          font-size: 24px;
+          line-height: 30px;
+          font-weight: 600;
+        }
+      }
+
+      &.to{
+        .to-value{
+          text-transform: none;
+          font-size: 24px;
+          line-height: 30px;
+          font-weight: 600;
+        }
+      }
+
+      .network{
+        .network-info{
+          height: 50px;
+          border-radius: 5px;
+          line-height: 50px;
+          background: #1C0532;
+          display: flex;
+          align-items: center;
+          padding: 14px 16px 12px;
+
+          img{
+            margin-right: 8px;
+          }
+        }
+      }
+      
+      .amount{
+        .amount-form{
+          position: relative;
+
+          .amount-input{
+            .ant-input-number-handler-wrap{
+              display: none;
+            }
+          }
+
+          .max-value{
+            position: absolute;
+            top: 10px;
+            right: 16px;
+            font-size: 18px;
+            font-weight: 600;
+            line-height: 28px;
+            text-align: right;
+            color: #4CCBC9;
+            text-transform: none;
+
+            &:hover{
+              cursor: pointer;
+            }
+          }
+        }
+
+        .balance{
+          font-size: 18px;
+          font-weight: 600;
+          line-height: 28px;
+          text-align: right;
+          color: #fff;
+          text-transform: none;
+
+          label{
+            color: #A8ADC3;
+          }
+        }
+      }
     }
 
     .card-title {
@@ -188,6 +263,32 @@
                 }
               }
             }
+          }
+        }
+      }
+
+      .deposit-button{
+        button{
+          width: 100%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          background: #4CCBC9;
+          font-size: 18px;
+          font-weight: 800;
+          color: #020722;
+          line-height: 50px;
+          height: 50px;
+          border: none;
+          box-shadow: none;
+          border-radius: 5px;
+
+          svg{
+            margin-right: 4px;
+          }
+
+          &:disabled{
+            background: #386884;
           }
         }
       }
@@ -595,6 +696,170 @@
         border-radius: inherit;
         background: linear-gradient(to right bottom, #3d0516, #4e0c20, #60132a, #731b35, #862341);
       }
+    }
+  }
+}
+
+.mf-modal-confirm{
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.8);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .mf-modal-confirm-box{
+    width: 470px;
+    padding: 3px;
+    border-radius: 20px;
+    background: linear-gradient(125deg, #4CCBC9 0%, #E4007B 100%);
+    margin: 0;
+    box-shadow: 0px 4px 80px 0px rgba(161, 107, 216, 0.6);
+
+    .mf-modal-confirm-content{
+      background-color: #351C4F;
+      border-radius: 20px;
+      padding: 24px 30px 30px;
+      text-align: center;
+
+      .confirm-text{
+        font-size: 24px;
+        font-weight: 600;
+        line-height: 30px;
+        color: #ffffff;
+        text-transform: none;
+        margin: 0 0 27px;
+        padding: 0 15px;
+
+        span{
+          color: #4CCBC9;
+        }
+      }
+
+      .confirm-button{
+        .confirm-no{
+          border: 2px solid rgba(255, 255, 255, 0.14);
+          height: 50px;
+          line-height: 46px;
+          width: 180px;
+          text-align: center;
+          font-size: 18px;
+          font-weight: 800;
+          color: #fff;
+          padding: 0;
+          border-radius: 5px;
+          transition: all 0.3s ease 0s;
+          margin: 0 8px;
+
+          &:hover{
+            border-color: #E4007B;
+            background-color: #E4007B;
+          }
+        }
+
+        .confirm-yes{
+          height: 50px;
+          background-color: #E4007B;
+          line-height: 50px;
+          width: 180px;
+          text-align: center;
+          font-size: 18px;
+          font-weight: 800;
+          color: #fff;
+          padding: 0;
+          border-radius: 5px;
+          transition: all 0.3s ease 0s;
+          border: none;
+          margin: 0 8px;
+
+          &:hover{
+            background-color: darken(#E4007B, 15%);
+          }
+        }
+
+        .confirm-done{
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          height: 50px;
+          background-color: #4CCBC9;
+          line-height: 50px;
+          width: 100%;
+          text-align: center;
+          font-size: 18px;
+          font-weight: 800;
+          color: #020722;
+          padding: 0;
+          border-radius: 5px;
+          transition: all 0.3s ease 0s;
+          border: none;
+          margin: 0 0 20px;
+
+          &:hover{
+            background-color: darken(#4CCBC9, 15%);
+          }
+
+          .icon{
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background-color: rgba(2, 7, 34, 0.2);
+            margin-right: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+          }
+        }
+
+        .view-result{
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          font-size: 18px;
+          font-weight: 800;
+          line-height: 24px;
+          color: #A16BD8;
+
+          svg{
+            margin-right: 6px;
+          }
+        }
+      }
+
+      .mf-result-submitted{
+        font-size: 20px;
+        font-weight: 400;
+        line-height: 26px;
+        color: #ffffff;
+        margin: 0 0 32px;
+      }
+
+      .mf-result-message{
+        display: block;
+        font-size: 18px;
+        font-weight: 600;
+        line-height: 28px;
+        color: #A8ADC3;
+        text-transform: none;
+        margin: 0 0 24px;
+      }
+
+      .mf-result-image{
+        img{
+          margin: 0 auto 32px;
+        }
+      }
+    }
+  }
+
+  &.result{
+    .mf-modal-confirm-box{
+      width: 430px;
     }
   }
 }

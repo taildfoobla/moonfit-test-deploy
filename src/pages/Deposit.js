@@ -1,5 +1,5 @@
 import React, { Fragment, useContext, useEffect, useState } from 'react'
-import { Avatar } from 'antd';
+import { Avatar, InputNumber } from 'antd';
 import Bluebird from 'bluebird'
 import WalletAuthContext from "../contexts/WalletAuthContext"
 import * as notification from "../utils/notification"
@@ -20,7 +20,7 @@ import { ReactComponent as ExchangeIcon } from "../assets/images/icons/exchange.
 import { depositToMobileApp } from "../components/DepositNFT/_depositToMobileApp";
 import { getMoonBeatInfo } from '../utils/api'
 import MFAssetSelect from '../components/shared/MFAssetSelect';
-import {Col, Row, Radio, Button} from 'antd'
+import {Col, Row, Radio, Button, Modal} from 'antd'
 import moonfitLogo from "../assets/images/logo3.png"
 import imageStep1 from "../assets/images/iPhone.png"
 import imageStep2 from "../assets/images/iPhone1.png"
@@ -34,6 +34,12 @@ import { ReactComponent as RunningIcon } from "../assets/images/running-icon.svg
 import { ReactComponent as GiftIcon } from "../assets/images/gift-icon.svg";
 import { ReactComponent as SpeedometerIcon } from "../assets/images/speedometer-icon.svg";
 import { ReactComponent as BackIcon } from "../assets/images/ArrowCircleLeft.svg";
+import iconMoonbeam from "../assets/images/moonbeam.png"
+import { ReactComponent as DepositIcon } from "../assets/images/deposit-icon.svg";
+import iconSuccess from "../assets/images/success-icon.png"
+import iconFail from "../assets/images/fail-icon.png"
+import { ReactComponent as ArrowSquareOut } from "../assets/images/ArrowSquareOut.svg";
+import { ReactComponent as TryAgainIcon } from "../assets/images/transfer.svg";
 
 const NFTSaleRoundWorldCup = () => {
     const [loading, setLoading] = useState(false)
@@ -51,7 +57,14 @@ const NFTSaleRoundWorldCup = () => {
     const [listAccount, setListAccount] = useState([])
     const [userIdSelected, setUserIdSelected] = useState('')
     const [isDisplayDeposit, setIsDisplayDeposit] = useState(false)
-    const [assetSelected, setAssetSelected] = useState('')
+    const [assetSelected, setAssetSelected] = useState(null)
+    const [isSelectToken, setIsSelectToken] = useState(false)
+    const [isSelectNFT, setIsSelectNFT] = useState(false)
+    const [balance, setBalance] = useState(0)
+    const [amount, setAmount] = useState(0)
+    const [isModalConfirm, setIsModalConfirm] = useState(false)
+    const [isModalResult, setIsModalResult] = useState(false)
+    const [error, setError] = useState('')
 
     const {
         isSignature,
@@ -188,18 +201,50 @@ const NFTSaleRoundWorldCup = () => {
     }
 
     const handleDisplayDeposit = (value) => {
-        console.log('display deposit', value);
-        setAssetSelected(value)
+        // console.log('display deposit', value);
+        const assetClick = listOption.filter(item => item.value === value)
+        console.log('asset selected: ', assetClick)
+        // let isSelectToken = false;
+        
+        const filterToken = tokensFake.filter(item => item.id === value)
+        if(filterToken.length > 0){
+            setIsSelectToken(true)
+            setBalance(filterToken[0].value)
+        }else{
+            setIsSelectToken(false)
+        }
+
+        const filterNFT = nftsFake.filter(item => item.id === value)
+        if(filterNFT.length > 0){
+            setIsSelectNFT(true)
+        }else{
+            setIsSelectNFT(false)
+        }
+        
+        setAssetSelected(assetClick)
         setIsDisplayDeposit(true);
+    }
+
+    const handleChangeAsset = (value) => {
+        const filterToken = tokensFake.filter(item => item.id === value.value)
+        if(filterToken.length > 0){
+            setIsSelectToken(true)
+            setBalance(filterToken[0].value)
+        }else{
+            setIsSelectToken(false)
+        }
+
+        const filterNFT = nftsFake.filter(item => item.id === value.value)
+        if(filterNFT.length > 0){
+            setIsSelectNFT(true)
+        }else{
+            setIsSelectNFT(false)
+        }
+        setAssetSelected(value)
     }
 
     const handleBackDeposit = () => {
         setIsDisplayDeposit(false);
-    }
-
-    const handleChangeAsset = (value) => {
-        setAssetSelected(value)
-        console.log('valueeee', value)
     }
 
     const tokensFake = [
@@ -260,7 +305,20 @@ const NFTSaleRoundWorldCup = () => {
         return itemOption
     })
 
-    console.log('list option: ', listOption)
+    // console.log('list option: ', listOption)
+
+    const onChangeAmount = (value) => {
+        setAmount(parseFloat(value))
+      };
+
+    const handleClickMaxValue = () => {
+        // console.log('set max value')
+        setAmount(balance)
+    }
+
+    const _handleCloseModalResult = () => {
+        setIsModalResult(false)
+    }
 
     const _renderUserInfo = () => {
         if (isLogin) {
@@ -646,13 +704,13 @@ const NFTSaleRoundWorldCup = () => {
         return (
             <Fragment>
                 <div className="relative flex items-center gap-x-2.5">
-                    <div className="section-inner p-5">
-                        <p className="uppercase font-semibold text-[16px] text-[#abadc3] mb-0">from</p>
-                        <p className="font-semibold text-[24px] text-white">0xb36A...a9a332</p>
+                    <div className="section-inner p-5 from">
+                        <p className="uppercase font-semibold text-[16px] text-[#abadc3] mb-0 from-label">from</p>
+                        <p className=" text-white from-value">0xb36A...a9a332</p>
                     </div>
-                    <div className="section-inner py-5 pl-8">
-                        <p className="uppercase font-semibold text-base text-[#abadc3] mb-0">to</p>
-                        <p className="font-semibold text-[24px] text-white">Spending Account</p>
+                    <div className="section-inner py-5 pl-8 to">
+                        <p className="uppercase font-semibold text-base text-[#abadc3] mb-0 to-label">to</p>
+                        <p className="text-white to-value">Spending Account</p>
                     </div>
                     <div className="absolute top-1/2 left-1/2" style={{ transform: 'translate(-50%, -50%)' }}>
                         <ExchangeIcon width={100} height={100} />
@@ -660,23 +718,129 @@ const NFTSaleRoundWorldCup = () => {
                 </div>
                 <div className="section-inner p-5 mt-3">
                     <div className="assets">
-                        <p className="uppercase font-semibold text-[16px] text-[#abadc3] mb-3">ASSET</p>
+                        <p className="uppercase font-semibold text-[16px] text-[#abadc3] mb-3">Asset</p>
                         <MFAssetSelect listOption={listOption} assetSelected={assetSelected} handleChangeAsset={handleChangeAsset}/>
                     </div>
-                    <div className="network mt-3">
-                        <p className="uppercase font-semibold text-[16px] text-[#abadc3] mb-3">ASSET</p>
-                        {/* <MFAssetSelect /> */}
-                    </div>
+
+                    {
+                        isSelectNFT &&
+                        <div className="network mt-3">
+                            <p className="uppercase font-semibold text-[16px] text-[#abadc3] mb-3">Network</p>
+                            <div className='network-info'>
+                                <img src={iconMoonbeam} alt="account-image"/>
+                                Moonbean Network
+                            </div>
+                        </div>
+                    }
+
+                    {
+                        isSelectToken &&
+                        <div className='amount mt-3'>
+                            <p className="uppercase font-semibold text-[16px] text-[#abadc3] mb-3 amount-title">Amount</p>
+                            <div className='amount-form'>
+                                <InputNumber
+                                className='amount-input'
+                                    style={{
+                                    width: '100%',
+                                    background: '#1C0532',
+                                    height: '50px',
+                                    lineHeight: '50px',
+                                    color: '#FFF',
+                                    border: 'none',
+                                    boxShadow: 'none',
+                                    padding: '0 5px',
+                                    fontSize: '18px',
+                                    fontWeight: '600',
+                                    }}
+                                    value={amount}
+                                    min="0"
+                                    step="0.01"
+                                    onChange={onChangeAmount}
+                                    stringMode
+                                />
+                                <span className='max-value' onClick={handleClickMaxValue}>Max</span>
+                            </div>
+                            <div className='balance'><label>Balance: </label>{balance}</div>
+                        </div>
+                    }
                 </div>
-                <div className="flex justify-center gap-x-2.5 items-center mt-3">
-                    <div className={'flex justify-center items-center uppercase w-full text-base cursor-pointer rounded-[2px] pt-1 pb-2 px-3 bg-[#1C0532] border-[2px] border-[#ffffff24] text-white hover:opacity-70'}>
+                <div className="mt-3 deposit-button">
+                    {/* <div className={'flex justify-center items-center uppercase w-full text-base cursor-pointer rounded-[2px] pt-1 pb-2 px-3 bg-[#1C0532] border-[2px] border-[#ffffff24] text-white hover:opacity-70'}>
                         Back
-                    </div>
-                    <div className={'flex justify-center items-center uppercase w-full text-base cursor-pointer rounded-[2px] pt-1 pb-2 px-3 bg-[#4CCBC9] text-white hover:opacity-70'}>
+                    </div> */}
+                    {/* <div className={'flex justify-center items-center uppercase w-full text-base cursor-pointer rounded-[2px] pt-1 pb-2 px-3 bg-[#4CCBC9] text-white hover:opacity-70'}>
                         <RefreshIcon className="mt-1 mr-1" width={18} height={18} /> Deposit
-                    </div>
+                    </div> */}
+
+                    <button 
+                    disabled={isDeposited || ( isSelectToken && (!amount || amount < 0 || amount > balance))} 
+                    onClick={_handleOpenModalDepositAsset} 
+                    className={`ant-btn ${isDeposited ? 'ant-btn-loading' : ''}`}>
+                        <DepositIcon width={18} height={18} />
+                        {
+                            isSelectToken && (!amount || amount < 0 || amount > balance) ? 'Invalid Amount' : isDeposited ? 'Depositing' : 'Deposit'
+                        }
+                    </button>
                 </div>
             </Fragment>
+        )
+    }
+
+    const _renderModalConfirm = () => {
+        return (
+            <div className='mf-modal-confirm'>
+                <div className='mf-modal-confirm-box'>
+                    <div className='mf-modal-confirm-content'>
+                        <div className='confirm-text'>
+                            Deposit this asset to <span>"{user.email}"</span> account?
+                        </div>
+
+                        <div className='confirm-button'>
+                            <Button className='confirm-no' onClick={_handleCloseModalDepositAsset}>No</Button>
+                            <Button className='confirm-yes' onClick={_handleDepositedAsset}>Yes</Button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        )
+    }
+
+    const _renderModalResult = (error) => {
+        return (
+            <div className='mf-modal-confirm result'>
+                <div className='mf-modal-confirm-box'>
+                    <div className='mf-modal-confirm-content'>
+                        <h3 className='mf-result-submitted'>
+                            {
+                                error ? 'Transaction Failed' : 'Transaction Submitted'
+                            }
+                        </h3>
+                        <div className='mf-result-image'>
+                            {
+                                error ? <img src={iconFail} alt="Transaction Failed"/> : <img src={iconSuccess} alt="Transaction Submitted"/>
+                            }
+                        </div>
+
+                        <p className='mf-result-message'>
+                            {
+                                error ? error : 'It may take up to 5 minutes for the change to reflect on your Spending Account.'
+                            }
+                        </p>
+                        
+                        <div className='confirm-button'>
+                            {
+                                error ? <Button className='confirm-done' onClick={_handleCloseModalResult}><TryAgainIcon width={20} height={20} />Try Again</Button> 
+                                : 
+                                <>
+                                    <Button className='confirm-done' onClick={_handleCloseModalDepositAsset}><span className='icon'><CheckIcon width={12} height={12} /></span>Done</Button>
+                                    <a className='view-result'><ArrowSquareOut width={20} height={20} />View Transaction</a>
+                                </>
+                            }
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
         )
     }
 
@@ -767,6 +931,21 @@ const NFTSaleRoundWorldCup = () => {
             setGlmrValue('')
             setIsDeposited(false)
         })
+    }
+
+    const _handleDepositedAsset = () => {
+        console.log('deposit asset')
+        setIsModalConfirm(false)
+        setError('222222222222222')
+        setIsModalResult(true)
+    }
+
+    const _handleCloseModalDepositAsset = () => {
+        setIsModalConfirm(false)
+    }
+
+    const _handleOpenModalDepositAsset = () => {
+        setIsModalConfirm(true)
     }
 
     const _renderNFTItems = () => {
@@ -924,18 +1103,30 @@ const NFTSaleRoundWorldCup = () => {
     }
 
     return (
-        <CurveBGWrapper className="page-nft-sale deposit-page" scrollBg={!isSignature}>
-            <EnvWrapper routeItem={Paths.Deposit}>
-                <div className={'section page-nft-sale'}>
-                    <NFTStages>
-                        {
-                            !loading && _renderContainer()
-                        }
-                        {isSignature && <LoadingWrapper loading={loading} />}
-                    </NFTStages>
-                </div>
-            </EnvWrapper>
-        </CurveBGWrapper>
+        <>
+            <CurveBGWrapper className="page-nft-sale deposit-page" scrollBg={!isSignature}>
+                <EnvWrapper routeItem={Paths.Deposit}>
+                    <div className={'section page-nft-sale'}>
+                        <NFTStages>
+                            {
+                                !loading && _renderContainer()
+                            }
+                            {isSignature && <LoadingWrapper loading={loading} />}
+                        </NFTStages>
+                    </div>
+                </EnvWrapper>
+            </CurveBGWrapper>
+
+            {
+                isModalConfirm && _renderModalConfirm()
+            }
+
+            {
+                isModalResult && _renderModalResult(error)
+            }
+
+            {/* {_renderModalResult(error)} */}
+        </>
     )
 }
 
