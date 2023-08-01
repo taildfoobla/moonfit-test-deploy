@@ -1,3 +1,4 @@
+import {Buffer} from 'buffer';
 import configs from '../configs'
 import MetaMaskLogo from '../assets/images/wallets/MetaMaskLogo.svg';
 import SubWalletLogo from '../assets/images/wallets/SubWalletLogo.svg';
