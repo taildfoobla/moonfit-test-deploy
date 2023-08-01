@@ -133,7 +133,7 @@ const _loadNFTInfo = async (methods, tokenId, key) => {
         const response = await _loadNFTMetadata(`${configs.IMAGE_CDN_URL}/metadata/${tokenId}.json`)
 
         if (response.name) {
-            localStorage.setItem(key, JSON.stringify(response))
+            localStorage.setItem(key, JSON.stringify({...response, _updatedAt: Date.now()}))
         }
 
         return response
@@ -176,8 +176,11 @@ export const getNFTInfo2 = async (nftType, methods, tokenId) => {
         let item = localStorage.getItem(key)
         if (item) {
             item = JSON.parse(item)
-            window._NFT_InfosUpdate = Array.isArray(window._NFT_InfosUpdate) ? window._NFT_InfosUpdate : []
-            window._NFT_InfosUpdate.push([methods, tokenId, key])
+            if (!item._updatedAt || item._updatedAt < Date.now() - 24 * 60 * 60 * 1000) {
+                window._NFT_InfosUpdate = Array.isArray(window._NFT_InfosUpdate) ? window._NFT_InfosUpdate : []
+                window._NFT_InfosUpdate.push([methods, tokenId, key])
+            }
+
             return item
         }
     } catch (e) {
