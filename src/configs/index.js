@@ -1,5 +1,4 @@
 import BigNumber from 'bignumber.js'
-import {getReactEnv} from "../utils/env"
 
 const getConfigs = () => {
     // const env = getReactEnv('ENV')

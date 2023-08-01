@@ -40,7 +40,7 @@ const loadMintPass = async (address) => {
     const nfts = await fetchMintPassByAccount(address)
 
     return nfts.map(item => ({
-        ..._pickItem(moonBeamNetwork, ['symbolIcon', 'chainIcon', 'symbol', 'currencySymbol', 'chainId', 'networkName']),
+        ..._pickItem(moonBeamNetwork, ['symbolIcon', 'chainIcon', 'symbol', 'currencySymbol', 'chainId', 'networkName', 'scan']),
         ...item,
     }))
 }
@@ -76,7 +76,7 @@ const loadNFT = async (network, contractAddress, address, maxLength = 100) => {
         }, {concurrency: 5})
 
         return newData.map(item => ({
-            ..._pickItem(network, ['symbolIcon', 'chainIcon', 'symbol', 'currencySymbol', 'chainId', 'networkName']),
+            ..._pickItem(network, ['symbolIcon', 'chainIcon', 'symbol', 'currencySymbol', 'chainId', 'networkName', 'scan']),
             ...item,
         }))
     } catch (e) {
@@ -85,7 +85,7 @@ const loadNFT = async (network, contractAddress, address, maxLength = 100) => {
     }
 }
 
-export const loadAsset = async (address) => {
+export const loadTokens = async (address) => {
     const [
         glmrBalance,
         astarBalance,
@@ -95,7 +95,49 @@ export const loadAsset = async (address) => {
         getBaseBalance(astarNetwork.rpc, address),
         getBaseBalance(binanceNetwork.rpc, address),
     ])
+    console.log({
+        glmrBalance,
+        astarBalance,
+        bnbBalance,
+    })
 
+    return {
+        tokens: [
+            {
+                ..._pickItem(moonBeamNetwork, ['symbolIcon', 'chainIcon', 'symbol', 'currencySymbol', 'chainId', 'scan']),
+                symbol: 'MFG',
+                symbolIcon: `${configs.IMAGE_CDN_URL}/image/original/assets/icons/MFG.png`,
+                currencySymbol: 'MFG',
+                balance: 0,
+                value: 0,
+            },
+            {
+                ..._pickItem(moonBeamNetwork, ['symbolIcon', 'chainIcon', 'symbol', 'currencySymbol', 'chainId', 'scan']),
+                balance: glmrBalance,
+                value: new BigNumber(glmrBalance, 10).dp(moonBeamNetwork.digit).toString()
+            },
+            {
+                ..._pickItem(astarNetwork, ['symbolIcon', 'chainIcon', 'symbol', 'currencySymbol', 'chainId', 'scan']),
+                balance: astarBalance,
+                value: new BigNumber(astarBalance, 10).dp(astarNetwork.digit).toString()
+            },
+            {
+                ..._pickItem(binanceNetwork, ['symbolIcon', 'chainIcon', 'symbol', 'currencySymbol', 'chainId', 'scan']),
+                balance: bnbBalance,
+                value: new BigNumber(bnbBalance, 10).dp(binanceNetwork.digit).toString()
+            },
+        ].map((item,index) => {
+            return {
+                id: `${item.symbol}_${index}`,
+                ...item,
+                name: item.symbol,
+                type: item.symbol,
+            }
+        }),
+    }
+}
+
+export const loadAsset = async (address) => {
     const [
         mintPass,
         glmrMoonBeast,
@@ -109,37 +151,6 @@ export const loadAsset = async (address) => {
     ])
 
     return {
-        tokens: [
-            {
-                ..._pickItem(moonBeamNetwork, ['symbolIcon', 'chainIcon', 'symbol', 'currencySymbol', 'chainId']),
-                symbol: 'MFG',
-                symbolIcon: `${configs.IMAGE_CDN_URL}/image/original/assets/icons/MFG.png`,
-                currencySymbol: 'MFG',
-                balance: 0,
-                value: 0,
-            },
-            {
-                ..._pickItem(moonBeamNetwork, ['symbolIcon', 'chainIcon', 'symbol', 'currencySymbol', 'chainId']),
-                balance: glmrBalance,
-                value: new BigNumber(glmrBalance, 10).dp(moonBeamNetwork.digit).toString()
-            },
-            {
-                ..._pickItem(astarNetwork, ['symbolIcon', 'chainIcon', 'symbol', 'currencySymbol', 'chainId']),
-                balance: astarBalance,
-                value: new BigNumber(astarBalance, 10).dp(astarNetwork.digit).toString()
-            },
-            {
-                ..._pickItem(binanceNetwork, ['symbolIcon', 'chainIcon', 'symbol', 'currencySymbol', 'chainId']),
-                balance: bnbBalance,
-                value: new BigNumber(bnbBalance, 10).dp(binanceNetwork.digit).toString()
-            },
-        ].map((item,index) => {
-            return {
-                id: `${item.symbol}_${index}`,
-                ...item,
-                name: item.symbol
-            }
-        }),
         nfts: [
             ...mintPass,
             ...glmrMoonBeast,
