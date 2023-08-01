@@ -50,6 +50,14 @@ export const switchNetwork = async (provider) => {
             return provider.request(WEB3_METHODS.switchToMoonbaseAlphaNetwork)
     }
 }
+export const switchToNetwork = async (provider, chainId) => {
+    try {
+        await provider.request(WEB3_METHODS.switchToChainId(chainId))
+    } catch (e) {
+        console.log(`Cannot switchToChaiId: ${chainId}`, e.message)
+        await provider.request(WEB3_METHODS.addToChainId(chainId))
+    }
+}
 
 export const sendTransaction = async (provider, connector, tx) => {
     if (!provider && !connector) {

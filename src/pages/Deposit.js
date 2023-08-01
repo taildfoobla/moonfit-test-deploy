@@ -2,7 +2,7 @@ import React, {Fragment, useContext, useEffect, useState} from 'react'
 import {Avatar, InputNumber} from 'antd';
 import WalletAuthContext from "../contexts/WalletAuthContext"
 import * as notification from "../utils/notification"
-import {getShortAddress, switchNetwork} from "../utils/blockchain"
+import {getShortAddress, switchToNetwork} from "../utils/blockchain"
 import LoadingWrapper from "../components/shared/LoadingWrapper"
 import LoadingOutlined from "../components/shared/LoadingOutlined"
 import Paths from "../routes/Paths"
@@ -113,7 +113,6 @@ const NFTSaleRoundWorldCup = () => {
         setIsFetching(true)
         loading && setLoading(true)
         // Switch Network on Desktop Wallet Extension
-        provider && await switchNetwork(provider)
 
         loading && setLoading(false)
         const [response, response2] = await Promise.all([
@@ -618,6 +617,8 @@ const NFTSaleRoundWorldCup = () => {
             amount,
         })
 
+        provider && await switchToNetwork(provider, assetSelected.chainId)
+
         await depositToMobileApp(provider, connector, {
             type: assetSelected.type,
             chainId: assetSelected.chainId,
@@ -629,7 +630,7 @@ const NFTSaleRoundWorldCup = () => {
             console.log(response);
             setDepositResult({
                 ...response,
-                txUrl: `${assetSelected.scan}/txt/${response.txHash}`
+                txUrl: `${assetSelected.scan}/tx/${response.txHash}`
             })
             setIsModalResult(true)
         })
