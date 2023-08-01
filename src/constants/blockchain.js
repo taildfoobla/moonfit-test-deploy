@@ -4,149 +4,6 @@ import MetaMaskLogo from '../assets/images/wallets/MetaMaskLogo.svg';
 import SubWalletLogo from '../assets/images/wallets/SubWalletLogo.svg';
 import WalletConnectLogo from '../assets/images/wallets/WalletConnectLogo.svg';
 
-export const WEB3_METHODS = {
-    requestAccounts: {
-        method: 'eth_requestAccounts'
-    },
-    addMoonbeamNetwork: {
-        method: 'wallet_addEthereumChain',
-        params: [
-            {
-                chainId: '0x504',
-                rpcUrls: ['https://rpc.api.moonbeam.network'],
-                chainName: 'Moonbeam',
-                nativeCurrency: {name: 'GLMR', decimals: 18, symbol: 'GLMR'},
-                blockExplorerUrls: ['https://moonbeam.moonscan.io/']
-            }
-        ]
-    },
-    switchToMoonbeamNetwork: {
-        method: 'wallet_switchEthereumChain',
-        params: [
-            {
-                chainId: '0x504'
-            }
-        ]
-    },
-    addMoonriverNetwork: {
-        method: 'wallet_addEthereumChain',
-        params: [
-            {
-                chainId: '0x505',
-                rpcUrls: ['https://rpc.api.moonriver.moonbeam.network'],
-                chainName: 'Moonriver',
-                nativeCurrency: {name: 'MOVR', decimals: 18, symbol: 'MOVR'},
-                blockExplorerUrls: ['https://moonriver.moonscan.io/']
-            }
-        ]
-    },
-    switchToMoonriverNetwork: {
-        method: 'wallet_switchEthereumChain',
-        params: [
-            {
-                chainId: '0x505'
-            }
-        ]
-    },
-    addMoonbaseAlphaNetwork: {
-        method: 'wallet_addEthereumChain',
-        params: [
-            {
-                chainId: '0x507',
-                rpcUrls: ['https://rpc.api.moonbase.moonbeam.network'],
-                chainName: 'MoonbaseAlpha',
-                nativeCurrency: {name: 'DEV', decimals: 18, symbol: 'DEV'},
-                blockExplorerUrls: ['https://moonbase.moonscan.io/']
-            }
-        ]
-    },
-    switchToMoonbaseAlphaNetwork: {
-        method: 'wallet_switchEthereumChain',
-        params: [
-            {
-                chainId: '0x507'
-            }
-        ]
-    },
-    addAstarNetwork: {
-        method: 'wallet_addEthereumChain',
-        params: [
-            {
-                chainId: '0x250',
-                rpcUrls: ['https://evm.shibuya.astar.network'],
-                chainName: 'Astar',
-                nativeCurrency: {name: 'ASTR', decimals: 18, symbol: 'ASTR'},
-                blockExplorerUrls: ['https://blockscout.com/astar']
-            }
-        ]
-    },
-    switchToAstarNetwork: {
-        method: 'wallet_switchEthereumChain',
-        params: [
-            {
-                chainId: '0x250' // 592
-            }
-        ]
-    },
-    addShidenNetwork: {
-        method: 'wallet_addEthereumChain',
-        params: [
-            {
-                chainId: '0x150', // 336
-                rpcUrls: ['https://evm.shibuya.astar.network'],
-                chainName: 'Shiden',
-                nativeCurrency: {name: 'SDN', decimals: 18, symbol: 'SDN'},
-                blockExplorerUrls: ['https://blockscout.com/astar']
-            }
-        ]
-    },
-    switchToShidenNetwork: {
-        method: 'wallet_switchEthereumChain',
-        params: [
-            {
-                chainId: '0x150'
-            }
-        ]
-    },
-    addShibuyaNetwork: {
-        method: 'wallet_addEthereumChain',
-        params: [
-            {
-                chainId: '0x51',
-                rpcUrls: ['https://evm.shibuya.astar.network'],
-                chainName: 'Shibuya Testnet',
-                nativeCurrency: {name: 'SBY', decimals: 18, symbol: 'SBY'},
-                blockExplorerUrls: ['https://blockscout.com/shibuya']
-            }
-        ]
-    },
-    switchToShibuyaNetwork: {
-        method: 'wallet_switchEthereumChain',
-        params: [
-            {
-                chainId: '0x51' // 81
-            }
-        ]
-    },
-    getPermissions: {
-        method: 'wallet_getPermissions',
-        params: [{eth_accounts: {}}]
-    },
-    requestPermissions: {
-        method: 'wallet_requestPermissions',
-        params: [{eth_accounts: {}}]
-    }
-}
-
-export const CHAIN_ID_MAPPING = {
-    '0x507': 'Moonbase Alpha',
-    '507': 'Moonbase Alpha',
-    '1287': 'Moonbase Alpha',
-    '0x504': 'Moonbeam',
-    '504': 'Moonbeam',
-    '1284': 'Moonbeam',
-}
-
 export const PROVIDER_NAME = {
     SubWallet: "SubWallet",
     MetaMask: "ethereum"
@@ -422,6 +279,159 @@ export  const binanceNetwork = NETWORKS.find(item => item.symbol === 'BNB' && it
  */
 export  const astarNetwork = NETWORKS.find(item => item.symbol === 'ASTR' && item.isTestnet === isTestnet)
 
+
+export const WEB3_METHODS = {
+    requestAccounts: {
+        method: 'eth_requestAccounts'
+    },
+    addMoonbeamNetwork: {
+        method: 'wallet_addEthereumChain',
+        params: [
+            {
+                chainId: '0x504',
+                rpcUrls: ['https://rpc.api.moonbeam.network'],
+                chainName: 'Moonbeam',
+                nativeCurrency: {name: 'GLMR', decimals: 18, symbol: 'GLMR'},
+                blockExplorerUrls: ['https://moonbeam.moonscan.io/']
+            }
+        ]
+    },
+    switchToMoonbeamNetwork: {
+        method: 'wallet_switchEthereumChain',
+        params: [
+            {
+                chainId: '0x504'
+            }
+        ]
+    },
+    addMoonriverNetwork: {
+        method: 'wallet_addEthereumChain',
+        params: [
+            {
+                chainId: '0x505',
+                rpcUrls: ['https://rpc.api.moonriver.moonbeam.network'],
+                chainName: 'Moonriver',
+                nativeCurrency: {name: 'MOVR', decimals: 18, symbol: 'MOVR'},
+                blockExplorerUrls: ['https://moonriver.moonscan.io/']
+            }
+        ]
+    },
+    switchToMoonriverNetwork: {
+        method: 'wallet_switchEthereumChain',
+        params: [
+            {
+                chainId: '0x505'
+            }
+        ]
+    },
+    addMoonbaseAlphaNetwork: {
+        method: 'wallet_addEthereumChain',
+        params: [
+            {
+                chainId: '0x507',
+                rpcUrls: ['https://rpc.api.moonbase.moonbeam.network'],
+                chainName: 'MoonbaseAlpha',
+                nativeCurrency: {name: 'DEV', decimals: 18, symbol: 'DEV'},
+                blockExplorerUrls: ['https://moonbase.moonscan.io/']
+            }
+        ]
+    },
+    switchToMoonbaseAlphaNetwork: {
+        method: 'wallet_switchEthereumChain',
+        params: [
+            {
+                chainId: '0x507'
+            }
+        ]
+    },
+    addAstarNetwork: {
+        method: 'wallet_addEthereumChain',
+        params: [
+            {
+                chainId: '0x250',
+                rpcUrls: ['https://evm.shibuya.astar.network'],
+                chainName: 'Astar',
+                nativeCurrency: {name: 'ASTR', decimals: 18, symbol: 'ASTR'},
+                blockExplorerUrls: ['https://blockscout.com/astar']
+            }
+        ]
+    },
+    switchToAstarNetwork: {
+        method: 'wallet_switchEthereumChain',
+        params: [
+            {
+                chainId: '0x250' // 592
+            }
+        ]
+    },
+    addShidenNetwork: {
+        method: 'wallet_addEthereumChain',
+        params: [
+            {
+                chainId: '0x150', // 336
+                rpcUrls: ['https://evm.shibuya.astar.network'],
+                chainName: 'Shiden',
+                nativeCurrency: {name: 'SDN', decimals: 18, symbol: 'SDN'},
+                blockExplorerUrls: ['https://blockscout.com/astar']
+            }
+        ]
+    },
+    switchToShidenNetwork: {
+        method: 'wallet_switchEthereumChain',
+        params: [
+            {
+                chainId: '0x150'
+            }
+        ]
+    },
+    addShibuyaNetwork: {
+        method: 'wallet_addEthereumChain',
+        params: [
+            {
+                chainId: '0x51',
+                rpcUrls: ['https://evm.shibuya.astar.network'],
+                chainName: 'Shibuya Testnet',
+                nativeCurrency: {name: 'SBY', decimals: 18, symbol: 'SBY'},
+                blockExplorerUrls: ['https://blockscout.com/shibuya']
+            }
+        ]
+    },
+    switchToShibuyaNetwork: {
+        method: 'wallet_switchEthereumChain',
+        params: [
+            {
+                chainId: '0x51' // 81
+            }
+        ]
+    },
+    getPermissions: {
+        method: 'wallet_getPermissions',
+        params: [{eth_accounts: {}}]
+    },
+    requestPermissions: {
+        method: 'wallet_requestPermissions',
+        params: [{eth_accounts: {}}]
+    }
+}
+
+export const CHAIN_ID_MAPPING = {
+    '0x507': 'Moonbase Alpha',
+    '507': 'Moonbase Alpha',
+    '1287': 'Moonbase Alpha',
+
+    '0x504': 'Moonbeam',
+    '504': 'Moonbeam',
+    '1284': 'Moonbeam',
+
+    '97': 'Binance Smart Chain Testnet',
+    '0x61': 'Binance Smart Chain Testnet',
+
+    '81': 'Shibuya Network',
+    '0x51': 'Shibuya Network',
+
+    '592': 'Astar Network Mainnet',
+    '0x250': 'Astar Network Mainnet',
+}
 
 export const SUPPORTED_NETWORKS = [
     ...NETWORKS.map(item => {
