@@ -267,17 +267,17 @@ const NETWORKS = [
 /**
  * @type {NetworkConfig}
  */
-export  const moonBeamNetwork = NETWORKS.find(item => item.symbol === 'GLMR' && item.isTestnet === isTestnet)
+export const moonBeamNetwork = NETWORKS.find(item => item.symbol === 'GLMR' && item.isTestnet === isTestnet)
 
 /**
  * @type {NetworkConfig}
  */
-export  const binanceNetwork = NETWORKS.find(item => item.symbol === 'BNB' && item.isTestnet === isTestnet)
+export const binanceNetwork = NETWORKS.find(item => item.symbol === 'BNB' && item.isTestnet === isTestnet)
 
 /**
  * @type {NetworkConfig}
  */
-export  const astarNetwork = NETWORKS.find(item => item.symbol === 'ASTR' && item.isTestnet === isTestnet)
+export const astarNetwork = NETWORKS.find(item => item.symbol === 'ASTR' && item.isTestnet === isTestnet)
 
 
 export const WEB3_METHODS = {
@@ -411,7 +411,34 @@ export const WEB3_METHODS = {
     requestPermissions: {
         method: 'wallet_requestPermissions',
         params: [{eth_accounts: {}}]
-    }
+    },
+    switchToChainId(chainId) {
+        const network = NETWORKS.find(item => item.chainId === chainId) || {}
+        return {
+            method: 'wallet_switchEthereumChain',
+            params: [
+                {
+                    chainId: network.chainHex,
+                }
+            ]
+        }
+    },
+    addToChainId(chainId) {
+
+        const network = NETWORKS.find(item => item.chainId === chainId) || {}
+        return {
+            method: 'wallet_addEthereumChain',
+            params: [
+                {
+                    chainId: network.chainHex,
+                    rpcUrls: [network.rpc],
+                    chainName: network.networkName,
+                    nativeCurrency: {name: network.symbol, decimals: network.currencyDecimal, symbol: network.symbol},
+                    blockExplorerUrls: [network.scan]
+                }
+            ]
+        }
+    },
 }
 
 export const CHAIN_ID_MAPPING = {
