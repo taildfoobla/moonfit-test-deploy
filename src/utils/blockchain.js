@@ -84,6 +84,12 @@ export const getShortAddress = (address, length = 4) => {
     return address ? address.slice(0, length) + "..." + address.slice(address.length - length, address.length) : ''
 }
 
+export const getShortEmail = (email, length) => {
+    const positionAfter = email.indexOf('@')
+    console.log('position: ', positionAfter)
+    return email.length > 22 ? email.slice(0, length) + "..." + email.slice(positionAfter, email.length) : email
+}
+
 export const getNFTInfo = async (methods, tokenId, fetchMetadata = true) => {
     if (!tokenId) return {name: null, imageUrl: null}
     try {
