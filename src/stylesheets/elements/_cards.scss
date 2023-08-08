@@ -8,9 +8,7 @@
     //background-color: #020722;
     background-color: #1c0532;
     width: 100%;
-    padding: 30px 30px 10px 30px;
-
-    $border: 3px;
+    padding: 39px 30px 30px 30px;
     color: #fff;
     position: relative;
     background-clip: padding-box;
@@ -104,6 +102,7 @@
           text-align: right;
           color: #fff;
           text-transform: none;
+          margin-top: 6px;
 
           label{
             color: #A8ADC3;
@@ -174,7 +173,7 @@
 
       .section-connected-wallet{
         .section-connected-massage{
-          padding: 18px 20px;
+          padding: 18px 20px 20px;
           background: #2A1143;
           border-radius: 7px;
           margin-bottom: 32px;
@@ -270,6 +269,9 @@
       }
 
       .deposit-button{
+        display: flex;
+        margin: 20px -4px 0;
+
         button{
           width: 100%;
           display: flex;
@@ -284,6 +286,7 @@
           border: none;
           box-shadow: none;
           border-radius: 5px;
+          margin: 0 4px;
 
           svg{
             margin-right: 4px;
@@ -292,11 +295,25 @@
           &:disabled{
             background: #386884;
           }
+
+          &.back-deposit{
+            border: 2px solid rgba(255, 255, 255, 0.14);
+            background: none;
+            color: #ffffff;
+          }
+        }
+
+        @media (max-width: 500px){
+          flex-direction: column-reverse;
+
+          button{
+            margin-bottom: 6px;
+          }
         }
       }
 
       .section-choose-account{
-        margin-bottom: 20px;
+        // margin-bottom: 20px;
 
         .ant-radio-group{
           display: block;
@@ -320,13 +337,17 @@
               }
 
               .ant-radio-inner{
-                width: 18px;
-                height: 18px;
+                width: 24px;
+                height: 24px;
                 background: none;
                 border-color: #7A678C;
 
                 &::after{
                   background-color: #4CCBC9;
+                  width: 22px;
+                  height: 22px;
+                  margin-left: -11px;
+                  margin-top: -11px;
                 }
               }
 
@@ -408,6 +429,8 @@
           background: #4CCBC9;
           border-radius: 5px;
           border: none;
+          margin-top: 20px;
+          height: 50px;
 
           .confirm-icon{
             width: 20px;
@@ -523,14 +546,29 @@
 
             &:hover{
               cursor: pointer;
-              background-color: #351C4F;
+
+              &.MFG{
+                color: #4CCBC9
+              }
+
+              &.GLMR{
+                color: #E4007B
+              }
+
+              &.ASTR{
+                color: #48C8F0
+              }
+
+              &.BNB{
+                color: #F3BA2F
+              }
             }
           }
         }
       }
 
       .section-nfts{
-        padding: 18px 20px;
+        padding: 18px 20px 20px;
 
         .nft-title{
           font-size: 16px;
@@ -541,6 +579,47 @@
           margin-bottom: 20px;
           display: flex;
           justify-content: space-between;
+        }
+
+        .nft-nodata{
+          text-align: center;
+          display: flex;
+          flex-direction: column;
+          align-content: center;
+          align-items: center;
+
+          svg{
+            margin: 0 auto 16px;
+          }
+
+          span{
+            font-size: 18px;
+            line-height: 28px;
+            font-weight: 700;
+            color: #fff;
+          }
+
+          .buy-nft{
+            background: #4CCBC9;
+            border-radius: 5px;
+            width: 250px;
+            height: 50px;
+            line-height: 50px;
+            color: #020722;
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+            margin-top: 16px;
+
+            svg{
+              margin: 0 6px 0 0;
+            }
+
+            &:hover{
+              background-color: darken(#4CCBC9, 15%);
+            }
+          }
         }
 
         .nft-list{
@@ -569,6 +648,10 @@
                 background: rgba(28, 5, 50, 0);
                 border-radius: 5px;
                 transition: all 0.6s ease 0s;
+
+                img{
+                  border-radius: 5px;
+                }
               }
 
               .nft-tag{
@@ -724,6 +807,35 @@
       }
     }
   }
+}
+
+.css-5km53n-control{
+  .css-9ww52q-IndicatorsContainer{
+    position: absolute;
+    top: 0;
+    right: 0;
+    background: #1C0532;
+  }
+}
+
+.menuList{
+  margin-top: -5px;
+  padding: 1px;
+  border-radius: 7px;
+  background: linear-gradient(125deg, #4CCBC9 0%, #E4007B 100%);
+
+  .menuListBox{
+    background-color: #351C4F;
+    border-radius: 7px;
+    padding: 0 0 10px;
+    max-height: 450px;
+    overflow-y: auto;
+  }
+}
+
+.loading-icon{
+  font-size: 20px !important;
+  margin-right: 10px;
 }
 
 .mf-modal-confirm{
@@ -909,6 +1021,14 @@
         width: 325px;
       }
     }
+  }
+}
+
+.ant-tooltip{
+  max-width: 350px;
+
+  .ant-tooltip-inner{
+    width: 100%;
   }
 }
 

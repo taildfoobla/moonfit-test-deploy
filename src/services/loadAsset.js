@@ -132,6 +132,7 @@ export const loadTokens = async (address) => {
                 ...item,
                 name: item.symbol,
                 type: item.symbol,
+                assetType: 'token'
             }
         }),
     }
@@ -160,7 +161,8 @@ export const loadAsset = async (address) => {
             return {
                 id: `${item.type}_${item.tokenId}`,
                 ...item,
-                names: String(item.name || '').split(' ')
+                names: String(item.name || '').split(' '),
+                assetType: 'nft'
             }
         })
     }
