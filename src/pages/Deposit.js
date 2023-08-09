@@ -70,6 +70,11 @@ const NFTSaleRoundWorldCup = () => {
     } = useContext(WalletAuthContext)
 
     useEffect(() => {
+        setIsChooseAcc(false)
+        setIsDisplayDeposit(false)
+    }, [wallet.account])
+
+    useEffect(() => {
 
         fetchData().then()
         notification.destroy()
@@ -98,10 +103,13 @@ const NFTSaleRoundWorldCup = () => {
                 setLocalStorage('walletToken', users[0].access_token)
 
                 if (users.length === 1) {
+                    // setIsDisplayDeposit(false)
                     setUser(users[0])
                     setUserIdSelected(users[0].id)
                     setListAccount(users)
+
                 } else {
+                    // setIsDisplayDeposit(false)
                     setIsChooseAcc(true)
                     setUserIdSelected(users[0].id)
                     setListAccount(users)
@@ -555,8 +563,8 @@ const NFTSaleRoundWorldCup = () => {
     }
 
     const _renderDepositAsset = () => {
-        let depositText = isSelectToken && (!amount || +amount < 0 || +amount > +balance) ? 'Invalid Amount' : depositing ? 'Loading' : 'Deposit'
-        let isDisabled = isSelectToken && (!amount || +amount < 0 || +amount > +balance)
+        let depositText = isSelectToken && (!amount || +amount <= 0 || +amount > +balance) ? 'Invalid Amount' : depositing ? 'Loading' : 'Deposit'
+        let isDisabled = isSelectToken && (!amount || +amount <= 0 || +amount > +balance)
         // console.log({assetSelected});
 
         if (assetSelected && assetSelected.type === 'MFG') {
@@ -664,7 +672,7 @@ const NFTSaleRoundWorldCup = () => {
                 <div className='mf-modal-confirm-box'>
                     <div className='mf-modal-confirm-content'>
                         <div className='confirm-text'>
-                            Deposit this asset to <span>"{_renderEmailAddress(user.email)}"</span> account?
+                            Deposit this asset to <span>"{user.email}"</span> account?
                         </div>
 
                         <div className='confirm-button'>
