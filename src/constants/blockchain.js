@@ -171,7 +171,7 @@ const NETWORKS = [
         MINT_PASS_ADDRESS: '0x7E7d9fee5c5994aA7FC1dAeb231Af015e2FdAD3E',
         MOON_BEAST_ADDRESS: '0x368a1BBED5Ca2984b0867109e0aeB2B6fAD3B17A',
         MASTER_ADDRESS: '0xDE485A49e1dde6Ce2e9e77782Be664ECF1Fec2cF',
-        GATEWAY_ADDRESS: '0x8C9Dd68AC16ed12988ace046dc453A7fDCE57F50',
+        GATEWAY_ADDRESS: '0x728d879c8F0951D9E79bf189D0EDb4f1ea2C0B77',
     },
     {
         chainId: 1284,
@@ -180,7 +180,6 @@ const NETWORKS = [
         currencyDecimal: 18,
         networkName: 'Moonbeam',
         symbol: 'GLMR',
-        symbolName: 'Glimmer',
         currencySymbol: 'GLMR',
         scan: 'https://moonbeam.moonscan.io',
         rpc: 'https://rpc.api.moonbeam.network',
@@ -189,7 +188,7 @@ const NETWORKS = [
         MINT_PASS_ADDRESS: '0x6758053c0b27E478edE1E4882adFF708Fc4FA72D',
         MOON_BEAST_ADDRESS: '0x02A6DeC99B2Ca768D638fcD87A96F6069F91287c',
         MASTER_ADDRESS: '0xc7e929d05e52f62c3aa2bd180983fa2bf0abcc54',
-        GATEWAY_ADDRESS: '',
+        GATEWAY_ADDRESS: '0x728d879c8F0951D9E79bf189D0EDb4f1ea2C0B77',
     },
     {
         chainId: 97,
@@ -205,9 +204,9 @@ const NETWORKS = [
         wss: 'wss://testnet-dex.binance.org/api/',
         _name: 'bnb_token',
         MINT_PASS_ADDRESS: '',
-        MOON_BEAST_ADDRESS: '0x74f2bdAA4dbEDB6Deced91f3050d5Cd4d7D23b66',
-        MASTER_ADDRESS: '0xa0A0C755D332544Cf9D9c163E820C0FA05A8e73b',
-        GATEWAY_ADDRESS: '0x8Ef1b4518f3EDA3009afc8bDd6E87e4F50e1A079',
+        MOON_BEAST_ADDRESS: '0x67133a5a24aa7C5b5663767A34Fc24eBB4b9319E',
+        MASTER_ADDRESS: '0xe9B61a2Be11E8376d69dCEf8aB2d7a04887AbeBf',
+        GATEWAY_ADDRESS: '0x06CdFe37Eb3E72588dBadd540cC145547168977C',
     },
     {
         chainId: 56,
@@ -240,9 +239,9 @@ const NETWORKS = [
         wss: 'wss://rpc.shibuya.astar.network',
         _name: 'astar_token',
         MINT_PASS_ADDRESS: '',
-        MOON_BEAST_ADDRESS: '0x739Ac94b10C964945A2363E62E0D8d26b03486DD',
-        MASTER_ADDRESS: '0x095c8Ac658d137a2ea86C7Dd5092f3370dC6E6A7',
-        GATEWAY_ADDRESS: '0x9C10555B0b8eeCC1f26084129D8d964c0ac9A935', // MintBurnGateway
+        MOON_BEAST_ADDRESS: '0x4c1E5Be87E24bb3d6f77AD59a41BCba7B5249Fa9',
+        MASTER_ADDRESS: '0xe9B8A0D9D2e5be3158c5AB97182AeF9b1402562D',
+        GATEWAY_ADDRESS: '0x5e9c6c7c60C4Ae4f383a9E3385E445E3F2400d45', // MintBurnGateway
     },
     {
         chainId: 592,
@@ -253,13 +252,48 @@ const NETWORKS = [
         symbol: 'ASTR',
         currencySymbol: 'ASTR',
         scan: 'https://blockscout.com/astar',
-        rpc: 'https://evm.astar.network',
+        rpc: 'https://astar.public.blastapi.io',
         wss: 'wss://rpc.astar.network',
         _name: 'astar_token',
         MINT_PASS_ADDRESS: '',
+        MOON_BEAST_ADDRESS: '0x45eC4aCEfd18cC78Ad1f25f6D5Bf8180753A7000',
+        MASTER_ADDRESS: '0x166Bb513B431524fAAAaE7F7820EC188A8e1874A',
+        GATEWAY_ADDRESS: '',
+    },
+    {
+        chainId: 3441005,
+        chainHex: '0x54792197',
+        digit: 6,
+        currencyDecimal: 18,
+        networkName: 'Manta Pacific Testnet',
+        symbol: 'MANTA_ETH',
+        currencySymbol: 'ETH',
+        scan: 'https://pacific-explorer.testnet.manta.network',
+        rpc: 'https://pacific-rpc.testnet.manta.network/http',
+        wss: 'wss://pacific-rpc.testnet.manta.network/ws',
+        isTestnet: true,
+        _name: 'manta_token',
+        symbolDisplay: 'ETH (MANTA)',
+        MINT_PASS_ADDRESS: '',
+        MOON_BEAST_ADDRESS: '',
+        MASTER_ADDRESS: '0x73578e16F4E495DE5e8f2CD7927d5d77C1B65446',
+    },
+    {
+        chainId: 169,
+        chainHex: '0x361',
+        digit: 6,
+        currencyDecimal: 18,
+        networkName: 'Manta Pacific',
+        symbol: 'MANTA_ETH',
+        currencySymbol: 'ETH',
+        scan: 'https://pacific-explorer.manta.network',
+        rpc: 'https://pacific-rpc.manta.network/http',
+        wss: 'wss://pacific-rpc.manta.network/ws',
+        _name: 'manta_token',
+        symbolDisplay: 'ETH (MANTA)',
+        MINT_PASS_ADDRESS: '',
         MOON_BEAST_ADDRESS: '',
         MASTER_ADDRESS: '',
-        GATEWAY_ADDRESS: '',
     },
 ].map(mappingConfigNetwork)
     .filter(item => item.isTestnet === isTestnet)
@@ -278,6 +312,12 @@ export const binanceNetwork = NETWORKS.find(item => item.symbol === 'BNB' && ite
  * @type {NetworkConfig}
  */
 export const astarNetwork = NETWORKS.find(item => item.symbol === 'ASTR' && item.isTestnet === isTestnet)
+/**
+ * @type {NetworkConfig}
+ */
+export const mantaNetwork = NETWORKS.find(item => item.symbol === 'MANTA_ETH' && item.isTestnet === isTestnet)
+
+export const findNetworkFromSymbol = symbol => NETWORKS.find(item => item.symbol === symbol && item.isTestnet === isTestnet)
 
 
 export const WEB3_METHODS = {
@@ -300,19 +340,7 @@ export const WEB3_METHODS = {
         method: 'wallet_switchEthereumChain',
         params: [
             {
-                chainId: '0x504'
-            }
-        ]
-    },
-    addMoonriverNetwork: {
-        method: 'wallet_addEthereumChain',
-        params: [
-            {
-                chainId: '0x505',
-                rpcUrls: ['https://rpc.api.moonriver.moonbeam.network'],
-                chainName: 'Moonriver',
-                nativeCurrency: {name: 'MOVR', decimals: 18, symbol: 'MOVR'},
-                blockExplorerUrls: ['https://moonriver.moonscan.io/']
+                chainId: moonBeamNetwork.chainHex,
             }
         ]
     },
@@ -404,6 +432,24 @@ export const WEB3_METHODS = {
             }
         ]
     },
+    getAddNetworkParam: (network) => {
+        return {
+            method: 'wallet_addEthereumChain',
+            params: [
+                {
+                    chainId: network.chainHex,
+                    rpcUrls: [network.rpc],
+                    chainName: network.networkName,
+                    nativeCurrency: {name: network.currencySymbol, decimals: network.currencyDecimal, symbol: network.currencySymbol},
+                    blockExplorerUrls: [network.scan]
+                }
+            ]
+        }
+    },
+    getSwitchNetworkParam: (network) => ({
+        method: 'wallet_switchEthereumChain',
+        params: [{chainId: network.chainHex}]
+    }),
     getPermissions: {
         method: 'wallet_getPermissions',
         params: [{eth_accounts: {}}]
@@ -424,7 +470,6 @@ export const WEB3_METHODS = {
         }
     },
     addToChainId(chainId) {
-
         const network = NETWORKS.find(item => item.chainId === chainId) || {}
         return {
             method: 'wallet_addEthereumChain',
@@ -458,8 +503,13 @@ export const CHAIN_ID_MAPPING = {
 
     '592': 'Astar Network Mainnet',
     '0x250': 'Astar Network Mainnet',
-}
 
+    '3441005': 'Manta Pacific Testnet',
+    '0x54792197': 'Manta Pacific Testnet',
+
+    '169': 'Manta Pacific Mainnet',
+    '0x361': 'Manta Pacific Mainnet',
+}
 export const SUPPORTED_NETWORKS = [
     ...NETWORKS.map(item => {
         return {
@@ -480,38 +530,6 @@ export const SUPPORTED_NETWORKS = [
             },
         }
     })
-    // {
-    //   name: "Moonbeam",
-    //   short_name: "moonbeam",
-    //   chain: "Moonbeam",
-    //   network: "mainnet",
-    //   chain_id: 1284,
-    //   network_id: 1284,
-    //   rpc_url: "https://rpc.api.moonbeam.network",
-    //   native_currency: {
-    //     symbol: "GLMR",
-    //     name: "Glimmer",
-    //     decimals: "18",
-    //     contractAddress: "",
-    //     balance: "",
-    //   },
-    // },
-    // {
-    //     name: "Moonbase Alpha",
-    //     short_name: "moonbase",
-    //     chain: "Moonbase",
-    //     network: "testnet",
-    //     chain_id: 1287,
-    //     network_id: 1287,
-    //     rpc_url: "https://rpc.api.moonbase.moonbeam.network",
-    //     native_currency: {
-    //         symbol: "DEV",
-    //         name: "DEV",
-    //         decimals: "18",
-    //         contractAddress: "",
-    //         balance: "",
-    //     },
-    // },
 ];
 
 

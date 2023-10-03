@@ -5,6 +5,7 @@ import {
     moonBeamNetwork,
     astarNetwork,
     binanceNetwork,
+    mantaNetwork,
 } from '../constants/blockchain'
 
 import {getStringOfBigNumber} from "../utils/number";
@@ -90,21 +91,25 @@ export const loadTokens = async (address) => {
         glmrBalance,
         astarBalance,
         bnbBalance,
+        mantaBalance,
     ] = await Promise.all([
         getBaseBalance(moonBeamNetwork.rpc, address),
         getBaseBalance(astarNetwork.rpc, address),
         getBaseBalance(binanceNetwork.rpc, address),
+        getBaseBalance(mantaNetwork.rpc, address),
     ])
+
     console.log({
         glmrBalance,
         astarBalance,
         bnbBalance,
+        mantaBalance,
     })
 
     return {
         tokens: [
             {
-                ..._pickItem(moonBeamNetwork, ['symbolIcon', 'chainIcon', 'symbol', 'currencySymbol', 'chainId', 'scan']),
+                ..._pickItem(moonBeamNetwork, ['symbolIcon', 'chainIcon', 'symbol', 'currencySymbol', 'chainId', 'scan', 'symbolDisplay']),
                 symbol: 'MFG',
                 symbolIcon: `${configs.IMAGE_CDN_URL}/image/original/assets/icons/MFG.png`,
                 currencySymbol: 'MFG',
@@ -112,19 +117,24 @@ export const loadTokens = async (address) => {
                 value: 0,
             },
             {
-                ..._pickItem(moonBeamNetwork, ['symbolIcon', 'chainIcon', 'symbol', 'currencySymbol', 'chainId', 'scan']),
+                ..._pickItem(moonBeamNetwork, ['symbolIcon', 'chainIcon', 'symbol', 'currencySymbol', 'chainId', 'scan', 'symbolDisplay']),
                 balance: glmrBalance,
                 value: new BigNumber(glmrBalance, 10).dp(moonBeamNetwork.digit).toString()
             },
             {
-                ..._pickItem(astarNetwork, ['symbolIcon', 'chainIcon', 'symbol', 'currencySymbol', 'chainId', 'scan']),
+                ..._pickItem(astarNetwork, ['symbolIcon', 'chainIcon', 'symbol', 'currencySymbol', 'chainId', 'scan', 'symbolDisplay']),
                 balance: astarBalance,
                 value: new BigNumber(astarBalance, 10).dp(astarNetwork.digit).toString()
             },
             {
-                ..._pickItem(binanceNetwork, ['symbolIcon', 'chainIcon', 'symbol', 'currencySymbol', 'chainId', 'scan']),
+                ..._pickItem(binanceNetwork, ['symbolIcon', 'chainIcon', 'symbol', 'currencySymbol', 'chainId', 'scan', 'symbolDisplay']),
                 balance: bnbBalance,
                 value: new BigNumber(bnbBalance, 10).dp(binanceNetwork.digit).toString()
+            },
+            {
+                ..._pickItem(mantaNetwork, ['symbolIcon', 'chainIcon', 'symbol', 'currencySymbol', 'chainId', 'scan', 'symbolDisplay']),
+                balance: mantaBalance,
+                value: new BigNumber(mantaBalance, 10).dp(mantaNetwork.digit).toString()
             },
         ].map((item,index) => {
             return {

@@ -1,7 +1,8 @@
 import React, {Fragment, useContext, useEffect, useState} from 'react'
-import {Avatar, InputNumber, Form, Input} from 'antd';
+import {Avatar, Input} from 'antd';
 import WalletAuthContext from "../contexts/WalletAuthContext"
 import * as notification from "../utils/notification"
+import {findNetworkFromSymbol, moonBeamNetwork} from "../constants/blockchain"
 import {getShortAddress, getShortEmail, switchToNetwork} from "../utils/blockchain"
 import LoadingWrapper from "../components/shared/LoadingWrapper"
 import LoadingOutlined from "../components/shared/LoadingOutlined"
@@ -26,7 +27,6 @@ import {ReactComponent as UserIcon} from "../assets/images/user-icon.svg";
 import {ReactComponent as RunningIcon} from "../assets/images/running-icon.svg";
 import {ReactComponent as GiftIcon} from "../assets/images/gift-icon.svg";
 import {ReactComponent as SpeedometerIcon} from "../assets/images/speedometer-icon.svg";
-import {ReactComponent as BackIcon} from "../assets/images/ArrowCircleLeft.svg";
 import {ReactComponent as DepositIcon} from "../assets/images/deposit-icon.svg";
 import iconSuccess from "../assets/images/success-icon.png"
 import iconFail from "../assets/images/fail-icon.png"
@@ -226,29 +226,28 @@ const NFTSaleRoundWorldCup = () => {
     listOption = dataOption.map(item => ({
         ...item,
         value: item.id,
-        text: item.name,
+        text: item.symbolDisplay || item.name,
         image: item.imageUrl ? item.imageUrl : item.symbolIcon,
         balance: item.assetType === 'token' ? item.value : 1
     }))
 
-    // console.log('list option: ', listOption)
+    const getPlaceholder = () => {
+        const network = findNetworkFromSymbol(assetSelected.name) || moonBeamNetwork
+
+        return `0.${'0'.repeat(network.digit)}`
+    }
 
     const onChangeAmount = (e) => {
         const value = e.target.value
 
         if(!isNaN(+value) && (+value) <= (+balance)){
             if(value.indexOf(".") >= 0){
-                if(assetSelected.name === 'GLMR' || assetSelected.name === 'MFG'){
-                    setAmount(value.slice(0, value.indexOf(".") + 3))
-                }else if(assetSelected.name === 'ASTR'){
-                    setAmount(value.slice(0, value.indexOf(".") + 4))
-                }else if(assetSelected.name === 'BNB'){
-                    setAmount(value.slice(0, value.indexOf(".") + 7))
-                }
-                
+                const network = findNetworkFromSymbol(assetSelected.name) || moonBeamNetwork
+
+                setAmount(value.slice(0, value.indexOf(".") + network.digit + 1))
             }else{
                 setAmount(value)
-            };
+            }
         }
     };
 
@@ -406,7 +405,7 @@ const NFTSaleRoundWorldCup = () => {
                             <RefreshIcon className="mt-1 mr-1" width={18} height={18}/> Change
                         </div>
                     </div>
-                
+
                 </div>
                 <div className="section-inner mt-3 section-tokens">
                     <div className='tokens-title'>TOKENS</div>
@@ -421,7 +420,7 @@ const NFTSaleRoundWorldCup = () => {
                                             <span className='token-image'>
                                                 <img src={token.symbolIcon} alt={token.name}/>
                                             </span>
-                                                {token.symbol}
+                                                {token.symbolDisplay || token.symbol}
                                             </div>
                                             <div className="token-amount">
                                                 {token.value}
@@ -537,7 +536,7 @@ const NFTSaleRoundWorldCup = () => {
                                     </clipPath>
                                     </defs>
                                 </svg>
-    
+
                             <span>No NFT available</span>
                             <a className="buy-nft" href='https://app.moonfit.xyz/nft-sale-round-3' target='_bnak'>
                                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -610,8 +609,8 @@ const NFTSaleRoundWorldCup = () => {
                         <div className='amount mt-3'>
                             <p className="uppercase font-semibold text-[16px] text-[#abadc3] mb-3 amount-title">Amount</p>
                             <div className='amount-form'>
-                                <Input 
-                                    placeholder={(assetSelected.name === 'GLMR' || assetSelected.name === 'MFG') ? '0.00' : assetSelected.name === 'ASTR' ? '0.000' : assetSelected.name === 'BNB' ? '0.000000' : '0.00'}
+                                <Input
+                                    placeholder={getPlaceholder()}
                                     className='amount-input'
                                     style={{
                                         width: '100%',
@@ -651,7 +650,7 @@ const NFTSaleRoundWorldCup = () => {
                             {
                                 depositing ? <LoadingOutlined className="loading-icon"/>  : <DepositIcon width={18} height={18}/>
                             }
-                        
+
                         {depositText}
                     </button>
 
@@ -754,7 +753,7 @@ const NFTSaleRoundWorldCup = () => {
                 address: user.wallet_address,
                 value: amount,
             }, (response) => {
-                // console.log('responsive: ', response);
+                console.log('responsive: ', response);
                 setDepositResult({
                     ...response,
                     txUrl: `${assetSelected.scan}/tx/${response.txHash}`
