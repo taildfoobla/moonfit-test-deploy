@@ -564,6 +564,10 @@ const NFTSaleRoundWorldCup = () => {
     const _renderDepositAsset = () => {
         let depositText = isSelectToken && (!amount || +amount <= 0 || +amount > +balance) ? 'Invalid Amount' : depositing ? 'Loading' : 'Deposit'
         let isDisabled = isSelectToken && (!amount || +amount <= 0 || +amount > +balance)
+
+        if (assetSelected && ['MintPass', 'MoonBeast'].includes(assetSelected.type) && !assetSelected.isApproved) {
+            depositText = 'Approve'
+        }
         // console.log({assetSelected});
 
         if (assetSelected && assetSelected.type === 'MFG') {

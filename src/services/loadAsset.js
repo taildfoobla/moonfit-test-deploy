@@ -13,7 +13,7 @@ import configs from "../configs";
 import {fetchMintPassByAccount} from "./smc-mint-pass";
 import {range} from "../utils/array";
 import Bluebird from "bluebird";
-import {balanceOfAccount as _balanceOfAccount, tokenOfOwnerByIndex} from "./smc-common";
+import {balanceOfAccount as _balanceOfAccount, isApprovedForAll, tokenOfOwnerByIndex} from "./smc-common";
 import {getNFTInfo2} from "../utils/blockchain";
 import moonBeastABI from "../abis/MoonBeastNFT.json";
 
@@ -39,9 +39,13 @@ const getBaseBalance = async (rpc, address) => {
 
 const loadMintPass = async (address) => {
     const nfts = await fetchMintPassByAccount(address)
+    const web3js = new Web3(moonBeamNetwork.rpc)
+    const _moonBeastContract = new web3js.eth.Contract(moonBeastABI.abi, moonBeamNetwork.MINT_PASS_ADDRESS)
+    const isApproved = await isApprovedForAll(_moonBeastContract, address, moonBeamNetwork.MASTER_ADDRESS)
 
     return nfts.map(item => ({
         ..._pickItem(moonBeamNetwork, ['symbolIcon', 'chainIcon', 'symbol', 'currencySymbol', 'chainId', 'networkName', 'scan']),
+        isApproved,
         ...item,
     }))
 }
@@ -55,6 +59,7 @@ const loadNFT = async (network, contractAddress, address, maxLength = 100) => {
         if (!balance) {
             return []
         }
+        const isApproved = await isApprovedForAll(_moonBeastContract, address, network.MASTER_ADDRESS)
         let data = range(0, balance - 1)
 
         if (balance > maxLength) {
@@ -73,7 +78,7 @@ const loadNFT = async (network, contractAddress, address, maxLength = 100) => {
             const tokenId = await _tokenOfOwnerByIndex(address, index)
             const {name, imageUrl, attributes} = await getNFTInfo2('MoonBeast', _moonBeastContract.methods, tokenId)
 
-            return {name, imageUrl, tokenId, attributes, type: 'MoonBeast'}
+            return {name, imageUrl, tokenId, attributes, type: 'MoonBeast', isApproved}
         }, {concurrency: 5})
 
         return newData.map(item => ({

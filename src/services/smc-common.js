@@ -17,6 +17,14 @@ export const balanceOfAccount = async (contract, account) => {
     return parseInt(balance, 10)
 }
 
+export const isApprovedForAll = async (contract, owner, operator) => {
+    const isApproved = await contract.methods.isApprovedForAll(owner, operator).call()
+
+    console.log(isApproved);
+
+    return isApproved
+}
+
 export const tokenOfOwnerByIndex = async (contract, account, index) => {
     let tokenId
 
