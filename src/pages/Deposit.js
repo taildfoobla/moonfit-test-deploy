@@ -795,7 +795,11 @@ const NFTSaleRoundWorldCup = () => {
     }
 
     const _handleOpenModalDepositAsset = () => {
-        setIsModalConfirm(true)
+       if (assetSelected && ['MintPass', 'MoonBeast'].includes(assetSelected.type) && !assetSelected.isApproved) {
+            _handleDepositedAsset().then()
+        } else {
+            setIsModalConfirm(true)
+        }
     }
 
     const _renderContainer = () => {
