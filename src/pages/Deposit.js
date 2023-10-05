@@ -95,13 +95,15 @@ const NFTSaleRoundWorldCup = () => {
 
     useEffect(()=>{
         const header=  document.querySelector(".header")
-        if(isOpenPopup){
+        if(assetSelected?.name==="MANTA_ETH"&&isOpenPopup){
             header.style.zIndex="0"
+            document.body.style.overflow = 'hidden'
         }else{
             header.style.zIndex="999"
+            document.body.style.overflow = 'auto'
         }
     },
-    [isOpenPopup])
+    [isOpenPopup,assetSelected])
 
     const getUserInfo = () => {
         setIsLogin(true)
@@ -254,15 +256,15 @@ const NFTSaleRoundWorldCup = () => {
     const onChangeAmount = (e) => {
         const value = e.target.value
 
-        if(!isNaN(+value) && (+value) <= (+balance)){
+        // if(!isNaN(+value) && (+value) <= (+balance)){
             if(value.indexOf(".") >= 0){
                 const network = findNetworkFromSymbol(assetSelected.name) || moonBeamNetwork
 
-                setAmount(value.slice(0, value.indexOf(".") + network.digit + 1))
+                setAmount(value.slice(0, value.indexOf(".") + network.digit +1))
             }else{
                 setAmount(value)
             }
-        }
+        // }
     };
 
     const handleClickMaxValue = () => {
@@ -595,7 +597,7 @@ const NFTSaleRoundWorldCup = () => {
 
         return (
             <Fragment>
-                <div className={`deposit-popup ${isOpenPopup?"active":""}`}>
+                {assetSelected.name==="MANTA_ETH"&& <div className={`deposit-popup ${isOpenPopup?"active":""}`}>
                     <div className='deposit-popup-close' onClick={handleClosePopup}>
                         <img src={close}/>
                     </div>
@@ -615,7 +617,8 @@ const NFTSaleRoundWorldCup = () => {
                         </div>
                     </div>
                    
-                </div>
+                </div>}
+               
                 <div className="relative flex items-center gap-x-2.5 mf-address-change">
                     <div className="section-inner p-5 from">
                         <p className="uppercase font-semibold text-[16px] text-[#abadc3] mb-0 from-label">from</p>
