@@ -268,7 +268,7 @@ const NETWORKS = [
     },
     {
         chainId: 3441005,
-        chainHex: '0x54792197',
+        chainHex: '0x34816d',
         digit: 5,
         currencyDecimal: 18,
         networkName: 'Manta Pacific Testnet',
