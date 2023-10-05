@@ -833,7 +833,16 @@
           border-radius: 20px;
           box-shadow: 0px 4px 80px 0px rgba(161, 107, 216, 0.60);
           text-transform: initial;
-
+          @media (max-width:375px) {
+            max-width: 90%;
+            padding:20px;
+            gap:16px
+          }
+          @media (max-width:767px) {
+            max-width: 90%;
+            padding:25px;
+            gap:20px
+          }
           &:before {
             content: "";
             position: absolute;
@@ -858,11 +867,26 @@
             font-weight: 400;
             line-height: 26px;
             text-transform: uppercase;
+            @media (max-width:375px) {
+             font-size: 16px;
+            }
+            @media (max-width:767px) {
+              font-size: 18px;
+            }
           }
 
           .deposit-popup-icon{
             width: 88px;
             height: 88px;
+
+            @media (max-width:375px) {
+              width: 78px;
+            height: 78px;
+             }
+             @media (max-width:767px) {
+              width: 83px;
+              height: 83px;
+            }
           }
 
           .small-text{
@@ -874,6 +898,10 @@
             font-style: normal;
             font-weight: 600;
             line-height: 28px;
+            @media (max-width:767px) {
+              // width: 250px;
+              max-width: 90%;
+            }
           }
 
           .agree-button{
@@ -887,14 +915,24 @@
             background:  #4CCBC9;
             gap:6px;
             text-transform: lowercase;
+            font-size: 18px;
+            @media (max-width:767px) {
+            //  width: 250px;
+             max-width: 90%;
+             font-size: 16px;
+            }
             img{
               width: 20px;
               height: 20px;
+              @media (max-width:375px) {
+               width: 16px;
+               height: 16px;
+               }
             }
             span{
               color: #020722;
               font-family: "Darker Grotesque", sans-serif;
-              font-size: 18px;
+              
               font-style: normal;
               font-weight: 800;
               line-height: normal;
