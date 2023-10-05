@@ -93,6 +93,16 @@ const NFTSaleRoundWorldCup = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [wallet.account, isSignature, signatureData])
 
+    useEffect(()=>{
+        const header=  document.querySelector(".header")
+        if(isOpenPopup){
+            header.style.zIndex="0"
+        }else{
+            header.style.zIndex="999"
+        }
+    },
+    [isOpenPopup])
+
     const getUserInfo = () => {
         setIsLogin(true)
         setLoginMessage('')
