@@ -22,6 +22,9 @@ import imageStep1 from "../assets/images/iPhone.png"
 import imageStep2 from "../assets/images/iPhone1.png"
 import imageStep3 from "../assets/images/iPhone2.png"
 import imageStep4 from "../assets/images/iPhone3.png"
+import close from "../assets/images/deposit-popup-close.png"
+import warning from "../assets/images/Warning.png"
+import agree from "../assets/images/agree.png"
 import {ReactComponent as CheckIcon} from "../assets/images/Check.svg";
 import {ReactComponent as UserIcon} from "../assets/images/user-icon.svg";
 import {ReactComponent as RunningIcon} from "../assets/images/running-icon.svg";
@@ -58,6 +61,7 @@ const NFTSaleRoundWorldCup = () => {
     const [depositResult, setDepositResult] = useState({})
     const [isFocus, setIsFocus] = useState(false)
     const [depositing, setDepositing] = useState(false)
+    const [isOpenPopup,setIsOpenPopup] = useState(true)
 
     const {
         isSignature,
@@ -260,6 +264,10 @@ const NFTSaleRoundWorldCup = () => {
         setIsModalResult(false)
         // setIsChooseAcc(true)
         setIsDisplayDeposit(false)
+    }
+
+    const handleClosePopup =()=>{
+        setIsOpenPopup(false)
     }
 
     const _renderEmailAddress = (email) => {
@@ -577,6 +585,27 @@ const NFTSaleRoundWorldCup = () => {
 
         return (
             <Fragment>
+                <div className={`deposit-popup ${isOpenPopup?"active":""}`}>
+                    <div className='deposit-popup-close' onClick={handleClosePopup}>
+                        <img src={close}/>
+                    </div>
+                    <div className='deposit-popup-content'>
+                        <div className='deposit-text-header'>
+                        Warning!
+                        </div>
+                        <div className='deposit-popup-icon'>
+                        <img src={warning}/>
+                        </div>
+                        <div className='small-text'>
+                        Please note that participation in MoonFit tasks from MantaFest Social Week will require a deduction of ETH from your wallet balance to cover gas fees.
+                        </div>
+                        <div className='agree-button' onClick={handleClosePopup}>
+                            <img src={agree}/>
+                            <span>i agree</span>
+                        </div>
+                    </div>
+                   
+                </div>
                 <div className="relative flex items-center gap-x-2.5 mf-address-change">
                     <div className="section-inner p-5 from">
                         <p className="uppercase font-semibold text-[16px] text-[#abadc3] mb-0 from-label">from</p>
@@ -859,7 +888,7 @@ const NFTSaleRoundWorldCup = () => {
 
     return (
         <>
-            <CurveBGWrapper className="page-nft-sale deposit-page" scrollBg={!isSignature}>
+            <CurveBGWrapper className="page-nft-sale deposit-page" scrollBg={!isSignature} style={{zIndex: '1 !important'}}>
                 <EnvWrapper routeItem={Paths.Deposit}>
                     <div className={'section page-nft-sale'}>
                         <NFTStages>

@@ -562,6 +562,10 @@
               &.BNB{
                 color: #F3BA2F
               }
+
+              &.MANTA_ETH{
+                color:#d6cfff
+              }
             }
           }
         }
@@ -776,6 +780,126 @@
           
           .section-inner{
             margin-bottom: 10px;
+          }
+        }
+      }
+
+      // .deposit-popup-overlay{
+      //   position: fixed;
+      //   top:0;
+      //   left:0;
+      //   right:0;
+      //   bottom:0;
+      //   background-color: black;
+      //   z-index: 99;
+      //   opacity: 0.7;
+      // }
+
+      .deposit-popup{
+        display:none;
+        position: fixed;
+        top:0;
+        left:0;
+        right:0;
+        bottom:0;
+        background-color: rgba(0, 0, 0, 0.788);
+        z-index: 9999;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap:24px;
+        
+        &.active{
+          display:flex;
+        }
+
+        .deposit-popup-close{
+          width: 32px;
+          height: 32px;
+          cursor: pointer;
+        }
+
+
+        .deposit-popup-content{
+          position: relative;
+          display:flex;
+          flex-direction: column;
+          align-items: center;
+          gap:24px;
+          padding:30px;
+          background-clip: padding-box;
+          border: 3px solid transparent;
+          background:  #351C4F;
+          border-radius: 20px;
+          box-shadow: 0px 4px 80px 0px rgba(161, 107, 216, 0.60);
+          text-transform: initial;
+
+          &:before {
+            content: "";
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            z-index: -1;
+            margin: -6px; /* same as border width */
+            border-radius: 21.5px; /* inherit container box's radius */
+            background: linear-gradient(to left, #4ccbc9, #F0489F);
+          }
+
+
+          .deposit-text-header{
+            text-align: center;
+            color: #FFF;
+            text-align: center;
+            font-family: Race Sport;
+            font-size: 20px;
+            font-style: normal;
+            font-weight: 400;
+            line-height: 26px;
+            text-transform: uppercase;
+          }
+
+          .deposit-popup-icon{
+            width: 88px;
+            height: 88px;
+          }
+
+          .small-text{
+            width: 370px;
+            color: #A8ADC3;
+            text-align: center;
+            font-family: 'Darker Grotesque',sans-serif;
+            font-size: 18px;
+            font-style: normal;
+            font-weight: 600;
+            line-height: 28px;
+          }
+
+          .agree-button{
+            cursor: pointer;
+            display:flex;
+            justify-content: center;
+            align-items: center;
+            width: 370px;
+            height: 48px;
+            border-radius: 7px;
+            background:  #4CCBC9;
+            gap:6px;
+            text-transform: lowercase;
+            img{
+              width: 20px;
+              height: 20px;
+            }
+            span{
+              color: #020722;
+              font-family: "Darker Grotesque", sans-serif;
+              font-size: 18px;
+              font-style: normal;
+              font-weight: 800;
+              line-height: normal;
+              text-transform: uppercase;
+            }
           }
         }
       }
