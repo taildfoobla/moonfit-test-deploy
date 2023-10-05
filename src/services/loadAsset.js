@@ -95,19 +95,19 @@ export const loadTokens = async (address) => {
     const [
         glmrBalance,
         astarBalance,
-        bnbBalance,
+        // bnbBalance,
         mantaBalance,
     ] = await Promise.all([
         getBaseBalance(moonBeamNetwork.rpc, address),
         getBaseBalance(astarNetwork.rpc, address),
-        getBaseBalance(binanceNetwork.rpc, address),
+        // getBaseBalance(binanceNetwork.rpc, address),
         getBaseBalance(mantaNetwork.rpc, address),
     ])
 
     console.log({
         glmrBalance,
         astarBalance,
-        bnbBalance,
+        // bnbBalance,
         mantaBalance,
     })
 
@@ -131,11 +131,11 @@ export const loadTokens = async (address) => {
                 balance: astarBalance,
                 value: new BigNumber(astarBalance, 10).dp(astarNetwork.digit).toString()
             },
-            {
-                ..._pickItem(binanceNetwork, ['symbolIcon', 'chainIcon', 'symbol', 'currencySymbol', 'chainId', 'scan', 'symbolDisplay']),
-                balance: bnbBalance,
-                value: new BigNumber(bnbBalance, 10).dp(binanceNetwork.digit).toString()
-            },
+            // {
+            //     ..._pickItem(binanceNetwork, ['symbolIcon', 'chainIcon', 'symbol', 'currencySymbol', 'chainId', 'scan', 'symbolDisplay']),
+            //     balance: bnbBalance,
+            //     value: new BigNumber(bnbBalance, 10).dp(binanceNetwork.digit).toString()
+            // },
             {
                 ..._pickItem(mantaNetwork, ['symbolIcon', 'chainIcon', 'symbol', 'currencySymbol', 'chainId', 'scan', 'symbolDisplay']),
                 balance: mantaBalance,

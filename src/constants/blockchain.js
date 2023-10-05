@@ -168,6 +168,7 @@ const NETWORKS = [
         rpc: 'https://rpc.api.moonbase.moonbeam.network',
         wss: 'wss://wss.api.moonbase.moonbeam.network',
         _name: 'base_token',
+        symbolDisplay: 'GLMR',
         MINT_PASS_ADDRESS: '0x7E7d9fee5c5994aA7FC1dAeb231Af015e2FdAD3E',
         MOON_BEAST_ADDRESS: '0x368a1BBED5Ca2984b0867109e0aeB2B6fAD3B17A',
         MASTER_ADDRESS: '0xDE485A49e1dde6Ce2e9e77782Be664ECF1Fec2cF',
@@ -185,6 +186,7 @@ const NETWORKS = [
         rpc: 'https://rpc.api.moonbeam.network',
         wss: 'wss://wss.api.moonbeam.network',
         _name: 'base_token',
+        symbolDisplay: 'GLMR',
         MINT_PASS_ADDRESS: '0x6758053c0b27E478edE1E4882adFF708Fc4FA72D',
         MOON_BEAST_ADDRESS: '0x02A6DeC99B2Ca768D638fcD87A96F6069F91287c',
         MASTER_ADDRESS: '0xc7e929d05e52f62c3aa2bd180983fa2bf0abcc54',
@@ -203,6 +205,7 @@ const NETWORKS = [
         rpc: 'https://data-seed-prebsc-1-s1.binance.org:8545',
         wss: 'wss://testnet-dex.binance.org/api/',
         _name: 'bnb_token',
+        symbolDisplay: 'BNB',
         MINT_PASS_ADDRESS: '',
         MOON_BEAST_ADDRESS: '0x67133a5a24aa7C5b5663767A34Fc24eBB4b9319E',
         MASTER_ADDRESS: '0xe9B61a2Be11E8376d69dCEf8aB2d7a04887AbeBf',
@@ -220,6 +223,7 @@ const NETWORKS = [
         rpc: 'https://bsc-dataseed.binance.org',
         wss: 'wss://dex.binance.org/api/',
         _name: 'bnb_token',
+        symbolDisplay: 'BNB',
         MINT_PASS_ADDRESS: '',
         MOON_BEAST_ADDRESS: '',
         MASTER_ADDRESS: '',
@@ -238,6 +242,7 @@ const NETWORKS = [
         rpc: 'https://evm.shibuya.astar.network',
         wss: 'wss://rpc.shibuya.astar.network',
         _name: 'astar_token',
+        symbolDisplay: 'ASTR',
         MINT_PASS_ADDRESS: '',
         MOON_BEAST_ADDRESS: '0x4c1E5Be87E24bb3d6f77AD59a41BCba7B5249Fa9',
         MASTER_ADDRESS: '0xe9B8A0D9D2e5be3158c5AB97182AeF9b1402562D',
@@ -255,6 +260,7 @@ const NETWORKS = [
         rpc: 'https://astar.public.blastapi.io',
         wss: 'wss://rpc.astar.network',
         _name: 'astar_token',
+        symbolDisplay: 'ASTR',
         MINT_PASS_ADDRESS: '',
         MOON_BEAST_ADDRESS: '0x45eC4aCEfd18cC78Ad1f25f6D5Bf8180753A7000',
         MASTER_ADDRESS: '0x166Bb513B431524fAAAaE7F7820EC188A8e1874A',
@@ -432,24 +438,6 @@ export const WEB3_METHODS = {
             }
         ]
     },
-    getAddNetworkParam: (network) => {
-        return {
-            method: 'wallet_addEthereumChain',
-            params: [
-                {
-                    chainId: network.chainHex,
-                    rpcUrls: [network.rpc],
-                    chainName: network.networkName,
-                    nativeCurrency: {name: network.currencySymbol, decimals: network.currencyDecimal, symbol: network.currencySymbol},
-                    blockExplorerUrls: [network.scan]
-                }
-            ]
-        }
-    },
-    getSwitchNetworkParam: (network) => ({
-        method: 'wallet_switchEthereumChain',
-        params: [{chainId: network.chainHex}]
-    }),
     getPermissions: {
         method: 'wallet_getPermissions',
         params: [{eth_accounts: {}}]
@@ -471,6 +459,7 @@ export const WEB3_METHODS = {
     },
     addToChainId(chainId) {
         const network = NETWORKS.find(item => item.chainId === chainId) || {}
+        console.log(network);
         return {
             method: 'wallet_addEthereumChain',
             params: [
@@ -478,7 +467,7 @@ export const WEB3_METHODS = {
                     chainId: network.chainHex,
                     rpcUrls: [network.rpc],
                     chainName: network.networkName,
-                    nativeCurrency: {name: network.symbol, decimals: network.currencyDecimal, symbol: network.symbol},
+                    nativeCurrency: {name: network.networkName, decimals: network.currencyDecimal, symbol: network.currencySymbol},
                     blockExplorerUrls: [network.scan]
                 }
             ]
@@ -505,7 +494,7 @@ export const CHAIN_ID_MAPPING = {
     '0x250': 'Astar Network Mainnet',
 
     '3441005': 'Manta Pacific Testnet',
-    '0x54792197': 'Manta Pacific Testnet',
+    '0x34816d': 'Manta Pacific Testnet',
 
     '169': 'Manta Pacific Mainnet',
     '0x361': 'Manta Pacific Mainnet',
