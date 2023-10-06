@@ -269,7 +269,7 @@ const NETWORKS = [
     {
         chainId: 3441005,
         chainHex: '0x34816d',
-        digit: 5,
+        digit: 4,
         currencyDecimal: 18,
         networkName: 'Manta Pacific Testnet',
         symbol: 'MANTA_ETH',
