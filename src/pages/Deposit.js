@@ -653,7 +653,10 @@ const NFTSaleRoundWorldCup = () => {
                     {
                         isSelectToken &&
                         <div className='amount mt-3'>
-                            <p className="uppercase font-semibold text-[16px] text-[#abadc3] mb-3 amount-title">Amount</p>
+                            <div className='flex justify-between'>
+                                <p className="uppercase font-semibold text-[16px] text-[#abadc3] mb-3 amount-title">Amount</p>
+                                <div className='balance mb-3'><label>Balance: </label>{balance}</div>
+                            </div>
                             <div className='amount-form'>
                                 <Input
                                     placeholder={getPlaceholder()}
@@ -676,9 +679,9 @@ const NFTSaleRoundWorldCup = () => {
 
                                 <span className='max-value' onClick={handleClickMaxValue}>Max</span>
                             </div>
-                            <div className='balance'><label>Balance: </label>{balance}</div>
+                           
                             {assetSelected?.name==="MANTA_ETH"&&<div className='fee'>
-                                <span>* ESTIMATED DEPOSIT FEES</span>: <span>0.00007 ETH - 0.0001 ETH</span>
+                                <span>* Estimated Deposit Fees</span>: <span>0.00007 ETH - 0.0001 ETH</span>
                             </div>}
                         </div>
                     }
