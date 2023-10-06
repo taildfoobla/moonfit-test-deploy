@@ -108,6 +108,16 @@
             color: #A8ADC3;
           }
         }
+        .fee{
+          margin-top: 10px;
+          font-size: 16px;
+          color: #A8ADC3;
+          span{
+            &:nth-child(2){
+              color: #4CCBC9;
+            }
+          }
+        }
       }
     }
 
