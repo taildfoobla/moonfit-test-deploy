@@ -677,9 +677,9 @@ const NFTSaleRoundWorldCup = () => {
                                 <span className='max-value' onClick={handleClickMaxValue}>Max</span>
                             </div>
                             <div className='balance'><label>Balance: </label>{balance}</div>
-                            <div className='fee'>
+                            {assetSelected?.name==="MANTA_ETH"&&<div className='fee'>
                                 <span>* ESTIMATED DEPOSIT FEES</span>: <span>0.00007 ETH - 0.0001 ETH</span>
-                            </div>
+                            </div>}
                         </div>
                     }
                 </div>
