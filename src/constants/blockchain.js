@@ -264,7 +264,7 @@ const NETWORKS = [
         MINT_PASS_ADDRESS: '',
         MOON_BEAST_ADDRESS: '0x45eC4aCEfd18cC78Ad1f25f6D5Bf8180753A7000',
         MASTER_ADDRESS: '0x166Bb513B431524fAAAaE7F7820EC188A8e1874A',
-        GATEWAY_ADDRESS: '',
+        GATEWAY_ADDRESS: '0xd8016A731133ecaA96a236B1ea740a05a5dCB917',
     },
     {
         chainId: 3441005,
@@ -297,9 +297,9 @@ const NETWORKS = [
         wss: 'wss://pacific-rpc.manta.network/ws',
         _name: 'manta_token',
         symbolDisplay: 'ETH (MANTA)',
-        MINT_PASS_ADDRESS: '',
-        MOON_BEAST_ADDRESS: '',
-        MASTER_ADDRESS: '',
+        MASTER_ADDRESS: '0x8D8F5B2c76a8a7e1Bc882a46a71133458132E8AC',
+        MOONFIT_ACTIVITY_CONTRACT: '0x790C59CD5B891DDc184d9d9F5fb2952655a96e6f',
+        TOP_UP_APPROVED: '0xC280b576e92212b0450558094969f7Cc928892e4',
     },
 ].map(mappingConfigNetwork)
     .filter(item => item.isTestnet === isTestnet)
