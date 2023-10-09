@@ -286,7 +286,7 @@ const NETWORKS = [
     },
     {
         chainId: 169,
-        chainHex: '0x361',
+        chainHex: '0xa9',
         digit: 4,
         currencyDecimal: 18,
         networkName: 'Manta Pacific',
