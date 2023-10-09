@@ -32,7 +32,7 @@ const getConfigs = () => {
         case 'production':
             return {
                 API_URL: 'https://api-prod.moonfit.xyz/v1',
-                IMAGE_CDN_URL: 'https://cdn-prod.moonfit.xyz',
+                IMAGE_CDN_URL: 'https://prod-cdn.moonfit.xyz',
                 APP_URI: window.location.host,
                 env: 'production',
 
