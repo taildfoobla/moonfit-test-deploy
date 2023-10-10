@@ -117,6 +117,7 @@ export const loadTokens = async (address) => {
                 ..._pickItem(moonBeamNetwork, ['symbolIcon', 'chainIcon', 'symbol', 'currencySymbol', 'chainId', 'scan', 'symbolDisplay']),
                 symbol: 'MFG',
                 symbolIcon: `${configs.IMAGE_CDN_URL}/image/original/assets/icons/MFG.png`,
+                symbolDisplay: 'MFG',
                 currencySymbol: 'MFG',
                 balance: 0,
                 value: 0,

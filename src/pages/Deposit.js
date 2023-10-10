@@ -254,18 +254,20 @@ const NFTSaleRoundWorldCup = () => {
     }
 
     const onChangeAmount = (e) => {
-        const value = e.target.value
+        let value = e.target.value.replace(',', '.')
 
-        // if(!isNaN(+value) && (+value) <= (+balance)){
-            if(value.indexOf(".") >= 0){
-                const network = findNetworkFromSymbol(assetSelected.name) || moonBeamNetwork
+        if (value.indexOf(".") >= 0) {
+            const network = findNetworkFromSymbol(assetSelected.name) || moonBeamNetwork
 
-                setAmount(value.slice(0, value.indexOf(".") + network.digit +1))
-            }else{
-                setAmount(value)
-            }
-        // }
-    };
+            value = value.slice(0, value.indexOf(".") + network.digit + 1)
+        }
+
+        if (!value || parseFloat(value) < 0) {
+            value = 0
+        }
+
+        setAmount(value)
+    }
 
     const handleClickMaxValue = () => {
         // console.log('set max value')
@@ -616,9 +618,9 @@ const NFTSaleRoundWorldCup = () => {
                             <span>i agree</span>
                         </div>
                     </div>
-                   
+
                 </div>}
-               
+
                 <div className="relative flex items-center gap-x-2.5 mf-address-change">
                     <div className="section-inner p-5 from">
                         <p className="uppercase font-semibold text-[16px] text-[#abadc3] mb-0 from-label">from</p>
