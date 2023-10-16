@@ -249,13 +249,12 @@ const NFTSaleRoundWorldCup = () => {
 
     const getPlaceholder = () => {
         const network = findNetworkFromSymbol(assetSelected.name) || moonBeamNetwork
-        if (assetSelected?.name === "MANTA_ETH") return '0.000'
+        // if (assetSelected?.name === "MANTA_ETH") return '0.000'
         return `0.${'0'.repeat(network.digit)}`
     }
 
     const onChangeAmount = (e) => {
         let value = e.target.value.replace(',', '.')
-
         if (value.indexOf(".") >= 0) {
             const network = findNetworkFromSymbol(assetSelected.name) || moonBeamNetwork
 
@@ -265,7 +264,6 @@ const NFTSaleRoundWorldCup = () => {
         if (!value || parseFloat(value) < 0) {
             value = 0
         }
-
         setAmount(value)
     }
 
@@ -474,7 +472,7 @@ const NFTSaleRoundWorldCup = () => {
                                                 </span>
                                                 {
                                                     nft.attributes && nft.attributes.Rarity &&
-                                                    <span className='nft-tag'>{nft.attributes.Rarity}</span>
+                                                    <span className={`nft-tag ${nft.attributes.Rarity==="Common"?"common":""}`}>{nft.attributes.Rarity}</span>
                                                 }
 
                                                 <span className='nft-mask'>
@@ -640,8 +638,8 @@ const NFTSaleRoundWorldCup = () => {
                             <img src={warning}/>
                         </div>
                         <div className='small-text'>
-                            Please note that participation in MoonFit tasks from MantaFest Social Week will require a
-                            deduction of ETH from your wallet balance to cover gas fees.
+                        Please note that participant in MoonFit tasks from Manta Fest Social Week 
+                        will require a deduction of ETH from your wallet balance to cover gas fee for each on-chain activity within the app.
                         </div>
                         <div className='agree-button' onClick={handleClosePopup}>
                             <img src={agree}/>
