@@ -638,8 +638,8 @@ const NFTSaleRoundWorldCup = () => {
                             <img src={warning}/>
                         </div>
                         <div className='small-text'>
-                            Please note that participation in MoonFit tasks from MantaFest Social Week will require a
-                            deduction of ETH from your wallet balance to cover gas fees.
+                        Please note that participant in MoonFit tasks from Manta Fest Social Week 
+                        will require a deduction of ETH from your wallet balance to cover gas fee for each on-chain activity within the app.
                         </div>
                         <div className='agree-button' onClick={handleClosePopup}>
                             <img src={agree}/>
