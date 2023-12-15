@@ -130,6 +130,41 @@ export default function AstarRewards() {
         <h3 className="astar-page-section-2-header">
           How to stake for MoonFit at Astar Dapp Staking?
         </h3>
+        <div className="astar-guide-list">
+          <div className="astar-guide-item step-1">
+            <div className="astar-guide-item-header">
+            step 01
+            </div>
+            <p className="astar-guide-item-content">
+              Click on button “Stake” above to visit the{" "}
+              <span className="change-color change-underline">
+                Astar portal
+              </span>{" "}
+              and then connect your wallet{" "}
+              <span className="change-color">(EVM or Substrate wallet)</span>
+            </p>
+          </div>
+          <div className="astar-guide-item step-2">
+            <div className="astar-guide-item-header">
+            step 02
+            </div>
+            <p className="astar-guide-item-content">
+            Go to the Staking page, place the amount you want to stake, and confirm
+            <span className="change-small-text">
+            *Leave 1–2 SDN/2–5 ASTR as a transferrable balance in your wallet since it is needed for gas to manage the claiming and re-staking transactions.
+            </span>
+            </p>
+          </div>
+          <div className="astar-guide-item step-3">
+            <div className="astar-guide-item-header">
+            step 03
+            </div>
+            <p className="astar-guide-item-content">
+             <span className="change-color">Done!</span>
+             Come back to claim your rewards.
+            </p>
+          </div>
+        </div>
       </div>
     </div>
   );

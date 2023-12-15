@@ -64,7 +64,7 @@ export const AppRoutes = [
     {
         path: Paths.AstarRewards.path,
         title: "Astar Rewards",
-        external: true,
+        external: false,
         env: ['local', 'development', 'production']
     },
     // {
