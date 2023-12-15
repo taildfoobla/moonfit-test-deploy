@@ -39,6 +39,10 @@ const Paths = {
     Deposit: {
         path: '/deposit',
         env: ['local', 'development', 'production']
+    },
+    AstarRewards: {
+        path: '/astar-reward',
+        env: ['local', 'development', 'production']
     }
 }
 

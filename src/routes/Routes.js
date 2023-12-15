@@ -11,6 +11,7 @@ import NFTSaleRoundThree from "../pages/NFTSaleRoundThree"
 import NFTSaleRoundWorldCup from "../pages/NFTSaleRoundWorldCup"
 import Home from "../pages/Home"
 import NotFound from "../pages/NotFound"
+import AstarRewards from "../pages/AstarRewards"
 
 const routes = [
     {
@@ -60,6 +61,11 @@ const routes = [
                 path: Paths.Deposit.path,
                 exact: true,
                 component: Deposit
+            },
+            {
+                path: Paths.AstarRewards.path,
+                exact: true,
+                component: AstarRewards
             },
             {
                 path: '*',

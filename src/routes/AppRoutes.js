@@ -61,6 +61,12 @@ export const AppRoutes = [
         external: true,
         env: ['local', 'development', 'production']
     },
+    {
+        path: Paths.AstarRewards.path,
+        title: "Astar Rewards",
+        external: true,
+        env: ['local', 'development', 'production']
+    },
     // {
     //     path: "https://moonfit.xyz/litepaper",
     //     title: "Litepaper",
