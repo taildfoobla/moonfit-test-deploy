@@ -260,7 +260,7 @@ export default function AstarRewards() {
                 <p className="tutorial-content">
                   Here’s our{" "}
                   <span className="change-color-3 change-underline" onClick={()=>{
-                    openNewTab("https://www.youtube.com/watch?v=R42Z9fzv8oA")
+                    openNewTab("https://youtu.be/R42Z9fzv8oA?feature=shared")
                   }}>
                     Tutorial Video
                   </span>
