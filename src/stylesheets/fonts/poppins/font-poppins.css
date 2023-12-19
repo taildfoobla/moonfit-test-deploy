@@ -5,3 +5,16 @@
 	src: url('Poppins-Regular.ttf') format('truetype');
 	font-style: normal;
 }
+
+@font-face{
+	font-family: "Poppins";
+	src: url('Poppins-Bold.ttf') format('truetype');
+	font-style: bold;
+	font-weight: 700;
+}
+
+@font-face{
+	font-family: "Poppins";
+	src: url('Poppins-SemiBold.ttf') format(truetype);
+	font-weight: 600;
+}
