@@ -259,7 +259,9 @@ export default function AstarRewards() {
                 <h4 className="tutorial-header">Still confused?</h4>
                 <p className="tutorial-content">
                   Here’s our{" "}
-                  <span className="change-color-3 change-underline">
+                  <span className="change-color-3 change-underline" onClick={()=>{
+                    openNewTab("https://www.youtube.com/watch?v=R42Z9fzv8oA")
+                  }}>
                     Tutorial Video
                   </span>
                 </p>
