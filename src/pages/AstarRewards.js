@@ -73,7 +73,7 @@ export default function AstarRewards() {
                         7,038
                         <span className="claimable-rewards-unit">ASTR</span>
                       </p>
-                      <button className="claimable-rewards-button">
+                      <button className="claimable-rewards-button" onClick={handleOpenClaimRewardsModal}>
                         Claim
                       </button>
                     </div>
