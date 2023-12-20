@@ -38,6 +38,15 @@
     top: 0;
     left: 0;
     z-index: -1;
+    img {
+      object-fit: cover;
+      &:nth-child(1) {
+        display: block;
+      }
+      &:nth-child(2) {
+        display: none;
+      }
+    }
   }
 }
 
@@ -287,6 +296,9 @@
         z-index: -1;
         border-radius: 20px;
         box-shadow: 0px 4px 80px 0px rgba(161, 107, 216, 0.6);
+      }
+      .stake-benefit-img{
+        display:none;
       }
       .stake-info {
         .stake-info-banner {
@@ -754,6 +766,27 @@
     img {
       width: 100%;
       height: 100%;
+      &:nth-child(1) {
+        display: block;
+      }
+      &:nth-child(2) {
+        display: none;
+      }
+    }
+  }
+  .astar-page-footer-img {
+    position: absolute;
+    top: 250px;
+    left: 0;
+    img {
+      width: 666px;
+      height: 496px;
+      &:nth-child(1) {
+        display: block;
+      }
+      &:nth-child(2) {
+        display: none;
+      }
     }
   }
   .astar-page-footer {
@@ -771,14 +804,8 @@
         line-height: 56px;
         text-transform: none;
       }
-      .astar-page-footer-img {
-        position: absolute;
-        top: 250px;
-        left: 0;
-        img {
-          width: 666px;
-          height: 496px;
-        }
+      img{
+        display:none;
       }
     }
     .astar-page-footer-right {
@@ -811,6 +838,8 @@
           text-transform: none;
           margin: 0;
           padding: 17px 0 0 0;
+          height: fit-content;
+          min-height: unset;
           .qa-content {
             color: #90829d;
             font-family: Poppins;
@@ -868,9 +897,9 @@
   justify-content: center;
   align-items: center;
   text-transform: none;
-  display:none;
-  &.active{
-    display:flex;
+  display: none;
+  &.active {
+    display: flex;
   }
   .claim-rewards-modal-overlay {
     position: absolute;
@@ -1019,12 +1048,11 @@
             }
           }
         }
-        
       }
     }
-    .claim-rewards-button-wrapper{
+    .claim-rewards-button-wrapper {
       margin-top: 40px;
-      display:flex;
+      display: flex;
       align-items: center;
       justify-content: center;
       .claim-rewards-button {
@@ -1036,11 +1064,10 @@
         padding: 10px 32px;
         background: linear-gradient(85deg, #e4007b 2.68%, #4ccbc9 100%);
         border-radius: 8px;
-       color:#FFF;
-       text-transform: none;
+        color: #fff;
+        text-transform: none;
       }
     }
-
   }
 }
 
@@ -1050,5 +1077,1175 @@
   }
   to {
     scale: 1.4;
+  }
+}
+
+@media (max-width: 1300px) {
+  .astar-page-container-wrapper {
+    .astar-page-container {
+      scale: 0.9;
+      .astar-page-header {
+        margin-top: 80px;
+      }
+      .astar-page-section-1 {
+        margin-bottom: 20px;
+      }
+      .astar-page-section-2 {
+        margin-bottom: 80px;
+      }
+    }
+    .astar-page-footer-wrapper {
+      padding-top: 80px;
+      padding-bottom: 200px;
+      .astar-page-footer {
+        scale: 0.9;
+      }
+    }
+  }
+}
+
+@media (max-width: 1100px) {
+  .astar-page-container-wrapper {
+    .astar-page-container {
+      scale: 0.8;
+      .astar-page-header {
+        margin-top: 60px;
+      }
+      .astar-page-section-1 {
+        margin-bottom: -50px;
+        .astar-page-section-1-left {
+          .stake-info-wrapper {
+            .stake-info {
+              .total-stake {
+                padding: 17px 15px;
+                .total-stake-number {
+                  font-size: 30px;
+                  .total-stake-unit {
+                    font-size: 16px;
+                  }
+                }
+              }
+            }
+            .claimable-rewards {
+              padding: 17px 15px;
+              .claimable-rewards-content {
+                justify-content: space-between;
+                gap: 10px;
+                .claimable-rewards-number {
+                  font-size: 30px;
+                  .claimable-rewards-unit {
+                    font-size: 16px;
+                  }
+                }
+                .claimable-rewards-button {
+                  font-size: 16px;
+                }
+              }
+            }
+          }
+        }
+        .astar-page-section-1-right {
+          .stake-info {
+            .stake-info-banner {
+              .stake-banner-item {
+                &.first {
+                  .stake-banner-item-number {
+                    font-size: 30px;
+                    margin-bottom: 16px;
+                    .stake-banner-item-unit {
+                      font-size: 16px;
+                    }
+                  }
+                }
+                &.second {
+                  .stake-banner-item-number {
+                    font-size: 30px;
+                    margin-bottom: 16px;
+                    .stake-banner-item-unit {
+                      font-size: 16px;
+                    }
+                  }
+                }
+              }
+            }
+            .stake-benefit {
+              padding: 22px 14px 0;
+              .stake-benefit-content {
+                .stake-benefit-list {
+                  .stake-benefit-item {
+                    .stake-benefit-item-index-wrapper {
+                      .stake-benefit-item-index {
+                        margin: 0 0 10px 0;
+                        width: 24px;
+                        height: 24px;
+                        font-size: 16px;
+                        line-height: 24px;
+                      }
+                      .border-index {
+                        width: 24px;
+                        height: 24px;
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+      .astar-page-section-2 {
+        margin-bottom: 10px;
+        .astar-guide-list {
+          .astar-guide-item {
+            .astar-guide-item-header {
+              padding: 10px;
+              font-size: 16px;
+            }
+          }
+        }
+      }
+    }
+    .astar-page-footer-wrapper {
+      padding-top: 10px;
+      padding-bottom: 100px;
+      .astar-page-footer {
+        scale: 0.8;
+      }
+    }
+  }
+}
+
+@media (max-width: 1000px) {
+  .astar-page-container-wrapper {
+    .astar-page-container {
+      scale: 0.8;
+      width: 100%;
+      max-width: 1000px;
+      .astar-page-header {
+        margin-top: 60px;
+      }
+      .astar-page-section-1 {
+        margin-bottom: -50px;
+        width: 100%;
+        .astar-page-section-1-left {
+          .stake-info-wrapper {
+            .stake-info {
+              .total-stake {
+                padding: 17px 15px;
+                .total-stake-number {
+                  font-size: 30px;
+                  .total-stake-unit {
+                    font-size: 16px;
+                  }
+                }
+              }
+            }
+            .claimable-rewards {
+              padding: 17px 15px;
+              .claimable-rewards-content {
+                justify-content: space-between;
+                gap: 10px;
+                .claimable-rewards-number {
+                  font-size: 30px;
+                  .claimable-rewards-unit {
+                    font-size: 16px;
+                  }
+                }
+                .claimable-rewards-button {
+                  font-size: 16px;
+                  padding: 10px 14px;
+                }
+              }
+            }
+          }
+        }
+        .astar-page-section-1-right {
+          .stake-info {
+            .stake-info-banner {
+              .stake-banner-item {
+                &.first {
+                  .stake-banner-item-number {
+                    font-size: 30px;
+                    margin-bottom: 16px;
+                    .stake-banner-item-unit {
+                      font-size: 16px;
+                    }
+                  }
+                }
+                &.second {
+                  .stake-banner-item-number {
+                    font-size: 30px;
+                    margin-bottom: 16px;
+                    .stake-banner-item-unit {
+                      font-size: 16px;
+                    }
+                  }
+                }
+              }
+            }
+            .stake-benefit {
+              padding: 22px 14px 0;
+              .stake-benefit-content {
+                margin-bottom: 115px;
+                .stake-benefit-list {
+                  .stake-benefit-item {
+                    .stake-benefit-item-index-wrapper {
+                      .stake-benefit-item-index {
+                        margin: 0 0 10px 0;
+                        width: 24px;
+                        height: 24px;
+                        font-size: 16px;
+                        line-height: 24px;
+                      }
+                      .border-index {
+                        width: 24px;
+                        height: 24px;
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+      .astar-page-section-2 {
+        margin-bottom: 10px;
+      }
+    }
+    .astar-page-footer-wrapper {
+      padding-top: 10px;
+      padding-bottom: 100px;
+      .astar-page-footer {
+        scale: 0.8;
+      }
+    }
+  }
+}
+
+@media (max-width: 900px) {
+  .astar-page-container {
+    .astar-page-section-1 {
+      .astar-page-section-1-left {
+        display: flex;
+        flex-direction: column;
+        gap: 18px;
+      }
+    }
+  }
+}
+
+@media (max-width: 879px) {
+  .astar-page-container {
+    .astar-page-section-1 {
+      .astar-page-section-1-left {
+        display: flex;
+        flex-direction: column;
+        gap: 45px;
+      }
+    }
+  }
+}
+
+@media (max-width: 815px) {
+  .astar-page-container-wrapper {
+    .astar-page-container {
+      .astar-page-section-1 {
+        .astar-page-section-1-right {
+          .stake-info {
+            .stake-benefit {
+              .stake-benefit-content {
+                margin-bottom: 92px;
+              }
+            }
+          }
+        }
+      }
+      .astar-page-section-2 {
+        .astar-guide-list {
+          .astar-guide-item {
+            .astar-guide-item-header {
+              padding: 10px;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 800px) {
+  .astar-page-container-wrapper {
+    // position: relative;
+    .astar-page-bg-1 {
+      img {
+        &:nth-child(1) {
+          display: none;
+        }
+        &:nth-child(2) {
+          display: block;
+        }
+      }
+    }
+    .astar-page-container {
+      scale: 1;
+      font-family: Poppins;
+      max-width: 1170px;
+      margin: 0 auto;
+      padding: 0 16px;
+      // padding-bottom: 121px;
+
+      button {
+        height: fit-content;
+        width: unset;
+        max-height: unset;
+        max-width: unset;
+        min-height: unset;
+        min-width: unset;
+      }
+      .astar-page-header {
+        margin-top: 128px;
+        margin-bottom: 48px;
+        p {
+          color: #fff;
+          text-align: center;
+          font-family: Poppins;
+          font-size: 30px;
+          font-style: normal;
+          font-weight: 700;
+          line-height: 44px;
+          text-transform: capitalize;
+        }
+      }
+      .astar-page-section-1 {
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+        margin-bottom: 32px;
+        .astar-page-section-1-left {
+          height: 100%;
+          margin-top: 0;
+          gap: 24px;
+          width: 100%;
+          .wallet-info {
+            color: #fff;
+            .wallet-info-header {
+              font-family: Poppins;
+              margin: 0;
+              font-size: 20px;
+              font-style: normal;
+              font-weight: 700;
+              line-height: 30px;
+              text-transform: capitalize;
+            }
+            .wallet-list {
+              margin-bottom: 0;
+              margin-top: 16px;
+              display: flex;
+              flex-direction: column;
+              gap: 24px;
+              .wallet-item {
+                height: fit-content;
+                display: flex;
+                align-items: center;
+                margin-bottom: 0;
+                span {
+                  display: block;
+                  font-family: Poppins;
+                  font-size: 14px;
+                  font-style: normal;
+                  font-weight: 600;
+                  line-height: 24px;
+                  text-transform: capitalize;
+                  &.wallet-address {
+                    margin-left: 8px;
+                    font-size: 18px;
+                    line-height: 30px;
+                    font-weight: 500;
+                    padding: 7px 16px;
+                    background-color: rgba(161, 107, 216, 0.3);
+                    border-radius: 75px;
+                  }
+                }
+              }
+            }
+          }
+          .stake-info-wrapper {
+            position: relative;
+            border-radius: 10px;
+            &::before {
+              position: absolute;
+              z-index: -1;
+              content: "";
+              top: -1.5px;
+              right: -1.5px;
+              bottom: -1.5px;
+              left: -1.5px;
+              border-radius: 10px;
+              background: linear-gradient(90deg, #e4007b 0%, #4ccbc9 100%);
+              box-shadow: 0px 4px 80px 0px rgba(161, 107, 216, 0.6);
+            }
+            .stake-info {
+              background-color: #21063c;
+              padding: 16px 8px;
+              border-radius: 10px;
+              .total-stake {
+                background-color: #351c4f;
+                border-radius: 8px;
+                padding: 16px 16px 24px;
+                margin-bottom: 16px;
+                .total-stake-header {
+                  color: #fff;
+                  font-family: Poppins;
+                  font-size: 14px;
+                  font-style: normal;
+                  font-weight: 600;
+                  line-height: 24px;
+                  margin: 0;
+                  margin-bottom: 14px;
+                  text-transform: capitalize;
+                }
+                .total-stake-number {
+                  background: linear-gradient(
+                    110deg,
+                    #95008e 0%,
+                    #3d94fa 10%,
+                    #04d8ff 80.31%
+                  );
+                  background-clip: text;
+                  -webkit-background-clip: text;
+                  -webkit-text-fill-color: transparent;
+                  font-family: Poppins;
+                  font-size: 40px;
+                  font-style: normal;
+                  font-weight: 700;
+                  line-height: 40px;
+                  .total-stake-unit {
+                    font-family: Poppins;
+                    font-size: 24px;
+                    font-style: normal;
+                    font-weight: 700;
+                    line-height: 32px;
+                    margin-left: 8px;
+                    background: linear-gradient(
+                      139deg,
+                      #95008e -49.14%,
+                      #3d94fa 48.38%,
+                      #04d8ff 116.75%
+                    );
+                    background-clip: text;
+                    -webkit-background-clip: text;
+                    -webkit-text-fill-color: transparent;
+                  }
+                }
+              }
+            }
+            .claimable-rewards {
+              padding: 16px 16px 24px;
+              background-color: #351c4f;
+              border-radius: 10px;
+              margin-bottom: 16px;
+              .claimable-rewards-header {
+                color: #fff;
+                font-family: Poppins;
+                font-size: 14px;
+                font-style: normal;
+                font-weight: 600;
+                line-height: 24px;
+                margin: 0 0 14px 0;
+                text-transform: capitalize;
+              }
+              .claimable-rewards-content {
+                display: flex;
+                gap: 41px;
+                align-items: flex-end;
+                .claimable-rewards-number {
+                  font-family: Poppins;
+                  font-size: 40px;
+                  font-style: normal;
+                  font-weight: 700;
+                  line-height: 40px;
+                  margin: 0;
+                  background: linear-gradient(
+                    110deg,
+                    #95008e 0%,
+                    #3d94fa 16%,
+                    #04d8ff 80.31%
+                  );
+                  background-clip: text;
+                  -webkit-background-clip: text;
+                  -webkit-text-fill-color: transparent;
+                  .claimable-rewards-unit {
+                    font-family: Poppins;
+                    font-size: 24px;
+                    font-style: normal;
+                    font-weight: 700;
+                    line-height: 32px;
+                    margin-left: 8px;
+                    background: linear-gradient(
+                      139deg,
+                      #95008e -49.14%,
+                      #3d94fa 48.38%,
+                      #04d8ff 116.75%
+                    );
+                    background-clip: text;
+                    -webkit-background-clip: text;
+                    -webkit-text-fill-color: transparent;
+                  }
+                }
+                .claimable-rewards-button {
+                  background-color: #4ccbc9;
+                  padding: 3px 16px;
+                  font-family: Poppins;
+                  font-size: 13px;
+                  font-style: normal;
+                  font-weight: 700;
+                  line-height: 30px;
+                  color: #280748;
+                  text-transform: capitalize;
+                  border-radius: 8px;
+                }
+              }
+            }
+            .go-to-stake {
+              width: 100%;
+              padding: 6px 10px;
+              border-radius: 8px;
+              background: linear-gradient(85deg, #e4007b 2.68%, #4ccbc9 100%);
+              font-size: 16px;
+              font-style: normal;
+              font-weight: 700;
+              line-height: 36px;
+              text-transform: capitalize;
+              color: #fff;
+              font-family: Poppins;
+            }
+          }
+        }
+        .astar-page-section-1-right {
+          background-color: #21063c;
+          position: relative;
+          padding: 16px 8px;
+          border-radius: 10px;
+          width: 100%;
+          &::before {
+            content: "";
+            position: absolute;
+            top: -1.5px;
+            right: -1.5px;
+            bottom: -1.5px;
+            left: -1.5px;
+            background: linear-gradient(85deg, #e4007b 2.68%, #4ccbc9 100%);
+            z-index: -1;
+            border-radius: 10px;
+            box-shadow: 0px 4px 80px 0px rgba(161, 107, 216, 0.6);
+          }
+          .stake-benefit-img {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            img {
+              width: 100%;
+              height: 100%;
+              object-fit: cover;
+              border-radius: 10px;
+
+            }
+          }
+          .stake-info {
+            .stake-info-banner {
+              display: flex;
+              gap: 8px;
+              flex-direction: column;
+              margin-bottom: 22px;
+              .stake-banner-item {
+                width: 100%;
+                &.first {
+                  padding: 16px 16px 24px;
+                  background-color: #351c4f;
+                  border-radius: 8px;
+                  .stake-banner-item-header {
+                    color: #fff;
+                    font-family: Poppins;
+                    font-size: 14px;
+                    font-style: normal;
+                    font-weight: 600;
+                    line-height: 24px;
+                    text-transform: capitalize;
+                    margin: 0 0 14px 0;
+                  }
+                  .stake-banner-item-number {
+                    font-family: Poppins;
+                    font-size: 40px;
+                    font-style: normal;
+                    font-weight: 700;
+                    line-height: 40px;
+                    margin: 0 0 24px 0;
+                    background: linear-gradient(
+                      110deg,
+                      #95008e 0%,
+                      #3d94fa 22%,
+                      #04d8ff 80.31%
+                    );
+                    background-clip: text;
+                    -webkit-background-clip: text;
+                    -webkit-text-fill-color: transparent;
+                    .stake-banner-item-unit {
+                      font-family: Poppins;
+                      font-size: 24px;
+                      font-style: normal;
+                      font-weight: 700;
+                      line-height: 32px;
+                      background: linear-gradient(
+                        139deg,
+                        #95008e -49.14%,
+                        #3d94fa 48.38%,
+                        #04d8ff 116.75%
+                      );
+                      background-clip: text;
+                      -webkit-background-clip: text;
+                      -webkit-text-fill-color: transparent;
+                    }
+                  }
+                  .stake-banner-item-next {
+                    font-family: Poppins;
+                    font-size: 14px;
+                    font-style: normal;
+                    font-weight: 500;
+                    line-height: 24px;
+                    color: #90829d;
+                    text-transform: capitalize;
+                    .stake-banner-item-next-time {
+                      font-weight: 600;
+                      color: #fff;
+                    }
+                  }
+                }
+                &.second {
+                  background-color: #351c4f;
+                  border-radius: 8px;
+                  padding: 16px 16px 24px;
+                  .stake-banner-item-bg {
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    right: 0;
+                    bottom: 0;
+                    border-radius: 8px;
+                    z-index: 0;
+                    overflow: hidden;
+                    img {
+                      width: 100%;
+                      height: 100%;
+                    }
+                  }
+                  .stake-banner-item-content {
+                    position: relative;
+                    z-index: 1;
+                    .stake-banner-item-header {
+                      font-family: Poppins;
+                      font-size: 14px;
+                      font-style: normal;
+                      font-weight: 600;
+                      line-height: 24px;
+                      color: #fff;
+                      text-transform: capitalize;
+                      margin: 0 0 14px 0;
+                    }
+                    .stake-banner-item-number {
+                      color: #fff;
+                      font-family: Poppins;
+                      font-size: 40px;
+                      font-style: normal;
+                      font-weight: 700;
+                      line-height: 40px;
+                      margin: 0 0 16px;
+                    }
+                    .stake-banner-item-next {
+                      color: #fff;
+                      font-family: Poppins;
+                      font-size: 20px;
+                      font-style: normal;
+                      font-weight: 700;
+                      line-height: 36px;
+                      margin: 0;
+                    }
+                  }
+                }
+              }
+            }
+            .stake-benefit {
+              position: relative;
+              padding: 0;
+              border-radius: 10px;
+              overflow: hidden;
+              .stake-benefit-bg {
+                display: none;
+                position: absolute;
+                top: 0;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                z-index: 0;
+                img {
+                  width: 100%;
+                  height: 100%;
+                }
+              }
+            
+              .stake-benefit-content {
+                position: relative;
+                z-index: 1;
+                margin-bottom: 0;
+                .stake-benefit-header {
+                  color: #fff;
+                  font-family: Poppins;
+                  font-size: 14px;
+                  font-style: normal;
+                  font-weight: 600;
+                  line-height: 24px;
+                  text-transform: capitalize;
+                  margin: 0 0 12px;
+                }
+                .stake-benefit-list {
+                  display: flex;
+                  gap: 8px;
+                  padding: 0;
+                  margin: 0;
+                  flex-direction: column;
+                  margin-bottom: 158px;
+                  .stake-benefit-item {
+                    width: 100%;
+                    padding: 16px;
+                    background-color: rgba(161, 107, 216, 0.3);
+                    border-radius: 10px;
+                    margin: 0;
+                    .stake-benefit-item-index-wrapper {
+                      position: relative;
+                      .stake-benefit-item-index {
+                        display: block;
+                        width: 32px;
+                        height: 32px;
+                        border-radius: 36px;
+                        background-color: #e4007b;
+                        color: #fff;
+                        text-align: center;
+                        font-family: Poppins;
+                        font-size: 16px;
+                        font-style: normal;
+                        font-weight: 700;
+                        line-height: 32px;
+                        text-align: center;
+                        margin: 0 0 16px 0;
+                        position: relative;
+                        z-index: 10;
+                      }
+                      .border-index {
+                        position: absolute;
+                        content: "";
+                        background-color: #502f70;
+                        width: 32px;
+                        height: 32px;
+                        top: 0;
+                        left: 0;
+                        border-radius: 50%;
+
+                        animation: scaleCircle infinite 1s alternate;
+                      }
+                    }
+
+                    .stake-benefit-item-content {
+                      color: #fff;
+                      font-family: Poppins;
+                      font-size: 16px;
+                      font-style: normal;
+                      font-weight: 500;
+                      line-height: 28px;
+                      text-transform: none;
+                      .change-color-1 {
+                        font-weight: 600;
+                        color: #4dfff6;
+                      }
+                      .change-color-2 {
+                        font-weight: 600;
+                        color: #48c8f0;
+                      }
+                    }
+                  }
+                
+                }
+              }
+            }
+          }
+        }
+      }
+
+      .astar-page-section-2 {
+        margin-bottom: 32px;
+        .astar-page-section-2-header {
+          font-family: Poppins;
+          font-size: 20px;
+          font-style: normal;
+          font-weight: 700;
+          line-height: 30px;
+          text-transform: capitalize;
+          margin: 0 0 45px;
+        }
+        .astar-guide-list {
+          display: flex;
+          gap: 44px;
+          flex-direction: column;
+          .astar-guide-item {
+            width: 100%;
+            height: fit-content;
+            position: relative;
+
+            .astar-guide-item-header {
+              color: #fff;
+              padding: 13px 45.5px;
+              color: #fff;
+              text-align: center;
+              leading-trim: both;
+
+              text-edge: cap;
+              font-family: Poppins;
+              font-size: 20px;
+              font-style: normal;
+              font-weight: 700;
+              line-height: 20px; /* 100% */
+              text-transform: uppercase;
+              border-radius: 8px;
+              background: #a16bd8;
+              box-shadow: 0px 4px 0px 0px #7950a2;
+              position: absolute;
+              top: 0;
+              left: 50%;
+              transform: translateX(-50%) translateY(-50%);
+              z-index: 2;
+            }
+
+            &.step-1 {
+              &::before {
+                content: "";
+                position: absolute;
+                top: -1.5px;
+                bottom: -1.5px;
+                left: -1.5px;
+                right: -1.5px;
+                border-radius: 10px;
+                background: linear-gradient(90deg, #e4007b 0%, #4ccbc9 100%);
+                box-shadow: 0px 4px 80px 0px rgba(161, 107, 216, 0.6);
+                z-index: -1;
+              }
+              .astar-guide-item-content {
+                background-color: #21063c;
+                position: relative;
+                z-index: 1;
+                padding: 43px 16px 24px;
+                color: #90829d;
+                font-family: Poppins;
+                font-size: 16px;
+                font-style: normal;
+                font-weight: 500;
+                line-height: 28px;
+                border-radius: 10px;
+                text-transform: none;
+              }
+            }
+
+            &.step-2 {
+              &::before {
+                content: "";
+                position: absolute;
+                top: -1.5px;
+                bottom: -1.5px;
+                left: -1.5px;
+                right: -1.5px;
+                border-radius: 10px;
+                background: linear-gradient(90deg, #e4007b 0%, #4ccbc9 100%);
+                box-shadow: 0px 4px 80px 0px rgba(161, 107, 216, 0.6);
+                z-index: -1;
+              }
+
+              .astar-guide-item-content {
+                background-color: #21063c;
+                position: relative;
+                z-index: 1;
+                top: 0;
+                padding: 44px 16px 24px;
+                color: #90829d;
+                font-family: Poppins;
+                font-size: 16px;
+                font-style: normal;
+                font-weight: 500;
+                line-height: 28px;
+                border-radius: 10px;
+                text-transform: none;
+                .change-small-text {
+                  margin-top: 8px;
+                }
+              }
+            }
+
+            &.step-3 {
+              &::before {
+                content: "";
+                position: absolute;
+                top: -1.5px;
+                bottom: -1.5px;
+                left: -1.5px;
+                right: -1.5px;
+                border-radius: 10px;
+                background: linear-gradient(90deg, #e4007b 0%, #4ccbc9 100%);
+                box-shadow: 0px 4px 80px 0px rgba(161, 107, 216, 0.6);
+                z-index: -1;
+              }
+
+              .astar-guide-item-content {
+                background-color: #21063c;
+                position: relative;
+                z-index: 1;
+                top: 0;
+                padding: 44px 16px 23px;
+                color: #90829d;
+                font-family: Poppins;
+                font-size: 16px;
+                font-style: normal;
+                font-weight: 500;
+                line-height: 28px;
+                border-radius: 10px;
+                text-transform: none;
+                .change-color {
+                  color: #4dfff6;
+                }
+              }
+            }
+          }
+        }
+        .astar-guide-note-wrapper {
+          display: flex;
+          flex-direction: column;
+          gap: 32px;
+          margin-top: 25px;
+          align-items: center;
+          .astar-guide-note {
+            max-width: 740px;
+            padding: 16px;
+            background-color: rgba(53, 28, 79, 0.7);
+            border-radius: 10px;
+            .astar-guide-note-header {
+              color: #fff;
+              font-family: Poppins;
+              font-size: 16px;
+              font-style: normal;
+              font-weight: 600;
+              line-height: 28px;
+              text-transform: none;
+            }
+            .astar-guide-note-list {
+              margin-top: 16px;
+              display: flex;
+              flex-direction: column;
+              gap: 16px;
+              .astar-guide-note-item {
+                display: flex;
+                gap: 16px;
+                align-items: flex-start;
+                .astar-guide-note-item-icon {
+                  margin-top: 0;
+                  width: fit-content;
+                  height: fit-content;
+                  img {
+                    width: 24px;
+                    height: 24px;
+                    max-width: none;
+                    // object-fit: contain;
+                  }
+                }
+                .astar-guide-note-item-content {
+                  display: block;
+                  color: #90829d;
+                  font-family: Poppins;
+                  font-size: 13px;
+                  font-style: normal;
+                  font-weight: 500;
+                  line-height: 20px;
+                  text-transform: none;
+                }
+              }
+            }
+          }
+          .tutorial {
+            color: #fff;
+            text-transform: none;
+            .tutorial-header {
+              font-family: Poppins;
+              font-size: 16px;
+              font-style: normal;
+              font-weight: 600;
+              line-height: 28px;
+              margin-bottom: 8px;
+            }
+            .tutorial-content {
+              font-family: Poppins;
+              font-size: 24px;
+              font-style: normal;
+              font-weight: 700;
+              line-height: 36px;
+            }
+          }
+        }
+      }
+    }
+
+    .astar-page-section-2-wrapper {
+      position: relative;
+      .astar-page-section-2-bg {
+        position: absolute;
+        top: 0;
+        left: 0;
+        img {
+          width: 100%;
+          height: 100%;
+        }
+      }
+    }
+
+    .astar-page-footer-wrapper {
+      padding-top: 32px;
+      padding-bottom: 100px;
+      position: relative;
+      .astar-page-footer-bg {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        z-index: -1;
+        img {
+          width: 100%;
+          height: 100%;
+          &:nth-child(1) {
+            display: none;
+          }
+          &:nth-child(2) {
+            display: block;
+          }
+        }
+      }
+      .astar-page-footer-img {
+        position: absolute;
+        top: 62px;
+        left: 0;
+        display:none;
+        img {
+          width: 666px;
+          height: 496px;
+          &:nth-child(1) {
+            display: none;
+          }
+          &:nth-child(2){
+            display:block;
+          }
+        }
+      }
+      .astar-page-footer {
+        scale: 1;
+        display: flex;
+        flex-direction: column;
+        color: #fff;
+        max-width: 1170px;
+        margin: 0 auto;
+        gap:0;
+        padding:0 16px;
+        .astar-page-footer-left {
+          width: 100%;
+          h4 {
+            font-family: Poppins;
+            font-size: 20px;
+            font-style: normal;
+            font-weight: 700;
+            line-height: 30px;
+            text-transform: none;
+          }
+          img{
+            display:block;
+          }
+        }
+        .astar-page-footer-right {
+        width: 100%;
+          display: flex;
+          flex-direction: column;
+          gap: 16px;
+          .info-list {
+            display: flex;
+            flex-direction: column;
+            .info-item {
+              display: flex;
+              gap: 8px;
+              .icon {
+                // margin-top: 4px;
+                img {
+                  width: 24px;
+                  max-width: none;
+                  object-fit: contain;
+                }
+              }
+            }
+          }
+          .divide-y {
+            padding: 16px;
+            background-color: #351c4f;
+            border: none;
+            .px-5 {
+              border-color: rgba(237, 237, 237, 0.1);
+              text-transform: none;
+              margin: 0;
+              padding: 17px 0 0 0;
+              .qa-content {
+                color: #90829d;
+                font-family: Poppins;
+                font-size: 13px;
+                font-style: normal;
+                font-weight: 500;
+                line-height: 20px; 
+                &:not(:last-child) {
+                  margin-bottom: 16px;
+                }
+              }
+            }
+            button {
+              height: fit-content;
+              background-color: #351c4f;
+              color: #90829d;
+              padding: 0 !important;
+              &.text-gray-900 {
+                padding: 0 0 16px 0 !important;
+                color: #fff;
+                h2 {
+                  color: inherit;
+                }
+              }
+
+              &:focus {
+                --tw-ring-opacity: 0;
+              }
+              &:hover {
+                background-color: unset;
+              }
+              h2 {
+                font-family: Poppins;
+                font-size: 13px;
+                font-style: normal;
+                font-weight: 700;
+                line-height: 20px; 
+                text-transform: none;
+                color: inherit;
+              }
+            }
+          }
+        }
+      }
+    }
   }
 }
