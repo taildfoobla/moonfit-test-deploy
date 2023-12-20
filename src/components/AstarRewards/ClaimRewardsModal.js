@@ -22,7 +22,6 @@ export default function ClaimRewardsModal({ isOpen, onClose }) {
               <div className="claim-rewards-table-header-item">
                 <p>Amount</p>
                 <Tooltip
-                  
                   className="amount-tooltip"
                   content="The ASTR amount is determined by your staking contribution to MoonFit at Astar Dapp Staking"
                 >
@@ -124,6 +123,48 @@ export default function ClaimRewardsModal({ isOpen, onClose }) {
           <button className="claim-rewards-button">
             Claim selected rewards
           </button>
+        </div>
+      </div>
+      <div className="claim-rewards-modal-mobile">
+        <div className="claim-rewards-modal-close" onClick={onClose}>
+          <img src={CloseBtn} alt="" />
+        </div>
+        <h4 className="claim-rewards-modal-header">Your Rewards</h4>
+        <div className="claim-rewards-modal-content">
+          <div className="claim-rewards-modal-list">
+            <div className="claim-rewards-modal-item">
+              <div className="item round">
+                <span>Round</span>
+                <span>1</span>
+              </div>
+              <div className="item amount">
+                <span>
+                  Amount{" "}
+                  <Tooltip
+                    className="amount-tooltip"
+                    content="The ASTR amount is determined by your staking contribution to MoonFit at Astar Dapp Staking"
+                  >
+                    <img src={AmountInfo} alt="" />
+                  </Tooltip>
+                </span>
+                <span>
+                  <img src={AstarRewards} alt="" />
+                  399 $ASTR
+                </span>
+              </div>
+              <div className="item rewards">
+                <span>Rewards Available At</span>
+                <span>Dec 27th 2023 - 23:00</span>
+              </div>
+              <div className="item claim">
+                <span>Claim</span>
+                <label>
+                  <input type="checkbox" />
+                  Select Round 6
+                </label>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>

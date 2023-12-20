@@ -8,24 +8,22 @@ import AstarFooterImg from "../assets/images/astar-rewards/astar-footer-img.png"
 import AstarBg1 from "../assets/images/astar-rewards/astar-bg-1.png";
 import AstarBg2 from "../assets/images/astar-rewards/astar-bg-2.png";
 import ClaimRewardsModal from "../components/AstarRewards/ClaimRewardsModal";
-import AstarBgMobile1 from "../assets/images/astar-rewards/astar-bg-mobile-1.png"
-import BannerBgMobile from "../assets/images/astar-rewards/stake-info-bg-mobile.png"
-import AstarFooterImgMobile from "../assets/images/astar-rewards/astar-footer-img-mobile.png"
-import AstarFooterBgMobile from "../assets/images/astar-rewards/astar-footer-bg-mobile.png"
+import AstarBgMobile1 from "../assets/images/astar-rewards/astar-bg-mobile-1.png";
+import BannerBgMobile from "../assets/images/astar-rewards/stake-info-bg-mobile.png";
+import AstarFooterImgMobile from "../assets/images/astar-rewards/astar-footer-img-mobile.png";
+import AstarFooterBgMobile from "../assets/images/astar-rewards/astar-footer-bg-mobile.png";
 import ClaimRewardsModalMobile from "../components/AstarRewards/ClaimRewardsModalMobile";
-
 
 export default function AstarRewards() {
   const [isOpenClaimRewardsModal, setIsOpenClaimRewardsModal] = useState(false);
 
-
-  useEffect(()=>{
-    if(isOpenClaimRewardsModal){
-      document.body.style.overflow="hidden";
-    }else{
-      document.body.style.overflow="auto";
+  useEffect(() => {
+    if (isOpenClaimRewardsModal) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "auto";
     }
-  },[isOpenClaimRewardsModal])
+  }, [isOpenClaimRewardsModal]);
 
   const openNewTab = (url) => {
     window.open(url);
@@ -45,14 +43,14 @@ export default function AstarRewards() {
         isOpen={isOpenClaimRewardsModal}
         onClose={handleCloseClaimRewardsModal}
       />
-      <ClaimRewardsModalMobile
+      {/* <ClaimRewardsModalMobile
        isOpen={isOpenClaimRewardsModal}
        onClose={handleCloseClaimRewardsModal}
-      />
+      /> */}
       <div className="astar-page-container-wrapper">
         <div className="astar-page-bg-1">
           <img src={AstarBg1} alt="" />
-          <img src={AstarBgMobile1} alt=""/>
+          <img src={AstarBgMobile1} alt="" />
         </div>
         <div className="astar-page-container">
           <div className="astar-page-header">
@@ -92,7 +90,10 @@ export default function AstarRewards() {
                         7,038
                         <span className="claimable-rewards-unit">ASTR</span>
                       </p>
-                      <button className="claimable-rewards-button" onClick={handleOpenClaimRewardsModal}>
+                      <button
+                        className="claimable-rewards-button"
+                        onClick={handleOpenClaimRewardsModal}
+                      >
                         Claim
                       </button>
                     </div>
@@ -111,9 +112,9 @@ export default function AstarRewards() {
               </div>
             </div>
             <div className="astar-page-section-1-right">
-            <div className="stake-benefit-img">
-                        <img src={BannerBgMobile} alt=""/>
-                      </div>
+              <div className="stake-benefit-img">
+                <img src={BannerBgMobile} alt="" />
+              </div>
               <div className="stake-info">
                 <div className="stake-info-banner">
                   <div className="stake-banner-item first">
@@ -148,7 +149,7 @@ export default function AstarRewards() {
                   <div className="stake-benefit-bg">
                     <img src={BenefitBg} alt="" />
                   </div>
-            
+
                   <div className="stake-benefit-content">
                     <p className="stake-benefit-header">
                       Why stake ASTR with MoonFit dApp Staking?
@@ -191,7 +192,6 @@ export default function AstarRewards() {
                           boosts, badges,…
                         </p>
                       </li>
-                     
                     </ul>
                   </div>
                 </div>
@@ -244,8 +244,8 @@ export default function AstarRewards() {
                 <div className="astar-guide-item step-3">
                   <div className="astar-guide-item-header">step 03</div>
                   <p className="astar-guide-item-content">
-                    <span className="change-color-1">Done!</span>
-                    {" "}Come back to claim your rewards.
+                    <span className="change-color-1">Done!</span> Come back to
+                    claim your rewards.
                   </p>
                 </div>
               </div>
@@ -324,16 +324,15 @@ export default function AstarRewards() {
         <div className="astar-page-footer-wrapper">
           <div className="astar-page-footer-bg">
             <img src={AstarFooterBg} alt="" />
-            <img src={AstarFooterBgMobile} alt=""/>
+            <img src={AstarFooterBgMobile} alt="" />
           </div>
           <div className="astar-page-footer-img">
-                <img src={AstarFooterImg} alt="" />
-                
-              </div>
+            <img src={AstarFooterImg} alt="" />
+          </div>
           <div className="astar-page-footer">
             <div className="astar-page-footer-left">
               <h4 className="">Frequently asked questions</h4>
-              <img src={AstarFooterImgMobile} alt=""/>
+              <img src={AstarFooterImgMobile} alt="" />
             </div>
             <div className="astar-page-footer-right">
               <Accordion>
