@@ -1,5 +1,18 @@
 {
   "projects": {
-    "default": "moonfit-app-dev"
-  }
+    "default": "moonfit-token-sale"
+  },
+  "targets": {
+    "moonfit-token-sale": {
+      "hosting": {
+        "dev": [
+          "moonfit-token-sale"
+        ],
+        "prod": [
+          "moonfit-nft"
+        ]
+      }
+    }
+  },
+  "etags": {}
 }
