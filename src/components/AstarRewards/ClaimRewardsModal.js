@@ -1,10 +1,12 @@
 import React from "react";
 import AstarRewards from "../../assets/images/astar-rewards/astar-reward.png";
 import CloseBtn from "../../assets/images/astar-rewards/close-border.png";
+import AmountInfo from "../../assets/images/astar-rewards/amount-info.png";
+import { Tooltip } from "flowbite-react";
 
-export default function ClaimRewardsModal({isOpen,onClose}) {
+export default function ClaimRewardsModal({ isOpen, onClose }) {
   return (
-    <div className={`claim-rewards-modal-wrapper ${isOpen?"active":""}`}>
+    <div className={`claim-rewards-modal-wrapper ${isOpen ? "active" : ""}`}>
       <div className="claim-rewards-modal-overlay" onClick={onClose}></div>
       <div className="claim-rewards-modal">
         <div className="claim-rewards-modal-header">Your Rewards</div>
@@ -19,6 +21,13 @@ export default function ClaimRewardsModal({isOpen,onClose}) {
               </div>
               <div className="claim-rewards-table-header-item">
                 <p>Amount</p>
+                <Tooltip
+                  
+                  className="amount-tooltip"
+                  content="The ASTR amount is determined by your staking contribution to MoonFit at Astar Dapp Staking"
+                >
+                  <img src={AmountInfo} alt="" />
+                </Tooltip>
               </div>
               <div className="claim-rewards-table-header-item">
                 <p>Rewards Available At</p>

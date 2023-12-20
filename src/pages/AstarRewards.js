@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import BannerBg from "../assets/images/astar-rewards/stake-banner-bg.png";
 import BenefitBg from "../assets/images/astar-rewards/stake-benefit-bg.png";
 import CheckPurple from "../assets/images/astar-rewards/check-purple.png";
@@ -12,9 +12,20 @@ import AstarBgMobile1 from "../assets/images/astar-rewards/astar-bg-mobile-1.png
 import BannerBgMobile from "../assets/images/astar-rewards/stake-info-bg-mobile.png"
 import AstarFooterImgMobile from "../assets/images/astar-rewards/astar-footer-img-mobile.png"
 import AstarFooterBgMobile from "../assets/images/astar-rewards/astar-footer-bg-mobile.png"
+import ClaimRewardsModalMobile from "../components/AstarRewards/ClaimRewardsModalMobile";
+
 
 export default function AstarRewards() {
   const [isOpenClaimRewardsModal, setIsOpenClaimRewardsModal] = useState(false);
+
+
+  useEffect(()=>{
+    if(isOpenClaimRewardsModal){
+      document.body.style.overflow="hidden";
+    }else{
+      document.body.style.overflow="auto";
+    }
+  },[isOpenClaimRewardsModal])
 
   const openNewTab = (url) => {
     window.open(url);
@@ -34,7 +45,10 @@ export default function AstarRewards() {
         isOpen={isOpenClaimRewardsModal}
         onClose={handleCloseClaimRewardsModal}
       />
-
+      <ClaimRewardsModalMobile
+       isOpen={isOpenClaimRewardsModal}
+       onClose={handleCloseClaimRewardsModal}
+      />
       <div className="astar-page-container-wrapper">
         <div className="astar-page-bg-1">
           <img src={AstarBg1} alt="" />
