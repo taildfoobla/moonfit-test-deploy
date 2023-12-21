@@ -1823,6 +1823,7 @@
                   display: flex;
                   align-items: center;
                   gap: 5px;
+                  // position: relative;
                   .amount-tooltip {
                     padding: 8px;
                     font-size: 11px;
@@ -1833,9 +1834,10 @@
                     border-radius: 3px;
                     width: 150px;
                     background-color: #a16bd8;
-                    // left: 0 !important;
-                    // top: 0 !important;
-                    transform: translateX(-5%) translateY(-100%);
+                    transform: translateY(10px);
+                    // left: 2.5% !important;
+                    // top: 50% !important;
+                    // transform: translateX(-5%) translateY(-100%);
                     .absolute {
                       background-color: #a16bd8;
                     }

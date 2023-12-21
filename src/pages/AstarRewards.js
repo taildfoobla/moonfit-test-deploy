@@ -29,23 +29,27 @@ export default function AstarRewards() {
   const [rewardList, setRewardList] = useState([]);
   const [selectedRound, setSelectedRound] = useState([]);
 
-  const { isConnected,showWalletSelectModal } = useContext(WalletAuthContext);
-  console.log("isConnected", isConnected);
+  const { isConnected, showWalletSelectModal } = useContext(WalletAuthContext);
+  
+  
   useEffect(() => {
-    // let number = parseFloat(moonfitTotalStake.replace(/,/g, ""));
-    let newNumber = Number(moonfitTotalStake);
-    const interval = setInterval(() => {
-      if (newNumber <= 100) {
-        clearInterval(interval);
-      } else {
-        console.log("This will run every second!");
-        newNumber = newNumber - 100;
-        console.log("number", newNumber);
-        setMoonfitTotalStake(newNumber);
-      }
-    }, 10000);
-    return () => clearInterval(interval);
+    
+      // let number = parseFloat(moonfitTotalStake.replace(/,/g, ""));
+      let newNumber = Number(moonfitTotalStake);
+      const interval = setInterval(() => {
+        if (newNumber <= 100) {
+          clearInterval(interval);
+        } else {
+          console.log("This will run every second!");
+          newNumber = newNumber - 100;
+          setMoonfitTotalStake(newNumber);
+        }
+      }, 10000);
+      return () => clearInterval(interval);
+   
   }, []);
+  const number = moonfitTotalStake;
+  console.log("number",number)
 
   useEffect(() => {
     if (isOpenClaimRewardsModal) {
@@ -142,21 +146,25 @@ export default function AstarRewards() {
                       )}
                     </div>
                   </div>
-                 {isConnected?<button
-                    className="go-to-stake"
-                    onClick={() => {
-                      openNewTab(
-                        "https://portal.astar.network/astar/dapp-staking/dapp?dapp=0xe785a37c9d5f3377cbb5b8bf7e9db03ddd440449"
-                      );
-                    }}
-                  >
-                    Stake
-                  </button>:<button
-                    className="go-to-stake"
-                    onClick={showWalletSelectModal}
-                  >
-                   Connect Wallet
-                  </button>} 
+                  {isConnected ? (
+                    <button
+                      className="go-to-stake"
+                      onClick={() => {
+                        openNewTab(
+                          "https://portal.astar.network/astar/dapp-staking/dapp?dapp=0xe785a37c9d5f3377cbb5b8bf7e9db03ddd440449"
+                        );
+                      }}
+                    >
+                      Stake
+                    </button>
+                  ) : (
+                    <button
+                      className="go-to-stake"
+                      onClick={showWalletSelectModal}
+                    >
+                      Connect Wallet
+                    </button>
+                  )}
 
                   <div className="not-connect-bg">
                     <img src={NotConnectBg} alt="" />
@@ -179,11 +187,11 @@ export default function AstarRewards() {
                       <AnimatedNumbers
                         includeComma={true}
                         transitions={(index) => ({
-                          type: "spring",
+                          // type: "spring",
                           duration: index + 0.00001,
                         })}
                         locale="en-US"
-                        animateToNumber={moonfitTotalStake}
+                        animateToNumber={number - 1000}
                         fontStyle={{
                           textAlign: "center",
                           fontFamily: "Poppins",

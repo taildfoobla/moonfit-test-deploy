@@ -1,10 +1,23 @@
-import React from "react";
+import React ,{useEffect}from "react";
 import AstarRewards from "../../assets/images/astar-rewards/astar-reward.png";
 import CloseBtn from "../../assets/images/astar-rewards/close-border.png";
 import AmountInfo from "../../assets/images/astar-rewards/amount-info.png";
 import { Tooltip } from "flowbite-react";
 
 export default function ClaimRewardsModal({ isOpen, onClose }) {
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      if (event.key === 'Escape') {
+        onClose();
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, []);
   return (
     <div className={`claim-rewards-modal-wrapper ${isOpen ? "active" : ""}`}>
       <div className="claim-rewards-modal-overlay" onClick={onClose}></div>
@@ -139,8 +152,6 @@ export default function ClaimRewardsModal({ isOpen, onClose }) {
                 <span>
                   Amount{" "}
                   <Tooltip
-
-                    key="tooltip-1"
                     className="amount-tooltip"
                     content="The ASTR amount is determined by your staking contribution to MoonFit at Astar Dapp Staking"
                   >
@@ -173,7 +184,6 @@ export default function ClaimRewardsModal({ isOpen, onClose }) {
                 <span>
                   Amount{" "}
                   <Tooltip
-                    key="tooltip-2"
                     className="amount-tooltip"
                     content="The ASTR amount is determined by your staking contribution to MoonFit at Astar Dapp Staking"
                   >

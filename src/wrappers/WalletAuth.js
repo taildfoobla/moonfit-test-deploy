@@ -162,21 +162,28 @@ const WalletAuthWrapper = ({ children }) => {
     }, [provider, walletExtKey, detectProvider, handleWalletChange])
 
     const onConnect = async (providerNameParam = null) => {
+        console.log("here1")
         try {
             const provider = await detectProvider(providerNameParam)
+            console.log('here2')
             if (!provider) {
                 console.log('Wallet extension is not installed')
                 return
             }
-            setProvider(provider)
-            await provider.request({ method: 'eth_requestAccounts' })
-            await switchNetwork(provider)
-            await retrieveCurrentWalletInfo(provider)
+           
             const web3 = new Web3(provider)
             const walletAccount = await web3.eth.getAccounts()
             const account = walletAccount[0]
             await handleLogin(provider, account)
-
+   
+             setProvider(provider)
+           
+            await provider.request({ method: 'eth_requestAccounts' })
+      
+            await switchNetwork(provider)
+    
+            await retrieveCurrentWalletInfo(provider)
+           
             // Go to Mint Pass page
             // history.push(Paths.MintPassMinting.path)
         } catch (err) {
@@ -222,10 +229,12 @@ const WalletAuthWrapper = ({ children }) => {
     const hideConnectModal = () => setIsAuthModalVisible(false)
 
     const onWalletSelect = async (wallet) => {
+        console.log("connect")
         const providerName = wallet.extensionName
         const isInstalled = window[providerName] && window[providerName][wallet.isSetGlobalString]
 
         if (localStorage.getItem('_debug')) {
+     
             alert(JSON.stringify({
                 providerName: providerName,
                 isSetGlobalString: wallet.isSetGlobalString,
@@ -235,6 +244,7 @@ const WalletAuthWrapper = ({ children }) => {
         }
 
         if (isMobileOrTablet() && !isMetaMaskBrowser) {
+          
             if (providerName === "SubWallet") {
                 deepLink = `subwallet://browser?url=${window.location.host}`
             }
@@ -247,11 +257,15 @@ const WalletAuthWrapper = ({ children }) => {
         }
 
         if (!isInstalled) {
+          
             return window.open(wallet.installUrl)
         }
+ 
 
         setWalletExtKey(providerName)
+        
         await onConnect(providerName)
+        console.log("here5")
         hideConnectModal()
         return true
     }
