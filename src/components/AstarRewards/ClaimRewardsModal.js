@@ -4,6 +4,7 @@ import CloseBtn from "../../assets/images/astar-rewards/close-border.png";
 import AmountInfo from "../../assets/images/astar-rewards/amount-info.png";
 import { Tooltip } from "flowbite-react";
 
+
 export default function ClaimRewardsModal({ isOpen, onClose }) {
   return (
     <div className={`claim-rewards-modal-wrapper ${isOpen ? "active" : ""}`}>
