@@ -4,7 +4,6 @@ import CloseBtn from "../../assets/images/astar-rewards/close-border.png";
 import AmountInfo from "../../assets/images/astar-rewards/amount-info.png";
 import { Tooltip } from "flowbite-react";
 
-
 export default function ClaimRewardsModal({ isOpen, onClose }) {
   return (
     <div className={`claim-rewards-modal-wrapper ${isOpen ? "active" : ""}`}>
@@ -81,7 +80,7 @@ export default function ClaimRewardsModal({ isOpen, onClose }) {
                   Dec 27th 2023 at 23:00
                 </div>
                 <div className="claim-rewards-round">
-                 <div className="pending">Pending</div>
+                  <div className="pending">Pending</div>
                 </div>
               </div>
               <div className="claim-rewards-table-item">
@@ -140,6 +139,8 @@ export default function ClaimRewardsModal({ isOpen, onClose }) {
                 <span>
                   Amount{" "}
                   <Tooltip
+
+                    key="tooltip-1"
                     className="amount-tooltip"
                     content="The ASTR amount is determined by your staking contribution to MoonFit at Astar Dapp Staking"
                   >
@@ -172,6 +173,7 @@ export default function ClaimRewardsModal({ isOpen, onClose }) {
                 <span>
                   Amount{" "}
                   <Tooltip
+                    key="tooltip-2"
                     className="amount-tooltip"
                     content="The ASTR amount is determined by your staking contribution to MoonFit at Astar Dapp Staking"
                   >
