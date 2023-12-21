@@ -24,6 +24,23 @@ export default function AstarRewards() {
   const [rewardList,setRewardList]=useState([])
   const [selectedRound,setSelectedRound]=useState([])
 
+useEffect(()=>{
+  let number = parseFloat(moonfitTotalStake.replace(/,/g, ""));
+  let newNumber = Number(number);
+  const interval = setInterval(() => {
+    if(newNumber<=1000){
+      clearInterval(interval)
+    }else{
+      console.log('This will run every second!');
+    newNumber=newNumber-1000
+    console.log("number",newNumber)
+    setMoonfitTotalStake(newNumber.toLocaleString())
+    }
+    
+  }, 1000);
+  return () => clearInterval(interval);
+},[])
+
   useEffect(() => {
     if (isOpenClaimRewardsModal) {
       document.body.style.overflow = "hidden";
