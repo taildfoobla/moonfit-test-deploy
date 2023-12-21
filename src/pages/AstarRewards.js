@@ -12,10 +12,17 @@ import AstarBgMobile1 from "../assets/images/astar-rewards/astar-bg-mobile-1.png
 import BannerBgMobile from "../assets/images/astar-rewards/stake-info-bg-mobile.png";
 import AstarFooterImgMobile from "../assets/images/astar-rewards/astar-footer-img-mobile.png";
 import AstarFooterBgMobile from "../assets/images/astar-rewards/astar-footer-bg-mobile.png";
-import ClaimRewardsModalMobile from "../components/AstarRewards/ClaimRewardsModalMobile";
+import { getShortAddress } from "../utils/blockchain";
 
 export default function AstarRewards() {
   const [isOpenClaimRewardsModal, setIsOpenClaimRewardsModal] = useState(false);
+  const [substrateWallet,setSubstrateWallet]=useState(getShortAddress("0xd62B5910f3c56AdCcB4c0F52DB0b94bdeFD6caEd",6))
+  const [moonfitTotalStake,setMoonfitTotalStake]=useState("73,932.99")
+  const [totalStake,setTotalStake]=useState("50")
+  const [claimable,setClaimable]=useState("7,038")
+  const [nextTime,setNextTime]=useState("31/12/2023")
+  const [rewardList,setRewardList]=useState([])
+  const [selectedRound,setSelectedRound]=useState([])
 
   useEffect(() => {
     if (isOpenClaimRewardsModal) {
@@ -64,11 +71,11 @@ export default function AstarRewards() {
                 <div className="wallet-list">
                   <div className="wallet-item">
                     <span>EVM Wallet:</span>
-                    <span className="wallet-address">0x9KO...2LX0M</span>
+                    <span className="wallet-address">{substrateWallet}</span>
                   </div>
                   <div className="wallet-item">
                     <span>Substrate Wallet:</span>
-                    <span className="wallet-address">0x9KO...2LX0M</span>
+                    <span className="wallet-address">{substrateWallet}</span>
                   </div>
                 </div>
               </div>
@@ -77,7 +84,7 @@ export default function AstarRewards() {
                   <div className="total-stake">
                     <p className="total-stake-header">Total Staked</p>
                     <p className="total-stake-number">
-                      50
+                      {totalStake}
                       <span className="total-stake-unit">ASTR</span>
                     </p>
                   </div>
@@ -87,7 +94,7 @@ export default function AstarRewards() {
                     </p>
                     <div className="claimable-rewards-content">
                       <p className="claimable-rewards-number">
-                        7,038
+                        {claimable}
                         <span className="claimable-rewards-unit">ASTR</span>
                       </p>
                       <button
@@ -122,13 +129,13 @@ export default function AstarRewards() {
                       MoonFit's Total Staked
                     </p>
                     <p className="stake-banner-item-number">
-                      73,932.99{" "}
+                     {moonfitTotalStake}{" "}
                       <span className="stake-banner-item-unit">ASTR</span>
                     </p>
                     <p className="stake-banner-item-next">
                       Next Reward Distribution:{" "}
                       <span className="stake-banner-item-next-time">
-                        31/12/2023
+                        {nextTime}
                       </span>
                     </p>
                   </div>
