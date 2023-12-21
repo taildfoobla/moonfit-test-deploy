@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import BannerBg from "../assets/images/astar-rewards/stake-banner-bg.png";
 import BenefitBg from "../assets/images/astar-rewards/stake-benefit-bg.png";
 import CheckPurple from "../assets/images/astar-rewards/check-purple.png";
@@ -13,33 +13,39 @@ import BannerBgMobile from "../assets/images/astar-rewards/stake-info-bg-mobile.
 import AstarFooterImgMobile from "../assets/images/astar-rewards/astar-footer-img-mobile.png";
 import AstarFooterBgMobile from "../assets/images/astar-rewards/astar-footer-bg-mobile.png";
 import { getShortAddress } from "../utils/blockchain";
+import AnimatedNumbers from "react-animated-numbers";
+import NotConnectBg from "../assets/images/astar-rewards/not-connect-bg.png";
+import WalletAuthContext from "../contexts/WalletAuthContext";
 
 export default function AstarRewards() {
   const [isOpenClaimRewardsModal, setIsOpenClaimRewardsModal] = useState(false);
-  const [substrateWallet,setSubstrateWallet]=useState(getShortAddress("0xd62B5910f3c56AdCcB4c0F52DB0b94bdeFD6caEd",6))
-  const [moonfitTotalStake,setMoonfitTotalStake]=useState("73,932.99")
-  const [totalStake,setTotalStake]=useState("50")
-  const [claimable,setClaimable]=useState("7,038")
-  const [nextTime,setNextTime]=useState("31/12/2023")
-  const [rewardList,setRewardList]=useState([])
-  const [selectedRound,setSelectedRound]=useState([])
+  const [substrateWallet, setSubstrateWallet] = useState(
+    getShortAddress("0xd62B5910f3c56AdCcB4c0F52DB0b94bdeFD6caEd", 6)
+  );
+  const [moonfitTotalStake, setMoonfitTotalStake] = useState(73932.99);
+  const [totalStake, setTotalStake] = useState("50");
+  const [claimable, setClaimable] = useState("7,038");
+  const [nextTime, setNextTime] = useState("31/12/2023");
+  const [rewardList, setRewardList] = useState([]);
+  const [selectedRound, setSelectedRound] = useState([]);
 
-useEffect(()=>{
-  let number = parseFloat(moonfitTotalStake.replace(/,/g, ""));
-  let newNumber = Number(number);
-  const interval = setInterval(() => {
-    if(newNumber<=1000){
-      clearInterval(interval)
-    }else{
-      console.log('This will run every second!');
-    newNumber=newNumber-1000
-    console.log("number",newNumber)
-    setMoonfitTotalStake(newNumber.toLocaleString())
-    }
-    
-  }, 1000);
-  return () => clearInterval(interval);
-},[])
+  const { isConnected,showWalletSelectModal } = useContext(WalletAuthContext);
+  console.log("isConnected", isConnected);
+  useEffect(() => {
+    // let number = parseFloat(moonfitTotalStake.replace(/,/g, ""));
+    let newNumber = Number(moonfitTotalStake);
+    const interval = setInterval(() => {
+      if (newNumber <= 100) {
+        clearInterval(interval);
+      } else {
+        console.log("This will run every second!");
+        newNumber = newNumber - 100;
+        console.log("number", newNumber);
+        setMoonfitTotalStake(newNumber);
+      }
+    }, 10000);
+    return () => clearInterval(interval);
+  }, []);
 
   useEffect(() => {
     if (isOpenClaimRewardsModal) {
@@ -82,27 +88,37 @@ useEffect(()=>{
             <p className="second">MoonFit Dashboard</p>
           </div>
           <div className="astar-page-section-1">
-            <div className="astar-page-section-1-left">
+            <div
+              className={`astar-page-section-1-left ${
+                isConnected ? "" : "not-connect"
+              }`}
+            >
               <div className="wallet-info">
                 <h3 className="wallet-info-header">My ASTR Staking</h3>
-                <div className="wallet-list">
-                  <div className="wallet-item">
-                    <span>EVM Wallet:</span>
-                    <span className="wallet-address">{substrateWallet}</span>
+                {isConnected && (
+                  <div className="wallet-list">
+                    <div className="wallet-item">
+                      <span>EVM Wallet:</span>
+                      <span className="wallet-address">{substrateWallet}</span>
+                    </div>
+                    <div className="wallet-item">
+                      <span>Substrate Wallet:</span>
+                      <span className="wallet-address">{substrateWallet}</span>
+                    </div>
                   </div>
-                  <div className="wallet-item">
-                    <span>Substrate Wallet:</span>
-                    <span className="wallet-address">{substrateWallet}</span>
-                  </div>
-                </div>
+                )}
               </div>
               <div className="stake-info-wrapper">
-                <div className="stake-info">
+                <div
+                  className={`stake-info ${isConnected ? "" : "not-connect"}`}
+                >
                   <div className="total-stake">
                     <p className="total-stake-header">Total Staked</p>
                     <p className="total-stake-number">
-                      {totalStake}
-                      <span className="total-stake-unit">ASTR</span>
+                      {isConnected ? totalStake : "--"}
+                      {isConnected && (
+                        <span className="total-stake-unit">ASTR</span>
+                      )}
                     </p>
                   </div>
                   <div className="claimable-rewards">
@@ -111,18 +127,22 @@ useEffect(()=>{
                     </p>
                     <div className="claimable-rewards-content">
                       <p className="claimable-rewards-number">
-                        {claimable}
-                        <span className="claimable-rewards-unit">ASTR</span>
+                        {isConnected ? claimable : "--"}
+                        {isConnected && (
+                          <span className="claimable-rewards-unit">ASTR</span>
+                        )}
                       </p>
-                      <button
-                        className="claimable-rewards-button"
-                        onClick={handleOpenClaimRewardsModal}
-                      >
-                        Claim
-                      </button>
+                      {isConnected && (
+                        <button
+                          className="claimable-rewards-button"
+                          onClick={handleOpenClaimRewardsModal}
+                        >
+                          Claim
+                        </button>
+                      )}
                     </div>
                   </div>
-                  <button
+                 {isConnected?<button
                     className="go-to-stake"
                     onClick={() => {
                       openNewTab(
@@ -131,7 +151,16 @@ useEffect(()=>{
                     }}
                   >
                     Stake
-                  </button>
+                  </button>:<button
+                    className="go-to-stake"
+                    onClick={showWalletSelectModal}
+                  >
+                   Connect Wallet
+                  </button>} 
+
+                  <div className="not-connect-bg">
+                    <img src={NotConnectBg} alt="" />
+                  </div>
                 </div>
               </div>
             </div>
@@ -146,7 +175,29 @@ useEffect(()=>{
                       MoonFit's Total Staked
                     </p>
                     <p className="stake-banner-item-number">
-                     {moonfitTotalStake}{" "}
+                      {/* {moonfitTotalStake}{" "} */}
+                      <AnimatedNumbers
+                        includeComma={true}
+                        transitions={(index) => ({
+                          type: "spring",
+                          duration: index + 0.00001,
+                        })}
+                        locale="en-US"
+                        animateToNumber={moonfitTotalStake}
+                        fontStyle={{
+                          textAlign: "center",
+                          fontFamily: "Poppins",
+                          fontSize: "40px",
+                          fontWeight: "700",
+                          background:
+                            " linear-gradient( 110deg,  #95008e 0%, #3d94fa 22%, #04d8ff 80.31%)",
+
+                          color: "transparent",
+                          WebkitBackgroundClip: "text",
+                          backgroundClip: "text",
+                          lineHeight: "52px",
+                        }}
+                      />
                       <span className="stake-banner-item-unit">ASTR</span>
                     </p>
                     <p className="stake-banner-item-next">

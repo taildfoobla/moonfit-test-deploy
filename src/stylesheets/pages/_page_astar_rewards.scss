@@ -81,12 +81,17 @@
   .astar-page-section-1 {
     display: flex;
     gap: 30px;
-    align-items: flex-start;
+    align-items: flex-end;
     justify-content: center;
     margin: 0 0 100px 0;
     .astar-page-section-1-left {
       height: 100%;
       margin-top: -3px;
+      &.not-connect{
+        display:flex;
+        flex-direction: column;
+        gap:28px;
+      }
       .wallet-info {
         color: #fff;
         .wallet-info-header {
@@ -146,11 +151,21 @@
           background-color: #21063c;
           padding: 16px;
           border-radius: 17px;
+          position: relative;
+          overflow: hidden;
+          &.not-connect{
+            padding-bottom: 160px;
+            .not-connect-bg{
+              display:block;
+            }
+          }
           .total-stake {
             background-color: #351c4f;
             border-radius: 10px;
             padding: 24px 20px;
             margin-bottom: 16px;
+            position: relative;
+            z-index: 1;
             .total-stake-header {
               color: #fff;
               font-family: Poppins;
@@ -202,6 +217,9 @@
           background-color: #351c4f;
           border-radius: 10px;
           margin-bottom: 16px;
+          position: relative;
+          z-index: 1;
+         min-width: 338px;
           .claimable-rewards-header {
             color: #fff;
             font-family: Poppins;
@@ -223,6 +241,7 @@
               font-weight: 700;
               line-height: 52px;
               margin: 0;
+              width: 170px;
               background: linear-gradient(
                 110deg,
                 #95008e 0%,
@@ -285,6 +304,8 @@
           text-transform: capitalize;
           color: #fff;
           font-family: Poppins;
+          position: relative;
+          z-index: 1;
           &:active {
             transform: translateY(5px) !important;
           }
@@ -294,6 +315,13 @@
           &:focus {
             transform: translateY(0);
           }
+        }
+        .not-connect-bg{
+          position: absolute;
+          bottom: 0;
+          left: 0;
+          z-index: 0;
+          display:none;
         }
       }
     }
@@ -340,21 +368,27 @@
                 margin: 0 0 16px 0;
               }
               .stake-banner-item-number {
-                font-family: Poppins;
-                font-size: 40px;
-                font-style: normal;
-                font-weight: 700;
-                line-height: 52px;
-                margin: 0 0 24px 0;
-                background: linear-gradient(
-                  110deg,
-                  #95008e 0%,
-                  #3d94fa 22%,
-                  #04d8ff 80.31%
-                );
-                background-clip: text;
-                -webkit-background-clip: text;
-                -webkit-text-fill-color: transparent;
+             
+                  // font-family: Poppins;
+                  // font-size: 40px;
+                  // font-style: normal;
+                  // font-weight: 700;
+                  // line-height: 52px;
+                  margin: 0 0 24px 0;
+                  // background: linear-gradient(
+                  //   110deg,
+                  //   #95008e 0%,
+                  //   #3d94fa 22%,
+                  //   #04d8ff 80.31%
+                  // );
+                  // background-clip: text;
+                  // color: transparent;
+                  // -webkit-background-clip: text;
+                  // -webkit-text-fill-color: transparent;
+                
+               display:flex;
+               align-items: flex-end;
+               gap:8px;
                 .stake-banner-item-unit {
                   font-family: Poppins;
                   font-size: 20px;
@@ -1052,6 +1086,7 @@
               display: flex;
               width: 270px;
               .reward-icon {
+                margin-right: 7px;
                 img {
                   width: 24px;
                   height: 24px;
@@ -1207,6 +1242,9 @@
       .astar-page-section-1 {
         margin-bottom: -50px;
         .astar-page-section-1-left {
+          &.not-connect{
+            gap:37px;
+          }
           .stake-info-wrapper {
             .stake-info {
               .total-stake {
@@ -1312,6 +1350,7 @@
     }
   }
 }
+
 
 @media (max-width: 1000px) {
   .astar-page-container-wrapper {
@@ -1769,6 +1808,8 @@
                 font-family: Poppins;
                 font-size: 13px;
                 line-height: 20px;
+                // position: relative;
+
                 color: #fff;
                 &:nth-child(1) {
                   font-weight: 600;
@@ -1792,9 +1833,9 @@
                     border-radius: 3px;
                     width: 150px;
                     background-color: #a16bd8;
-                    left: 0 !important;
-                    top: 0 !important;
-                    transform: translateX(6%) translateY(-50%);
+                    // left: 0 !important;
+                    // top: 0 !important;
+                    transform: translateX(-5%) translateY(-100%);
                     .absolute {
                       background-color: #a16bd8;
                     }
@@ -2003,6 +2044,11 @@
               background-color: #21063c;
               padding: 16px 8px;
               border-radius: 10px;
+              
+               .not-connect-bg{
+                display:none;
+               
+              }
               .total-stake {
                 background-color: #351c4f;
                 border-radius: 8px;
@@ -2059,6 +2105,7 @@
               background-color: #351c4f;
               border-radius: 10px;
               margin-bottom: 16px;
+              min-width: unset;
               .claimable-rewards-header {
                 color: #fff;
                 font-family: Poppins;
