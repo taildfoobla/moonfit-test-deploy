@@ -1053,6 +1053,29 @@
             }
             .claim-rewards-round {
               width: 240px;
+              .pending {
+                cursor: not-allowed;
+                padding: 3px 86px;
+                font-family: Poppins;
+                font-size: 16px;
+                font-style: normal;
+                font-weight: 700;
+                line-height: 30px;
+                color: #efaa5d;
+                border-radius: 40px;
+                background: rgba(239, 170, 93, 0.2);
+              }
+              .claimed {
+                padding: 3px 84.5px;
+                font-family: Poppins;
+                font-size: 16px;
+                font-style: normal;
+                font-weight: 700;
+                line-height: 30px;
+                color: #90829d;
+                border-radius: 40px;
+                background: var(--Background-04, #452863);
+              }
               input {
                 width: 20px;
                 height: 20px;
@@ -1068,11 +1091,13 @@
                 }
               }
               label {
+                cursor: pointer;
                 font-family: Poppins;
                 font-size: 16px;
                 font-style: normal;
                 font-weight: 500;
                 line-height: 36px;
+                user-select: none;
               }
             }
           }
@@ -1642,7 +1667,10 @@
     }
     .claim-rewards-modal-mobile {
       width: 100%;
-      display: block;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      height: 80%;
       .claim-rewards-modal-close {
         width: fit-content;
         height: fit-content;
@@ -1665,8 +1693,9 @@
       .claim-rewards-modal-content {
         position: relative;
         background-color: #21063c;
-        padding: 24px 16px 19px;
+        margin-bottom: 16px;
         border-radius: 10px;
+        max-height: 90%;
         &::before {
           content: "";
           position: absolute;
@@ -1680,9 +1709,15 @@
           box-shadow: 0px 4px 80px 0px rgba(161, 107, 216, 0.6);
         }
         .claim-rewards-modal-list {
+          padding: 24px 16px 19px;
           display: flex;
           flex-direction: column;
           gap: 24px;
+          max-height: 100%;
+          overflow-y: auto;
+          &::-webkit-scrollbar {
+            width: 0;
+          }
           .claim-rewards-modal-item {
             padding-bottom: 16px;
             display: flex;
@@ -1707,8 +1742,25 @@
               }
               &.amount {
                 span {
-                  .w-fit {
-                    display: inline-block;
+                  display: flex;
+                  align-items: center;
+                  gap: 5px;
+                  .amount-tooltip {
+                    padding: 8px;
+                    font-size: 11px;
+                    font-style: normal;
+                    font-weight: 500;
+                    line-height: 16px;
+                    text-align: center;
+                    border-radius: 3px;
+                    width: 150px;
+                    background-color: #a16bd8;
+                    left: 0 !important;
+                    top: 0 !important;
+                    transform: translateX(6%) translateY(-50%);
+                    .absolute {
+                      background-color: #a16bd8;
+                    }
                   }
                   &:nth-child(1) {
                     img {
@@ -1725,9 +1777,68 @@
                   }
                 }
               }
+              &.claim {
+                label {
+                  color: #fff;
+                  font-family: Poppins;
+                  font-size: 13px;
+                  font-style: normal;
+                  font-weight: 500;
+                  line-height: 20px;
+                  input {
+                    width: 20px;
+                    height: 20px;
+                    border-radius: 3px;
+                    &::before {
+                      background-color: transparent;
+                      border: 1.5px solid #90829d;
+                      width: 20px;
+                      height: 20px;
+                    }
+                    &:focus {
+                      --tw-ring-inset: none;
+                    }
+                  }
+                }
+              }
+              .pending {
+                padding: 3px 16px;
+                font-family: Poppins;
+                font-size: 13px;
+                font-style: normal;
+                font-weight: 700;
+                line-height: 20px;
+                color: #efaa5d;
+                border-radius: 40px;
+                background: rgba(239, 170, 93, 0.2);
+              }
+              .claimed {
+                padding: 3px 16px;
+                font-family: Poppins;
+                font-size: 13px;
+                font-style: normal;
+                font-weight: 700;
+                line-height: 20px;
+                color: #90829d;
+                border-radius: 40px;
+                background: #452863;
+              }
             }
           }
         }
+      }
+      .claim-rewards-button {
+        margin: 0 auto;
+        padding: 6px 74px;
+        border-radius: 8px;
+        background: linear-gradient(85deg, #e4007b 2.68%, #4ccbc9 100%);
+        color: #fff;
+        font-family: Poppins;
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 700;
+        line-height: 36px;
+        text-transform: none;
       }
     }
   }

@@ -80,8 +80,7 @@ export default function ClaimRewardsModal({ isOpen, onClose }) {
                   Dec 27th 2023 at 23:00
                 </div>
                 <div className="claim-rewards-round">
-                  <input id="round-1" type="checkbox" />
-                  <label htmlFor="round-1">Select Round 1</label>
+                 <div className="pending">Pending</div>
                 </div>
               </div>
               <div className="claim-rewards-table-item">
@@ -96,8 +95,7 @@ export default function ClaimRewardsModal({ isOpen, onClose }) {
                   Dec 27th 2023 at 23:00
                 </div>
                 <div className="claim-rewards-round">
-                  <input id="round-1" type="checkbox" />
-                  <label htmlFor="round-1">Select Round 1</label>
+                  <div className="claimed">Claimed</div>
                 </div>
               </div>
               <div className="claim-rewards-table-item">
@@ -164,8 +162,163 @@ export default function ClaimRewardsModal({ isOpen, onClose }) {
                 </label>
               </div>
             </div>
+            <div className="claim-rewards-modal-item">
+              <div className="item round">
+                <span>Round</span>
+                <span>1</span>
+              </div>
+              <div className="item amount">
+                <span>
+                  Amount{" "}
+                  <Tooltip
+                    className="amount-tooltip"
+                    content="The ASTR amount is determined by your staking contribution to MoonFit at Astar Dapp Staking"
+                  >
+                    <img src={AmountInfo} alt="" />
+                  </Tooltip>
+                </span>
+                <span>
+                  <img src={AstarRewards} alt="" />
+                  399 $ASTR
+                </span>
+              </div>
+              <div className="item rewards">
+                <span>Rewards Available At</span>
+                <span>Dec 27th 2023 - 23:00</span>
+              </div>
+              <div className="item claim">
+                <span>Claim</span>
+                <div className="pending">Pending</div>
+              </div>
+            </div>
+            <div className="claim-rewards-modal-item">
+              <div className="item round">
+                <span>Round</span>
+                <span>1</span>
+              </div>
+              <div className="item amount">
+                <span>
+                  Amount{" "}
+                  <Tooltip
+                    className="amount-tooltip"
+                    content="The ASTR amount is determined by your staking contribution to MoonFit at Astar Dapp Staking"
+                  >
+                    <img src={AmountInfo} alt="" />
+                  </Tooltip>
+                </span>
+                <span>
+                  <img src={AstarRewards} alt="" />
+                  399 $ASTR
+                </span>
+              </div>
+              <div className="item rewards">
+                <span>Rewards Available At</span>
+                <span>Dec 27th 2023 - 23:00</span>
+              </div>
+              <div className="item claim">
+                <span>Claim</span>
+                <div className="claimed">Claimed</div>
+              </div>
+            </div>
+            <div className="claim-rewards-modal-item">
+              <div className="item round">
+                <span>Round</span>
+                <span>1</span>
+              </div>
+              <div className="item amount">
+                <span>
+                  Amount{" "}
+                  <Tooltip
+                    className="amount-tooltip"
+                    content="The ASTR amount is determined by your staking contribution to MoonFit at Astar Dapp Staking"
+                  >
+                    <img src={AmountInfo} alt="" />
+                  </Tooltip>
+                </span>
+                <span>
+                  <img src={AstarRewards} alt="" />
+                  399 $ASTR
+                </span>
+              </div>
+              <div className="item rewards">
+                <span>Rewards Available At</span>
+                <span>Dec 27th 2023 - 23:00</span>
+              </div>
+              <div className="item claim">
+                <span>Claim</span>
+                <label>
+                  <input type="checkbox" />
+                  Select Round 6
+                </label>
+              </div>
+            </div>
+            <div className="claim-rewards-modal-item">
+              <div className="item round">
+                <span>Round</span>
+                <span>1</span>
+              </div>
+              <div className="item amount">
+                <span>
+                  Amount{" "}
+                  <Tooltip
+                    className="amount-tooltip"
+                    content="The ASTR amount is determined by your staking contribution to MoonFit at Astar Dapp Staking"
+                  >
+                    <img src={AmountInfo} alt="" />
+                  </Tooltip>
+                </span>
+                <span>
+                  <img src={AstarRewards} alt="" />
+                  399 $ASTR
+                </span>
+              </div>
+              <div className="item rewards">
+                <span>Rewards Available At</span>
+                <span>Dec 27th 2023 - 23:00</span>
+              </div>
+              <div className="item claim">
+                <span>Claim</span>
+                <label>
+                  <input type="checkbox" />
+                  Select Round 6
+                </label>
+              </div>
+            </div>
+            <div className="claim-rewards-modal-item">
+              <div className="item round">
+                <span>Round</span>
+                <span>1</span>
+              </div>
+              <div className="item amount">
+                <span>
+                  Amount{" "}
+                  <Tooltip
+                    className="amount-tooltip"
+                    content="The ASTR amount is determined by your staking contribution to MoonFit at Astar Dapp Staking"
+                  >
+                    <img src={AmountInfo} alt="" />
+                  </Tooltip>
+                </span>
+                <span>
+                  <img src={AstarRewards} alt="" />
+                  399 $ASTR
+                </span>
+              </div>
+              <div className="item rewards">
+                <span>Rewards Available At</span>
+                <span>Dec 27th 2023 - 23:00</span>
+              </div>
+              <div className="item claim">
+                <span>Claim</span>
+                <label>
+                  <input type="checkbox" />
+                  Select Round 6
+                </label>
+              </div>
+            </div>
           </div>
         </div>
+        <button className="claim-rewards-button">Claim selected rewards</button>
       </div>
     </div>
   );
