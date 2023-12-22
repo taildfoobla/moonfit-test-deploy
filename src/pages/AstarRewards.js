@@ -20,21 +20,25 @@ import {
   getMoonFitTotalStakeAPI,
   getStakeInfoAPI,
 } from "../services/astar-rewards";
+import { Tooltip } from "flowbite-react";
+import InfoIcon from "../assets/images/astar-rewards/amount-info.png";
 
 export default function AstarRewards() {
   const [isOpenClaimRewardsModal, setIsOpenClaimRewardsModal] = useState(false);
-  const [substrateWallet, setSubstrateWallet] = useState([
-    getShortAddress("0xd62B5910f3c56AdCcB4c0F52DB0b94bdeFD6caEd", 6),
-    getShortAddress("0xd62B5910f3c56AdCcB4c0F52DB0b94bdeFD6caEd", 6),
-  ]);
-  const [moonfitTotalStake, setMoonfitTotalStake] = useState(73932.99);
-  const [totalStake, setTotalStake] = useState("50");
-  const [claimable, setClaimable] = useState("7,038");
+  const [substrateWallet, setSubstrateWallet] = useState([]);
+  const [moonfitTotalStake, setMoonfitTotalStake] = useState(0);
+  const [totalStake, setTotalStake] = useState(0);
+  const [claimable, setClaimable] = useState(0);
   const [nextTime, setNextTime] = useState("31/12/2023");
   const [rewardList, setRewardList] = useState([]);
 
-  const { isConnected, showWalletSelectModal, signatureData } =
-    useContext(WalletAuthContext);
+  const {
+    isConnected,
+    showWalletSelectModal,
+    signatureData,
+    provider,
+    connector,
+  } = useContext(WalletAuthContext);
 
   //useEffect for first time
   useEffect(() => {
@@ -50,34 +54,19 @@ export default function AstarRewards() {
     //   }
     // }, 10000);
     // return () => clearInterval(interval);
-
-    //Get MoonFIt Total Stake
-
-    const getMoonFitTotalStake = async () => {
-      const res = await getMoonFitTotalStakeAPI();
-      const { data, success } = res;
-      if (success) {
-        const numb = data?.data?.moonfit_info?.total_stake;
-        setMoonfitTotalStake(numb.toLocaleString());
-      } else {
-        setMoonfitTotalStake(0);
-      }
-    };
-    getMoonFitTotalStake();
   }, []);
   const fakeData = {
-    message:
-      "MoonFit:0xaC26C8296D823561EB2C9fb8167D8936761694B0:1703144154494",
+    message: "MoonFit:0xaC26C8296D823561EB2C9fb8167D8936761694B0:1703144154494",
     signature:
       "0x10109db033037a541b0f257dc25361daa58edbaefdaa741d5280554d2bbd504f1363e20fa473bb3f5f0f1582d07e4f06760ef87096dfd84cfb7d43bb502f3b801b",
-    wallet_address: "0xaC26C8296D823561EB2C9fb8167D8936761694B0",
+    wallet_address: "0xa738d50aea7243711482f360ccd868bad9273406",
   };
   // useEffect for getting Stake data
   useEffect(() => {
- 
     if (signatureData) {
-    
-      getStakeInfo(fakeData)
+      getStakeInfo(signatureData);
+    } else {
+      getMoonFitTotalStake();
     }
   }, [signatureData]);
 
@@ -90,20 +79,45 @@ export default function AstarRewards() {
     }
   }, [isOpenClaimRewardsModal]);
 
+  //function to get stake data if didn't connect wallet
+  const getMoonFitTotalStake = async () => {
+    const res = await getMoonFitTotalStakeAPI();
+    const { data, success } = res;
+    if (success) {
+      if (data?.message === "Get Staking Info successfully") {
+        const numb = data?.data?.moonfit_info?.total_stake;
+        setMoonfitTotalStake(numb.toLocaleString());
+      } else {
+        getMoonFitTotalStake();
+      }
+    } else {
+      setMoonfitTotalStake(0);
+    }
+  };
+
   // function to get Stake data
   const getStakeInfo = async (signatureData) => {
-  
     const res = await getStakeInfoAPI(signatureData);
     const { data, success } = res;
     if (success) {
-      setTotalStake(data?.data?.user_info?.total_stake)
-      let newClaimable=0
-      data?.data?.user_info?.rounds.forEach(round=>{
-        console.log(round.total_value)
-        newClaimable+=round.total_value
-      })
-      setClaimable(newClaimable)
-      setRewardList(data?.data?.user_info?.rounds)
+      if (data?.message === "Get Staking Info successfully") {
+        setMoonfitTotalStake(
+          data?.data?.moonfit_info?.total_stake.toLocaleString()
+        );
+        setTotalStake(data?.data?.user_info?.total_stake.toLocaleString());
+        let newClaimable = 0;
+        data?.data?.user_info?.rounds.forEach((round) => {
+          console.log(round.total_value);
+          newClaimable += round.total_value;
+        });
+        setClaimable(newClaimable.toLocaleString());
+        setRewardList(data?.data?.user_info?.rounds);
+        const substrateWalletList =
+          data?.data?.user_info?.substrate_address.map((wallet) => wallet);
+        setSubstrateWallet(substrateWalletList);
+      } else {
+        getStakeInfo();
+      }
     }
   };
 
@@ -119,13 +133,21 @@ export default function AstarRewards() {
     setIsOpenClaimRewardsModal(false);
   };
 
+  // value to display subtratewallet
+  const isDisplayedSubstrateWallet = substrateWallet?.length > 0;
+
+  // value to display text of subtratewallet
+  const isOnlyOneWalllet = substrateWallet?.length < 2;
+
   return (
     <>
       <ClaimRewardsModal
         isOpen={isOpenClaimRewardsModal}
         onClose={handleCloseClaimRewardsModal}
         rewardList={rewardList}
-        signatureData={fakeData}
+        signatureData={signatureData}
+        provider={provider}
+        connector={connector}
       />
       {/* <ClaimRewardsModalMobile
        isOpen={isOpenClaimRewardsModal}
@@ -153,18 +175,49 @@ export default function AstarRewards() {
                   <div className="wallet-list">
                     <div className="wallet-item">
                       <span>EVM Wallet:</span>
-                      <span className="wallet-address">
+                      <span
+                        className="wallet-address"
+                        onClick={() => {
+                          openNewTab(
+                            `https://astar.subscan.io/account/${signatureData?.wallet_address}`
+                          );
+                        }}
+                      >
                         {getShortAddress(signatureData?.wallet_address, 6)}
                       </span>
                     </div>
-                    <div className="wallet-item">
-                      <span>Substrate Wallet:</span>
-                      <div className="sub-wallet-list">
-                        {substrateWallet.map((wallet,index) => (
-                          <span key={index} className="wallet-address">{wallet}</span>
-                        ))}
+                    {isDisplayedSubstrateWallet && (
+                      <div className="wallet-item">
+                        <div className="wallet-item-text">
+                          {isOnlyOneWalllet ? (
+                            <span>Substrate Wallet:</span>
+                          ) : (
+                            <>
+                              {substrateWallet.map((wallet, index) => (
+                                <span key={index}>
+                                  Substrate Wallet {index + 1}:
+                                </span>
+                              ))}
+                            </>
+                          )}
+                        </div>
+                        <div className="sub-wallet-list">
+                          {substrateWallet.map((wallet, index) => (
+                            <span
+                              key={index}
+                              className="wallet-address"
+                              onClick={() => {
+                                openNewTab(
+                                  `https://astar.subscan.io/account/${wallet}`
+                                );
+                              }}
+                            >
+                              {getShortAddress(wallet, 6)}
+                            </span>
+                          ))}
+                        </div>
                       </div>
-                    </div>
+                    )}
                   </div>
                 )}
               </div>
@@ -279,8 +332,16 @@ export default function AstarRewards() {
                       <p className="stake-banner-item-header">
                         Estimated Rewards{" "}
                       </p>
-                      <p className="stake-banner-item-number">~11.2%</p>
-                      <p className="stake-banner-item-next">APY</p>
+                      <div className="stake-banner-item-number">
+                        ~11.2%
+                        {/* <Tooltip
+                          className="amount-tooltip"
+                          content="Boosted APY: Astar Network's base APY plus Bonus Staking Rewards from MoonFit"
+                        >
+                          <img src={InfoIcon} alt="tooltips" />
+                        </Tooltip> */}
+                      </div>
+                      <p className="stake-banner-item-next">Boosted APY</p>
                     </div>
                   </div>
                 </div>

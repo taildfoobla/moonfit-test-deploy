@@ -111,6 +111,12 @@
             display: flex;
             align-items: flex-start;
             margin-bottom: 16px;
+            .wallet-item-text{
+                display:flex;
+                flex-direction: column;
+                gap:25px;
+                justify-content: space-between;
+            }
             .sub-wallet-list{
               display:flex;
               flex-direction: column;
@@ -135,6 +141,12 @@
                 padding: 7px 24px 7px 24px;
                 background-color: rgba(161, 107, 216, 0.3);
                 border-radius: 75px;
+                cursor: pointer;
+                transition: all 0.2s ease;
+                &:hover{
+                  text-decoration: underline;
+                  color:#4ccbc9
+                }
               }
             }
           }
@@ -477,6 +489,7 @@
                   font-weight: 700;
                   line-height: 36px;
                   margin: 0;
+                  text-transform: none;
                 }
               }
             }
@@ -1698,13 +1711,17 @@
           }
           .claim-rewards-table-list {
             display: flex;
-            flex-direction: column;
+            flex-direction: column-reverse;
             padding: 0 30px 16px 29px;
             .claim-rewards-table-item {
               display: flex;
               gap: 30px;
               height: 64px;
               align-items: center;
+              &:not(:first-child){
+                border-bottom: 2px solid rgba(144, 130, 157, 0.10);
+
+              }
               .claim-rewards-item-index {
                 font-family: Poppins;
                 font-size: 16px;

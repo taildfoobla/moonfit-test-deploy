@@ -23,3 +23,11 @@ export const claimStakingAPI=(data)=>{
     })
 }
 
+export const updateTransactionAPI=(data)=>{
+    return createApiRequest({
+        url: "/wallet/update-wallet-transaction-without-token",
+        method: "POST",
+        data
+    })
+}
+

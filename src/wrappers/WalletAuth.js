@@ -162,10 +162,8 @@ const WalletAuthWrapper = ({ children }) => {
     }, [provider, walletExtKey, detectProvider, handleWalletChange])
 
     const onConnect = async (providerNameParam = null) => {
-        console.log("here1")
         try {
             const provider = await detectProvider(providerNameParam)
-            console.log('here2')
             if (!provider) {
                 console.log('Wallet extension is not installed')
                 return
