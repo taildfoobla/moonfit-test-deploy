@@ -6,6 +6,7 @@ import { Tooltip } from "flowbite-react";
 import { claimStakingAPI } from "../../services/astar-rewards";
 import { sendTransaction } from "../../utils/blockchain";
 import { updateTransactionAPI } from "../../services/astar-rewards";
+import { switchToNetwork } from "../../utils/blockchain";
 
 export default function ClaimRewardsModal({
   isOpen,
@@ -14,15 +15,17 @@ export default function ClaimRewardsModal({
   signatureData,
   provider,
   connector,
+  reCallData
 }) {
   const fakeData = {
     message: "MoonFit:0xaC26C8296D823561EB2C9fb8167D8936761694B0:1703144154494",
     signature:
       "0x10109db033037a541b0f257dc25361daa58edbaefdaa741d5280554d2bbd504f1363e20fa473bb3f5f0f1582d07e4f06760ef87096dfd84cfb7d43bb502f3b801b",
-    wallet_address: "0xd77a670cf55d8b8f2791beb96ac47eed2c413241",
+    wallet_address: "0x966ae53222966a20a08825c39c51873244862089",
   };
   const [selectedRound, setSelectedRound] = useState([]);
   const [pendingRound, setPendingRound] = useState([]);
+  const [claimedRound, setClaimedRound] = useState([]);
   //useEffect for the first time
   useEffect(() => {
     const handleKeyDown = (event) => {
@@ -37,6 +40,25 @@ export default function ClaimRewardsModal({
       document.removeEventListener("keydown", handleKeyDown);
     };
   }, []);
+
+  useEffect(() => {
+    if (rewardList) {
+      let pendingArr = [];
+      rewardList.forEach((item) => {
+        if (item.status === "pending") {
+          pendingArr.push(item.round);
+        }
+      });
+      setPendingRound(pendingArr);
+      let claimedArr = [];
+      rewardList.forEach((item) => {
+        if (item.status === "claimed") {
+          claimedArr.push(item.round);
+        }
+      });
+      setClaimedRound(claimedArr);
+    }
+  }, [rewardList]);
 
   // function to format date
   function formatDate(dateString) {
@@ -99,35 +121,43 @@ export default function ClaimRewardsModal({
 
   // function to claim staking
   const handleClaim = async () => {
-    setPendingRound(selectedRound);
+    if (isClaimable) {
+      const newPendingArr = pendingRound;
+      selectedRound.forEach((item) => {
+        newPendingArr.push(item);
+      });
+      setPendingRound(newPendingArr);
 
-    const value = {
-      ...fakeData,
-      rounds: selectedRound,
-    };
-    const res = await claimStakingAPI(value);
-    console.log("res", res);
-    const { data, success } = res;
-    if (success) {
-      if (data?.message === "Get Staking Info successfully") {
-        console.log("before send");
-        const sendData = {
-          ...data?.data?.transaction?.transaction,
-          from: signatureData.wallet_address,
-        };
-        const txHash = await sendTransaction(provider, connector, sendData);
-        const valueForUpdate = {
-          transaction_id: data?.data?.transaction?.wallet_transaction_id,
-          transaction_hash: txHash,
-        };
-        const updateData = await updateTransactionAPI(valueForUpdate);
-        console.log("txHash", updateData);
+      const value = {
+        ...signatureData,
+        rounds: selectedRound,
+      };
+      const res = await claimStakingAPI(value);
+      console.log("res", res);
+      const { data, success } = res;
+      if (success) {
+        if (data?.message === "Get Staking Info successfully") {
+          console.log("before send");
+          const sendData = {
+            ...data?.data?.transaction?.transaction,
+            from: signatureData.wallet_address,
+          };
+          await switchToNetwork(provider, data?.data?.transaction?.chainId);
+          const txHash = await sendTransaction(provider, connector, sendData);
+          console.log("txHash", txHash);
+
+          const valueForUpdate = {
+            transaction_id: data?.data?.wallet_transaction_id,
+            transaction_hash: txHash,
+          };
+          const updateData = await updateTransactionAPI(valueForUpdate);
+          console.log("update", updateData);
+          await reCallData(fakeData)
+        }
+        setSelectedRound([]);
       }
-      setPendingRound([]);
-      setSelectedRound([]);
     }
   };
-
 
   // const to set status of claim button
   const isClaimable = selectedRound.length > 0;
@@ -195,9 +225,10 @@ export default function ClaimRewardsModal({
                     <div className="claim-rewards-round">
                       {pendingRound.includes(reward.round) ? (
                         <div className="pending">Pending</div>
+                      ) : claimedRound.includes(reward.round) ? (
+                        <div className="claimed">Claimed</div>
                       ) : (
                         <>
-                          {" "}
                           <input
                             id={`round-${reward.round}`}
                             type="checkbox"

@@ -31,7 +31,7 @@ export default function AstarRewards() {
   const [claimable, setClaimable] = useState(0);
   const [nextTime, setNextTime] = useState("31/12/2023");
   const [rewardList, setRewardList] = useState([]);
-
+  
   const {
     isConnected,
     showWalletSelectModal,
@@ -59,7 +59,7 @@ export default function AstarRewards() {
     message: "MoonFit:0xaC26C8296D823561EB2C9fb8167D8936761694B0:1703144154494",
     signature:
       "0x10109db033037a541b0f257dc25361daa58edbaefdaa741d5280554d2bbd504f1363e20fa473bb3f5f0f1582d07e4f06760ef87096dfd84cfb7d43bb502f3b801b",
-    wallet_address: "0xa738d50aea7243711482f360ccd868bad9273406",
+    wallet_address: "0x966ae53222966a20a08825c39c51873244862089",
   };
   // useEffect for getting Stake data
   useEffect(() => {
@@ -148,6 +148,7 @@ export default function AstarRewards() {
         signatureData={signatureData}
         provider={provider}
         connector={connector}
+        reCallData={getStakeInfo}
       />
       {/* <ClaimRewardsModalMobile
        isOpen={isOpenClaimRewardsModal}
