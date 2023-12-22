@@ -1,23 +1,104 @@
-import React ,{useEffect}from "react";
+import React, { useState, useEffect } from "react";
 import AstarRewards from "../../assets/images/astar-rewards/astar-reward.png";
 import CloseBtn from "../../assets/images/astar-rewards/close-border.png";
 import AmountInfo from "../../assets/images/astar-rewards/amount-info.png";
 import { Tooltip } from "flowbite-react";
+import { claimStakingAPI } from "../../services/astar-rewards";
 
-export default function ClaimRewardsModal({ isOpen, onClose }) {
+export default function ClaimRewardsModal({ isOpen, onClose, rewardList,signatureData }) {
+  const [selectedRound, setSelectedRound] = useState([]);
+
+  //useEffect for the first time
   useEffect(() => {
     const handleKeyDown = (event) => {
-      if (event.key === 'Escape') {
+      if (event.key === "Escape") {
         onClose();
       }
     };
 
-    document.addEventListener('keydown', handleKeyDown);
+    document.addEventListener("keydown", handleKeyDown);
 
     return () => {
-      document.removeEventListener('keydown', handleKeyDown);
+      document.removeEventListener("keydown", handleKeyDown);
     };
   }, []);
+
+  // function to format date
+  function formatDate(dateString) {
+    const months = [
+      "Jan",
+      "Feb",
+      "Mar",
+      "Apr",
+      "May",
+      "Jun",
+      "Jul",
+      "Aug",
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dec",
+    ];
+
+    const date = new Date(dateString);
+    const year = date.getFullYear();
+    const month = months[date.getMonth()];
+    const day = date.getDate();
+    const hours = date.getHours();
+    const minutes = date.getMinutes();
+
+    // Helper function to add ordinal suffix to day
+    function addOrdinalSuffix(day) {
+      if (day >= 11 && day <= 13) {
+        return day + "th";
+      } else {
+        const lastDigit = day % 10;
+        switch (lastDigit) {
+          case 1:
+            return day + "st";
+          case 2:
+            return day + "nd";
+          case 3:
+            return day + "rd";
+          default:
+            return day + "th";
+        }
+      }
+    }
+
+    const formattedDate = `${month} ${addOrdinalSuffix(day)} ${year} at ${hours
+      .toString()
+      .padStart(2, "0")}:${minutes.toString().padStart(2, "0")}`;
+    return formattedDate;
+  }
+
+  // function to change state when change input checkbox
+  const handleSelectedRound = ({ checked, round }) => {
+    if (checked) {
+      setSelectedRound([...selectedRound, round]);
+    } else {
+      const newData = selectedRound.filter((item) => item !== round);
+      setSelectedRound(newData);
+    }
+  };
+
+  // function to claim staking
+  const handleClaim = async()=>{
+    const value ={
+      ...signatureData,rounds:selectedRound
+    }
+    const res =await claimStakingAPI(value)
+    const {data,success}=res
+    if(success){
+      
+    }
+  }
+
+  console.log(selectedRound)
+
+  // const to set status of claim button
+  const isClaimable=selectedRound.length>0;
+
   return (
     <div className={`claim-rewards-modal-wrapper ${isOpen ? "active" : ""}`}>
       <div className="claim-rewards-modal-overlay" onClick={onClose}></div>
@@ -49,89 +130,43 @@ export default function ClaimRewardsModal({ isOpen, onClose }) {
               </div>
             </div>
             <div className="claim-rewards-table-list">
-              <div className="claim-rewards-table-item">
-                <div className="claim-rewards-item-index">1</div>
-                <div className="claim-rewards-item-amount">
-                  <div className="reward-icon">
-                    <img src={AstarRewards} alt="Astar" />
+              {rewardList?.length>0?rewardList.map((reward) => (
+                <div className="claim-rewards-table-item">
+                  <div className="claim-rewards-item-index">{reward.round}</div>
+                  <div className="claim-rewards-item-amount">
+                    <div className="reward-icon">
+                      <img src={AstarRewards} alt="Astar" />
+                    </div>
+                    <span className="reward-number">
+                      {reward.total_value} $ASTR
+                    </span>
                   </div>
-                  <span className="reward-number">399 $ASTR</span>
-                </div>
-                <div className="claim-rewards-item-time">
-                  Dec 27th 2023 at 23:00
-                </div>
-                <div className="claim-rewards-round">
-                  <input id="round-1" type="checkbox" />
-                  <label htmlFor="round-1">Select Round 1</label>
-                </div>
-              </div>
-              <div className="claim-rewards-table-item">
-                <div className="claim-rewards-item-index">1</div>
-                <div className="claim-rewards-item-amount">
-                  <div className="reward-icon">
-                    <img src={AstarRewards} alt="Astar" />
+                  <div className="claim-rewards-item-time">
+                    {formatDate(reward.time)}
                   </div>
-                  <span className="reward-number">399 $ASTR</span>
-                </div>
-                <div className="claim-rewards-item-time">
-                  Dec 27th 2023 at 23:00
-                </div>
-                <div className="claim-rewards-round">
-                  <input id="round-1" type="checkbox" />
-                  <label htmlFor="round-1">Select Round 1</label>
-                </div>
-              </div>
-              <div className="claim-rewards-table-item">
-                <div className="claim-rewards-item-index">1</div>
-                <div className="claim-rewards-item-amount">
-                  <div className="reward-icon">
-                    <img src={AstarRewards} alt="Astar" />
+                  <div className="claim-rewards-round">
+                    <input
+                      id={`round-${reward.round}`}
+                      type="checkbox"
+                      onChange={(e) => {
+                        const value = {
+                          checked: e.target.checked,
+                          round: reward.round,
+                        };
+                        handleSelectedRound(value);
+                      }}
+                    />
+                    <label htmlFor={`round-${reward.round}`}>
+                      Select Round {reward.round}
+                    </label>
                   </div>
-                  <span className="reward-number">399 $ASTR</span>
                 </div>
-                <div className="claim-rewards-item-time">
-                  Dec 27th 2023 at 23:00
-                </div>
-                <div className="claim-rewards-round">
-                  <div className="pending">Pending</div>
-                </div>
-              </div>
-              <div className="claim-rewards-table-item">
-                <div className="claim-rewards-item-index">1</div>
-                <div className="claim-rewards-item-amount">
-                  <div className="reward-icon">
-                    <img src={AstarRewards} alt="Astar" />
-                  </div>
-                  <span className="reward-number">399 $ASTR</span>
-                </div>
-                <div className="claim-rewards-item-time">
-                  Dec 27th 2023 at 23:00
-                </div>
-                <div className="claim-rewards-round">
-                  <div className="claimed">Claimed</div>
-                </div>
-              </div>
-              <div className="claim-rewards-table-item">
-                <div className="claim-rewards-item-index">1</div>
-                <div className="claim-rewards-item-amount">
-                  <div className="reward-icon">
-                    <img src={AstarRewards} alt="Astar" />
-                  </div>
-                  <span className="reward-number">399 $ASTR</span>
-                </div>
-                <div className="claim-rewards-item-time">
-                  Dec 27th 2023 at 23:00
-                </div>
-                <div className="claim-rewards-round">
-                  <input id="round-6" type="checkbox" />
-                  <label htmlFor="round-1">Select Round 1</label>
-                </div>
-              </div>
+              )):<div>You have 0 round to claim</div>}
             </div>
           </div>
         </div>
         <div className="claim-rewards-button-wrapper">
-          <button className="claim-rewards-button">
+          <button className={`claim-rewards-button ${isClaimable?"":"disabled"}`}>
             Claim selected rewards
           </button>
         </div>

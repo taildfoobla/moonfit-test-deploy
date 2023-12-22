@@ -109,8 +109,13 @@
           .wallet-item {
             height: fit-content;
             display: flex;
-            align-items: center;
+            align-items: flex-start;
             margin-bottom: 16px;
+            .sub-wallet-list{
+              display:flex;
+              flex-direction: column;
+              gap:8px;
+            }
             span {
               display: block;
               font-family: Poppins;
@@ -119,6 +124,9 @@
               font-weight: 600;
               line-height: 28px;
               text-transform: capitalize;
+              &:nth-child(1){
+                padding-top: 8px;
+              }
               &.wallet-address {
                 margin-left: 8px;
                 font-size: 18px;
@@ -369,22 +377,22 @@
               }
               .stake-banner-item-number {
              
-                  // font-family: Poppins;
-                  // font-size: 40px;
-                  // font-style: normal;
-                  // font-weight: 700;
-                  // line-height: 52px;
+                  font-family: Poppins;
+                  font-size: 40px;
+                  font-style: normal;
+                  font-weight: 700;
+                  line-height: 52px;
                   margin: 0 0 24px 0;
-                  // background: linear-gradient(
-                  //   110deg,
-                  //   #95008e 0%,
-                  //   #3d94fa 22%,
-                  //   #04d8ff 80.31%
-                  // );
-                  // background-clip: text;
-                  // color: transparent;
-                  // -webkit-background-clip: text;
-                  // -webkit-text-fill-color: transparent;
+                  background: linear-gradient(
+                    110deg,
+                    #95008e 0%,
+                    #3d94fa 22%,
+                    #04d8ff 80.31%
+                  );
+                  background-clip: text;
+                  color: transparent;
+                  -webkit-background-clip: text;
+                  -webkit-text-fill-color: transparent;
                 
                display:flex;
                align-items: flex-end;
@@ -1179,6 +1187,12 @@
         border-radius: 8px;
         color: #fff;
         text-transform: none;
+        &.disabled{
+          cursor: not-allowed;
+          background: linear-gradient(85deg, #af6d90 2.68%, #76b9b8 100%);
+          color: #ffffff59;
+
+        }
         &:hover,
         &:focus {
           transform: translateY(0);
@@ -1404,6 +1418,7 @@
                   .stake-banner-item-number {
                     font-size: 30px;
                     margin-bottom: 16px;
+                 flex-wrap: wrap;
                     .stake-banner-item-unit {
                       font-size: 16px;
                     }
@@ -1466,6 +1481,7 @@
 }
 
 @media (max-width: 900px) {
+ .astar-page-container-wrapper{
   .astar-page-container {
     .astar-page-section-1 {
       .astar-page-section-1-left {
@@ -1473,8 +1489,42 @@
         flex-direction: column;
         gap: 18px;
       }
+      .astar-page-section-1-right{
+        .stake-info{
+          .stake-info-banner{
+            .stake-banner-item{
+              &.first{
+                .stake-banner-item-number{
+                  font-size: 24px;
+                  line-height: 30px;
+                  // gap:0;
+                  // margin: 0;
+                  .stake-banner-item-unit{
+                    font-size: 14px;
+                    line-height: 20px;
+                  }
+                 }
+              }
+              &.second{
+                .stake-banner-item-number{
+                  font-size: 24px;
+                  line-height: 30px;
+                  .stake-banner-item-unit{
+                    font-size: 14px;
+                    line-height: 20px;
+                  }
+                 }
+              }
+           
+            }
+          }
+       
+        }
+      }
     }
   }
+ }
+ 
   .claim-rewards-modal-wrapper {
     .claim-rewards-modal {
       scale: 0.65;

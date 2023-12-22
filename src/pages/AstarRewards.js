@@ -16,41 +16,72 @@ import { getShortAddress } from "../utils/blockchain";
 import AnimatedNumbers from "react-animated-numbers";
 import NotConnectBg from "../assets/images/astar-rewards/not-connect-bg.png";
 import WalletAuthContext from "../contexts/WalletAuthContext";
+import {
+  getMoonFitTotalStakeAPI,
+  getStakeInfoAPI,
+} from "../services/astar-rewards";
 
 export default function AstarRewards() {
   const [isOpenClaimRewardsModal, setIsOpenClaimRewardsModal] = useState(false);
-  const [substrateWallet, setSubstrateWallet] = useState(
-    getShortAddress("0xd62B5910f3c56AdCcB4c0F52DB0b94bdeFD6caEd", 6)
-  );
+  const [substrateWallet, setSubstrateWallet] = useState([
+    getShortAddress("0xd62B5910f3c56AdCcB4c0F52DB0b94bdeFD6caEd", 6),
+    getShortAddress("0xd62B5910f3c56AdCcB4c0F52DB0b94bdeFD6caEd", 6),
+  ]);
   const [moonfitTotalStake, setMoonfitTotalStake] = useState(73932.99);
   const [totalStake, setTotalStake] = useState("50");
   const [claimable, setClaimable] = useState("7,038");
   const [nextTime, setNextTime] = useState("31/12/2023");
   const [rewardList, setRewardList] = useState([]);
-  const [selectedRound, setSelectedRound] = useState([]);
 
-  const { isConnected, showWalletSelectModal } = useContext(WalletAuthContext);
-  
-  
+  const { isConnected, showWalletSelectModal, signatureData } =
+    useContext(WalletAuthContext);
+
+  //useEffect for first time
   useEffect(() => {
-    
-      // let number = parseFloat(moonfitTotalStake.replace(/,/g, ""));
-      let newNumber = Number(moonfitTotalStake);
-      const interval = setInterval(() => {
-        if (newNumber <= 100) {
-          clearInterval(interval);
-        } else {
-          console.log("This will run every second!");
-          newNumber = newNumber - 100;
-          setMoonfitTotalStake(newNumber);
-        }
-      }, 10000);
-      return () => clearInterval(interval);
-   
-  }, []);
-  const number = moonfitTotalStake;
-  console.log("number",number)
+    // let number = parseFloat(moonfitTotalStake.replace(/,/g, ""));
+    // let newNumber = Number(moonfitTotalStake);
+    // const interval = setInterval(() => {
+    //   if (newNumber <= 100) {
+    //     clearInterval(interval);
+    //   } else {
+    //     console.log("This will run every second!");
+    //     newNumber = newNumber - 100;
+    //     setMoonfitTotalStake(newNumber);
+    //   }
+    // }, 10000);
+    // return () => clearInterval(interval);
 
+    //Get MoonFIt Total Stake
+
+    const getMoonFitTotalStake = async () => {
+      const res = await getMoonFitTotalStakeAPI();
+      const { data, success } = res;
+      if (success) {
+        const numb = data?.data?.moonfit_info?.total_stake;
+        setMoonfitTotalStake(numb.toLocaleString());
+      } else {
+        setMoonfitTotalStake(0);
+      }
+    };
+    getMoonFitTotalStake();
+  }, []);
+  const fakeData = {
+    message:
+      "MoonFit:0xaC26C8296D823561EB2C9fb8167D8936761694B0:1703144154494",
+    signature:
+      "0x10109db033037a541b0f257dc25361daa58edbaefdaa741d5280554d2bbd504f1363e20fa473bb3f5f0f1582d07e4f06760ef87096dfd84cfb7d43bb502f3b801b",
+    wallet_address: "0xaC26C8296D823561EB2C9fb8167D8936761694B0",
+  };
+  // useEffect for getting Stake data
+  useEffect(() => {
+ 
+    if (signatureData) {
+    
+      getStakeInfo(fakeData)
+    }
+  }, [signatureData]);
+
+  // useEffect for open rewards modal
   useEffect(() => {
     if (isOpenClaimRewardsModal) {
       document.body.style.overflow = "hidden";
@@ -58,6 +89,23 @@ export default function AstarRewards() {
       document.body.style.overflow = "auto";
     }
   }, [isOpenClaimRewardsModal]);
+
+  // function to get Stake data
+  const getStakeInfo = async (signatureData) => {
+  
+    const res = await getStakeInfoAPI(signatureData);
+    const { data, success } = res;
+    if (success) {
+      setTotalStake(data?.data?.user_info?.total_stake)
+      let newClaimable=0
+      data?.data?.user_info?.rounds.forEach(round=>{
+        console.log(round.total_value)
+        newClaimable+=round.total_value
+      })
+      setClaimable(newClaimable)
+      setRewardList(data?.data?.user_info?.rounds)
+    }
+  };
 
   const openNewTab = (url) => {
     window.open(url);
@@ -76,6 +124,8 @@ export default function AstarRewards() {
       <ClaimRewardsModal
         isOpen={isOpenClaimRewardsModal}
         onClose={handleCloseClaimRewardsModal}
+        rewardList={rewardList}
+        signatureData={fakeData}
       />
       {/* <ClaimRewardsModalMobile
        isOpen={isOpenClaimRewardsModal}
@@ -103,11 +153,17 @@ export default function AstarRewards() {
                   <div className="wallet-list">
                     <div className="wallet-item">
                       <span>EVM Wallet:</span>
-                      <span className="wallet-address">{substrateWallet}</span>
+                      <span className="wallet-address">
+                        {getShortAddress(signatureData?.wallet_address, 6)}
+                      </span>
                     </div>
                     <div className="wallet-item">
                       <span>Substrate Wallet:</span>
-                      <span className="wallet-address">{substrateWallet}</span>
+                      <div className="sub-wallet-list">
+                        {substrateWallet.map((wallet,index) => (
+                          <span key={index} className="wallet-address">{wallet}</span>
+                        ))}
+                      </div>
                     </div>
                   </div>
                 )}
@@ -183,15 +239,15 @@ export default function AstarRewards() {
                       MoonFit's Total Staked
                     </p>
                     <p className="stake-banner-item-number">
-                      {/* {moonfitTotalStake}{" "} */}
-                      <AnimatedNumbers
+                      {moonfitTotalStake}{" "}
+                      {/* <AnimatedNumbers
                         includeComma={true}
                         transitions={(index) => ({
                           // type: "spring",
                           duration: index + 0.00001,
                         })}
                         locale="en-US"
-                        animateToNumber={number - 1000}
+                        animateToNumber={moonfitTotalStake}
                         fontStyle={{
                           textAlign: "center",
                           fontFamily: "Poppins",
@@ -205,7 +261,7 @@ export default function AstarRewards() {
                           backgroundClip: "text",
                           lineHeight: "52px",
                         }}
-                      />
+                      /> */}
                       <span className="stake-banner-item-unit">ASTR</span>
                     </p>
                     <p className="stake-banner-item-next">
