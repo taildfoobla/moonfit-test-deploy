@@ -109,8 +109,19 @@
           .wallet-item {
             height: fit-content;
             display: flex;
-            align-items: center;
+            align-items: flex-start;
             margin-bottom: 16px;
+            .wallet-item-text{
+                display:flex;
+                flex-direction: column;
+                gap:25px;
+                justify-content: space-between;
+            }
+            .sub-wallet-list{
+              display:flex;
+              flex-direction: column;
+              gap:8px;
+            }
             span {
               display: block;
               font-family: Poppins;
@@ -119,6 +130,9 @@
               font-weight: 600;
               line-height: 28px;
               text-transform: capitalize;
+              &:nth-child(1){
+                padding-top: 8px;
+              }
               &.wallet-address {
                 margin-left: 8px;
                 font-size: 18px;
@@ -127,6 +141,12 @@
                 padding: 7px 24px 7px 24px;
                 background-color: rgba(161, 107, 216, 0.3);
                 border-radius: 75px;
+                cursor: pointer;
+                transition: all 0.2s ease;
+                &:hover{
+                  text-decoration: underline;
+                  color:#4ccbc9
+                }
               }
             }
           }
@@ -369,22 +389,22 @@
               }
               .stake-banner-item-number {
              
-                  // font-family: Poppins;
-                  // font-size: 40px;
-                  // font-style: normal;
-                  // font-weight: 700;
-                  // line-height: 52px;
+                  font-family: Poppins;
+                  font-size: 40px;
+                  font-style: normal;
+                  font-weight: 700;
+                  line-height: 52px;
                   margin: 0 0 24px 0;
-                  // background: linear-gradient(
-                  //   110deg,
-                  //   #95008e 0%,
-                  //   #3d94fa 22%,
-                  //   #04d8ff 80.31%
-                  // );
-                  // background-clip: text;
-                  // color: transparent;
-                  // -webkit-background-clip: text;
-                  // -webkit-text-fill-color: transparent;
+                  background: linear-gradient(
+                    110deg,
+                    #95008e 0%,
+                    #3d94fa 22%,
+                    #04d8ff 80.31%
+                  );
+                  background-clip: text;
+                  color: transparent;
+                  -webkit-background-clip: text;
+                  -webkit-text-fill-color: transparent;
                 
                display:flex;
                align-items: flex-end;
@@ -469,6 +489,7 @@
                   font-weight: 700;
                   line-height: 36px;
                   margin: 0;
+                  text-transform: none;
                 }
               }
             }
@@ -1179,6 +1200,12 @@
         border-radius: 8px;
         color: #fff;
         text-transform: none;
+        &.disabled{
+          cursor: not-allowed;
+          background: linear-gradient(85deg, #af6d90 2.68%, #76b9b8 100%);
+          color: #ffffff59;
+
+        }
         &:hover,
         &:focus {
           transform: translateY(0);
@@ -1404,6 +1431,7 @@
                   .stake-banner-item-number {
                     font-size: 30px;
                     margin-bottom: 16px;
+                 flex-wrap: wrap;
                     .stake-banner-item-unit {
                       font-size: 16px;
                     }
@@ -1466,6 +1494,7 @@
 }
 
 @media (max-width: 900px) {
+ .astar-page-container-wrapper{
   .astar-page-container {
     .astar-page-section-1 {
       .astar-page-section-1-left {
@@ -1473,8 +1502,42 @@
         flex-direction: column;
         gap: 18px;
       }
+      .astar-page-section-1-right{
+        .stake-info{
+          .stake-info-banner{
+            .stake-banner-item{
+              &.first{
+                .stake-banner-item-number{
+                  font-size: 24px;
+                  line-height: 30px;
+                  // gap:0;
+                  // margin: 0;
+                  .stake-banner-item-unit{
+                    font-size: 14px;
+                    line-height: 20px;
+                  }
+                 }
+              }
+              &.second{
+                .stake-banner-item-number{
+                  font-size: 24px;
+                  line-height: 30px;
+                  .stake-banner-item-unit{
+                    font-size: 14px;
+                    line-height: 20px;
+                  }
+                 }
+              }
+           
+            }
+          }
+       
+        }
+      }
     }
   }
+ }
+ 
   .claim-rewards-modal-wrapper {
     .claim-rewards-modal {
       scale: 0.65;
@@ -1648,13 +1711,17 @@
           }
           .claim-rewards-table-list {
             display: flex;
-            flex-direction: column;
+            flex-direction: column-reverse;
             padding: 0 30px 16px 29px;
             .claim-rewards-table-item {
               display: flex;
               gap: 30px;
               height: 64px;
               align-items: center;
+              &:not(:first-child){
+                border-bottom: 2px solid rgba(144, 130, 157, 0.10);
+
+              }
               .claim-rewards-item-index {
                 font-family: Poppins;
                 font-size: 16px;
@@ -1823,6 +1890,7 @@
                   display: flex;
                   align-items: center;
                   gap: 5px;
+                  // position: relative;
                   .amount-tooltip {
                     padding: 8px;
                     font-size: 11px;
@@ -1833,9 +1901,10 @@
                     border-radius: 3px;
                     width: 150px;
                     background-color: #a16bd8;
-                    // left: 0 !important;
-                    // top: 0 !important;
-                    transform: translateX(-5%) translateY(-100%);
+                    transform: translateY(10px);
+                    // left: 2.5% !important;
+                    // top: 50% !important;
+                    // transform: translateX(-5%) translateY(-100%);
                     .absolute {
                       background-color: #a16bd8;
                     }
