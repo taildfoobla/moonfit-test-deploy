@@ -13,15 +13,15 @@ import BannerBgMobile from "../assets/images/astar-rewards/stake-info-bg-mobile.
 import AstarFooterImgMobile from "../assets/images/astar-rewards/astar-footer-img-mobile.png";
 import AstarFooterBgMobile from "../assets/images/astar-rewards/astar-footer-bg-mobile.png";
 import { getShortAddress } from "../utils/blockchain";
-import AnimatedNumbers from "react-animated-numbers";
+// import AnimatedNumbers from "react-animated-numbers";
 import NotConnectBg from "../assets/images/astar-rewards/not-connect-bg.png";
 import WalletAuthContext from "../contexts/WalletAuthContext";
 import {
   getMoonFitTotalStakeAPI,
   getStakeInfoAPI,
 } from "../services/astar-rewards";
-import { Tooltip } from "flowbite-react";
 import InfoIcon from "../assets/images/astar-rewards/amount-info.png";
+import { Tooltip } from "antd";
 
 export default function AstarRewards() {
   const [isOpenClaimRewardsModal, setIsOpenClaimRewardsModal] = useState(false);
@@ -31,7 +31,7 @@ export default function AstarRewards() {
   const [claimable, setClaimable] = useState(0);
   const [nextTime, setNextTime] = useState("31/12/2023");
   const [rewardList, setRewardList] = useState([]);
-  
+
   const {
     isConnected,
     showWalletSelectModal,
@@ -335,12 +335,14 @@ export default function AstarRewards() {
                       </p>
                       <div className="stake-banner-item-number">
                         ~11.2%
-                        {/* <Tooltip
-                          className="amount-tooltip"
-                          content="Boosted APY: Astar Network's base APY plus Bonus Staking Rewards from MoonFit"
+                        <Tooltip
+                          trigger="click"
+                          color="#a16bd8"
+                          overlayClassName="banner-tooltip"
+                          title="Boosted APY: Astar Network's base APY plus Bonus Staking Rewards from MoonFit"
                         >
                           <img src={InfoIcon} alt="tooltips" />
-                        </Tooltip> */}
+                        </Tooltip>
                       </div>
                       <p className="stake-banner-item-next">Boosted APY</p>
                     </div>

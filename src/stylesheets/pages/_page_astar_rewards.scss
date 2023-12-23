@@ -50,6 +50,15 @@
   }
 }
 
+.banner-tooltip {
+  .ant-tooltip-content {
+    .ant-tooltip-inner {
+      padding: 8px 2px;
+      border-radius: 7px;
+    }
+  }
+}
+
 .astar-page-container {
   font-family: Poppins;
   max-width: 1170px;
@@ -87,10 +96,10 @@
     .astar-page-section-1-left {
       height: 100%;
       margin-top: -3px;
-      &.not-connect{
-        display:flex;
+      &.not-connect {
+        display: flex;
         flex-direction: column;
-        gap:28px;
+        gap: 28px;
       }
       .wallet-info {
         color: #fff;
@@ -111,16 +120,16 @@
             display: flex;
             align-items: flex-start;
             margin-bottom: 16px;
-            .wallet-item-text{
-                display:flex;
-                flex-direction: column;
-                gap:25px;
-                justify-content: space-between;
-            }
-            .sub-wallet-list{
-              display:flex;
+            .wallet-item-text {
+              display: flex;
               flex-direction: column;
-              gap:8px;
+              gap: 25px;
+              justify-content: space-between;
+            }
+            .sub-wallet-list {
+              display: flex;
+              flex-direction: column;
+              gap: 8px;
             }
             span {
               display: block;
@@ -130,7 +139,7 @@
               font-weight: 600;
               line-height: 28px;
               text-transform: capitalize;
-              &:nth-child(1){
+              &:nth-child(1) {
                 padding-top: 8px;
               }
               &.wallet-address {
@@ -143,9 +152,9 @@
                 border-radius: 75px;
                 cursor: pointer;
                 transition: all 0.2s ease;
-                &:hover{
+                &:hover {
                   text-decoration: underline;
-                  color:#4ccbc9
+                  color: #4ccbc9;
                 }
               }
             }
@@ -173,10 +182,10 @@
           border-radius: 17px;
           position: relative;
           overflow: hidden;
-          &.not-connect{
+          &.not-connect {
             padding-bottom: 160px;
-            .not-connect-bg{
-              display:block;
+            .not-connect-bg {
+              display: block;
             }
           }
           .total-stake {
@@ -239,7 +248,7 @@
           margin-bottom: 16px;
           position: relative;
           z-index: 1;
-         min-width: 338px;
+          min-width: 338px;
           .claimable-rewards-header {
             color: #fff;
             font-family: Poppins;
@@ -336,12 +345,12 @@
             transform: translateY(0);
           }
         }
-        .not-connect-bg{
+        .not-connect-bg {
           position: absolute;
           bottom: 0;
           left: 0;
           z-index: 0;
-          display:none;
+          display: none;
         }
       }
     }
@@ -388,27 +397,26 @@
                 margin: 0 0 16px 0;
               }
               .stake-banner-item-number {
-             
-                  font-family: Poppins;
-                  font-size: 40px;
-                  font-style: normal;
-                  font-weight: 700;
-                  line-height: 52px;
-                  margin: 0 0 24px 0;
-                  background: linear-gradient(
-                    110deg,
-                    #95008e 0%,
-                    #3d94fa 22%,
-                    #04d8ff 80.31%
-                  );
-                  background-clip: text;
-                  color: transparent;
-                  -webkit-background-clip: text;
-                  -webkit-text-fill-color: transparent;
-                
-               display:flex;
-               align-items: flex-end;
-               gap:8px;
+                font-family: Poppins;
+                font-size: 40px;
+                font-style: normal;
+                font-weight: 700;
+                line-height: 52px;
+                margin: 0 0 24px 0;
+                background: linear-gradient(
+                  110deg,
+                  #95008e 0%,
+                  #3d94fa 22%,
+                  #04d8ff 80.31%
+                );
+                background-clip: text;
+                color: transparent;
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+
+                display: flex;
+                align-items: flex-end;
+                gap: 8px;
                 .stake-banner-item-unit {
                   font-family: Poppins;
                   font-size: 20px;
@@ -480,6 +488,13 @@
                   font-weight: 700;
                   line-height: 52px;
                   margin: 0 0 16px;
+                  display: flex;
+                  align-items: center;
+                  gap: 8px;
+                  img {
+                    width: 24px;
+                    height: 24px;
+                  }
                 }
                 .stake-banner-item-next {
                   color: #fff;
@@ -1007,7 +1022,7 @@
         width: 32px;
         height: 32px;
       }
-      &:active{
+      &:active {
         transform: translateY(5px);
       }
     }
@@ -1200,11 +1215,10 @@
         border-radius: 8px;
         color: #fff;
         text-transform: none;
-        &.disabled{
+        &.disabled {
           cursor: not-allowed;
           background: linear-gradient(85deg, #af6d90 2.68%, #76b9b8 100%);
           color: #ffffff59;
-
         }
         &:hover,
         &:focus {
@@ -1269,8 +1283,8 @@
       .astar-page-section-1 {
         margin-bottom: -50px;
         .astar-page-section-1-left {
-          &.not-connect{
-            gap:37px;
+          &.not-connect {
+            gap: 37px;
           }
           .stake-info-wrapper {
             .stake-info {
@@ -1378,7 +1392,6 @@
   }
 }
 
-
 @media (max-width: 1000px) {
   .astar-page-container-wrapper {
     .astar-page-container {
@@ -1431,7 +1444,7 @@
                   .stake-banner-item-number {
                     font-size: 30px;
                     margin-bottom: 16px;
-                 flex-wrap: wrap;
+                    flex-wrap: wrap;
                     .stake-banner-item-unit {
                       font-size: 16px;
                     }
@@ -1494,50 +1507,48 @@
 }
 
 @media (max-width: 900px) {
- .astar-page-container-wrapper{
-  .astar-page-container {
-    .astar-page-section-1 {
-      .astar-page-section-1-left {
-        display: flex;
-        flex-direction: column;
-        gap: 18px;
-      }
-      .astar-page-section-1-right{
-        .stake-info{
-          .stake-info-banner{
-            .stake-banner-item{
-              &.first{
-                .stake-banner-item-number{
-                  font-size: 24px;
-                  line-height: 30px;
-                  // gap:0;
-                  // margin: 0;
-                  .stake-banner-item-unit{
-                    font-size: 14px;
-                    line-height: 20px;
+  .astar-page-container-wrapper {
+    .astar-page-container {
+      .astar-page-section-1 {
+        .astar-page-section-1-left {
+          display: flex;
+          flex-direction: column;
+          gap: 18px;
+        }
+        .astar-page-section-1-right {
+          .stake-info {
+            .stake-info-banner {
+              .stake-banner-item {
+                &.first {
+                  .stake-banner-item-number {
+                    font-size: 24px;
+                    line-height: 30px;
+                    // gap:0;
+                    // margin: 0;
+                    .stake-banner-item-unit {
+                      font-size: 14px;
+                      line-height: 20px;
+                    }
                   }
-                 }
-              }
-              &.second{
-                .stake-banner-item-number{
-                  font-size: 24px;
-                  line-height: 30px;
-                  .stake-banner-item-unit{
-                    font-size: 14px;
-                    line-height: 20px;
+                }
+                &.second {
+                  .stake-banner-item-number {
+                    font-size: 24px;
+                    line-height: 30px;
+                    .stake-banner-item-unit {
+                      font-size: 14px;
+                      line-height: 20px;
+                    }
                   }
-                 }
+                }
               }
-           
             }
           }
-       
         }
       }
     }
   }
- }
- 
+
   .claim-rewards-modal-wrapper {
     .claim-rewards-modal {
       scale: 0.65;
@@ -1718,9 +1729,8 @@
               gap: 30px;
               height: 64px;
               align-items: center;
-              &:not(:first-child){
-                border-bottom: 2px solid rgba(144, 130, 157, 0.10);
-
+              &:not(:first-child) {
+                border-bottom: 2px solid rgba(144, 130, 157, 0.1);
               }
               .claim-rewards-item-index {
                 font-family: Poppins;
@@ -1990,10 +2000,11 @@
         font-weight: 700;
         line-height: 36px;
         text-transform: none;
-        &:hover,&:focus{
+        &:hover,
+        &:focus {
           transform: translateY(0);
         }
-        &:active{
+        &:active {
           transform: translateY(5px);
         }
       }
@@ -2113,10 +2124,9 @@
               background-color: #21063c;
               padding: 16px 8px;
               border-radius: 10px;
-              
-               .not-connect-bg{
-                display:none;
-               
+
+              .not-connect-bg {
+                display: none;
               }
               .total-stake {
                 background-color: #351c4f;
