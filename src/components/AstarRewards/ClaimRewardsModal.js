@@ -146,7 +146,7 @@ export default function ClaimRewardsModal({
       setPendingRound(newPendingArr);
       setSelectedRound([]);
       const value = {
-        ...fakeData,
+        ...signatureData,
         rounds: selectedRound,
       };
       const res = await claimStakingAPI(value);
@@ -169,7 +169,7 @@ export default function ClaimRewardsModal({
           };
           const updateData = await updateTransactionAPI(valueForUpdate);
           console.log("update", updateData);
-          await reCallData(fakeData);
+          await reCallData(signatureData);
         }
         setSelectedRound([]);
       }
