@@ -15,13 +15,13 @@ export default function ClaimRewardsModal({
   signatureData,
   provider,
   connector,
-  reCallData
+  reCallData,
 }) {
   const fakeData = {
     message: "MoonFit:0xaC26C8296D823561EB2C9fb8167D8936761694B0:1703144154494",
     signature:
       "0x10109db033037a541b0f257dc25361daa58edbaefdaa741d5280554d2bbd504f1363e20fa473bb3f5f0f1582d07e4f06760ef87096dfd84cfb7d43bb502f3b801b",
-    wallet_address: "0x966ae53222966a20a08825c39c51873244862089",
+    wallet_address: "0x484890cd4078931a46b52740d7b481b3ce562bb3",
   };
   const [selectedRound, setSelectedRound] = useState([]);
   const [pendingRound, setPendingRound] = useState([]);
@@ -57,8 +57,13 @@ export default function ClaimRewardsModal({
         }
       });
       setClaimedRound(claimedArr);
+      if(pendingArr.length>0){
+        reCallData(signatureData)
+      }
     }
   }, [rewardList]);
+
+  
 
   // function to format date
   function formatDate(dateString) {
@@ -108,6 +113,17 @@ export default function ClaimRewardsModal({
       .padStart(2, "0")}:${minutes.toString().padStart(2, "0")}`;
     return formattedDate;
   }
+  function formatNumber(number) {
+    const formattedNumber = (+number).toLocaleString("en-US", {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    });
+    return formattedNumber;
+  }
+
+  // function to check pending
+
+  const checkPending = () => {};
 
   // function to change state when change input checkbox
   const handleSelectedRound = ({ checked, round }) => {
@@ -126,10 +142,11 @@ export default function ClaimRewardsModal({
       selectedRound.forEach((item) => {
         newPendingArr.push(item);
       });
+      console.log("he", newPendingArr);
       setPendingRound(newPendingArr);
-
+      setSelectedRound([]);
       const value = {
-        ...signatureData,
+        ...fakeData,
         rounds: selectedRound,
       };
       const res = await claimStakingAPI(value);
@@ -152,7 +169,7 @@ export default function ClaimRewardsModal({
           };
           const updateData = await updateTransactionAPI(valueForUpdate);
           console.log("update", updateData);
-          await reCallData(fakeData)
+          await reCallData(fakeData);
         }
         setSelectedRound([]);
       }
@@ -216,17 +233,17 @@ export default function ClaimRewardsModal({
                         <img src={AstarRewards} alt="Astar" />
                       </div>
                       <span className="reward-number">
-                        {reward.total_value} $ASTR
+                        {formatNumber(reward.total_value)} $ASTR
                       </span>
                     </div>
                     <div className="claim-rewards-item-time">
                       {formatDate(reward.time)}
                     </div>
                     <div className="claim-rewards-round">
-                      {pendingRound.includes(reward.round) ? (
-                        <div className="pending">Pending</div>
-                      ) : claimedRound.includes(reward.round) ? (
+                      {claimedRound.includes(reward.round) ? (
                         <div className="claimed">Claimed</div>
+                      ) : pendingRound.includes(reward.round) ? (
+                        <div className="pending">Pending</div>
                       ) : (
                         <>
                           <input
@@ -250,7 +267,7 @@ export default function ClaimRewardsModal({
                   </div>
                 ))
               ) : (
-                <div>You have 0 round to claim</div>
+                <div>You have 0 rounds to claim</div>
               )}
             </div>
           </div>
@@ -267,201 +284,83 @@ export default function ClaimRewardsModal({
         </div>
       </div>
       <div className="claim-rewards-modal-mobile">
-        <div className="claim-rewards-modal-close" onClick={onClose}>
+        <div
+          className="claim-rewards-modal-close"
+          onClick={() => {
+            setSelectedRound([]);
+            onClose();
+          }}
+        >
           <img src={CloseBtn} alt="" />
         </div>
         <h4 className="claim-rewards-modal-header">Your Rewards</h4>
         <div className="claim-rewards-modal-content">
           <div className="claim-rewards-modal-list">
-            <div className="claim-rewards-modal-item">
-              <div className="item round">
-                <span>Round</span>
-                <span>1</span>
-              </div>
-              <div className="item amount">
-                <span>
-                  Amount{" "}
-                  <Tooltip
-                    className="amount-tooltip"
-                    content="The ASTR amount is determined by your staking contribution to MoonFit at Astar Dapp Staking"
-                  >
-                    <img src={AmountInfo} alt="" />
-                  </Tooltip>
-                </span>
-                <span>
-                  <img src={AstarRewards} alt="" />
-                  399 $ASTR
-                </span>
-              </div>
-              <div className="item rewards">
-                <span>Rewards Available At</span>
-                <span>Dec 27th 2023 - 23:00</span>
-              </div>
-              <div className="item claim">
-                <span>Claim</span>
-                <label>
-                  <input type="checkbox" />
-                  Select Round 6
-                </label>
-              </div>
-            </div>
-            <div className="claim-rewards-modal-item">
-              <div className="item round">
-                <span>Round</span>
-                <span>1</span>
-              </div>
-              <div className="item amount">
-                <span>
-                  Amount{" "}
-                  <Tooltip
-                    className="amount-tooltip"
-                    content="The ASTR amount is determined by your staking contribution to MoonFit at Astar Dapp Staking"
-                  >
-                    <img src={AmountInfo} alt="" />
-                  </Tooltip>
-                </span>
-                <span>
-                  <img src={AstarRewards} alt="" />
-                  399 $ASTR
-                </span>
-              </div>
-              <div className="item rewards">
-                <span>Rewards Available At</span>
-                <span>Dec 27th 2023 - 23:00</span>
-              </div>
-              <div className="item claim">
-                <span>Claim</span>
-                <div className="pending">Pending</div>
-              </div>
-            </div>
-            <div className="claim-rewards-modal-item">
-              <div className="item round">
-                <span>Round</span>
-                <span>1</span>
-              </div>
-              <div className="item amount">
-                <span>
-                  Amount{" "}
-                  <Tooltip
-                    className="amount-tooltip"
-                    content="The ASTR amount is determined by your staking contribution to MoonFit at Astar Dapp Staking"
-                  >
-                    <img src={AmountInfo} alt="" />
-                  </Tooltip>
-                </span>
-                <span>
-                  <img src={AstarRewards} alt="" />
-                  399 $ASTR
-                </span>
-              </div>
-              <div className="item rewards">
-                <span>Rewards Available At</span>
-                <span>Dec 27th 2023 - 23:00</span>
-              </div>
-              <div className="item claim">
-                <span>Claim</span>
-                <div className="claimed">Claimed</div>
-              </div>
-            </div>
-            <div className="claim-rewards-modal-item">
-              <div className="item round">
-                <span>Round</span>
-                <span>1</span>
-              </div>
-              <div className="item amount">
-                <span>
-                  Amount{" "}
-                  <Tooltip
-                    className="amount-tooltip"
-                    content="The ASTR amount is determined by your staking contribution to MoonFit at Astar Dapp Staking"
-                  >
-                    <img src={AmountInfo} alt="" />
-                  </Tooltip>
-                </span>
-                <span>
-                  <img src={AstarRewards} alt="" />
-                  399 $ASTR
-                </span>
-              </div>
-              <div className="item rewards">
-                <span>Rewards Available At</span>
-                <span>Dec 27th 2023 - 23:00</span>
-              </div>
-              <div className="item claim">
-                <span>Claim</span>
-                <label>
-                  <input type="checkbox" />
-                  Select Round 6
-                </label>
-              </div>
-            </div>
-            <div className="claim-rewards-modal-item">
-              <div className="item round">
-                <span>Round</span>
-                <span>1</span>
-              </div>
-              <div className="item amount">
-                <span>
-                  Amount{" "}
-                  <Tooltip
-                    className="amount-tooltip"
-                    content="The ASTR amount is determined by your staking contribution to MoonFit at Astar Dapp Staking"
-                  >
-                    <img src={AmountInfo} alt="" />
-                  </Tooltip>
-                </span>
-                <span>
-                  <img src={AstarRewards} alt="" />
-                  399 $ASTR
-                </span>
-              </div>
-              <div className="item rewards">
-                <span>Rewards Available At</span>
-                <span>Dec 27th 2023 - 23:00</span>
-              </div>
-              <div className="item claim">
-                <span>Claim</span>
-                <label>
-                  <input type="checkbox" />
-                  Select Round 6
-                </label>
-              </div>
-            </div>
-            <div className="claim-rewards-modal-item">
-              <div className="item round">
-                <span>Round</span>
-                <span>1</span>
-              </div>
-              <div className="item amount">
-                <span>
-                  Amount{" "}
-                  <Tooltip
-                    className="amount-tooltip"
-                    content="The ASTR amount is determined by your staking contribution to MoonFit at Astar Dapp Staking"
-                  >
-                    <img src={AmountInfo} alt="" />
-                  </Tooltip>
-                </span>
-                <span>
-                  <img src={AstarRewards} alt="" />
-                  399 $ASTR
-                </span>
-              </div>
-              <div className="item rewards">
-                <span>Rewards Available At</span>
-                <span>Dec 27th 2023 - 23:00</span>
-              </div>
-              <div className="item claim">
-                <span>Claim</span>
-                <label>
-                  <input type="checkbox" />
-                  Select Round 6
-                </label>
-              </div>
-            </div>
+            {rewardList?.length > 0 ? (
+              rewardList.map((reward, index) => (
+                <div key={index} className="claim-rewards-modal-item">
+                  <div className="item round">
+                    <span>Round</span>
+                    <span>1</span>
+                  </div>
+                  <div className="item amount">
+                    <span>
+                      Amount{" "}
+                      <Tooltip
+                        className="amount-tooltip"
+                        content="The ASTR amount is determined by your staking contribution to MoonFit at Astar Dapp Staking"
+                      >
+                        <img src={AmountInfo} alt="" />
+                      </Tooltip>
+                    </span>
+                    <span>
+                      <img src={AstarRewards} alt="" />
+                      {reward.total_value} $ASTR
+                    </span>
+                  </div>
+                  <div className="item rewards">
+                    <span>Rewards Available At</span>
+                    <span>{formatDate(reward.time)}</span>
+                  </div>
+                  <div className="item claim">
+                    <span>Claim</span>
+                    {pendingRound.includes(reward.round) ? (
+                      <div className="pending">Pending</div>
+                    ) : claimedRound.includes(reward.round) ? (
+                      <div className="claimed">Claimed</div>
+                    ) : (
+                      <label htmlFor={`round-${reward.round}-mobile`}>
+                        <input
+                          onChange={(e) => {
+                            const value = {
+                              checked: e.target.checked,
+                              round: reward.round,
+                            };
+                            handleSelectedRound(value);
+                          }}
+                          checked={selectedRound.includes(reward.round)}
+                          id={`round-${reward.round}-mobile`}
+                          type="checkbox"
+                        />
+                        Select Round {reward.round}
+                      </label>
+                    )}
+                  </div>
+                </div>
+              ))
+            ) : (
+              <div>You have 0 rounds to claim</div>
+            )}
           </div>
         </div>
-        <button className="claim-rewards-button">Claim selected rewards</button>
+        <button
+          onClick={() => {
+            handleClaim();
+          }}
+          className={`claim-rewards-button ${isClaimable ? "" : "disabled"}`}
+        >
+          Claim selected rewards
+        </button>
       </div>
     </div>
   );
