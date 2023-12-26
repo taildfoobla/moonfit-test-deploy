@@ -7,6 +7,7 @@ import { claimStakingAPI, getStakeInfoAPI } from "../../services/astar-rewards";
 import { sendTransaction } from "../../utils/blockchain";
 import { updateTransactionAPI } from "../../services/astar-rewards";
 import { switchToNetwork } from "../../utils/blockchain";
+import { LOCALSTORAGE_KEY, getLocalStorage } from "../../utils/storage";
 
 export default function ClaimRewardsModal({
   isOpen,
@@ -22,11 +23,12 @@ export default function ClaimRewardsModal({
     message: "MoonFit:0xaC26C8296D823561EB2C9fb8167D8936761694B0:1703144154494",
     signature:
       "0x10109db033037a541b0f257dc25361daa58edbaefdaa741d5280554d2bbd504f1363e20fa473bb3f5f0f1582d07e4f06760ef87096dfd84cfb7d43bb502f3b801b",
-    wallet_address: "0x6ed76abc8246ed029c529a31a1dbf4dc2cb25246",
+    wallet_address: "0x1fc37012c190526b92a991398829abc8134a6694",
   };
   const [selectedRound, setSelectedRound] = useState([]);
   const [pendingRound, setPendingRound] = useState([]);
   const [claimedRound, setClaimedRound] = useState([]);
+  const [isNeedCheckPending,setIsNeedCheckPending]=useState(false)
   //useEffect for the first time
   useEffect(() => {
     const handleKeyDown = (event) => {
@@ -52,6 +54,9 @@ export default function ClaimRewardsModal({
         }
       });
       setPendingRound(pendingArr);
+      if(pendingArr?.length>0){
+        setIsNeedCheckPending(true)
+      }
       let claimedArr = [];
       rewardList.forEach((item) => {
         if (item.status === "completed") {
@@ -64,11 +69,11 @@ export default function ClaimRewardsModal({
 
   //useEffect for check pending round
   useEffect(() => {
-    console.log("dsad",pendingRound)
-   if(pendingRound?.length>0){
-    checkPending(signatureData)
+    const testWallet = getLocalStorage("TEST_WALLET")
+   if(pendingRound?.length>0&&isNeedCheckPending){
+    checkPending({...signatureData,wallet_address:testWallet})
   }
-  }, [pendingRound]);
+  }, [pendingRound,isNeedCheckPending]);
 
   // function to format date
   function formatDate(dateString) {
@@ -160,6 +165,9 @@ export default function ClaimRewardsModal({
         setClaimedRound(claimedArr);
         setPendingRound(newPendingArr);
         setRewardInfo(data?.data?.user_info?.total_stake, newClaimableNumber);
+        if(newPendingArr?.length==0){
+          setIsNeedCheckPending(false)
+        }
       }
     }
   };
@@ -176,17 +184,21 @@ export default function ClaimRewardsModal({
 
   // function to claim staking
   const handleClaim = async () => {
+    const testWallet = getLocalStorage("TEST_WALLET");
+
     if (isClaimable) {
       const newPendingArr = pendingRound;
       selectedRound.forEach((item) => {
         newPendingArr.push(item);
       });
       const cacheSelectedRoung = selectedRound;
+      setIsNeedCheckPending(false)
       setPendingRound(newPendingArr);
       setSelectedRound([]);
       const value = {
         ...signatureData,
         rounds: selectedRound,
+        wallet_address:testWallet
       };
       try {
         const res = await claimStakingAPI(value);
@@ -219,6 +231,9 @@ export default function ClaimRewardsModal({
             newArr.push(round);
           }
         });
+        if(newArr?.length>0){
+          setIsNeedCheckPending(true)
+        }
         setPendingRound(newArr);
         setSelectedRound([]);
       }
