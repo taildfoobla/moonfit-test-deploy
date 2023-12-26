@@ -23,6 +23,7 @@ import {
 import InfoIcon from "../assets/images/astar-rewards/amount-info.png";
 import { Tooltip } from "antd";
 import LoadingOutlined from "../components/shared/LoadingOutlined";
+import { LOCALSTORAGE_KEY, getLocalStorage } from "../utils/storage";
 
 export default function AstarRewards() {
   const [isFetchingNoWallet, setIsFetchingNoWallet] = useState(true);
@@ -66,12 +67,24 @@ export default function AstarRewards() {
   };
   // useEffect for getting Stake data
   useEffect(() => {
-    if (signatureData) {
-      getStakeInfo(signatureData);
+    const signatureDataLocal = JSON.parse(
+      getLocalStorage(LOCALSTORAGE_KEY.WALLET_SIGNATURE)
+    );
+
+    if (signatureDataLocal !== null) {
+      getStakeInfo(signatureDataLocal.signature);
     } else {
       getMoonFitTotalStake();
     }
-  }, [signatureData]);
+  }, []);
+
+  // useEffect to call data after login
+
+  useEffect(()=>{
+    if(signatureData&&moonfitTotalStake!==0){
+      getStakeInfo(signatureData)
+    }
+  },[signatureData])
 
   // useEffect for open rewards modal
   useEffect(() => {
@@ -88,11 +101,10 @@ export default function AstarRewards() {
       minimumFractionDigits: 2,
       maximumFractionDigits: 2,
     });
-    if(number===0){
-      return number
-    }else{
+    if (number === 0) {
+      return number;
+    } else {
       return formattedNumber;
-
     }
   }
 
@@ -123,8 +135,7 @@ export default function AstarRewards() {
         setTotalStake(data?.data?.user_info?.total_stake);
         let newClaimable = 0;
         data?.data?.user_info?.rounds.forEach((round) => {
-         if(round.status==="created")
-          newClaimable += round.total_value;
+          if (round.status === "created") newClaimable += round.total_value;
         });
         setClaimable(newClaimable);
         setRewardList(data?.data?.user_info?.rounds);
@@ -157,7 +168,7 @@ export default function AstarRewards() {
         // setClaimable(newClaimable);
         const rounds = data?.data?.user_info?.round;
         let pendingArr = [];
-        rounds.forEach((item) => {
+        rounds?.forEach((item) => {
           if (item.status === "pending") {
             pendingArr.push(item.round);
           }
