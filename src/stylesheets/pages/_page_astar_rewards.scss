@@ -1529,9 +1529,10 @@ line-height: 22px;
     .astar-page-container {
       .astar-page-section-1 {
         .astar-page-section-1-left {
+          height: 100%;
           display: flex;
           flex-direction: column;
-          gap: 18px;
+          justify-content: space-between;    
         }
         .astar-page-section-1-right {
           .stake-info {
@@ -1557,6 +1558,18 @@ line-height: 22px;
                       font-size: 14px;
                       line-height: 20px;
                     }
+                  }
+                }
+              }
+            }
+            .stake-benefit{
+              .stake-benefit-content{
+                margin-bottom: 20px;
+                .stake-benefit-list{
+                  flex-direction: row;
+                  flex-wrap: wrap;
+                  .stake-benefit-item{
+                    width: 100%;
                   }
                 }
               }
