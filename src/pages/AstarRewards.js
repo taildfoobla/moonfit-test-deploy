@@ -20,7 +20,7 @@ import {
   getMoonFitTotalStakeAPI,
   getStakeInfoAPI,
 } from "../services/astar-rewards";
-import InfoIcon from "../assets/images/astar-rewards/amount-info.png";
+import InfoIcon from "../assets/images/astar-rewards/Info-color-white.png";
 import { Tooltip } from "antd";
 import LoadingOutlined from "../components/shared/LoadingOutlined";
 import { LOCALSTORAGE_KEY, getLocalStorage } from "../utils/storage";
@@ -63,7 +63,7 @@ export default function AstarRewards() {
     message: "MoonFit:0xaC26C8296D823561EB2C9fb8167D8936761694B0:1703144154494",
     signature:
       "0x10109db033037a541b0f257dc25361daa58edbaefdaa741d5280554d2bbd504f1363e20fa473bb3f5f0f1582d07e4f06760ef87096dfd84cfb7d43bb502f3b801b",
-    wallet_address: "0x484890cd4078931a46b52740d7b481b3ce562bb3",
+    wallet_address: "0x6ed76abc8246ed029c529a31a1dbf4dc2cb25246",
   };
   // useEffect for getting Stake data
   useEffect(() => {
@@ -72,7 +72,9 @@ export default function AstarRewards() {
     );
 
     if (signatureDataLocal !== null) {
-      getStakeInfo(signatureDataLocal.signature);
+      // getStakeInfo(signatureDataLocal.signature);
+      getStakeInfo(signatureData);
+
     } else {
       getMoonFitTotalStake();
     }
@@ -188,6 +190,11 @@ export default function AstarRewards() {
     }
   };
 
+  const changeInfoAfterCheck=(total,claimable)=>{
+    setTotalStake(total)
+    setClaimable(claimable)
+  }
+
   const openNewTab = (url) => {
     window.open(url);
   };
@@ -218,6 +225,7 @@ export default function AstarRewards() {
         provider={provider}
         connector={connector}
         reCallData={reCallData}
+        setRewardInfo={changeInfoAfterCheck}
       />
       {/* <ClaimRewardsModalMobile
        isOpen={isOpenClaimRewardsModal}
@@ -430,6 +438,7 @@ export default function AstarRewards() {
                       <div className="stake-banner-item-number">
                         ~11.2%
                         <Tooltip
+                        trigger="click"
                           color="#a16bd8"
                           overlayClassName="banner-tooltip"
                           title="Boosted APY: Astar Network's base APY plus Bonus Staking Rewards from MoonFit"

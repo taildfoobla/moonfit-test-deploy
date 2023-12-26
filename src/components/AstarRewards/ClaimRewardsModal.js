@@ -3,7 +3,7 @@ import AstarRewards from "../../assets/images/astar-rewards/astar-reward.png";
 import CloseBtn from "../../assets/images/astar-rewards/close-border.png";
 import AmountInfo from "../../assets/images/astar-rewards/amount-info.png";
 import { Tooltip } from "flowbite-react";
-import { claimStakingAPI } from "../../services/astar-rewards";
+import { claimStakingAPI, getStakeInfoAPI } from "../../services/astar-rewards";
 import { sendTransaction } from "../../utils/blockchain";
 import { updateTransactionAPI } from "../../services/astar-rewards";
 import { switchToNetwork } from "../../utils/blockchain";
@@ -16,12 +16,13 @@ export default function ClaimRewardsModal({
   provider,
   connector,
   reCallData,
+  setRewardInfo,
 }) {
   const fakeData = {
     message: "MoonFit:0xaC26C8296D823561EB2C9fb8167D8936761694B0:1703144154494",
     signature:
       "0x10109db033037a541b0f257dc25361daa58edbaefdaa741d5280554d2bbd504f1363e20fa473bb3f5f0f1582d07e4f06760ef87096dfd84cfb7d43bb502f3b801b",
-    wallet_address: "0x484890cd4078931a46b52740d7b481b3ce562bb3",
+    wallet_address: "0x6ed76abc8246ed029c529a31a1dbf4dc2cb25246",
   };
   const [selectedRound, setSelectedRound] = useState([]);
   const [pendingRound, setPendingRound] = useState([]);
@@ -41,6 +42,7 @@ export default function ClaimRewardsModal({
     };
   }, []);
 
+  //useEffect for roundList
   useEffect(() => {
     if (rewardList) {
       let pendingArr = [];
@@ -57,11 +59,16 @@ export default function ClaimRewardsModal({
         }
       });
       setClaimedRound(claimedArr);
-      // if (pendingArr.length > 0) {
-      //   reCallData(signatureData);
-      // }
     }
   }, [rewardList]);
+
+  //useEffect for check pending round
+  useEffect(() => {
+    console.log("dsad",pendingRound)
+   if(pendingRound?.length>0){
+    checkPending(signatureData)
+  }
+  }, [pendingRound]);
 
   // function to format date
   function formatDate(dateString) {
@@ -112,21 +119,50 @@ export default function ClaimRewardsModal({
     return formattedDate;
   }
   function formatNumber(number) {
-    if(number===0){
-      return number
-    }else{
+    if (number === 0) {
+      return number;
+    } else {
       const formattedNumber = (+number).toLocaleString("en-US", {
         minimumFractionDigits: 2,
         maximumFractionDigits: 2,
       });
       return formattedNumber;
     }
- 
   }
 
   // function to check pending
+  const checkPending = async (signatureData) => {
+    const res = await getStakeInfoAPI(signatureData);
+    const { data, success } = res;
+    if (success) {
+      if (data?.message === "Get Staking Info successfully") {
+        const canClaimArr = [];
+        const claimedArr = [];
+        data?.data?.user_info?.rounds.forEach((round) => {
+          if (round.status === "completed") {
+            claimedArr.push(round.round);
+          } else if (round.status === "created") {
+            canClaimArr.push(round);
+          }
+        });
+        const newPendingArr = [];
+        pendingRound.forEach((round) => {
+          if (!claimedArr.includes(round)) {
+            newPendingArr.push(round);
+          }
+        });
 
-  const checkPending = () => {};
+        let newClaimableNumber = 0;
+        canClaimArr.forEach((round) => {
+          newClaimableNumber += round.total_value;
+        });
+
+        setClaimedRound(claimedArr);
+        setPendingRound(newPendingArr);
+        setRewardInfo(data?.data?.user_info?.total_stake, newClaimableNumber);
+      }
+    }
+  };
 
   // function to change state when change input checkbox
   const handleSelectedRound = ({ checked, round }) => {
@@ -145,35 +181,45 @@ export default function ClaimRewardsModal({
       selectedRound.forEach((item) => {
         newPendingArr.push(item);
       });
-      console.log("he", newPendingArr);
+      const cacheSelectedRoung = selectedRound;
       setPendingRound(newPendingArr);
       setSelectedRound([]);
       const value = {
         ...signatureData,
         rounds: selectedRound,
       };
-      const res = await claimStakingAPI(value);
-      console.log("res", res);
-      const { data, success } = res;
-      if (success) {
-        if (data?.message === "Get Staking Info successfully") {
-          console.log("before send");
-          const sendData = {
-            ...data?.data?.transaction?.transaction,
-            from: signatureData.wallet_address,
-          };
-          await switchToNetwork(provider, data?.data?.transaction?.chainId);
-          const txHash = await sendTransaction(provider, connector, sendData);
-          console.log("txHash", txHash);
+      try {
+        const res = await claimStakingAPI(value);
+        console.log("res", res);
+        const { data, success } = res;
+        if (success) {
+          if (data?.message === "Get Staking Info successfully") {
+            console.log("before send");
+            const sendData = {
+              ...data?.data?.transaction?.transaction,
+              from: signatureData.wallet_address,
+            };
+            await switchToNetwork(provider, data?.data?.transaction?.chainId);
+            const txHash = await sendTransaction(provider, connector, sendData);
+            console.log("txHash", txHash);
 
-          const valueForUpdate = {
-            transaction_id: data?.data?.wallet_transaction_id,
-            transaction_hash: txHash,
-          };
-          const updateData = await updateTransactionAPI(valueForUpdate);
-          console.log("update", updateData);
-          // await reCallData(fakeData);
+            const valueForUpdate = {
+              transaction_id: data?.data?.wallet_transaction_id,
+              transaction_hash: txHash,
+            };
+            const updateData = await updateTransactionAPI(valueForUpdate);
+            console.log("update", updateData);
+            // await reCallData(fakeData);
+          }
         }
+      } catch (err) {
+        const newArr = [];
+        newPendingArr.forEach((round) => {
+          if (!cacheSelectedRoung.includes(round)) {
+            newArr.push(round);
+          }
+        });
+        setPendingRound(newArr);
         setSelectedRound([]);
       }
     }
