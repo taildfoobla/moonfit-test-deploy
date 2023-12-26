@@ -448,7 +448,7 @@ export default function AstarRewards() {
                       <div className="stake-banner-item-number">
                         ~11.2%
                         <Tooltip
-                          trigger="click"
+                          // trigger="click"
                           color="#a16bd8"
                           overlayClassName="banner-tooltip"
                           title="Boosted APY: Astar Network's base APY plus Bonus Staking Rewards from MoonFit"
