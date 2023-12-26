@@ -1227,6 +1227,9 @@
           cursor: not-allowed;
           background: linear-gradient(85deg, #af6d90 2.68%, #76b9b8 100%);
           color: #ffffff59;
+          &:active {
+            transform: translateY(0);
+          }
         }
         &:hover,
         &:focus {
@@ -2020,6 +2023,9 @@
           cursor: not-allowed;
           background: linear-gradient(85deg, #af6d90 2.68%, #76b9b8 100%);
           color: #ffffff59;
+          &:active {
+            transform: translateY(0);
+          }
         }
       }
     }

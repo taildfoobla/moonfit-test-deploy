@@ -88,7 +88,12 @@ export default function AstarRewards() {
       minimumFractionDigits: 2,
       maximumFractionDigits: 2,
     });
-    return formattedNumber;
+    if(number===0){
+      return number
+    }else{
+      return formattedNumber;
+
+    }
   }
 
   //function to get stake data if didn't connect wallet
@@ -118,7 +123,7 @@ export default function AstarRewards() {
         setTotalStake(data?.data?.user_info?.total_stake);
         let newClaimable = 0;
         data?.data?.user_info?.rounds.forEach((round) => {
-          console.log(round.total_value);
+         if(round.status==="created")
           newClaimable += round.total_value;
         });
         setClaimable(newClaimable);
