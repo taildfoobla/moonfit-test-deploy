@@ -112,11 +112,16 @@ export default function ClaimRewardsModal({
     return formattedDate;
   }
   function formatNumber(number) {
-    const formattedNumber = (+number).toLocaleString("en-US", {
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2,
-    });
-    return formattedNumber;
+    if(number===0){
+      return number
+    }else{
+      const formattedNumber = (+number).toLocaleString("en-US", {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      });
+      return formattedNumber;
+    }
+ 
   }
 
   // function to check pending
@@ -144,7 +149,7 @@ export default function ClaimRewardsModal({
       setPendingRound(newPendingArr);
       setSelectedRound([]);
       const value = {
-        ...signatureData,
+        ...fakeData,
         rounds: selectedRound,
       };
       const res = await claimStakingAPI(value);
@@ -167,7 +172,7 @@ export default function ClaimRewardsModal({
           };
           const updateData = await updateTransactionAPI(valueForUpdate);
           console.log("update", updateData);
-          await reCallData(signatureData);
+          await reCallData(fakeData);
         }
         setSelectedRound([]);
       }
@@ -313,7 +318,7 @@ export default function ClaimRewardsModal({
                     </span>
                     <span>
                       <img src={AstarRewards} alt="" />
-                      {reward.total_value} $ASTR
+                      {formatNumber(reward.total_value)} $ASTR
                     </span>
                   </div>
                   <div className="item rewards">
