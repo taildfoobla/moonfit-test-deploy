@@ -67,7 +67,7 @@ export default function AstarRewards() {
   // useEffect for getting Stake data
   useEffect(() => {
     if (signatureData) {
-      getStakeInfo(fakeData);
+      getStakeInfo(signatureData);
     } else {
       getMoonFitTotalStake();
     }
