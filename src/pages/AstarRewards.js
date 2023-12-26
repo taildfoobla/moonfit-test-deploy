@@ -72,11 +72,15 @@ export default function AstarRewards() {
     );
 
     if (signatureDataLocal !== null) {
-      // getStakeInfo(signatureDataLocal.signature);
-      getStakeInfo(signatureData);
+      getStakeInfo(signatureDataLocal.signature);
+      console.log("here1")
 
+      // getStakeInfo(signatureData);
     } else {
+      console.log("here2")
+
       getMoonFitTotalStake();
+
     }
   }, []);
 
