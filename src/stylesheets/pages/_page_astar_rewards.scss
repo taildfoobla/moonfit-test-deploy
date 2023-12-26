@@ -2270,6 +2270,10 @@ line-height: 22px;
                   color: #280748;
                   text-transform: capitalize;
                   border-radius: 8px;
+                  &.disabled{
+                    background-color: #7fa1a1;
+                    color: #3d3544;
+                  }
                 }
               }
             }
