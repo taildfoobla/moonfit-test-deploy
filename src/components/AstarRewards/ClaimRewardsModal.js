@@ -185,7 +185,7 @@ export default function ClaimRewardsModal({
       setPendingRound(newPendingArr);
       setSelectedRound([]);
       const value = {
-        ...fakeData,
+        ...signatureData,
         rounds: selectedRound,
       };
       try {

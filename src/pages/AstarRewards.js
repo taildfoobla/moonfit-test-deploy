@@ -73,7 +73,7 @@ export default function AstarRewards() {
 
     if (signatureDataLocal !== null) {
       // getStakeInfo(signatureDataLocal.signature);
-      getStakeInfo(fakeData);
+      getStakeInfo(signatureData);
 
     } else {
       getMoonFitTotalStake();
