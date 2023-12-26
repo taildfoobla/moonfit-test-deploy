@@ -18,6 +18,7 @@ export default function ClaimRewardsModal({
   connector,
   reCallData,
   setRewardInfo,
+  setIsFetchingHaveWallet
 }) {
   const fakeData = {
     message: "MoonFit:0xaC26C8296D823561EB2C9fb8167D8936761694B0:1703144154494",
@@ -28,7 +29,7 @@ export default function ClaimRewardsModal({
   const [selectedRound, setSelectedRound] = useState([]);
   const [pendingRound, setPendingRound] = useState([]);
   const [claimedRound, setClaimedRound] = useState([]);
-  const [isNeedCheckPending,setIsNeedCheckPending]=useState(false)
+  const [isNeedCheckPending, setIsNeedCheckPending] = useState(false);
   //useEffect for the first time
   useEffect(() => {
     const handleKeyDown = (event) => {
@@ -47,19 +48,19 @@ export default function ClaimRewardsModal({
   //useEffect for roundList
   useEffect(() => {
     if (rewardList) {
-      let pendingArr = [];
-      rewardList.forEach((item) => {
-        if (item.status === "pending") {
-          pendingArr.push(item.round);
-        }
-      });
-      setPendingRound(pendingArr);
-      if(pendingArr?.length>0){
-        setIsNeedCheckPending(true)
-      }
+      // let pendingArr = [];
+      // rewardList.forEach((item) => {
+      //   if (item.status === "pending") {
+      //     pendingArr.push(item.round);
+      //   }
+      // });
+      // setPendingRound(pendingArr);
+      // if(pendingArr?.length>0){
+      //   setIsNeedCheckPending(true)
+      // }
       let claimedArr = [];
       rewardList.forEach((item) => {
-        if (item.status === "completed") {
+        if (item.status === "completed" || item.status === "pending") {
           claimedArr.push(item.round);
         }
       });
@@ -68,12 +69,12 @@ export default function ClaimRewardsModal({
   }, [rewardList]);
 
   //useEffect for check pending round
-  useEffect(() => {
-    const testWallet = getLocalStorage("TEST_WALLET")
-   if(pendingRound?.length>0&&isNeedCheckPending){
-    checkPending({...signatureData,wallet_address:testWallet})
-  }
-  }, [pendingRound,isNeedCheckPending]);
+  // useEffect(() => {
+  //   const testWallet = getLocalStorage("TEST_WALLET")
+  //  if(pendingRound?.length>0&&isNeedCheckPending){
+  //   checkPending({...signatureData,wallet_address:testWallet})
+  // }
+  // }, [pendingRound,isNeedCheckPending]);
 
   // function to format date
   function formatDate(dateString) {
@@ -137,38 +138,48 @@ export default function ClaimRewardsModal({
 
   // function to check pending
   const checkPending = async (signatureData) => {
+    setIsFetchingHaveWallet(true)
     const res = await getStakeInfoAPI(signatureData);
     const { data, success } = res;
     if (success) {
       if (data?.message === "Get Staking Info successfully") {
         const canClaimArr = [];
-        const claimedArr = [];
+
         data?.data?.user_info?.rounds.forEach((round) => {
-          if (round.status === "completed") {
-            claimedArr.push(round.round);
-          } else if (round.status === "created") {
+          if (round.status === "created") {
             canClaimArr.push(round);
           }
         });
-        const newPendingArr = [];
-        pendingRound.forEach((round) => {
-          if (!claimedArr.includes(round)) {
-            newPendingArr.push(round);
-          }
-        });
+
+        // const claimedArr = [];
+        // data?.data?.user_info?.rounds.forEach((round) => {
+        //   if (round.status === "completed") {
+        //     claimedArr.push(round.round);
+        //   } else if (round.status === "created") {
+        //     canClaimArr.push(round);
+        //   }
+        // });
+        // const newPendingArr = [];
+        // pendingRound.forEach((round) => {
+        //   if (!claimedArr.includes(round)) {
+        //     newPendingArr.push(round);
+        //   }
+        // });
 
         let newClaimableNumber = 0;
         canClaimArr.forEach((round) => {
           newClaimableNumber += round.total_value;
         });
 
-        setClaimedRound(claimedArr);
-        setPendingRound(newPendingArr);
+        // setClaimedRound(claimedArr);
+        // setPendingRound(newPendingArr);
         setRewardInfo(data?.data?.user_info?.total_stake, newClaimableNumber);
-        if(newPendingArr?.length==0){
-          setIsNeedCheckPending(false)
-        }
+        // if(newPendingArr?.length==0){
+        //   setIsNeedCheckPending(false)
+        // }
+        setIsFetchingHaveWallet(false)
       }
+
     }
   };
 
@@ -191,14 +202,14 @@ export default function ClaimRewardsModal({
       selectedRound.forEach((item) => {
         newPendingArr.push(item);
       });
-      const cacheSelectedRoung = selectedRound;
-      setIsNeedCheckPending(false)
+      const cacheSelectedRound = selectedRound;
+      // setIsNeedCheckPending(false)
       setPendingRound(newPendingArr);
       setSelectedRound([]);
       const value = {
         ...signatureData,
         rounds: selectedRound,
-        wallet_address:testWallet
+        wallet_address: testWallet,
       };
       try {
         const res = await claimStakingAPI(value);
@@ -221,20 +232,22 @@ export default function ClaimRewardsModal({
             };
             const updateData = await updateTransactionAPI(valueForUpdate);
             console.log("update", updateData);
-            // await reCallData(fakeData);
+            const newClaimedArr = claimedRound.concat(cacheSelectedRound);
+            setClaimedRound(newClaimedArr);
+            await checkPending(signatureData);
           }
         }
       } catch (err) {
-        const newArr = [];
-        newPendingArr.forEach((round) => {
-          if (!cacheSelectedRoung.includes(round)) {
-            newArr.push(round);
-          }
-        });
-        if(newArr?.length>0){
-          setIsNeedCheckPending(true)
-        }
-        setPendingRound(newArr);
+        // const newArr = [];
+        // newPendingArr.forEach((round) => {
+        //   if (!cacheSelectedRound.includes(round)) {
+        //     newArr.push(round);
+        //   }
+        // });
+        // if(newArr?.length>0){
+        //   setIsNeedCheckPending(true)
+        // }
+        setPendingRound([]);
         setSelectedRound([]);
       }
     }

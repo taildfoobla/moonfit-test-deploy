@@ -110,7 +110,7 @@ export default function AstarRewards() {
       minimumFractionDigits: 2,
       maximumFractionDigits: 2,
     });
-    if (number === 0) {
+    if (number == Number(formattedNumber)) {
       return number;
     } else {
       return formattedNumber;
@@ -216,6 +216,8 @@ export default function AstarRewards() {
     setIsOpenClaimRewardsModal(false);
   };
 
+
+
   // value to display subtratewallet
   const isDisplayedSubstrateWallet = substrateWallet?.length > 0;
 
@@ -233,6 +235,7 @@ export default function AstarRewards() {
         connector={connector}
         reCallData={reCallData}
         setRewardInfo={changeInfoAfterCheck}
+        setIsFetchingHaveWallet={setIsFetchingHaveWallet}
       />
       {/* <ClaimRewardsModalMobile
        isOpen={isOpenClaimRewardsModal}
@@ -245,7 +248,9 @@ export default function AstarRewards() {
         </div>
         <div className="astar-page-container">
           <div className="astar-page-header">
-            <p className="first">Astar Dapp Staking</p>
+            <p className="first" onClick={()=>{
+              openNewTab("https://twitter.com/intent/tweet?url=https%3A%2F%2Fmoonfit-token-sale.web.app%2F&text=MoonFit&hashtags=clock%2Cbooks%2Csun")
+            }}>Astar Dapp Staking</p>
             <p className="second">MoonFit Dashboard</p>
           </div>
           <div className="astar-page-section-1">
