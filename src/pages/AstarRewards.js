@@ -84,9 +84,9 @@ export default function AstarRewards() {
 
   // function to format number
   function formatNumber(number) {
-    const formattedNumber = (+number).toLocaleString('en-US', {
+    const formattedNumber = (+number).toLocaleString("en-US", {
       minimumFractionDigits: 2,
-      maximumFractionDigits: 2
+      maximumFractionDigits: 2,
     });
     return formattedNumber;
   }
@@ -114,9 +114,7 @@ export default function AstarRewards() {
     const { data, success } = res;
     if (success) {
       if (data?.message === "Get Staking Info successfully") {
-        setMoonfitTotalStake(
-          data?.data?.moonfit_info?.total_stake
-        );
+        setMoonfitTotalStake(data?.data?.moonfit_info?.total_stake);
         setTotalStake(data?.data?.user_info?.total_stake);
         let newClaimable = 0;
         data?.data?.user_info?.rounds.forEach((round) => {
@@ -152,15 +150,15 @@ export default function AstarRewards() {
         //   newClaimable += round.total_value;
         // });
         // setClaimable(newClaimable);
-        const rounds=data?.data?.user_info?.round;
+        const rounds = data?.data?.user_info?.round;
         let pendingArr = [];
         rounds.forEach((item) => {
           if (item.status === "pending") {
             pendingArr.push(item.round);
           }
         });
-        if(pendingArr.length>0){
-          reCallData(signatureData)
+        if (pendingArr.length > 0) {
+          reCallData(signatureData);
         }
         setRewardList(data?.data?.user_info?.rounds);
         // const substrateWalletList =
@@ -174,13 +172,14 @@ export default function AstarRewards() {
     }
   };
 
-
   const openNewTab = (url) => {
     window.open(url);
   };
 
   const handleOpenClaimRewardsModal = () => {
-    setIsOpenClaimRewardsModal(true);
+    if (rewardList?.length > 0) {
+      setIsOpenClaimRewardsModal(true);
+    }
   };
 
   const handleCloseClaimRewardsModal = () => {
@@ -311,7 +310,9 @@ export default function AstarRewards() {
 
                       {isConnected && (
                         <button
-                          className="claimable-rewards-button"
+                          className={`claimable-rewards-button ${
+                            rewardList?.length < 1 ? "disabled" : ""
+                          }`}
                           onClick={handleOpenClaimRewardsModal}
                         >
                           Claim
@@ -356,7 +357,16 @@ export default function AstarRewards() {
                       MoonFit's Total Staked
                     </p>
                     {isFetchingNoWallet ? (
-                     <div style={{width:"100%",display:"flex",alignItems:"center",justifyContent:"center"}}><LoadingOutlined /></div> 
+                      <div
+                        style={{
+                          width: "100%",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                        }}
+                      >
+                        <LoadingOutlined />
+                      </div>
                     ) : (
                       <p className="stake-banner-item-number">
                         {formatNumber(moonfitTotalStake)}{" "}

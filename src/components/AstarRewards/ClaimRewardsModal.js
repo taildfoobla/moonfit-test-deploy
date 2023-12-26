@@ -52,18 +52,16 @@ export default function ClaimRewardsModal({
       setPendingRound(pendingArr);
       let claimedArr = [];
       rewardList.forEach((item) => {
-        if (item.status === "claimed") {
+        if (item.status === "completed") {
           claimedArr.push(item.round);
         }
       });
       setClaimedRound(claimedArr);
-      if(pendingArr.length>0){
-        reCallData(signatureData)
+      if (pendingArr.length > 0) {
+        reCallData(signatureData);
       }
     }
   }, [rewardList]);
-
-  
 
   // function to format date
   function formatDate(dateString) {
