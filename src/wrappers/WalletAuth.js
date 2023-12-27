@@ -455,7 +455,7 @@ const WalletAuthWrapper = ({ children }) => {
                     }
                 </div>
             </Modal>
-            <Modal title="Unauthorized Wallet"
+            {/* <Modal title="Unauthorized Wallet"
                    open={isModalVisible}
                 closeIcon={(
                     <svg className={'cursor-pointer'} width="32" height="32" viewBox="0 0 32 32" fill="none"
@@ -493,7 +493,7 @@ const WalletAuthWrapper = ({ children }) => {
                     Your current wallet is not authorized to connect to MoonFit WebApp. Do you want to authorize this
                     wallet now?
                 </div>
-            </Modal>
+            </Modal> */}
         </WalletAuthContext.Provider>
     )
 }
