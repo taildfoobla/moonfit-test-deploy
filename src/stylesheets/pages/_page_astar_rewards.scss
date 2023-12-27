@@ -50,6 +50,165 @@
   }
 }
 
+.share-rewards-modal {
+  width: 771px !important;
+  .ant-modal-content {
+    border-radius: 17px;
+    background-color: #21063c;
+
+    &::before {
+      position: absolute;
+      z-index: -1;
+      content: "";
+      top: -3px;
+      right: -3px;
+      bottom: -3px;
+      left: -3px;
+      border-radius: 20px;
+      background: linear-gradient(90deg, #e4007b 0%, #4ccbc9 100%);
+      box-shadow: 0px 4px 80px 0px rgba(161, 107, 216, 0.6);
+    }
+    .ant-modal-close {
+      display: none;
+    }
+    .ant-modal-body {
+      padding: 30px;
+      .close-btn {
+        position: absolute;
+        bottom: calc(100% + 24px);
+        left: 50%;
+        transform: translateX(-50%);
+        cursor: pointer;
+        transition: all 0.3s ease;
+        &:active {
+          transform: translateX(-50%) translateY(5px);
+        }
+        img {
+          width: 40px;
+          height: 40px;
+        }
+      }
+      .share-rewards-modal-header {
+        color: #fff;
+        text-align: center;
+        font-family: Poppins;
+        font-size: 32px;
+        font-style: normal;
+        font-weight: 700;
+        line-height: 48px;
+        text-transform: none;
+        margin-bottom: 6px;
+      }
+      p {
+        color: #fff;
+        text-align: center;
+        font-family: Poppins;
+        font-size: 18px;
+        font-style: normal;
+        font-weight: 600;
+        line-height: 28px;
+        text-transform: none;
+        margin: 0;
+      }
+      .benefit-list {
+        display: flex;
+        justify-content: space-between;
+        gap: 8px;
+        padding: 0;
+        margin: 16px 0 40px 0;
+        .benefit-item {
+          padding: 10px 16px;
+          background-color: #351c4f;
+          border-radius: 80px;
+          display: flex;
+          gap: 16px;
+          align-items: center;
+          width: 231px;
+          .index {
+            position: relative;
+            span {
+              width: 28px;
+              height: 28px;
+              color: #fff;
+              background-color: #e4007b;
+              border-radius: 50%;
+              display: inline-block;
+              text-align: center;
+              line-height: 28px;
+              position: relative;
+              z-index: 1;
+            }
+            .border-index {
+              position: absolute;
+              z-index: 0;
+              content: "";
+              background-color: #502f70;
+              top: 0;
+              left: 0;
+              right: 0;
+              bottom: 0;
+              border-radius: 50%;
+              animation: scaleCircle infinite 3s alternate;
+            }
+          }
+          .text {
+            color: #90829d;
+            font-family: Poppins;
+            font-size: 16px;
+            font-style: normal;
+            font-weight: 500;
+            line-height: 26px;
+            text-transform: none;
+          }
+        }
+      }
+      .button-wrapper {
+        display: flex;
+        justify-content: center;
+        gap: 16px;
+        button{
+          &:active {
+            transform: translateY(5px) !important;
+          }
+          &:hover {
+            transform: translateY(0);
+          }
+          &:focus {
+            transform: translateY(0);
+          }
+        }
+        .share {
+          padding: 9px 24px;
+          border-radius: 8px;
+          background: linear-gradient(85deg, #e4007b 2.68%, #4ccbc9 100%);
+          color: #fff;
+          font-family: Poppins;
+          font-size: 18px;
+          font-style: normal;
+          font-weight: 700;
+          line-height: 30px;
+        }
+        .stake {
+          padding: 9px 24px;
+          border-radius: 8px;
+          background: linear-gradient(
+            111deg,
+            #95008e 6.93%,
+            #3d94fa 51.18%,
+            #04d8ff 115.93%
+          );
+          color: #fff;
+          font-family: Poppins;
+          font-size: 18px;
+          font-style: normal;
+          font-weight: 700;
+          line-height: 30px;
+        }
+      }
+    }
+  }
+}
+
 .banner-tooltip {
   .ant-tooltip-content {
     .ant-tooltip-inner {
@@ -57,10 +216,10 @@
       padding: 8px;
       border-radius: 7px;
       font-family: Poppins;
-font-size: 14px;
-font-style: normal;
-font-weight: 500;
-line-height: 22px;
+      font-size: 14px;
+      font-style: normal;
+      font-weight: 500;
+      line-height: 22px;
     }
   }
 }
@@ -1532,7 +1691,7 @@ line-height: 22px;
           height: 100%;
           display: flex;
           flex-direction: column;
-          justify-content: space-between;    
+          justify-content: space-between;
         }
         .astar-page-section-1-right {
           .stake-info {
@@ -1562,13 +1721,13 @@ line-height: 22px;
                 }
               }
             }
-            .stake-benefit{
-              .stake-benefit-content{
+            .stake-benefit {
+              .stake-benefit-content {
                 margin-bottom: 20px;
-                .stake-benefit-list{
+                .stake-benefit-list {
                   flex-direction: row;
                   flex-wrap: wrap;
-                  .stake-benefit-item{
+                  .stake-benefit-item {
                     width: 100%;
                   }
                 }
@@ -2050,6 +2209,173 @@ line-height: 22px;
       }
     }
   }
+
+  .share-rewards-modal {
+    width: 771px !important;
+    .ant-modal-content {
+      border-radius: 17px;
+      background-color: #21063c;
+  
+      &::before {
+        position: absolute;
+        z-index: -1;
+        content: "";
+        top: -3px;
+        right: -3px;
+        bottom: -3px;
+        left: -3px;
+        border-radius: 20px;
+        background: linear-gradient(90deg, #e4007b 0%, #4ccbc9 100%);
+        box-shadow: 0px 4px 80px 0px rgba(161, 107, 216, 0.6);
+      }
+      .ant-modal-close {
+        display: none;
+      }
+      .ant-modal-body {
+        padding: 24px 8px;
+        .close-btn {
+          position: absolute;
+          bottom: calc(100% + 24px);
+          left: 50%;
+          transform: translateX(-50%);
+          cursor: pointer;
+          transition: all 0.3s ease;
+          &:active {
+            transform: translateX(-50%) translateY(5px);
+          }
+          img {
+            width: 40px;
+            height: 40px;
+            &:nth-child(1){
+              display:block;
+            }
+            &:nth-child(2){
+              width: 20px;
+              height: 20px;
+              display:none;
+            }
+          }
+        }
+        .share-rewards-modal-header {
+          color: #fff;
+          text-align: center;
+          font-family: Poppins;
+          font-size: 32px;
+          font-style: normal;
+          font-weight: 700;
+          line-height: 48px;
+          text-transform: none;
+          margin-bottom: 6px;
+        }
+        p {
+          color: #fff;
+          text-align: center;
+          font-family: Poppins;
+          font-size: 18px;
+          font-style: normal;
+          font-weight: 600;
+          line-height: 28px;
+          text-transform: none;
+          margin: 0;
+        }
+        .benefit-list {
+          display: flex;
+          flex-direction: column;
+          gap: 8px;
+          padding: 0;
+          margin: 16px 0 40px 0;
+          .benefit-item {
+            padding: 10px 16px;
+            background-color: #351c4f;
+            border-radius: 80px;
+            display: flex;
+            gap: 16px;
+            align-items: center;
+width: 100%;            .index {
+              position: relative;
+              span {
+                width: 28px;
+                height: 28px;
+                color: #fff;
+                background-color: #e4007b;
+                border-radius: 50%;
+                display: inline-block;
+                text-align: center;
+                line-height: 28px;
+                position: relative;
+                z-index: 1;
+              }
+              .border-index {
+                position: absolute;
+                z-index: 0;
+                content: "";
+                background-color: #502f70;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                border-radius: 50%;
+                animation: scaleCircle infinite 3s alternate;
+              }
+            }
+            .text {
+              color: #90829d;
+              font-family: Poppins;
+              font-size: 16px;
+              font-style: normal;
+              font-weight: 500;
+              line-height: 26px;
+              text-transform: none;
+            }
+          }
+        }
+        .button-wrapper {
+          display: flex;
+         flex-direction: column;
+         gap:8px;
+          button{
+            &:active {
+              transform: translateY(5px) !important;
+            }
+            &:hover {
+              transform: translateY(0);
+            }
+            &:focus {
+              transform: translateY(0);
+            }
+          }
+          .share {
+            padding: 9px 24px;
+            border-radius: 8px;
+            background: linear-gradient(85deg, #e4007b 2.68%, #4ccbc9 100%);
+            color: #fff;
+            font-family: Poppins;
+            font-size: 18px;
+            font-style: normal;
+            font-weight: 700;
+            line-height: 30px;
+          }
+          .stake {
+            padding: 9px 24px;
+            border-radius: 8px;
+            background: linear-gradient(
+              111deg,
+              #95008e 6.93%,
+              #3d94fa 51.18%,
+              #04d8ff 115.93%
+            );
+            color: #fff;
+            font-family: Poppins;
+            font-size: 18px;
+            font-style: normal;
+            font-weight: 700;
+            line-height: 30px;
+          }
+        }
+      }
+    }
+  }
+
   .astar-page-container-wrapper {
     // position: relative;
     .astar-page-bg-1 {
@@ -2284,7 +2610,7 @@ line-height: 22px;
                   color: #280748;
                   text-transform: capitalize;
                   border-radius: 8px;
-                  &.disabled{
+                  &.disabled {
                     background-color: #7fa1a1;
                     color: #3d3544;
                   }

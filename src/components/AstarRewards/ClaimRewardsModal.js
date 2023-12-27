@@ -125,14 +125,13 @@ export default function ClaimRewardsModal({
     return formattedDate;
   }
   function formatNumber(number) {
-    if (number === 0) {
+
+    const str=number.toLocaleString().substr(0, number.toLocaleString().indexOf(".")+3);
+    if (number == Number(str)) {
       return number;
     } else {
-      const formattedNumber = (+number).toLocaleString("en-US", {
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2,
-      });
-      return formattedNumber;
+      return str
+
     }
   }
 
