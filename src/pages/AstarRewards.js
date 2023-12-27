@@ -249,7 +249,7 @@ export default function AstarRewards() {
         <div className="astar-page-container">
           <div className="astar-page-header">
             <p className="first" onClick={()=>{
-              openNewTab("https://twitter.com/intent/tweet?url=https%3A%2F%2Fmoonfit-token-sale.web.app%2F&text=MoonFit&hashtags=clock%2Cbooks%2Csun")
+              openNewTab("https://twitter.com/intent/tweet?url=https%3A%2F%2Fmoonfit-token-sale.web.app%2F&text=MoonFit&hashtags=MoonFit")
             }}>Astar Dapp Staking</p>
             <p className="second">MoonFit Dashboard</p>
           </div>
