@@ -72,17 +72,8 @@ export default function AstarRewards() {
     );
 
     if (signatureDataLocal !== null) {
-      const testWallet = getLocalStorage("TEST_WALLET");
-      getStakeInfo({
-        ...signatureDataLocal.signature,
-        wallet_address: testWallet,
-      });
-      console.log("here1");
-
-      // getStakeInfo(fakeData);
+      getStakeInfo(signatureDataLocal.signature);
     } else {
-      console.log("here2");
-
       getMoonFitTotalStake();
     }
   }, []);
@@ -216,8 +207,6 @@ export default function AstarRewards() {
     setIsOpenClaimRewardsModal(false);
   };
 
-
-
   // value to display subtratewallet
   const isDisplayedSubstrateWallet = substrateWallet?.length > 0;
 
@@ -248,9 +237,16 @@ export default function AstarRewards() {
         </div>
         <div className="astar-page-container">
           <div className="astar-page-header">
-            <p className="first" onClick={()=>{
-              openNewTab("https://twitter.com/intent/tweet?url=https%3A%2F%2Fmoonfit-token-sale.web.app%2F&text=MoonFit&hashtags=MoonFit")
-            }}>Astar Dapp Staking</p>
+            <p
+              className="first"
+              // onClick={() => {
+              //   openNewTab(
+              //     "https://twitter.com/intent/tweet?url=https%3A%2F%2Fmoonfit-token-sale.web.app%2F&text=MoonFit&hashtags=MoonFit"
+              //   );
+              // }}
+            >
+              Astar Dapp Staking
+            </p>
             <p className="second">MoonFit Dashboard</p>
           </div>
           <div className="astar-page-section-1">

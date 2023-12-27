@@ -195,7 +195,6 @@ export default function ClaimRewardsModal({
 
   // function to claim staking
   const handleClaim = async () => {
-    const testWallet = getLocalStorage("TEST_WALLET");
 
     if (isClaimable) {
       const newPendingArr = pendingRound;
@@ -209,29 +208,24 @@ export default function ClaimRewardsModal({
       const value = {
         ...signatureData,
         rounds: selectedRound,
-        wallet_address: testWallet,
       };
       try {
         const res = await claimStakingAPI(value);
-        console.log("res", res);
         const { data, success } = res;
         if (success) {
           if (data?.message === "Get Staking Info successfully") {
-            console.log("before send");
             const sendData = {
               ...data?.data?.transaction?.transaction,
               from: signatureData.wallet_address,
             };
             await switchToNetwork(provider, data?.data?.transaction?.chainId);
             const txHash = await sendTransaction(provider, connector, sendData);
-            console.log("txHash", txHash);
 
             const valueForUpdate = {
               transaction_id: data?.data?.wallet_transaction_id,
               transaction_hash: txHash,
             };
             const updateData = await updateTransactionAPI(valueForUpdate);
-            console.log("update", updateData);
             const newClaimedArr = claimedRound.concat(cacheSelectedRound);
             setClaimedRound(newClaimedArr);
             await checkPending(signatureData);
