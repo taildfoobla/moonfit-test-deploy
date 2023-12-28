@@ -1,9 +1,9 @@
 import React from "react";
 import { Modal } from "antd";
-import RewardsImg from "../../assets/images/astar-rewards/share-rewards-img.png";
-import CloseBorder from "../../assets/images/astar-rewards/close-border.png";
-import CloseNoBorder from "../../assets/images/astar-rewards/close-no-border.png";
-import Rewards from "../../assets/images/astar-rewards/share-rewards.png";
+import { RewardsImg } from "../../constants/astar-img";
+import { CloseBtn as CloseBorder } from "../../constants/astar-img";
+import { CloseNoBorder } from "../../constants/astar-img";
+import { Rewards } from "../../constants/astar-img";
 
 export default function ShareRewardsModal({ isOpen, onClose }) {
   return (

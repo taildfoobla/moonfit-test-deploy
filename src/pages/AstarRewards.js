@@ -1,26 +1,26 @@
 import React, { useContext, useEffect, useState } from "react";
-import BannerBg from "../assets/images/astar-rewards/stake-banner-bg.png";
-import BenefitBg from "../assets/images/astar-rewards/stake-benefit-bg.png";
-import CheckPurple from "../assets/images/astar-rewards/check-purple.png";
+import {BannerBg} from "../constants/astar-img";
+import {BenefitBg} from "../constants/astar-img";
+import {CheckPurple} from "../constants/astar-img";
 import { Accordion } from "flowbite-react";
-import AstarFooterBg from "../assets/images/astar-rewards/astar-footer-bg.png";
-import AstarFooterImg from "../assets/images/astar-rewards/astar-footer-img.png";
-import AstarBg1 from "../assets/images/astar-rewards/astar-bg-1.png";
-import AstarBg2 from "../assets/images/astar-rewards/astar-bg-2.png";
+import {AstarFooterBg} from "../constants/astar-img";
+import {AstarFooterImg} from "../constants/astar-img";
+import { AstarBg1 } from "../constants/astar-img";
+import {AstarBg2} from "../constants/astar-img";
 import ClaimRewardsModal from "../components/AstarRewards/ClaimRewardsModal";
-import AstarBgMobile1 from "../assets/images/astar-rewards/astar-bg-mobile-1.png";
-import BannerBgMobile from "../assets/images/astar-rewards/stake-info-bg-mobile.png";
-import AstarFooterImgMobile from "../assets/images/astar-rewards/astar-footer-img-mobile.png";
-import AstarFooterBgMobile from "../assets/images/astar-rewards/astar-footer-bg-mobile.png";
+import {AstarBgMobile1} from "../constants/astar-img";
+import {BannerBgMobile} from "../constants/astar-img";
+import {AstarFooterImgMobile} from "../constants/astar-img";
+import {AstarFooterBgMobile} from "../constants/astar-img";
 import { getShortAddress } from "../utils/blockchain";
 // import AnimatedNumbers from "react-animated-numbers";
-import NotConnectBg from "../assets/images/astar-rewards/not-connect-bg.png";
+import {NotConnectBg} from "../constants/astar-img";
 import WalletAuthContext from "../contexts/WalletAuthContext";
 import {
   getMoonFitTotalStakeAPI,
   getStakeInfoAPI,
 } from "../services/astar-rewards";
-import InfoIcon from "../assets/images/astar-rewards/Info-color-white.png";
+import {InfoIcon} from "../constants/astar-img";
 import { Tooltip } from "antd";
 import LoadingOutlined from "../components/shared/LoadingOutlined";
 import { LOCALSTORAGE_KEY, getLocalStorage } from "../utils/storage";
@@ -259,7 +259,7 @@ export default function AstarRewards() {
               //   );
               // }}
             >
-              Astar Dapp Staking
+              Astar dApp Staking
             </p>
             <p className="second">MoonFit Dashboard</p>
           </div>
@@ -448,7 +448,7 @@ export default function AstarRewards() {
                     <p className="stake-banner-item-next">
                       Next Reward Distribution:{" "}
                       <span className="stake-banner-item-next-time">
-                        {nextTime}
+                      Dec 28<sup style={{textTransform:"none"}}>th</sup> 2023
                       </span>
                     </p>
                   </div>
@@ -534,7 +534,7 @@ export default function AstarRewards() {
           <div className="astar-page-container">
             <div className="astar-page-section-2">
               <h3 className="astar-page-section-2-header">
-                How to stake for MoonFit at Astar Dapp Staking?
+                How to stake for MoonFit at Astar dApp Staking?
               </h3>
               <div className="astar-guide-list">
                 <div className="astar-guide-item step-1">
@@ -549,7 +549,7 @@ export default function AstarRewards() {
                         );
                       }}
                     >
-                      Astar portal
+                      Astar Portal
                     </span>{" "}
                     and then connect your wallet{" "}
                     <span className="change-color">
@@ -688,7 +688,7 @@ export default function AstarRewards() {
                       MoonFit x Astar Network Integration marked our very first
                       cross-chain activities. This is not only a milestone for
                       NFT integration between Moonbeam and Astar but also a step
-                      towards enabling NFT Dapps on Polkadot to work seamlessly
+                      towards enabling NFT dApps on Polkadot to work seamlessly
                       across parachains.
                     </p>
                   </Accordion.Content>
@@ -697,7 +697,7 @@ export default function AstarRewards() {
               <Accordion>
                 <Accordion.Panel>
                   <Accordion.Title>
-                    Why should you stake for MoonFit at Astar Dapp Staking?
+                    Why should you stake for MoonFit at Astar dApp Staking?
                   </Accordion.Title>
                   <Accordion.Content>
                     <div className="info-list">
@@ -726,7 +726,7 @@ export default function AstarRewards() {
                               Attractive APY:
                             </span>{" "}
                             Stake any amount of ASTR to receive a monthly 20%
-                            share of MoonFit Astar Dapp Staking rewards, enjoy
+                            share of MoonFit Astar dApp Staking rewards, enjoy
                             an impressive APY of approximately 11.2%.
                           </p>
                         </div>
@@ -758,7 +758,7 @@ export default function AstarRewards() {
                   <Accordion.Content>
                     <p className="qa-content">
                       ASTR rewards earned through staking for MoonFit at Astar
-                      Dapp Staking will be distributed on a monthly basis. Stay
+                      dApp Staking will be distributed on a monthly basis. Stay
                       informed by following MoonFit's official social channels
                       to receive timely updates on the official reward
                       distribution announcements. Your commitment to staking
@@ -790,11 +790,11 @@ export default function AstarRewards() {
               <Accordion>
                 <Accordion.Panel>
                   <Accordion.Title className="a">
-                    Where can I learn more about Astar Dapp Staking?{" "}
+                    Where can I learn more about Astar dApp Staking?{" "}
                   </Accordion.Title>
                   <Accordion.Content>
                     <p className="qa-content">
-                      For in-depth insights into Astar Dapp Staking, explore the
+                      For in-depth insights into Astar dApp Staking, explore the
                       official{" "}
                       <span
                         className="change-color change-underline"
