@@ -24,16 +24,18 @@ import InfoIcon from "../assets/images/astar-rewards/Info-color-white.png";
 import { Tooltip } from "antd";
 import LoadingOutlined from "../components/shared/LoadingOutlined";
 import { LOCALSTORAGE_KEY, getLocalStorage } from "../utils/storage";
+import ShareRewardsModal from "../components/AstarRewards/ShareRewardsModal";
 
 export default function AstarRewards() {
   const [isFetchingNoWallet, setIsFetchingNoWallet] = useState(true);
   const [isFetchingHaveWallet, setIsFetchingHaveWallet] = useState(true);
   const [isOpenClaimRewardsModal, setIsOpenClaimRewardsModal] = useState(false);
+  const [isOpenShareRewardsModal,setIsOpenShareRewardsModal] = useState(true);
   const [substrateWallet, setSubstrateWallet] = useState([]);
   const [moonfitTotalStake, setMoonfitTotalStake] = useState(0);
   const [totalStake, setTotalStake] = useState(0);
   const [claimable, setClaimable] = useState(0);
-  const [nextTime, setNextTime] = useState("31/12/2023");
+  const [nextTime, setNextTime] = useState("Dec 28st 2023");
   const [rewardList, setRewardList] = useState([]);
 
   const {
@@ -97,14 +99,13 @@ export default function AstarRewards() {
 
   // function to format number
   function formatNumber(number) {
-    const formattedNumber = (+number).toLocaleString("en-US", {
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2,
-    });
-    if (number == Number(formattedNumber)) {
+
+    const str=number.toLocaleString().substr(0, number.toLocaleString().indexOf(".")+3);
+    if (number == Number(str)) {
       return number;
     } else {
-      return formattedNumber;
+      return str
+
     }
   }
 
@@ -207,6 +208,14 @@ export default function AstarRewards() {
     setIsOpenClaimRewardsModal(false);
   };
 
+  const handleOpenShareRewardsModal=()=>{
+    setIsOpenShareRewardsModal(true)
+  }
+
+  const handleCloseShareRewardsModal = () => {
+    setIsOpenShareRewardsModal(false)
+  }
+
   // value to display subtratewallet
   const isDisplayedSubstrateWallet = substrateWallet?.length > 0;
 
@@ -226,6 +235,10 @@ export default function AstarRewards() {
         setRewardInfo={changeInfoAfterCheck}
         setIsFetchingHaveWallet={setIsFetchingHaveWallet}
       />
+      <ShareRewardsModal
+       isOpen={isOpenShareRewardsModal}
+       onClose={handleCloseShareRewardsModal}
+      />
       {/* <ClaimRewardsModalMobile
        isOpen={isOpenClaimRewardsModal}
        onClose={handleCloseClaimRewardsModal}
@@ -239,11 +252,11 @@ export default function AstarRewards() {
           <div className="astar-page-header">
             <p
               className="first"
-              // onClick={() => {
-              //   openNewTab(
-              //     "https://twitter.com/intent/tweet?url=https%3A%2F%2Fmoonfit-token-sale.web.app%2F&text=MoonFit&hashtags=MoonFit"
-              //   );
-              // }}
+              onClick={() => {
+                openNewTab(
+                  "https://twitter.com/intent/tweet?url=https%3A%2F%2Fmoonfit-token-sale.web.app%2F&text=MoonFit&hashtags=MoonFit"
+                );
+              }}
             >
               Astar Dapp Staking
             </p>
