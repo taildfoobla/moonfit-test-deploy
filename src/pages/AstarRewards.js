@@ -90,12 +90,12 @@ export default function AstarRewards() {
 
   // useEffect for open rewards modal
   useEffect(() => {
-    if (isOpenClaimRewardsModal) {
+    if (isOpenClaimRewardsModal||isOpenShareRewardsModal) {
       document.body.style.overflow = "hidden";
     } else {
       document.body.style.overflow = "auto";
     }
-  }, [isOpenClaimRewardsModal]);
+  }, [isOpenClaimRewardsModal,isOpenShareRewardsModal]);
 
   // function to format number
   function formatNumber(number) {
