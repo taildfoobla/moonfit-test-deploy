@@ -30,7 +30,7 @@ export default function AstarRewards() {
   const [isFetchingNoWallet, setIsFetchingNoWallet] = useState(true);
   const [isFetchingHaveWallet, setIsFetchingHaveWallet] = useState(true);
   const [isOpenClaimRewardsModal, setIsOpenClaimRewardsModal] = useState(false);
-  const [isOpenShareRewardsModal,setIsOpenShareRewardsModal] = useState(true);
+  const [isOpenShareRewardsModal,setIsOpenShareRewardsModal] = useState(false);
   const [substrateWallet, setSubstrateWallet] = useState([]);
   const [moonfitTotalStake, setMoonfitTotalStake] = useState(0);
   const [totalStake, setTotalStake] = useState(0);
