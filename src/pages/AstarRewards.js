@@ -1,36 +1,36 @@
 import React, { useContext, useEffect, useState } from "react";
-import {BannerBg} from "../constants/astar-img";
-import {BenefitBg} from "../constants/astar-img";
-import {CheckPurple} from "../constants/astar-img";
 import { Accordion } from "flowbite-react";
-import {AstarFooterBg} from "../constants/astar-img";
-import {AstarFooterImg} from "../constants/astar-img";
+import { BannerBg } from "../constants/astar-img";
+import { BenefitBg } from "../constants/astar-img";
+import { CheckPurple } from "../constants/astar-img";
+import { AstarFooterBg } from "../constants/astar-img";
+import { AstarFooterImg } from "../constants/astar-img";
 import { AstarBg1 } from "../constants/astar-img";
-import {AstarBg2} from "../constants/astar-img";
-import ClaimRewardsModal from "../components/AstarRewards/ClaimRewardsModal";
-import {AstarBgMobile1} from "../constants/astar-img";
-import {BannerBgMobile} from "../constants/astar-img";
-import {AstarFooterImgMobile} from "../constants/astar-img";
-import {AstarFooterBgMobile} from "../constants/astar-img";
+import { AstarBg2 } from "../constants/astar-img";
+import { AstarBgMobile1 } from "../constants/astar-img";
+import { BannerBgMobile } from "../constants/astar-img";
+import { InfoIcon } from "../constants/astar-img";
+import { NotConnectBg } from "../constants/astar-img";
+import { AstarFooterImgMobile } from "../constants/astar-img";
+import { AstarFooterBgMobile } from "../constants/astar-img";
 import { getShortAddress } from "../utils/blockchain";
 // import AnimatedNumbers from "react-animated-numbers";
-import {NotConnectBg} from "../constants/astar-img";
 import WalletAuthContext from "../contexts/WalletAuthContext";
 import {
   getMoonFitTotalStakeAPI,
   getStakeInfoAPI,
 } from "../services/astar-rewards";
-import {InfoIcon} from "../constants/astar-img";
 import { Tooltip } from "antd";
 import LoadingOutlined from "../components/shared/LoadingOutlined";
 import { LOCALSTORAGE_KEY, getLocalStorage } from "../utils/storage";
 import ShareRewardsModal from "../components/AstarRewards/ShareRewardsModal";
+import ClaimRewardsModal from "../components/AstarRewards/ClaimRewardsModal";
 
 export default function AstarRewards() {
   const [isFetchingNoWallet, setIsFetchingNoWallet] = useState(true);
   const [isFetchingHaveWallet, setIsFetchingHaveWallet] = useState(true);
   const [isOpenClaimRewardsModal, setIsOpenClaimRewardsModal] = useState(false);
-  const [isOpenShareRewardsModal,setIsOpenShareRewardsModal] = useState(false);
+  const [isOpenShareRewardsModal, setIsOpenShareRewardsModal] = useState(false);
   const [substrateWallet, setSubstrateWallet] = useState([]);
   const [moonfitTotalStake, setMoonfitTotalStake] = useState(0);
   const [totalStake, setTotalStake] = useState(0);
@@ -90,22 +90,22 @@ export default function AstarRewards() {
 
   // useEffect for open rewards modal
   useEffect(() => {
-    if (isOpenClaimRewardsModal||isOpenShareRewardsModal) {
+    if (isOpenClaimRewardsModal || isOpenShareRewardsModal) {
       document.body.style.overflow = "hidden";
     } else {
       document.body.style.overflow = "auto";
     }
-  }, [isOpenClaimRewardsModal,isOpenShareRewardsModal]);
+  }, [isOpenClaimRewardsModal, isOpenShareRewardsModal]);
 
   // function to format number
   function formatNumber(number) {
-
-    const str=number.toLocaleString("en-US").substr(0, number.toLocaleString("en-US").indexOf(".")+3);
+    const str = number
+      .toLocaleString("en-US")
+      .substr(0, number.toLocaleString("en-US").indexOf(".") + 3);
     if (number == Number(str)) {
       return number;
     } else {
-      return str
-
+      return str;
     }
   }
 
@@ -208,13 +208,13 @@ export default function AstarRewards() {
     setIsOpenClaimRewardsModal(false);
   };
 
-  const handleOpenShareRewardsModal=()=>{
-    setIsOpenShareRewardsModal(true)
-  }
+  const handleOpenShareRewardsModal = () => {
+    setIsOpenShareRewardsModal(true);
+  };
 
   const handleCloseShareRewardsModal = () => {
-    setIsOpenShareRewardsModal(false)
-  }
+    setIsOpenShareRewardsModal(false);
+  };
 
   // value to display subtratewallet
   const isDisplayedSubstrateWallet = substrateWallet?.length > 0;
@@ -237,8 +237,8 @@ export default function AstarRewards() {
         onOpenShareRewardsModal={handleOpenShareRewardsModal}
       />
       <ShareRewardsModal
-       isOpen={isOpenShareRewardsModal}
-       onClose={handleCloseShareRewardsModal}
+        isOpen={isOpenShareRewardsModal}
+        onClose={handleCloseShareRewardsModal}
       />
       {/* <ClaimRewardsModalMobile
        isOpen={isOpenClaimRewardsModal}
@@ -448,7 +448,8 @@ export default function AstarRewards() {
                     <p className="stake-banner-item-next">
                       Next Reward Distribution:{" "}
                       <span className="stake-banner-item-next-time">
-                      Dec 28<sup style={{textTransform:"none"}}>th</sup> 2023
+                        Dec 28<sup style={{ textTransform: "none" }}>th</sup>{" "}
+                        2023
                       </span>
                     </p>
                   </div>
@@ -517,7 +518,9 @@ export default function AstarRewards() {
                           <div className="border-index"></div>
                         </div>
                         <p className="stake-benefit-item-content">
-                          <span className="change-color-1">Receive</span> future exclusive perks: $MFG tokens, NFTs, in-app reward boosts, badges, etc.
+                          <span className="change-color-1">Receive</span> future
+                          exclusive perks: $MFG tokens, NFTs, in-app reward
+                          boosts, badges, etc.
                         </p>
                       </li>
                     </ul>
