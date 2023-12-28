@@ -168,15 +168,20 @@ const WalletAuthWrapper = ({ children }) => {
                 console.log('Wallet extension is not installed')
                 return
             }
-            setProvider(provider)
-            await provider.request({ method: 'eth_requestAccounts' })
-            await switchNetwork(provider)
-            await retrieveCurrentWalletInfo(provider)
+           
             const web3 = new Web3(provider)
             const walletAccount = await web3.eth.getAccounts()
             const account = walletAccount[0]
             await handleLogin(provider, account)
-
+   
+             setProvider(provider)
+           
+            await provider.request({ method: 'eth_requestAccounts' })
+      
+            await switchNetwork(provider)
+    
+            await retrieveCurrentWalletInfo(provider)
+           
             // Go to Mint Pass page
             // history.push(Paths.MintPassMinting.path)
         } catch (err) {
@@ -222,10 +227,12 @@ const WalletAuthWrapper = ({ children }) => {
     const hideConnectModal = () => setIsAuthModalVisible(false)
 
     const onWalletSelect = async (wallet) => {
+        console.log("connect")
         const providerName = wallet.extensionName
         const isInstalled = window[providerName] && window[providerName][wallet.isSetGlobalString]
 
         if (localStorage.getItem('_debug')) {
+     
             alert(JSON.stringify({
                 providerName: providerName,
                 isSetGlobalString: wallet.isSetGlobalString,
@@ -235,6 +242,7 @@ const WalletAuthWrapper = ({ children }) => {
         }
 
         if (isMobileOrTablet() && !isMetaMaskBrowser) {
+          
             if (providerName === "SubWallet") {
                 deepLink = `subwallet://browser?url=${window.location.host}`
             }
@@ -247,11 +255,15 @@ const WalletAuthWrapper = ({ children }) => {
         }
 
         if (!isInstalled) {
+          
             return window.open(wallet.installUrl)
         }
+ 
 
         setWalletExtKey(providerName)
+        
         await onConnect(providerName)
+        console.log("here5")
         hideConnectModal()
         return true
     }
@@ -443,7 +455,7 @@ const WalletAuthWrapper = ({ children }) => {
                     }
                 </div>
             </Modal>
-            <Modal title="Unauthorized Wallet"
+            {/* <Modal title="Unauthorized Wallet"
                    open={isModalVisible}
                 closeIcon={(
                     <svg className={'cursor-pointer'} width="32" height="32" viewBox="0 0 32 32" fill="none"
@@ -481,7 +493,7 @@ const WalletAuthWrapper = ({ children }) => {
                     Your current wallet is not authorized to connect to MoonFit WebApp. Do you want to authorize this
                     wallet now?
                 </div>
-            </Modal>
+            </Modal> */}
         </WalletAuthContext.Provider>
     )
 }
