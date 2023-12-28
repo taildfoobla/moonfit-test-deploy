@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
-import AstarRewards from "../../assets/images/astar-rewards/astar-reward.png";
-import CloseBtn from "../../assets/images/astar-rewards/close-border.png";
-import AmountInfo from "../../assets/images/astar-rewards/amount-info.png";
+import { AstarRewards } from "../../constants/astar-img";
+import { CloseBtn } from "../../constants/astar-img";
+import { AmountInfo } from "../../constants/astar-img";
 import { Tooltip } from "flowbite-react";
 import { claimStakingAPI, getStakeInfoAPI } from "../../services/astar-rewards";
 import { sendTransaction } from "../../utils/blockchain";

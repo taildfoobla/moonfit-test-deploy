@@ -1,26 +1,26 @@
 import React, { useContext, useEffect, useState } from "react";
-import BannerBg from "../assets/images/astar-rewards/stake-banner-bg.png";
-import BenefitBg from "../assets/images/astar-rewards/stake-benefit-bg.png";
-import CheckPurple from "../assets/images/astar-rewards/check-purple.png";
+import {BannerBg} from "../constants/astar-img";
+import {BenefitBg} from "../constants/astar-img";
+import {CheckPurple} from "../constants/astar-img";
 import { Accordion } from "flowbite-react";
-import AstarFooterBg from "../assets/images/astar-rewards/astar-footer-bg.png";
-import AstarFooterImg from "../assets/images/astar-rewards/astar-footer-img.png";
-import AstarBg1 from "../assets/images/astar-rewards/astar-bg-1.png";
-import AstarBg2 from "../assets/images/astar-rewards/astar-bg-2.png";
+import {AstarFooterBg} from "../constants/astar-img";
+import {AstarFooterImg} from "../constants/astar-img";
+import { AstarBg1 } from "../constants/astar-img";
+import {AstarBg2} from "../constants/astar-img";
 import ClaimRewardsModal from "../components/AstarRewards/ClaimRewardsModal";
-import AstarBgMobile1 from "../assets/images/astar-rewards/astar-bg-mobile-1.png";
-import BannerBgMobile from "../assets/images/astar-rewards/stake-info-bg-mobile.png";
-import AstarFooterImgMobile from "../assets/images/astar-rewards/astar-footer-img-mobile.png";
-import AstarFooterBgMobile from "../assets/images/astar-rewards/astar-footer-bg-mobile.png";
+import {AstarBgMobile1} from "../constants/astar-img";
+import {BannerBgMobile} from "../constants/astar-img";
+import {AstarFooterImgMobile} from "../constants/astar-img";
+import {AstarFooterBgMobile} from "../constants/astar-img";
 import { getShortAddress } from "../utils/blockchain";
 // import AnimatedNumbers from "react-animated-numbers";
-import NotConnectBg from "../assets/images/astar-rewards/not-connect-bg.png";
+import {NotConnectBg} from "../constants/astar-img";
 import WalletAuthContext from "../contexts/WalletAuthContext";
 import {
   getMoonFitTotalStakeAPI,
   getStakeInfoAPI,
 } from "../services/astar-rewards";
-import InfoIcon from "../assets/images/astar-rewards/Info-color-white.png";
+import {InfoIcon} from "../constants/astar-img";
 import { Tooltip } from "antd";
 import LoadingOutlined from "../components/shared/LoadingOutlined";
 import { LOCALSTORAGE_KEY, getLocalStorage } from "../utils/storage";
@@ -448,7 +448,7 @@ export default function AstarRewards() {
                     <p className="stake-banner-item-next">
                       Next Reward Distribution:{" "}
                       <span className="stake-banner-item-next-time">
-                      Dec 28 <sup style={{textTransform:"none"}}>th</sup> 2023
+                      Dec 28<sup style={{textTransform:"none"}}>th</sup> 2023
                       </span>
                     </p>
                   </div>
@@ -775,7 +775,7 @@ export default function AstarRewards() {
                   </Accordion.Title>
                   <Accordion.Content>
                     <p className="qa-content">
-                      To claim your staking rewards from MoonFit at Astar Dapp
+                      To claim your staking rewards from MoonFit at Astar dApp
                       Staking, simply return to this platform and connect your
                       wallet. Once connected, you'll have access to detailed
                       information, including your staking amount and the ASTR
