@@ -218,6 +218,7 @@ export default function ClaimRewardsModal({
               ...data?.data?.transaction?.transaction,
               from: signatureData.wallet_address,
             };
+            delete sendData.gas
             await switchToNetwork(provider, data?.data?.transaction?.chainId);
             const txHash = await sendTransaction(provider, connector, sendData);
 
