@@ -1,20 +1,21 @@
 @charset "UTF-8";
 
 @font-face {
-	font-family: 'Poppins';
-	src: url('Poppins-Regular.ttf') format('truetype');
-	font-style: normal;
+  font-family: "Poppins";
+  src: url("https://prod-cdn.moonfit.xyz/image/original/assets/fonts/poppins/Poppins-Regular1.ttf")
+    format("truetype");
+  font-style: normal;
 }
 
-@font-face{
-	font-family: "Poppins";
-	src: url('Poppins-Bold.ttf') format('truetype');
-	font-style: bold;
-	font-weight: 700;
+@font-face {
+  font-family: "Poppins";
+  src: url("https://prod-cdn.moonfit.xyz/image/original/assets/fonts/poppins/Poppins-Bold.ttf") format("truetype");
+  font-style: bold;
+  font-weight: 700;
 }
 
-@font-face{
-	font-family: "Poppins";
-	src: url('Poppins-SemiBold.ttf') format(truetype);
-	font-weight: 600;
+@font-face {
+  font-family: "Poppins";
+  src: url("https://prod-cdn.moonfit.xyz/image/original/assets/fonts/poppins/Poppins-SemiBold.ttf") format(truetype);
+  font-weight: 600;
 }
