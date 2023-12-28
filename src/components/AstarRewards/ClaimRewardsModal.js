@@ -281,7 +281,7 @@ export default function ClaimRewardsModal({
                 <p>Amount</p>
                 <Tooltip
                   className="amount-tooltip"
-                  content="The ASTR amount is determined by your staking contribution to MoonFit at Astar Dapp Staking"
+                  content="The ASTR amount is determined by your staking contribution to MoonFit at Astar dApp Staking"
                 >
                   <img src={AmountInfo} alt="" />
                 </Tooltip>
@@ -380,7 +380,7 @@ export default function ClaimRewardsModal({
                       Amount{" "}
                       <Tooltip
                         className="amount-tooltip"
-                        content="The ASTR amount is determined by your staking contribution to MoonFit at Astar Dapp Staking"
+                        content="The ASTR amount is determined by your staking contribution to MoonFit at Astar dApp Staking"
                       >
                         <img src={AmountInfo} alt="" />
                       </Tooltip>
