@@ -775,7 +775,7 @@ export default function AstarRewards() {
                   </Accordion.Title>
                   <Accordion.Content>
                     <p className="qa-content">
-                      To claim your staking rewards from MoonFit at Astar Dapp
+                      To claim your staking rewards from MoonFit at Astar dApp
                       Staking, simply return to this platform and connect your
                       wallet. Once connected, you'll have access to detailed
                       information, including your staking amount and the ASTR
