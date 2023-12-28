@@ -100,7 +100,7 @@ export default function AstarRewards() {
   // function to format number
   function formatNumber(number) {
 
-    const str=number.toLocaleString().substr(0, number.toLocaleString().indexOf(".")+3);
+    const str=number.toLocaleString("en-US").substr(0, number.toLocaleString("en-US").indexOf(".")+3);
     if (number == Number(str)) {
       return number;
     } else {
@@ -234,6 +234,7 @@ export default function AstarRewards() {
         reCallData={reCallData}
         setRewardInfo={changeInfoAfterCheck}
         setIsFetchingHaveWallet={setIsFetchingHaveWallet}
+        onOpenShareRewardsModal={handleOpenShareRewardsModal}
       />
       <ShareRewardsModal
        isOpen={isOpenShareRewardsModal}
@@ -252,11 +253,11 @@ export default function AstarRewards() {
           <div className="astar-page-header">
             <p
               className="first"
-              onClick={() => {
-                openNewTab(
-                  "https://twitter.com/intent/tweet?url=https%3A%2F%2Fmoonfit-token-sale.web.app%2F&text=MoonFit&hashtags=MoonFit"
-                );
-              }}
+              // onClick={() => {
+              //   openNewTab(
+              //     "https://twitter.com/intent/tweet?url=https%3A%2F%2Fmoonfit-token-sale.web.app%2F&text=MoonFit&hashtags=MoonFit"
+              //   );
+              // }}
             >
               Astar Dapp Staking
             </p>
@@ -516,9 +517,7 @@ export default function AstarRewards() {
                           <div className="border-index"></div>
                         </div>
                         <p className="stake-benefit-item-content">
-                          <span className="change-color-1">Receive</span> future
-                          exclusive perks: $MFG tokens, NFTs, in-app reward
-                          boosts, badges,…
+                          <span className="change-color-1">Receive</span> future exclusive perks: $MFG tokens, NFTs, in-app reward boosts, badges, etc.
                         </p>
                       </li>
                     </ul>

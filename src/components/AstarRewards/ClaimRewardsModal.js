@@ -18,7 +18,8 @@ export default function ClaimRewardsModal({
   connector,
   reCallData,
   setRewardInfo,
-  setIsFetchingHaveWallet
+  setIsFetchingHaveWallet,
+  onOpenShareRewardsModal
 }) {
   const fakeData = {
     message: "MoonFit:0xaC26C8296D823561EB2C9fb8167D8936761694B0:1703144154494",
@@ -126,7 +127,7 @@ export default function ClaimRewardsModal({
   }
   function formatNumber(number) {
 
-    const str=number.toLocaleString().substr(0, number.toLocaleString().indexOf(".")+3);
+    const str=number.toLocaleString("en-US").substr(0, number.toLocaleString("en-US").indexOf(".")+3);
     if (number == Number(str)) {
       return number;
     } else {
@@ -227,6 +228,7 @@ export default function ClaimRewardsModal({
             const updateData = await updateTransactionAPI(valueForUpdate);
             const newClaimedArr = claimedRound.concat(cacheSelectedRound);
             setClaimedRound(newClaimedArr);
+            onOpenShareRewardsModal()
             await checkPending(signatureData);
           }
         }
