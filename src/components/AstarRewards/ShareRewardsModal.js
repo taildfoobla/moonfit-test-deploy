@@ -50,7 +50,7 @@ export default function ShareRewardsModal({ isOpen, onClose }) {
       </ul>
       <div className="button-wrapper">
         <button className="share" onClick={()=>{
-          window.open("https://twitter.com/intent/tweet?text=Super%20excited%20to%20get%20a%20shared%20reward%20pool%20of%203%2C579%20%24ASTR%20from%20%40MoonFitOfficial%20through%20%40AstarNetwork%20Dapp%20Staking.%20%0A%0A%F0%9F%9A%80%20Boosted%2011.2%25%20APY%0A%F0%9F%8E%81%20Free%20MoonFit%20NFTs%0A%F0%9F%8C%88%20More%20exclusive%20perks%0A%0AStake%20now%3A%20https%3A%2F%2Fmoonfit-token-sale.web.app%0A%0A%23AstarNetwork%20%23MoonFit")
+          window.open("https://twitter.com/intent/tweet?text=Super%20excited%20to%20get%20a%20shared%20reward%20pool%20of%203%2C579%20%24ASTR%20from%20%40MoonFitOfficial%20through%20%40AstarNetwork%20Dapp%20Staking.%20%0A%0A%F0%9F%9A%80%20Boosted%2011.2%25%20APY%0A%F0%9F%8E%81%20Free%20MoonFit%20NFTs%0A%F0%9F%8C%88%20More%20exclusive%20perks%0A%0AStake%20now%3A%20https%3A%2F%2Fapp.moonfit.xyz%2F%0A%0A%23AstarNetwork%20%23MoonFit")
         }}>Share & Earn More ASTR</button>
         <button className="stake" onClick={()=>{
           window.open("https://portal.astar.network/astar/dapp-staking/dapp?dapp=0xe785a37c9d5f3377cbb5b8bf7e9db03ddd440449")
