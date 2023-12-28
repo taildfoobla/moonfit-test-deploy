@@ -65,7 +65,7 @@ export default function AstarRewards() {
     message: "MoonFit:0xaC26C8296D823561EB2C9fb8167D8936761694B0:1703144154494",
     signature:
       "0x10109db033037a541b0f257dc25361daa58edbaefdaa741d5280554d2bbd504f1363e20fa473bb3f5f0f1582d07e4f06760ef87096dfd84cfb7d43bb502f3b801b",
-    wallet_address: "0x1fc37012c190526b92a991398829abc8134a6694",
+    wallet_address: "0x3e5bbf4011ce3ea239af4d3341c0b5e7d2a6ec0a",
   };
   // useEffect for getting Stake data
   useEffect(() => {
@@ -75,6 +75,7 @@ export default function AstarRewards() {
 
     if (signatureDataLocal !== null) {
       getStakeInfo(signatureDataLocal.signature);
+      // getStakeInfo(fakeData)
     } else {
       getMoonFitTotalStake();
     }

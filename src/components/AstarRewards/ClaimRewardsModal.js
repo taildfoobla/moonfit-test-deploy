@@ -214,10 +214,11 @@ export default function ClaimRewardsModal({
         const { data, success } = res;
         if (success) {
           if (data?.message === "Get Staking Info successfully") {
-            const sendData = {
+            let sendData = {
               ...data?.data?.transaction?.transaction,
               from: signatureData.wallet_address,
             };
+            delete sendData.gas
             await switchToNetwork(provider, data?.data?.transaction?.chainId);
             const txHash = await sendTransaction(provider, connector, sendData);
 
