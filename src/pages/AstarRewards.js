@@ -39,11 +39,13 @@ export default function AstarRewards() {
   const [rewardList, setRewardList] = useState([]);
 
   const {
+    wallet,
     isConnected,
     showWalletSelectModal,
     signatureData,
     provider,
     connector,
+    onDisconnect
   } = useContext(WalletAuthContext);
 
   //useEffect for first time
@@ -72,11 +74,26 @@ export default function AstarRewards() {
     const signatureDataLocal = JSON.parse(
       getLocalStorage(LOCALSTORAGE_KEY.WALLET_SIGNATURE)
     );
+    const accountDataLocal =JSON.parse(getLocalStorage(LOCALSTORAGE_KEY.WALLET_ACCOUNT))
 
     if (signatureDataLocal !== null) {
-      getStakeInfo(signatureDataLocal.signature);
-      // getStakeInfo(fakeData)
-    } else {
+      const { account, signature  } = signatureDataLocal;
+      if (
+        account &&
+        signature?.message &&
+        signature?.signature &&
+        signature?.wallet_address
+      ){
+        getStakeInfo(signatureDataLocal.signature);
+
+      }else{
+        onDisconnect()
+      }
+    }else if(accountDataLocal!==null){
+      onDisconnect()
+      getMoonFitTotalStake();
+    } 
+    else {
       getMoonFitTotalStake();
     }
   }, []);
@@ -280,11 +297,11 @@ export default function AstarRewards() {
                         className="wallet-address"
                         onClick={() => {
                           openNewTab(
-                            `https://astar.subscan.io/account/${signatureData?.wallet_address}`
+                            `https://astar.subscan.io/account/${wallet?.account}`
                           );
                         }}
                       >
-                        {getShortAddress(signatureData?.wallet_address, 6)}
+                        {getShortAddress(wallet?.account, 6)}
                       </span>
                     </div>
                     {isDisplayedSubstrateWallet && (
