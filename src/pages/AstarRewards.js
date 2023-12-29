@@ -91,6 +91,7 @@ export default function AstarRewards() {
       }
     }else if(accountDataLocal!==null){
       onDisconnect()
+      getMoonFitTotalStake();
     } 
     else {
       getMoonFitTotalStake();
