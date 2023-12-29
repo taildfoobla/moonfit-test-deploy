@@ -74,6 +74,7 @@ export default function AstarRewards() {
     const signatureDataLocal = JSON.parse(
       getLocalStorage(LOCALSTORAGE_KEY.WALLET_SIGNATURE)
     );
+    const accountDataLocal =JSON.parse(getLocalStorage(LOCALSTORAGE_KEY.WALLET_ACCOUNT))
 
     if (signatureDataLocal !== null) {
       const { account, signature  } = signatureDataLocal;
@@ -88,8 +89,10 @@ export default function AstarRewards() {
       }else{
         onDisconnect()
       }
-    } else {
-      console.log("here2")
+    }else if(accountDataLocal!==null){
+      onDisconnect()
+    } 
+    else {
       getMoonFitTotalStake();
     }
   }, []);
