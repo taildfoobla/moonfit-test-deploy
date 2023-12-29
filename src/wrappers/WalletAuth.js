@@ -263,7 +263,6 @@ const WalletAuthWrapper = ({ children }) => {
         setWalletExtKey(providerName)
         
         await onConnect(providerName)
-        console.log("here5")
         hideConnectModal()
         return true
     }
