@@ -117,9 +117,15 @@ export default function AstarRewards() {
 
   // function to format number
   function formatNumber(number) {
-    const str = number
+    let str
+    if(number.toLocaleString("en-US").includes(".")){
+       str = number
       .toLocaleString("en-US")
       .substr(0, number.toLocaleString("en-US").indexOf(".") + 3);
+    }else{
+      str= number.toLocaleString("en-US")
+    }
+   
     if (number == Number(str)) {
       return number;
     } else {
