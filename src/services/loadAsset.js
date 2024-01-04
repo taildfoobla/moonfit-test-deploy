@@ -164,7 +164,7 @@ export const loadAsset = async (address) => {
         loadMintPass(address),
         loadNFT(moonBeamNetwork, moonBeamNetwork.MOON_BEAST_ADDRESS, address),
         loadNFT(astarNetwork, astarNetwork.MOON_BEAST_ADDRESS, address),
-        loadNFT(binanceNetwork, binanceNetwork.MOON_BEAST_ADDRESS, address),
+        // loadNFT(binanceNetwork, binanceNetwork.MOON_BEAST_ADDRESS, address),
     ])
 
     return {
@@ -172,7 +172,7 @@ export const loadAsset = async (address) => {
             ...mintPass,
             ...glmrMoonBeast,
             ...astarMoonBeast,
-            ...bnbMoonBeast,
+            // ...bnbMoonBeast,
         ].map(item => {
             return {
                 id: `${item.type}_${item.tokenId}`,
