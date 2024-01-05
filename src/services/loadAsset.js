@@ -74,7 +74,7 @@ const loadNFT = async (network, contractAddress, address, maxLength = 100) => {
             })
         }
 
-        const newData = Bluebird.map(data, async index => {
+        const newData = await Bluebird.map(data, async index => {
             const tokenId = await _tokenOfOwnerByIndex(address, index)
             const {name, imageUrl, attributes} = await getNFTInfo2('MoonBeast', _moonBeastContract.methods, tokenId)
 
