@@ -18,8 +18,9 @@ export const depositToMobileApp = async (provider, connector, params, callback) 
 
         return
     }
-
-    // transactionData.gas = String(transactionData.gas)
+    if(transactionData?.gas){
+        transactionData.gas = String(transactionData.gas)
+    }
 
     const txHash = await sendTransaction(provider, connector, transactionData).catch((e) => {
         success = false
