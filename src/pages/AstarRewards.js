@@ -472,8 +472,8 @@ export default function AstarRewards() {
                     <p className="stake-banner-item-next">
                       Next Reward Distribution:{" "}
                       <span className="stake-banner-item-next-time">
-                        Dec 28<sup style={{ textTransform: "none" }}>th</sup>{" "}
-                        2023
+                      Feb 1<sup style={{ textTransform: "none" }}>st</sup>{" "}
+                        2024
                       </span>
                     </p>
                   </div>
