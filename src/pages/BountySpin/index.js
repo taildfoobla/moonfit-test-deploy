@@ -297,7 +297,7 @@ const BountySpin = () => {
             </div>
             <BeastBackground />
             {/* <div className="lucky-wheel-header">Moonfit lucky wheel</div> */}
-            <LuckyWheelModal open={openModal} toggle={toggleModal} />
+            {/* <LuckyWheelModal open={openModal} toggle={toggleModal} /> */}
             <div className="container-1170">
                 {loadingFetch && loadingImage ? (
                     loadingIcon
