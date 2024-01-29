@@ -1,24 +1,73 @@
-import React from 'react'
-import {renderRoutes} from "react-router-config"
-import WebNavigation from "./components/shared/WebNavigation"
-import MoonFitAuthWrapper from "./wrappers/MoonFitAuth"
-import AppWrapper from "./wrappers/App"
-import WalletAuthWrapper from "./wrappers/WalletAuth"
+import React, { useEffect } from "react"
+import router from "./router"
+import { AuthProvider } from "./core/contexts/auth"
+import { TokenBalanceProvider } from "./core/contexts/token-balance"
+import AOS from "aos"
+import routerWithoutProvider from "./routerWithoutProvider"
+import {CyberApp} from "@cyberlab/cyber-app-sdk"
+import FirstShow from "./components/FirstShow"
+import ChooseAccountModal from "./components/ChooseAccount"
+import {useLocation} from "react-router-dom"
+import BodyBg from "./assets/images/planet.png"
+import {render} from "@testing-library/react"
+import GlobalContextProvider from "./core/contexts/global"
 
-const App = ({route}) => {
+function App() {
+    const location = useLocation()
+    useEffect(() => {
+        AOS.init({
+            once: true,
+            offset: 0
+        })
+    }, [])
+    useEffect(() => {
+        const bodyElement = document.body
+        if (location.pathname.includes("explore")||location.pathname.includes("lucky-wheel")) {
+            bodyElement.style.backgroundImage = "none"
+        } else {
+            bodyElement.style.backgroundImage=""
+        }
+    }, [location.pathname])
+
+    // const renderBodyBg = () => {
+    //     return (
+    //         <div className="body=bg">
+    //             <img src={BodyBg} alt="" />
+    //         </div>
+    //     )
+    // }
     return (
-        <AppWrapper>
-            <MoonFitAuthWrapper>
-                <WalletAuthWrapper>
-                    <div>
-                        <div className="section-effect-snow site-effect-snow" data-firefly-total="50" />
-                        <WebNavigation/>
-                        {renderRoutes(route.routes)}
-                    </div>
-                </WalletAuthWrapper>
-            </MoonFitAuthWrapper>
-        </AppWrapper>
+        <AuthProvider>
+            <GlobalContextProvider>
+            <FirstShow />
+            <ChooseAccountModal />
+            <ScrollTop>
+                <TokenBalanceProvider>{router}</TokenBalanceProvider>
+                <div>{routerWithoutProvider}</div>
+            </ScrollTop>
+            </GlobalContextProvider>
+        </AuthProvider>
     )
+}
+
+const ScrollTop = ({ children }) => {
+    const location = useLocation();
+    useEffect(() => {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+        const body = document.querySelector("body")
+        let timer = null
+        if (body && location.pathname.includes('summer-fitsnap-challenge')) {
+            timer = setTimeout(() => {
+                body.style.backgroundColor = "#f3d9b1"
+            }, 1000)
+        } else {
+            body.style.backgroundColor = "#020722"
+        }
+        return () => {
+            clearTimeout(timer)
+        }
+    }, [location]);
+    return children
 }
 
 export default App
