@@ -4,7 +4,6 @@ const {API_APP_URI} = COMMON_CONFIGS
 import { getLocalStorage,LOCALSTORAGE_KEY } from "../utils/helpers/storage"
 
 export const getWheelInfo = async ([chainId]) => {
-    console.log("inAPI")
     const accessToken = getLocalStorage(LOCALSTORAGE_KEY.ACCESS_TOKEN)
     const walletAddress=JSON.parse(getLocalStorage(LOCALSTORAGE_KEY.WALLET_SIGNATURE))?.account
     const config = {
@@ -17,6 +16,19 @@ export const getWheelInfo = async ([chainId]) => {
     return data
 //    }
     
+}
+
+export const checkTaskAPI=async([chainId])=>{
+    const accessToken = getLocalStorage(LOCALSTORAGE_KEY.ACCESS_TOKEN)
+    const walletAddress=JSON.parse(getLocalStorage(LOCALSTORAGE_KEY.WALLET_SIGNATURE))?.account
+    const config = {
+        headers: {
+            Authorization: `Bearer ${accessToken}`, // Set the access token in the Authorization header
+        },
+    }
+    const {data} = await ApiService.makeRequest.get(`missions/lucky-wheel-onchain/check-task-bounty-spin?chain_id=${chainId}&wallet_address=${walletAddress}`, config)
+    return data
+
 }
 
 export const spinOnChain = async ([value]) => {

@@ -1,7 +1,7 @@
 const SITE_MENU = [
     {title: "Home", url: "/"},
     {title:"Explore",url:"/explore"},
-    // {title: "Lucky Wheel", url: "/special-event/lucky-wheel"},
+    {title: "Lucky Wheel", url: "/special-event/lucky-wheel"},
  
 
     // {title: "Social Feed", url: "/social-feed", comingSoon:true},

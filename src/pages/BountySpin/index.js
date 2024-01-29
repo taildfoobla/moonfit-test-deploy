@@ -10,7 +10,7 @@ import LuckyWheelBg from "../../assets/images/bounty-spin/bg.png"
 import LuckyWheelBgMobile from "../../assets/images/lucky-wheel/lucky wheel-bg-mobile.png"
 import LuckyWheelHistoryIcon from "../../assets/images/lucky-wheel/lw-history-gift.png"
 import LuckyWheelHistoryModal from "../../components/LuckyWheelHistoryModal"
-import {getHisoryList} from "../../core/services/bounty-spin"
+import {checkTaskAPI, getHisoryList} from "../../core/services/bounty-spin"
 import Bg from "../../assets/images/bounty-spin/bg.png"
 import "./styles.less"
 import WinnerListMobile from "./components/WinnerListMobile"
@@ -88,6 +88,7 @@ const BountySpin = () => {
             setNetworkChainId(id)
             getHistoryData()
             // getBalanceData()
+            // getTaskData(id)
             fetchLuckyWheelInfo(id)
         } else {
             navigate("/")
@@ -114,12 +115,11 @@ const BountySpin = () => {
     const fetchLuckyWheelInfo = async (chainId) => {
         // const wheels = getLocalStorage(LOCALSTORAGE_KEY.WHEEL_REWARDS || [])
         try {
-            setLoadingFetch(true)
+            // setLoadingFetch(true)
             // setWheelsInfo(JSON.parse(wheels))
             const res = await checkApi(getWheelInfo, [chainId])
             const {success, message, data} = res
             if (success) {
-                setLoadingFetch(false)
                 const dataHistory = data?.histories
                 if (dataHistory) {
                     const length = dataHistory?.length
@@ -199,6 +199,7 @@ const BountySpin = () => {
                     }
                 ]
                 setTokens(newTokensValue)
+                setLoadingFetch(false)
             } else {
                 return AntdMessage.error({
                     key: "err",
@@ -212,6 +213,11 @@ const BountySpin = () => {
             setLoadingFetch(false)
             // refreshAccessToken()
         }
+    }
+
+    const getTaskData=async (chainId)=>{
+        const res = await checkApi(checkTaskAPI, [chainId])
+        console.log("res",res)
     }
 
     const getHistoryData = async (lastId=null,limit=10) => {
