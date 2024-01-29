@@ -69,7 +69,7 @@ export const signInWithGooglePopup = async () => {
             setLocalStorage(LOCALSTORAGE_KEY.ACCESS_TOKEN, accessToken)
             setLocalStorage(LOCALSTORAGE_KEY.REFRESH_TOKEN, refreshToken)
             setLocalStorage(LOCALSTORAGE_KEY.SOCIAL_ACOUNT, JSON.stringify(user))
-            console.log("user",isAlreadyInDb)
+            console.log("user",user,isAlreadyInDb)
             if (!isAlreadyInDb) {
                 console.log("create user")
                 const value = {
