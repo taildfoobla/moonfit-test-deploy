@@ -71,6 +71,7 @@ const BountySpin = () => {
     const [isSmallWindow, setIsSmallWindow] = useState(false)
     const [isIpad, setIsIpad] = useState(false)
     const [historyRewards, setHistoryRewards] = useState([])
+    const [userHasMoreHistory,setUserHasMoreHistory] = useState(false)
     const [networkChainId, setNetworkChainId] = useState(1287)
     const [isOpenRefLink, setIsOpenRefLink] = useState(false)
     const [missons, setMissions] = useState({invite: false, zealy: false})
@@ -213,12 +214,14 @@ const BountySpin = () => {
         }
     }
 
-    const getHistoryData = async () => {
+    const getHistoryData = async (lastId=null,limit=10) => {
         const walletAddress = JSON.parse(getLocalStorage(LOCALSTORAGE_KEY.WALLET_SIGNATURE))?.account
         if (walletAddress) {
-            const res = await checkApi(getHisoryList, [walletAddress])
+            const res = await checkApi(getHisoryList, [walletAddress,lastId,limit])
             if (res?.data) {
-                setHistoryRewards(res.data?.histories)
+                const newData =historyRewards.concat(res.data?.histories)
+                setHistoryRewards(newData)
+                setUserHasMoreHistory(res?.data?.has_more)
             }
         }
     }
@@ -305,6 +308,8 @@ const BountySpin = () => {
                                 isOpen={isOpenHistory}
                                 onClose={handleToggleHistoryModal}
                                 historyData={historyRewards}
+                                hasMore={userHasMoreHistory}
+                                getHisoryList={getHistoryData}
                             />
                             <UserBalanceInfo tokens={tokens} onToggleHistoryModal={handleToggleHistoryModal} />
 

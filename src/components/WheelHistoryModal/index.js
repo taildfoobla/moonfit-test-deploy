@@ -1,4 +1,4 @@
-import React from "react"
+import React, {useState} from "react"
 import "./styles.less"
 import {Modal} from "antd"
 import closeIcon from "../../assets/images/bounty-spin/close-no-border-color-white.png"
@@ -6,8 +6,12 @@ import astrIcon from "../../assets/images/lucky-wheel/wheel/astar-wheel.png"
 import noRewardIcon from "../../assets/images/bounty-spin/no-reward.png"
 import zealyTaskIcon from "../../assets/images/bounty-spin/zealy-task.png"
 import inviteTaskIcon from "../../assets/images/bounty-spin/invite-task.png"
+import Loading from "../../pages/BountySpin/components/LoadingOutlined"
+import { checkApi } from "../../core/utils/helpers/check-api"
 
-export default function WheelHistoryModal({name, isOpen, onClose, historyData}) {
+export default function WheelHistoryModal({name, isOpen, onClose, historyData, hasMore, getHisoryList}) {
+    const [isLoading, setIsLoading] = useState(false)
+
     const formatDate = (inputDate) => {
         const date = new Date(inputDate)
 
@@ -27,20 +31,27 @@ export default function WheelHistoryModal({name, isOpen, onClose, historyData}) 
         return formattedDate
     }
 
-    const handleDisplayScrollbar = (e) => {
+    const handleDisplayScrollbar = async (e) => {
         let timeOut
         clearTimeout(timeOut)
         e.target.classList.add("display-scrollbar")
         timeOut = setTimeout(() => {
             e.target.classList.remove("display-scrollbar")
         }, 2000)
+        const maxHeight = e.target.scrollHeight - e.target.clientHeight
+        const presentHeight = e.target.scrollTop
+        if (presentHeight === maxHeight - 1 && hasMore) {
+            setIsLoading(true)
+            const lastId = historyData?.length>0?historyData[historyData.length-1].id:null
+            await checkApi(getHisoryList,[lastId,10])
+            setIsLoading(false)
+        }
     }
 
-    const handleRenderText = (reward,source=null) => {
+    const handleRenderText = (reward, source = null) => {
         switch (reward.type) {
             case "ASTR":
                 return (
-                    
                     <p>
                         You won <span style={{color: `#00F0FF`}}>${reward.value + " " + reward.unit}</span>
                     </p>
@@ -64,20 +75,22 @@ export default function WheelHistoryModal({name, isOpen, onClose, historyData}) 
                     </p>
                 )
             case "FreeSpin":
-                if(source ==="zealy_task"){
+                if (source === "zealy_task") {
                     return (
                         <p>
-                            You got <span style={{color: `#FFED10`}}>{reward.value} extra spins</span> from <span style={{color:"#E4007B"}}>Zealy Task</span>
+                            You got <span style={{color: `#FFED10`}}>{reward.value} extra spins</span> from{" "}
+                            <span style={{color: "#E4007B"}}>Zealy Task</span>
                         </p>
                     )
-                }else{
+                } else {
                     return (
                         <p>
-                            You got <span style={{color: `#FFED10`}}>{reward.value} extra spins</span> from <span style={{color:"#E4007B"}}>Invite Friends</span>
+                            You got <span style={{color: `#FFED10`}}>{reward.value} extra spins</span> from{" "}
+                            <span style={{color: "#E4007B"}}>Invite Friends</span>
                         </p>
                     )
                 }
-               
+
             default:
                 return (
                     <p>
@@ -96,20 +109,16 @@ export default function WheelHistoryModal({name, isOpen, onClose, historyData}) 
         // )
     }
 
-    const handleRenderImg=(item,source)=>{
-        if(source){
-            if(source ==="zealy_task"){
-                return  <img src={zealyTaskIcon} alt="" />
-
-            }else{
-                return  <img src={inviteTaskIcon} alt="" />
+    const handleRenderImg = (item, source) => {
+        if (source) {
+            if (source === "zealy_task") {
+                return <img src={zealyTaskIcon} alt="" />
+            } else {
+                return <img src={inviteTaskIcon} alt="" />
             }
-        
-        }else{
-            return      <img src={item.rewards[0].icon} alt="" />
+        } else {
+            return <img src={item.rewards[0].icon} alt="" />
         }
-   
-
     }
 
     return (
@@ -136,7 +145,7 @@ export default function WheelHistoryModal({name, isOpen, onClose, historyData}) 
                         historyData.map((item, index) => {
                             return (
                                 <li className="history-item" key={index}>
-                                 {handleRenderImg(item,item.source)}
+                                    {handleRenderImg(item, item.source)}
                                     <div className="text">
                                         {/* <p>
                                             You won{" "}
@@ -144,7 +153,7 @@ export default function WheelHistoryModal({name, isOpen, onClose, historyData}) 
                                                 {item.rewards[0].value + " " + item.rewards[0].unit}
                                             </span>
                                         </p> */}
-                                        {handleRenderText(item.rewards[0],item.source)}
+                                        {handleRenderText(item.rewards[0], item.source)}
                                         <p className="time">{formatDate(item.created_at)}</p>
                                     </div>
                                 </li>
@@ -156,6 +165,7 @@ export default function WheelHistoryModal({name, isOpen, onClose, historyData}) 
                             <p>You have no rewards!</p>
                         </div>
                     )}
+                    {isLoading && <Loading />}
                 </ul>
             </div>
         </Modal>

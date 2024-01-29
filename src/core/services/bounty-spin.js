@@ -63,7 +63,7 @@ export const checkOnchain = async ([chainId]) => {
     
 }
 
-export const getHisoryList = async ([wallet_address]) => {
+export const getHisoryList = async ([wallet_address,lastId,limit]) => {
     const accessToken = getLocalStorage(LOCALSTORAGE_KEY.ACCESS_TOKEN)
     const config = {
         headers: {
@@ -71,7 +71,7 @@ export const getHisoryList = async ([wallet_address]) => {
         },
     }
     const {data} = await ApiService.makeRequest.get(
-        `missions/onchain-histories/lucky_wheel?wallet_address=${wallet_address}`,
+        `missions/onchain-histories/lucky_wheel?wallet_address=${wallet_address}&last_id=${lastId}&limit=${limit}`,
         config
     )
     return data
