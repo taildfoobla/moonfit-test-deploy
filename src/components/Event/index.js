@@ -134,7 +134,8 @@ const Event = ({event, isHolder}) => {
         ].includes(event?.event_type.title)
 
     const handlePreventPassThrough=(e,slug)=>{
-        
+        if(slug==="bounty-spin"){
+           
             if(!auth.isConnected){
                 e.preventDefault()
                 message.error({
@@ -154,7 +155,7 @@ const Event = ({event, isHolder}) => {
                 })
             }
           
-        
+        }
     }
 
     return (
