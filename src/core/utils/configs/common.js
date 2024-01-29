@@ -36,7 +36,7 @@ const getConfigs = () => {
             }
         case 'production':
             return {
-                API_URL: 'https://api-dev.moonfit.xyz/v1/',
+                API_URL: 'https://api-prod.moonfit.xyz/v1/',
                 API_URL_EVENT:"https://raffle-game-api.moonfit.xyz",
                 API_APP_URI: 'https://api-prod.moonfit.xyz/v1/',
                 APP_URI: 'event.moonfit.xyz',
