@@ -53,7 +53,7 @@ export default function WheelHistoryModal({name, isOpen, onClose, historyData, h
             case "ASTR":
                 return (
                     <p>
-                        You won <span style={{color: `#00F0FF`}}>${reward.value + " " + reward.unit}</span>
+                        You won <span style={{color: `#00F0FF`}}>{reward.value + " " + "$"+reward.unit}</span>
                     </p>
                 )
             case "MFR":
@@ -65,13 +65,13 @@ export default function WheelHistoryModal({name, isOpen, onClose, historyData, h
             case "oMFG":
                 return (
                     <p>
-                        You won <span style={{color: `#4CCBC9`}}>${reward.value + " " + reward.unit}</span>
+                        You won <span style={{color: `#4CCBC9`}}>{reward.value + " " + reward.unit}</span>
                     </p>
                 )
             case "GLMR":
                 return (
                     <p>
-                        You won <span style={{color: `#4CCBC9`}}>${reward.value + " " + reward.unit}</span>
+                        You won <span style={{color: `#4CCBC9`}}>{reward.value + " " + "$"+reward.unit}</span>
                     </p>
                 )
             case "FreeSpin":

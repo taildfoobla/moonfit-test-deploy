@@ -94,7 +94,7 @@ const getAdventEvent = async (event) => {
         return window.__api_getAdventEvents[event]
     }
 
-    window.__api_getAdventEvents[event] = ApiService.makeAuthRequest.get(
+    window.__api_getAdventEvents[event] = ApiService.makeRequest.get(
         `web-event/advent-event/get-detail-event/${event}`,
         {
             baseURL: API_APP_URI,
