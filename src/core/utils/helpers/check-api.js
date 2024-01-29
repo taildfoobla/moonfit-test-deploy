@@ -10,7 +10,6 @@ export const checkApi = async (callback, array) => {
     try {
         let res
         if(array){
-            console.log("here1")
             res = await callback(array)
 
         }else{

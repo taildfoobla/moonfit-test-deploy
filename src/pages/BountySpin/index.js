@@ -41,12 +41,14 @@ import WinnerListMobileWrapper from "./components/WinnerListMobileWrapper"
 import {useNavigate} from "react-router-dom"
 import WinnerListFixed from "../../components/WinnerListFixed"
 import astrIcon from "../../assets/images/bounty-spin/wheel/astar-wheel.png"
-import glmrIcon from '../../assets/images/bounty-spin/wheel/glmr-wheel.png'
-import mfrIcon from '../../assets/images/bounty-spin/wheel/mfr-wheel.png'
-import omfgIcon from '../../assets/images/bounty-spin/wheel/omfg-wheel.png'
-
+import glmrIcon from "../../assets/images/bounty-spin/wheel/glmr-wheel.png"
+import mfrIcon from "../../assets/images/bounty-spin/wheel/mfr-wheel.png"
+import omfgIcon from "../../assets/images/bounty-spin/wheel/omfg-wheel.png"
 
 const loadingIcon = <LoadingOutlined style={{fontSize: 60, color: "#FFF"}} spin />
+
+const loadingMissonIcon = <LoadingOutlined style={{fontSize: 30, color: "#FFF"}} spin />
+
 
 const BountySpin = () => {
     const navigate = useNavigate()
@@ -71,28 +73,28 @@ const BountySpin = () => {
     const [isSmallWindow, setIsSmallWindow] = useState(false)
     const [isIpad, setIsIpad] = useState(false)
     const [historyRewards, setHistoryRewards] = useState([])
-    const [userHasMoreHistory,setUserHasMoreHistory] = useState(false)
+    const [userHasMoreHistory, setUserHasMoreHistory] = useState(false)
     const [networkChainId, setNetworkChainId] = useState(1284)
     const [isOpenRefLink, setIsOpenRefLink] = useState(false)
     const [missons, setMissions] = useState({invite: false, zealy: false})
     const {auth, isLoginSocial} = useAuth()
     const {selectedNetwork} = useGlobalContext()
     const [tokens, setTokens] = useState([])
-    const [zealyTaskId,setZealyTaskId]=useState("")
+    const [zealyTaskId, setZealyTaskId] = useState("")
     const [isRerender, setIsRerender] = useState(false)
+    const [isLoadingMission,setIsLoadingMisson]=useState(true)
 
     useEffect(() => {
         if (isLoginSocial && auth?.isConnected) {
             const network = chainData.find((chain) => chain.name === selectedNetwork)
-            const id=network?.chainId||1284
+            const id = network?.chainId || 1284
             setNetworkChainId(id)
             getHistoryData()
-            // getBalanceData()
-            // getTaskData(id)
+            getTaskData(id)
             fetchLuckyWheelInfo(id)
         } else {
             navigate("/")
-             AntdMessage.error({
+            AntdMessage.error({
                 key: "err",
                 content: "Please connect wallet and login social to spin",
                 className: "message-error",
@@ -104,10 +106,9 @@ const BountySpin = () => {
     useEffect(() => {
         if (isRerender) {
             const network = chainData.find((chain) => chain.name === selectedNetwork)
-            const id=network?.chainId||1284
+            const id = network?.chainId || 1284
 
             getHistoryData()
-            // getBalanceData()
             fetchLuckyWheelInfo(id)
         }
     }, [isRerender])
@@ -146,57 +147,52 @@ const BountySpin = () => {
                 }
 
                 setUser(data?.user || {})
-                // if (data?.user?.game_token) {
-                //     setGameToken(data.user.game_token)
-                //     updateGameToken(data.user.game_token)
-                // }
+
                 if (data?.is_new_today) {
                     setOpenModal(true)
                 }
-                setMissions({
-                    invite: data?.invite_task_status === "not_eligible" ? false : true,
-                    zealy: data?.zealy_task_status === "not_eligible" ? false : true,
-                })
+
                 setFreeSpin(data?.free_spin)
                 if (data?.wheels) {
-                    let luckyMoney=data?.wheels.filter(item=>item.type==="GLMR"||item.type==="ASTR")
-                
-                    luckyMoney=luckyMoney.sort((a,b)=>{return a.value-b.value})
-                    let newData= data?.wheels.map(item=>{
-                        if(item.type==="GLMR"||item.type==="ASTR"){
-                           const index= luckyMoney.findIndex((lucky)=>{
-                                        return lucky.value===item.value
+                    let luckyMoney = data?.wheels.filter((item) => item.type === "GLMR" || item.type === "ASTR")
+
+                    luckyMoney = luckyMoney.sort((a, b) => {
+                        return a.value - b.value
+                    })
+                    let newData = data?.wheels.map((item) => {
+                        if (item.type === "GLMR" || item.type === "ASTR") {
+                            const index = luckyMoney.findIndex((lucky) => {
+                                return lucky.value === item.value
                             })
-                            return {...item,color:`color-${index}`}
-                        }else{
-                            return {...item,color:""}
+                            return {...item, color: `color-${index}`}
+                        } else {
+                            return {...item, color: ""}
                         }
                     })
                     setWheelsInfo(newData || [])
                     setLocalStorage(LOCALSTORAGE_KEY.WHEEL_REWARDS, JSON.stringify(data?.wheels))
                 }
-                setZealyTaskId(data?.zealy_task[0])
-                const newTokensValue=[
+                const newTokensValue = [
                     {
-                        type:"ASTR",
-                        image_url:astrIcon,
-                        value:data?.user?.astar_token
+                        type: "ASTR",
+                        image_url: astrIcon,
+                        value: data?.user?.astar_token,
                     },
                     {
-                        type:"GLMR",
-                        image_url:glmrIcon,
-                        value:data?.user?.base_token
+                        type: "GLMR",
+                        image_url: glmrIcon,
+                        value: data?.user?.base_token,
                     },
                     {
-                        type:"MFR",
-                        image_url:mfrIcon,
-                        value:data?.user?.game_token
+                        type: "MFR",
+                        image_url: mfrIcon,
+                        value: data?.user?.game_token,
                     },
                     {
-                        type:"oMFG",
-                        image_url:omfgIcon,
-                        value:data?.user?.omfg
-                    }
+                        type: "oMFG",
+                        image_url: omfgIcon,
+                        value: data?.user?.omfg,
+                    },
                 ]
                 setTokens(newTokensValue)
                 setLoadingFetch(false)
@@ -215,19 +211,40 @@ const BountySpin = () => {
         }
     }
 
-    const getTaskData=async (chainId)=>{
+    const getTaskData = async (chainId) => {
         const res = await checkApi(checkTaskAPI, [chainId])
-        console.log("res",res)
+        const {success, message, data} = res
+        if (success) {
+            setMissions({
+                invite: data?.invite_task_status === "not_eligible" ? false : true,
+                zealy: data?.zealy_task_status === "not_eligible" ? false : true,
+            })
+            setZealyTaskId(data?.zealy_task[0])
+            setIsLoadingMisson(false)
+        }else{
+            return AntdMessage.error({
+                key: "err",
+                content: message,
+                className: "message-error",
+                duration: 5,
+            })
+        }
     }
 
-    const getHistoryData = async (lastId=null,limit=10) => {
+    const getHistoryData = async (lastId = null, limit = 10) => {
         const walletAddress = JSON.parse(getLocalStorage(LOCALSTORAGE_KEY.WALLET_SIGNATURE))?.account
         if (walletAddress) {
-            const res = await checkApi(getHisoryList, [walletAddress,lastId,limit])
+            const res = await checkApi(getHisoryList, [walletAddress, lastId, limit])
             if (res?.data) {
-                const newData =historyRewards.concat(res.data?.histories)
-                setHistoryRewards(newData)
-                setUserHasMoreHistory(res?.data?.has_more)
+                if(isRerender){
+                    setHistoryRewards(res.data?.histories)
+                    setUserHasMoreHistory(res?.data?.has_more)
+                }else{
+                    const newData = historyRewards.concat(res.data?.histories)
+                    setHistoryRewards(newData)
+                    setUserHasMoreHistory(res?.data?.has_more)
+                }
+               
             }
         }
     }
@@ -264,7 +281,9 @@ const BountySpin = () => {
     }
 
     const handleCopy = () => {
-        navigator.clipboard.writeText(`https://app.moonfit.xyz/special-event/bounty-spin?referral_code=${user?.referral_code}`)
+        navigator.clipboard.writeText(
+            `https://app.moonfit.xyz/special-event/bounty-spin?referral_code=${user?.referral_code}`
+        )
     }
 
     const handleOpenNewTab = (url) => {
@@ -275,10 +294,15 @@ const BountySpin = () => {
         navigate(`/${url}`)
         // navigate("/mint")
     }
-
     return (
-        <div className={`lucky-wheel-wrapped-container bounty-spin-container ${historiesFixed?.length>0?"":"top-0"}`}>
-            {historiesFixed?.length>0&&<WinnerListFixed histories={historiesFixed} marginLeft={"0"} index={5} id="sec5" />}
+        <div
+            className={`lucky-wheel-wrapped-container bounty-spin-container ${
+                historiesFixed?.length > 0 ? "" : "top-0"
+            }`}
+        >
+            {historiesFixed?.length > 0 && (
+                <WinnerListFixed histories={historiesFixed} marginLeft={"0"} index={5} id="sec5" />
+            )}
             <div className={`explore-bg`}>
                 <img
                     src={Bg}
@@ -366,6 +390,9 @@ const BountySpin = () => {
                                         <p className="hightlight-text">
                                             Earn more spins - complete all our tasks below
                                         </p>
+                                        <p className="hightlight-text">
+                                        Note: Upon selecting Astar Network/Moonbeam Network, opening Red Envelope will give you ASTR/GLMR tokens accordingly fam. You need to pay a small gas fee for each spin.
+                                        </p>
                                     </div>
                                 </div>
                             </div>
@@ -430,6 +457,9 @@ const BountySpin = () => {
                                         <p className="hightlight-text">
                                             Earn more spins - complete all our tasks below
                                         </p>
+                                        <p className="hightlight-text">
+                                        Note: Upon selecting Astar Network/Moonbeam Network, opening Red Envelope will give you ASTR/GLMR tokens accordingly fam. You need to pay a small gas fee for each spin.
+                                        </p>
                                     </div>
                                 </div>
                             </div>
@@ -445,13 +475,19 @@ const BountySpin = () => {
                                             <div className="text">
                                                 <img src={missonIcon} alt="" />
                                                 <span>
-                                                   
-                                                    <span className="color-FFB206" onClick={()=>{
-                                                        handleOpenNewTab(`https://zealy.io/c/moonfit/questboard/${zealyTaskId}`)
-                                                    }}>Share MoonFit Official Announcement</span>
+                                                    <span
+                                                        className="color-FFB206"
+                                                        onClick={() => {
+                                                            handleOpenNewTab(
+                                                                `https://zealy.io/c/moonfit/questboard/${zealyTaskId}`
+                                                            )
+                                                        }}
+                                                    >
+                                                        Share MoonFit Official Announcement
+                                                    </span>
                                                 </span>
                                             </div>
-                                            {missons?.zealy ? (
+                                            {isLoadingMission?loadingMissonIcon:missons?.zealy ? (
                                                 <img className="check" src={doneIcon} alt="" />
                                             ) : (
                                                 <img className="check" src={notDoneIcon} alt="" />
@@ -474,7 +510,7 @@ const BountySpin = () => {
                                                 >
                                                     Invite friends
                                                 </button>
-                                                {missons?.invite ? (
+                                                {isLoadingMission?loadingMissonIcon:missons?.invite ? (
                                                     <img className="check" src={doneIcon} alt="" />
                                                 ) : (
                                                     <img className="check" src={notDoneIcon} alt="" />
@@ -510,14 +546,20 @@ const BountySpin = () => {
                             <div className="button-container">
                                 <button
                                     onClick={() => {
-                                      handleOpenNewTab("https://app.moonfit.xyz/mint")
+                                        handleOpenNewTab("https://app.moonfit.xyz/mint")
                                     }}
                                 >
                                     Mint on moonfit website
                                 </button>
-                                <button onClick={()=>{
-                                    handleOpenNewTab("https://tofunft.com/collection/moonfit-beast-and-beauty/items")
-                                }}>buy on tofunft</button>
+                                <button
+                                    onClick={() => {
+                                        handleOpenNewTab(
+                                            "https://tofunft.com/collection/moonfit-beast-and-beauty/items"
+                                        )
+                                    }}
+                                >
+                                    buy on tofunft
+                                </button>
                             </div>
                         </div>
                     </>

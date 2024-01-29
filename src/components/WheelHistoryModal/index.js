@@ -11,7 +11,6 @@ import { checkApi } from "../../core/utils/helpers/check-api"
 
 export default function WheelHistoryModal({name, isOpen, onClose, historyData, hasMore, getHisoryList}) {
     const [isLoading, setIsLoading] = useState(false)
-
     const formatDate = (inputDate) => {
         const date = new Date(inputDate)
 
