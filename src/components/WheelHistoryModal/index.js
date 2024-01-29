@@ -60,7 +60,7 @@ export default function WheelHistoryModal({name, isOpen, onClose, historyData}) 
             case "GLMR":
                 return (
                     <p>
-                        You won <span style={{color: `#FFF`}}>${reward.value + " " + reward.unit}</span>
+                        You won <span style={{color: `#4CCBC9`}}>${reward.value + " " + reward.unit}</span>
                     </p>
                 )
             case "FreeSpin":
