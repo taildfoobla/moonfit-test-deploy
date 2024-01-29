@@ -72,7 +72,7 @@ const BountySpin = () => {
     const [isIpad, setIsIpad] = useState(false)
     const [historyRewards, setHistoryRewards] = useState([])
     const [userHasMoreHistory,setUserHasMoreHistory] = useState(false)
-    const [networkChainId, setNetworkChainId] = useState(1287)
+    const [networkChainId, setNetworkChainId] = useState(1284)
     const [isOpenRefLink, setIsOpenRefLink] = useState(false)
     const [missons, setMissions] = useState({invite: false, zealy: false})
     const {auth, isLoginSocial} = useAuth()
@@ -479,7 +479,7 @@ const BountySpin = () => {
                                             <div className="link">
                                                 <div className="text-ref">
                                                     <span>Your referral link</span>
-                                                    <p>{`https://app.moonfit.xyz/bounty-spin?referral_code=${user?.referral_code}`}</p>
+                                                    <p>{`https://app.moonfit.xyz/special-event/bounty-spin?referral_code=${user?.referral_code}`}</p>
                                                 </div>
                                                 <button onClick={handleCopy}>Copy</button>
                                             </div>
