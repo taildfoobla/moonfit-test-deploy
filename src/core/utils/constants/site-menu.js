@@ -7,7 +7,7 @@ const SITE_MENU = [
     // {title: "Social Feed", url: "/social-feed", comingSoon:true},
     {title: "Mint NFT", url: "/mint"},
     {title: "Astar Rewards", url: "/astar-rewards"},
-    {title: "Bounty Spin", url: "/special-event/bounty-spin"},
+    // {title: "Bounty Spin", url: "/special-event/bounty-spin"},
     // {title: "Withdraw", url: "/withdraw"},
     // {title: "Deposit Assets", url: "/deposit"},
     
