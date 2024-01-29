@@ -20,24 +20,24 @@ export default function UserBalanceInfo({tokens,onToggleHistoryModal}) {
 
         }
     }, [isLoginSocial])
-    const getBalanceData = async () => {
-        const res = await checkApi(getAssetsDataAPI)
-        const {success, message, data} = res
-        if (res?.tokens) {
-            const newTokens = res?.tokens.filter(
-                (token) =>
-                    token.name === "tMFG" || token.name === "MFR" || token.name === "GLMR" || token.name === "ASTR"
-            )
-            setTokens(newTokens)
-        } else {
-            return AntdMessage.error({
-                key: "err",
-                content: message,
-                className: "message-error",
-                duration: 5,
-            })
-        }
-    }
+    // const getBalanceData = async () => {
+    //     const res = await checkApi(getAssetsDataAPI)
+    //     const {success, message, data} = res
+    //     if (res?.tokens) {
+    //         const newTokens = res?.tokens.filter(
+    //             (token) =>
+    //                 token.name === "tMFG" || token.name === "MFR" || token.name === "GLMR" || token.name === "ASTR"
+    //         )
+    //         setTokens(newTokens)
+    //     } else {
+    //         return AntdMessage.error({
+    //             key: "err",
+    //             content: message,
+    //             className: "message-error",
+    //             duration: 5,
+    //         })
+    //     }
+    // }
 
     return (
         <div className="user-balance-info-container">

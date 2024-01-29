@@ -40,6 +40,11 @@ import {getAssetsDataAPI} from "../../core/services/assets-management"
 import WinnerListMobileWrapper from "./components/WinnerListMobileWrapper"
 import {useNavigate} from "react-router-dom"
 import WinnerListFixed from "../../components/WinnerListFixed"
+import astrIcon from "../../assets/images/bounty-spin/wheel/astar-wheel.png"
+import glmrIcon from '../../assets/images/bounty-spin/wheel/glmr-wheel.png'
+import mfrIcon from '../../assets/images/bounty-spin/wheel/mfr-wheel.png'
+import omfgIcon from '../../assets/images/bounty-spin/wheel/omfg-wheel.png'
+
 
 const loadingIcon = <LoadingOutlined style={{fontSize: 60, color: "#FFF"}} spin />
 
@@ -81,7 +86,7 @@ const BountySpin = () => {
             const id=network?.chainId||1284
             setNetworkChainId(id)
             getHistoryData()
-            getBalanceData()
+            // getBalanceData()
             fetchLuckyWheelInfo(id)
         } else {
             navigate("/")
@@ -100,7 +105,7 @@ const BountySpin = () => {
             const id=network?.chainId||1284
 
             getHistoryData()
-            getBalanceData()
+            // getBalanceData()
             fetchLuckyWheelInfo(id)
         }
     }, [isRerender])
@@ -170,6 +175,29 @@ const BountySpin = () => {
                     setLocalStorage(LOCALSTORAGE_KEY.WHEEL_REWARDS, JSON.stringify(data?.wheels))
                 }
                 setZealyTaskId(data?.zealy_task[0])
+                const newTokensValue=[
+                    {
+                        type:"ASTR",
+                        image_url:astrIcon,
+                        value:data?.user?.astar_token
+                    },
+                    {
+                        type:"GLMR",
+                        image_url:glmrIcon,
+                        value:data?.user?.base_token
+                    },
+                    {
+                        type:"MFR",
+                        image_url:mfrIcon,
+                        value:data?.user?.game_token
+                    },
+                    {
+                        type:"oMFG",
+                        image_url:omfgIcon,
+                        value:data?.user?.omfg
+                    }
+                ]
+                setTokens(newTokensValue)
             } else {
                 return AntdMessage.error({
                     key: "err",
@@ -195,24 +223,24 @@ const BountySpin = () => {
         }
     }
 
-    const getBalanceData = async () => {
-        const res = await checkApi(getAssetsDataAPI)
-        const {success, message, data} = res
-        if (res?.tokens) {
-            const newTokens = res?.tokens.filter(
-                (token) =>
-                    token.name === "tMFG" || token.name === "MFR" || token.name === "GLMR" || token.name === "ASTR"
-            )
-            setTokens(newTokens)
-        } else {
-            return AntdMessage.error({
-                key: "err",
-                content: message,
-                className: "message-error",
-                duration: 5,
-            })
-        }
-    }
+    // const getBalanceData = async () => {
+    //     const res = await checkApi(getAssetsDataAPI)
+    //     const {success, message, data} = res
+    //     if (res?.tokens) {
+    //         const newTokens = res?.tokens.filter(
+    //             (token) =>
+    //                 token.name === "tMFG" || token.name === "MFR" || token.name === "GLMR" || token.name === "ASTR"
+    //         )
+    //         setTokens(newTokens)
+    //     } else {
+    //         return AntdMessage.error({
+    //             key: "err",
+    //             content: message,
+    //             className: "message-error",
+    //             duration: 5,
+    //         })
+    //     }
+    // }
 
     const toggleModal = () => {
         setOpenModal(!openModal)
@@ -227,7 +255,7 @@ const BountySpin = () => {
     }
 
     const handleCopy = () => {
-        navigator.clipboard.writeText(`https://app.moonfit.xyz/bounty-spin?referral_code=${user?.referral_code}`)
+        navigator.clipboard.writeText(`https://app.moonfit.xyz/special-event/bounty-spin?referral_code=${user?.referral_code}`)
     }
 
     const handleOpenNewTab = (url) => {

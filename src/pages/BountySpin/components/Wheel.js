@@ -14,7 +14,7 @@ import gift from "../../../assets/images/lucky-wheel/gift.svg"
 import lottery from "../../../assets/images/bounty-spin/lottery-color-#730000.png"
 import glmrReward from "../../../assets/images/lucky-wheel/reward/GLMR-reward.png"
 import moonboxslotReward from "../../../assets/images/lucky-wheel/reward/MoonBox-reward.png"
-import mfgReward from "../../../assets/images/lucky-wheel/reward/MFG-reward.png"
+import omfgReward from "../../../assets/images/bounty-spin/reward/omfg.png"
 import mfrReward from "../../../assets/images/lucky-wheel/reward/MFR-reward.png"
 import astrReward from "../../../assets/images/lucky-wheel/reward/ASTR-reward.png"
 import luckyReward from "../../../assets/images/bounty-spin/reward/lucky-money.png"
@@ -61,11 +61,13 @@ import WheelRewardModal from "../../../components/WheelRewardModal"
 import LuckyRewardModal from "../../../components/LuckyRewardModal"
 import {checkApi} from "../../../core/utils/helpers/check-api"
 import {spinOnChain, checkOnchain} from "../../../core/services/bounty-spin"
-import {useParams, useSearchParams} from "react-router-dom"
+import {useLocation, useParams, useSearchParams} from "react-router-dom"
 
 const {CYBER_ACCOUNT_KEY} = COMMON_CONFIGS
 
 const Wheel = (props) => {
+    const location =useLocation()
+
     const {
         networkChainId,
         freeSpin,
@@ -206,6 +208,9 @@ const Wheel = (props) => {
                         y = setInterval(async () => {
                             z = await checkApi(checkOnchain, [luckyWheelId])
                             isCompleted = z.data?.reward
+                            if(!location.pathname.includes("bounty-spin")){
+                                clearInterval(y)
+                            }
                             if (isCompleted) {
                                 clearInterval(y)
                                 setReward(z.data?.reward)
@@ -308,8 +313,8 @@ const Wheel = (props) => {
             case "MFR":
                 output = <img className="reward" src={mfrReward} alt="" />
                 break
-            case "MFG":
-                output = <img className="reward" src={mfgReward} alt="" />
+            case "oMFG":
+                output = <img className="reward" src={omfgReward} alt="" />
                 break
             case "GLMR":
                 output = <img className="reward" src={luckyReward} alt="" />
@@ -329,8 +334,8 @@ const Wheel = (props) => {
             case "MFR":
                 output = <img className="reward" src={mfrReward} alt="" />
                 break
-            case "MFG":
-                output = <img className="reward" src={mfgReward} alt="" />
+            case "oMFG":
+                output = <img className="reward" src={omfgReward} alt="" />
                 break
             case "GLMR":
                 output = <img className="reward" src={glmrReward} alt="" />

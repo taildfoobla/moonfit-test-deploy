@@ -589,7 +589,7 @@ const Header = () => {
                     ),
                     key: "6",
                 },
-               
+
                 // {
                 //     label: (
                 //         <Link
@@ -997,7 +997,7 @@ const Header = () => {
                     ),
                     key: "6",
                 },
-              
+
                 // {
                 //     label: (
                 //         <Link
@@ -1026,7 +1026,6 @@ const Header = () => {
                     ),
                     key: "4",
                 },
-            
             ]
         }
     }
@@ -1238,14 +1237,22 @@ const Header = () => {
                                         <li key={index} className="header__menu-item">
                                             <div className="inner">
                                                 {item.comingSoon && <div className="comming-soon">Coming soon</div>}
-                                                {item.title==="Bounty Spin"&&<div className="comming-soon">New</div>}
+                                                {item.title === "Bounty Spin" && (
+                                                    <div className="comming-soon">New</div>
+                                                )}
                                                 {item.comingSoon && (
                                                     <a className="canvas-menu__nav-link" onClick={onShowMessage}>
                                                         {item.title}
                                                     </a>
                                                 )}
                                                 {(item.title === "Mint NFT" || item.title === "Explore") && (
-                                                    <ChangeMintPage trigger="hover" title={item.title} url={item.url} />
+                                                    <ChangeMintPage
+                                                        trigger="hover"
+                                                        title={item.title}
+                                                        url={item.url}
+                                                        onPreventPassThrough={handlePreventPassThrough}
+                                                        onCloseMobileMenu={handleCloseMobileMenu}
+                                                    />
                                                 )}
                                                 {!item.comingSoon && item.external && item.title !== "Mint NFT" && (
                                                     <a
@@ -1414,11 +1421,12 @@ const Header = () => {
                                                         onCloseMobileMenu={handleCloseMobileMenu}
                                                     />
                                                 )}
-                                              
+
                                                 {!item.comingSoon &&
                                                     !item.external &&
                                                     item.title !== "Mint NFT" &&
-                                                    item.title !== "Explore" && item.title!=="Bounty Spin" &&(
+                                                    item.title !== "Explore" &&
+                                                    item.title !== "Bounty Spin" && (
                                                         <NavLink
                                                             to={item.url}
                                                             className="canvas-menu__nav-link"
