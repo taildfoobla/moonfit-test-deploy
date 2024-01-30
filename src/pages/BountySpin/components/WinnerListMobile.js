@@ -2,11 +2,11 @@ import {Avatar} from "antd"
 import React, {useEffect, useState} from "react"
 
 const WinnerListMobile = (props) => {
-    const {histories, marginLeft, id,index,wrapperMarginLeft} = props
+    const {histories, marginLeft, id, index, wrapperMarginLeft} = props
     const [winnerIndex, setWinnerIndex] = useState(0)
 
     // useEffect(() => {
-        
+
     //     setTimeout(() => {
     //         const el = document.getElementById(`${id}_${winnerIndex}`)
     //         // console.log("el",el)
@@ -17,20 +17,20 @@ const WinnerListMobile = (props) => {
     //     }, 2000 + index*600)
     // }, [histories, winnerIndex, id])
 
-    const _renderWinnerText = (user, type, rewardName, value,color) => {
+    const _renderWinnerText = (user, type, rewardName, value, color) => {
         let text = null
         switch (type) {
             case "MoonBoxSlot":
-                    text = (
-                        <p className="normal-case text-[11px] font-normal ml-2">
-                            <span className="font-semibold">{user}</span> won{" "}
-                            <span
-                                style={{color: "#4CCBC9"}}
-                                className="text-[#A16BD8] font-semibold"
-                            >{`${value} ${rewardName}`}</span>
-                        </p>
-                    )
-                    break
+                text = (
+                    <p className="normal-case text-[11px] font-normal ml-2">
+                        <span className="font-semibold">{user}</span> won{" "}
+                        <span
+                            style={{color: "#4CCBC9"}}
+                            className="text-[#A16BD8] font-semibold"
+                        >{`${value} ${rewardName}`}</span>
+                    </p>
+                )
+                break
             case "MoonBox":
             case "MerchandiseTShirt":
                 text = (
@@ -69,20 +69,18 @@ const WinnerListMobile = (props) => {
                 text = (
                     <p className="normal-case text-[11px] font-normal ml-2">
                         <span className="font-semibold">{user}</span> won{" "}
-                        <span className="font-semibold">{`${value} ${rewardName}`}</span>{" "}
+                        <span style={{color: `#${color}`}} className="font-semibold">{`${value} $${rewardName}`}</span>{" "}
                     </p>
                 )
                 break
-                case "oMFG":
-                    text = (
-                        <p className="normal-case text-[11px] font-normal ml-2">
-                            <span className="font-semibold">{user}</span> won{" "}
-                            <span 
-                            style={{color:`#${color}`}}
-                            className="font-semibold">{`${value} ${rewardName}`}</span>{" "}
-                        </p>
-                    )
-                    break
+            case "oMFG":
+                text = (
+                    <p className="normal-case text-[11px] font-normal ml-2">
+                        <span className="font-semibold">{user}</span> won{" "}
+                        <span style={{color: `#${color}`}} className="font-semibold">{`${value} ${rewardName}`}</span>{" "}
+                    </p>
+                )
+                break
             case "WeeklyRaffleTicket":
             case "MerchandiseCup":
             case "MerchandiseCap":
@@ -105,7 +103,7 @@ const WinnerListMobile = (props) => {
                         <span
                             style={{color: "#48C8F0"}}
                             className="text-[#48C8F0] font-semibold"
-                        >{`${value} ${rewardName}`}</span>{" "}
+                        >{`${value} $${rewardName}`}</span>{" "}
                     </p>
                 )
                 break
@@ -148,7 +146,7 @@ const WinnerListMobile = (props) => {
                     <p className="normal-case text-[11px] font-normal ml-2">
                         <span className="font-semibold">{user}</span> won{" "}
                         <span
-                            style={{color: "#4CCBC9"}}
+                            style={{color: "#FFED10"}}
                             className="text-[#4CCBC9] font-semibold"
                         >{`${value} ${rewardName}`}</span>{" "}
                     </p>
@@ -161,13 +159,17 @@ const WinnerListMobile = (props) => {
     }
 
     return (
-    
-        <div className={`lw-list-winners-mobile ${id}`} style={{marginLeft:`${wrapperMarginLeft}`}}>
+        <div className={`lw-list-winners-mobile ${id}`} style={{marginLeft: `${wrapperMarginLeft}`}}>
             <div className={`lw-winners-wrapper-mobile ${id}`}>
                 {histories.map((history, index) => {
                     const {user, rewards} = history
                     return (
-                        <div key={index} className="winner flex flex-nowrap justify-center" id={`${id}_${index}`} style={{marginLeft:`${marginLeft}`}}>
+                        <div
+                            key={index}
+                            className="winner flex flex-nowrap justify-center"
+                            id={`${id}_${index}`}
+                            style={{marginLeft: `${marginLeft}`}}
+                        >
                             <div className="lw-winner-mobile no-event">
                                 <div className="winner-avatar mr-1">
                                     <Avatar size={24} src={user.avatar} />
@@ -175,15 +177,19 @@ const WinnerListMobile = (props) => {
                                         <img src={rewards[0].icon} alt="" />
                                     </div>
                                 </div>
-                                {_renderWinnerText(user.name, rewards[0].type, rewards[0].unit, rewards[0].value,rewards[0].color)}
+                                {_renderWinnerText(
+                                    user.name,
+                                    rewards[0].type,
+                                    rewards[0].unit,
+                                    rewards[0].value,
+                                    rewards[0].color
+                                )}
                             </div>
                         </div>
                     )
                 })}
             </div>
         </div>
-        
-    
     )
 }
 
