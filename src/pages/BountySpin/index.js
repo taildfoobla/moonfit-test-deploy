@@ -10,7 +10,7 @@ import LuckyWheelBg from "../../assets/images/bounty-spin/bg.png"
 import LuckyWheelBgMobile from "../../assets/images/lucky-wheel/lucky wheel-bg-mobile.png"
 import LuckyWheelHistoryIcon from "../../assets/images/lucky-wheel/lw-history-gift.png"
 import LuckyWheelHistoryModal from "../../components/LuckyWheelHistoryModal"
-import {checkTaskAPI, getHisoryList} from "../../core/services/bounty-spin"
+import {checkTaskAPI, getHisoryList, getWheelInfoNoTokenAPI} from "../../core/services/bounty-spin"
 import Bg from "../../assets/images/bounty-spin/bg.png"
 import "./styles.less"
 import WinnerListMobile from "./components/WinnerListMobile"
@@ -99,6 +99,8 @@ const BountySpin = () => {
             //     className: "message-error",
             //     duration: 5,
             // })
+
+            getWheelInfoNoToken()
         }
     }, [selectedNetwork, isLoginSocial, auth?.isConnected])
 
@@ -207,6 +209,79 @@ const BountySpin = () => {
         } catch (error) {
             setLoadingFetch(false)
             // refreshAccessToken()
+        }
+    }
+
+    const getWheelInfoNoToken = async ()=>{
+        try{
+            const res = await getWheelInfoNoTokenAPI();
+            const {success, message, data} = res
+            console.log("res",res)
+            if(success){
+                const dataHistory = data?.histories
+                if (dataHistory) {
+                    const length = dataHistory?.length
+                    const number1 = Math.floor(length / 4)
+                    const number2 = Math.floor(length / 2)
+                    const dataHistoryDesktop1 = dataHistory.slice(0, number1)
+                    const dataHistoryDesktop2 = dataHistory.slice(number1, number1 * 2)
+                    const dataHistoryDesktop3 = dataHistory.slice(number1 * 2, number1 * 3)
+                    const dataHistoryDesktop4 = dataHistory.slice(number1 * 3, length)
+
+                    const dataHistoryMobile1 = dataHistory.slice(0, number2)
+                    const dataHistoryMobile2 = dataHistory.slice(number2, length)
+
+                    setHistoriedFixed(dataHistory)
+
+                    setHistories({
+                        histories1: dataHistoryDesktop1,
+                        histories2: dataHistoryDesktop2,
+                        histories3: dataHistoryDesktop3,
+                        histories4: dataHistoryDesktop4,
+                        histories5: dataHistoryMobile1,
+                        histories6: dataHistoryMobile2,
+                    })
+                }
+
+                if (data?.wheels) {
+                    let luckyMoney = data?.wheels.filter((item) => item.type === "GLMR" || item.type === "ASTR")
+
+                    luckyMoney = luckyMoney.sort((a, b) => {
+                        return a.value - b.value
+                    })
+                    let newData = data?.wheels.map((item) => {
+                        if (item.type === "GLMR" || item.type === "ASTR") {
+                            const index = luckyMoney.findIndex((lucky) => {
+                                return lucky.value === item.value
+                            })
+                            return {...item, color: `color-${index}`}
+                        } else {
+                            return {...item, color: ""}
+                        }
+                    })
+                    setWheelsInfo(newData || [])
+                }
+
+                setLoadingFetch(false)
+
+            }else{
+                return AntdMessage.error({
+                    key: "err",
+                    content: message,
+                    className: "message-error",
+                    duration: 5,
+                })
+            }
+        }catch(err){
+            const errMessage = err?.response?.data?.message
+            setLoadingFetch(false)
+
+            return AntdMessage.error({
+                key: "err",
+                content: errMessage,
+                className: "message-error",
+                duration: 5,
+            })
         }
     }
 

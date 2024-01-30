@@ -129,16 +129,16 @@ const Wheel = (props) => {
     }
     const onSpin = async () => {
         const captchaValue = recaptcha.current.getValue();
-        if (!captchaValue) {
-            alert("Please verify the reCAPTCHA!");
+        // if (!captchaValue) {
+        //     alert("Please verify the reCAPTCHA!");
             
-            return
-          } else {
-            // make form submission
-            alert("Form submission successful!");
-            console.log("capcha",captchaValue)
-            return
-          }
+        //     return
+        //   } else {
+        //     // make form submission
+        //     alert("Form submission successful!");
+        //     console.log("capcha",captchaValue)
+        //     return
+        //   }
         if(!isLoginSocial||!auth.isConnected){
             return AntdMessage.error({
                 key: "err",
