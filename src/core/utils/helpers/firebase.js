@@ -12,8 +12,8 @@ import {connectWalletToAccountAPI} from "../../services/connect-account"
 
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-// const authDomain = 'app.moonfit.xyz'
-const authDomain = 'sw-move2earn-app-f8519.firebaseapp.com'
+const authDomain = 'app.moonfit.xyz'
+// const authDomain = 'sw-move2earn-app-f8519.firebaseapp.com'
 export const firebaseConfig = {
     apiKey: "AIzaSyBaxQq4UR37DOnc5kF1UJI0jn5OLMK-fG8",
     // authDomain: "sw-move2earn-app-f8519.firebaseapp.com",
