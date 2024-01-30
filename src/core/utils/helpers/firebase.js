@@ -79,6 +79,7 @@ export const signInWithGooglePopup = async () => {
                     },
                 }
                 await createUserAPI(value)
+                
             }
             if (walletSignature !== null) {
                 await connectWalletToAccountAPI()

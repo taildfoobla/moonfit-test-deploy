@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react"
+import React, {useEffect, useRef, useState} from "react"
 import mfg from "../../../assets/images/lucky-wheel/mfg.png"
 import mfr from "../../../assets/images/lucky-wheel/mfr-border.svg"
 import mfrWhite from "../../../assets/images/lucky-wheel/mfr-white.svg"
@@ -62,12 +62,14 @@ import LuckyRewardModal from "../../../components/LuckyRewardModal"
 import {checkApi} from "../../../core/utils/helpers/check-api"
 import {spinOnChain, checkOnchain} from "../../../core/services/bounty-spin"
 import {useLocation, useParams, useSearchParams} from "react-router-dom"
+import ReCAPTCHA from "react-google-recaptcha";
+
 
 const {CYBER_ACCOUNT_KEY} = COMMON_CONFIGS
 
 const Wheel = (props) => {
     const location =useLocation()
-
+    const recaptcha=useRef()
     const {
         networkChainId,
         freeSpin,
@@ -99,6 +101,7 @@ const Wheel = (props) => {
         sendViaCyberWallet,
         connectToCyber,
         setIsOpenModalChooseAccount,
+        isLoginSocial,
         listUsers,
     } = useAuth()
     
@@ -125,6 +128,25 @@ const Wheel = (props) => {
         wheel.style.transform = "rotate(" + deg + "deg)"
     }
     const onSpin = async () => {
+        const captchaValue = recaptcha.current.getValue();
+        if (!captchaValue) {
+            alert("Please verify the reCAPTCHA!");
+            
+            return
+          } else {
+            // make form submission
+            alert("Form submission successful!");
+            console.log("capcha",captchaValue)
+            return
+          }
+        if(!isLoginSocial||!auth.isConnected){
+            return AntdMessage.error({
+                key: "err",
+                content: "Please connect wallet and login social to spin",
+                className: "message-error",
+                duration: 3,
+            })
+        }
         if (loading) {
             return
         }
@@ -258,7 +280,6 @@ const Wheel = (props) => {
             }
         } catch (error) {
             setLoading(false)
-            // refreshAccessToken()
         }
     }
 
@@ -470,6 +491,8 @@ const Wheel = (props) => {
                     <img src={lottery} alt="" />
                     <span>{renderTextButton()}</span>
                 </div>
+                <ReCAPTCHA ref={recaptcha} sitekey={"6LdfhmApAAAAAEgoVBB5oueRi_tPD7YdfMh18QiL"} />
+
             </div>
         </div>
     )

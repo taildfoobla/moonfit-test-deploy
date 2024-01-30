@@ -16,6 +16,17 @@ export const createUserAPI = async (value) => {
     return data
 }
 
+export const sendUserTimezoneAPI = async (value) => {
+    const accessToken = getLocalStorage(LOCALSTORAGE_KEY.ACCESS_TOKEN)
+    const body=value
+    const config = {
+        headers: {
+            Authorization: `Bearer ${accessToken}`, // Set the access token in the Authorization header
+        },
+    }
+    const {data} = await ApiService.makeRequest.post("/users/timezone_offset_minute", body,config)
+    return data
+}
 
 
 

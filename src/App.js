@@ -19,6 +19,8 @@ function App() {
             once: true,
             offset: 0
         })
+
+        console.log("timeZone",Intl.DateTimeFormat().resolvedOptions().timeZone)
     }, [])
     useEffect(() => {
         const bodyElement = document.body
