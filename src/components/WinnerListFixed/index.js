@@ -162,6 +162,17 @@ const WinnerListFixed = (props) => {
         return text
     }
 
+    const renderWinnerUnit=(type)=>{
+        switch(type){
+            case "ASTR":
+            case "GLMR":
+                 return "$";
+            default:
+                return "";
+
+        }
+    }
+
     return (
     
         <div className={`lw-list-winners-fixed ${id}`} style={{marginLeft:`${wrapperMarginLeft}`}}>
@@ -181,7 +192,7 @@ const WinnerListFixed = (props) => {
                         //     </div>
                         // </div>
                         <p className="marque-text" key={index}>
-                            Congratulations, <span className="history-address">{getShortAddress(user?.wallet_address,4)}</span>, on winning a {rewards[0].value} {rewards[0].unit}
+                            Congratulations, <span className="history-address">{getShortAddress(user?.wallet_address,4)}</span>, on winning a {rewards[0].value} {renderWinnerUnit(rewards[0].type)}{rewards[0].unit}
                         </p>
                     )
                 })}

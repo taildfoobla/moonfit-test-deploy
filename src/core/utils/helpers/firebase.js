@@ -3,7 +3,7 @@ import {initializeApp} from "firebase/app"
 import {getAnalytics} from "firebase/analytics"
 import {getAuth, signInWithPopup, GoogleAuthProvider, signOut, OAuthProvider,signInWithRedirect} from "firebase/auth"
 import {message as AntdMessage} from "antd"
-import {setLocalStorage, LOCALSTORAGE_KEY, getLocalStorage} from "./storage"
+import {setLocalStorage, LOCALSTORAGE_KEY, getLocalStorage, removeLocalStorage} from "./storage"
 import {createUserAPI} from "../../services/create-user-in-db"
 import {connectWalletToAccountAPI} from "../../services/connect-account"
 
@@ -14,8 +14,8 @@ import {connectWalletToAccountAPI} from "../../services/connect-account"
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 export const firebaseConfig = {
     apiKey: "AIzaSyBaxQq4UR37DOnc5kF1UJI0jn5OLMK-fG8",
-    authDomain: "sw-move2earn-app-f8519.firebaseapp.com",
-    // authDomain: "https://dev-app.moonfit.xyz/",
+    // authDomain: "sw-move2earn-app-f8519.firebaseapp.com",
+    authDomain: "app.moonfit.xyz",
 
     databaseURL: "https://sw-move2earn-app-f8519-default-rtdb.firebaseio.com",
     projectId: "sw-move2earn-app-f8519",
@@ -69,8 +69,9 @@ export const signInWithGooglePopup = async () => {
             setLocalStorage(LOCALSTORAGE_KEY.ACCESS_TOKEN, accessToken)
             setLocalStorage(LOCALSTORAGE_KEY.REFRESH_TOKEN, refreshToken)
             setLocalStorage(LOCALSTORAGE_KEY.SOCIAL_ACOUNT, JSON.stringify(user))
-
+            console.log("user",user,isAlreadyInDb)
             if (!isAlreadyInDb) {
+                console.log("create user")
                 const value = {
                     input: {
                         uid: uId,
@@ -159,6 +160,9 @@ export const signOutAllPlatform = async () => {
             console.log("resultSignOut", result)
             // Sign-out successful.
             console.log("signOutSuccess")
+            removeLocalStorage(LOCALSTORAGE_KEY.ACCESS_TOKEN)
+            removeLocalStorage(LOCALSTORAGE_KEY.REFRESH_TOKEN)
+            removeLocalStorage(LOCALSTORAGE_KEY.SOCIAL_ACOUNT)
         })
         .catch((error) => {
             // An error happened.

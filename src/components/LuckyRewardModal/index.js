@@ -76,7 +76,7 @@ export default function LuckyRewardModal({rewardData, isOpen, onOpenReward, rend
                         {renderRewardImage(rewardData.type)}
                     </div>
                     <div className="lucky-wheel-reward-text text-pink-glow-thin">
-                        {rewardData.value}{" "}{rewardData.unit}
+                        {rewardData.value}{" $"}{rewardData.unit}
                         {/* 5 $glMr */}
                         </div>
                     <div className="lucky-wheel-claim-btn" onClick={handleOk}>

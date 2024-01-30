@@ -135,8 +135,9 @@ const Event = ({event, isHolder}) => {
 
     const handlePreventPassThrough=(e,slug)=>{
         if(slug==="bounty-spin"){
-            e.preventDefault()
+           
             if(!auth.isConnected){
+                e.preventDefault()
                 message.error({
                     key:'err',
                     content: "Please connect wallet",
@@ -145,6 +146,7 @@ const Event = ({event, isHolder}) => {
                 })
             }
             if(!isLoginSocial){
+                e.preventDefault()
                 message.error({ 
                     key:"err",
                     content: "Please login social",
