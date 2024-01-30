@@ -331,7 +331,7 @@ const Header = () => {
 
     const handlePreventPassThrough = (e, title) => {
         if (!isConnected) {
-            if (title === "Deposit" || title === "Bounty Spin") {
+            if (title === "Deposit") {
                 e.preventDefault()
                 return AntdMessage.error({
                     key: "err",
@@ -346,8 +346,7 @@ const Header = () => {
                 title === "Withdraw" ||
                 title === "Deposit" ||
                 title === "Asset" ||
-                title === "2FA" ||
-                title === "Bounty Spin"
+                title === "2FA" 
             ) {
                 e.preventDefault()
                 return AntdMessage.error({

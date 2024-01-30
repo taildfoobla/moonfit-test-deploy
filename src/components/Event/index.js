@@ -134,28 +134,28 @@ const Event = ({event, isHolder}) => {
         ].includes(event?.event_type.title)
 
     const handlePreventPassThrough=(e,slug)=>{
-        if(slug==="bounty-spin"){
+        // if(slug==="bounty-spin"){
            
-            if(!auth.isConnected){
-                e.preventDefault()
-                message.error({
-                    key:'err',
-                    content: "Please connect wallet",
-                    className: "message-error",
-                    duration: 5,
-                })
-            }
-            if(!isLoginSocial){
-                e.preventDefault()
-                message.error({ 
-                    key:"err",
-                    content: "Please login social",
-                    className: "message-error",
-                    duration: 5,
-                })
-            }
+        //     if(!auth.isConnected){
+        //         e.preventDefault()
+        //         message.error({
+        //             key:'err',
+        //             content: "Please connect wallet",
+        //             className: "message-error",
+        //             duration: 5,
+        //         })
+        //     }
+        //     if(!isLoginSocial){
+        //         e.preventDefault()
+        //         message.error({ 
+        //             key:"err",
+        //             content: "Please login social",
+        //             className: "message-error",
+        //             duration: 5,
+        //         })
+        //     }
           
-        }
+        // }
     }
 
     return (

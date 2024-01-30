@@ -4,7 +4,7 @@ import {getAnalytics} from "firebase/analytics"
 import {getAuth, signInWithPopup, GoogleAuthProvider, signOut, OAuthProvider,signInWithRedirect} from "firebase/auth"
 import {message as AntdMessage} from "antd"
 import {setLocalStorage, LOCALSTORAGE_KEY, getLocalStorage, removeLocalStorage} from "./storage"
-import {createUserAPI} from "../../services/create-user-in-db"
+import {createUserAPI, sendUserTimezoneAPI} from "../../services/create-user-in-db"
 import {connectWalletToAccountAPI} from "../../services/connect-account"
 
 // TODO: Add SDKs for Firebase products that you want to use
@@ -69,7 +69,13 @@ export const signInWithGooglePopup = async () => {
             setLocalStorage(LOCALSTORAGE_KEY.ACCESS_TOKEN, accessToken)
             setLocalStorage(LOCALSTORAGE_KEY.REFRESH_TOKEN, refreshToken)
             setLocalStorage(LOCALSTORAGE_KEY.SOCIAL_ACOUNT, JSON.stringify(user))
-            console.log("user",user,isAlreadyInDb)
+            
+            const dataTimezone={
+                "timezone_offset_minute": new Date().getTimezoneOffset(),
+                "timezone": Intl.DateTimeFormat().resolvedOptions().timeZone,
+            }
+       
+
             if (!isAlreadyInDb) {
                 console.log("create user")
                 const value = {
@@ -78,7 +84,15 @@ export const signInWithGooglePopup = async () => {
                         data: {is_testnet: false},
                     },
                 }
+             
+
+                const dataTimezone={
+                    "timezone_offset_minute": new Date().getTimezoneOffset(),
+                    "timezone": Intl.DateTimeFormat().resolvedOptions().timeZone,
+                }
+
                 await createUserAPI(value)
+                await sendUserTimezoneAPI(dataTimezone)
             }
             if (walletSignature !== null) {
                 await connectWalletToAccountAPI()

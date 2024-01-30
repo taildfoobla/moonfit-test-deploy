@@ -18,6 +18,17 @@ export const getWheelInfo = async ([chainId]) => {
     
 }
 
+export const getWheelInfoNoTokenAPI = async()=>{
+    const accessToken = getLocalStorage(LOCALSTORAGE_KEY.ACCESS_TOKEN)
+    const config = {
+        headers: {
+            Authorization: `Bearer ${accessToken}`, // Set the access token in the Authorization header
+        },
+    }
+    const {data} = await ApiService.makeRequest.get(`missions/lucky-wheel-onchain-without-token`, config)
+    return data
+}
+
 export const checkTaskAPI=async([chainId])=>{
     const accessToken = getLocalStorage(LOCALSTORAGE_KEY.ACCESS_TOKEN)
     const walletAddress=JSON.parse(getLocalStorage(LOCALSTORAGE_KEY.WALLET_SIGNATURE))?.account
