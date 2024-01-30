@@ -99,7 +99,8 @@ const BountySpin = () => {
             //     className: "message-error",
             //     duration: 5,
             // })
-
+            setMissions({invite: false, zealy: false})
+            setIsOpenRefLink(false)
             getWheelInfoNoToken()
         }
     }, [selectedNetwork, isLoginSocial, auth?.isConnected])
@@ -350,7 +351,10 @@ const BountySpin = () => {
     }
 
     const handleTogleOpenRefLink = () => {
-        setIsOpenRefLink(!isOpenRefLink)
+        if(auth.isConnected&&isLoginSocial){
+            setIsOpenRefLink(!isOpenRefLink)
+
+        }
     }
 
     const handleCopy = () => {
@@ -601,7 +605,7 @@ const BountySpin = () => {
                                             </div>
                                             <div className="result">
                                                 <button
-                                                    className={`invite ${isOpenRefLink ? "disabled" : ""}`}
+                                                    className={`invite ${isOpenRefLink||(!auth.isConnected||!isLoginSocial) ? "disabled" : ""}`}
                                                     onClick={handleTogleOpenRefLink}
                                                 >
                                                     Invite friends
