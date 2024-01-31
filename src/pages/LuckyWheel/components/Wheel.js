@@ -119,7 +119,6 @@ const Wheel = (props) => {
                     setLocalStorage("ACCESS_TOKEN", accessToken)
                     setLocalStorage("REFRESH_TOKEN", refreshToken)
                     const newData = await callback(array.map((item) => item))
-                    console.log("newDataReturn", newData)
                     return newData
                 } else {
                     onDisconnect()
@@ -134,7 +133,7 @@ const Wheel = (props) => {
 
             // return res
         } catch (err) {
-            console.log("errreerere")
+            console.log("err",err)
         }
     }
 
@@ -191,7 +190,6 @@ const Wheel = (props) => {
         const accessToken = getLocalStorage(LOCALSTORAGE_KEY.ACCESS_TOKEN)
         if (connectToCyber?.isConnected) {
             if (accessToken !== null) {
-                console.log("haveToken")
                 try {
                     setLoading(true)
                     // let wheel = document.getElementById("inner-wheel")
@@ -235,7 +233,6 @@ const Wheel = (props) => {
                                             }
                                             const x = Math.floor(totalDeg / 360)
                                             const y = totalDeg - x * 360
-                                            console.log("y", y)
                                             setCurrentDeg(y)
                                             wheel.style.transition = "0s"
                                             // wheel.style.transform = "rotate(" +y + "deg)"
@@ -279,7 +276,6 @@ const Wheel = (props) => {
                     // refreshAccessToken()
                 }
             } else {
-                console.log("noToken")
                 if (listUsers?.data?.length > 0) {
                     setIsOpenModalChooseAccount(true)
                     return
@@ -318,7 +314,6 @@ const Wheel = (props) => {
                             let count = 1
                             rotateWheel(count)
                             const x = await checkOnchain([data.lucky_wheel_id])
-                            console.log("XXXXXX", x)
                             let isCompleted = x.data?.reward
                             let y
                             let z
@@ -341,7 +336,6 @@ const Wheel = (props) => {
                                         }
                                         const x = Math.floor(totalDeg / 360)
                                         const y = totalDeg - x * 360
-                                        console.log("y", y)
                                         setCurrentDeg(y)
                                         wheel.style.transition = "0s"
                                         // wheel.style.transform = "rotate(" +y + "deg)"
@@ -388,7 +382,6 @@ const Wheel = (props) => {
             }
         } else {
             if (accessToken !== null) {
-                console.log("haveToken")
                 try {
                     setLoading(true)
                     // let wheel = document.getElementById("inner-wheel")
@@ -444,7 +437,6 @@ const Wheel = (props) => {
                                             }
                                             const x = Math.floor(totalDeg / 360)
                                             const y = totalDeg - x * 360
-                                            console.log("y", y)
                                             setCurrentDeg(y)
                                             wheel.style.transition = "0s"
                                             // wheel.style.transform = "rotate(" +y + "deg)"
@@ -486,7 +478,6 @@ const Wheel = (props) => {
                     // refreshAccessToken()
                 }
             } else {
-                console.log("noToken")
                 if (listUsers?.data?.length > 0) {
                     setIsOpenModalChooseAccount(true)
                     return
@@ -559,7 +550,6 @@ const Wheel = (props) => {
                                         }
                                         const x = Math.floor(totalDeg / 360)
                                         const y = totalDeg - x * 360
-                                        console.log("y", y)
                                         setCurrentDeg(y)
                                         wheel.style.transition = "0s"
                                         // wheel.style.transform = "rotate(" +y + "deg)"

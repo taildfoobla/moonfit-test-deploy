@@ -181,7 +181,6 @@ const Deposit = () => {
         setIsLogin(true)
         setLoginMessage("")
         const users = auth?.user?.appUser
-        console.log("users: ", users)
         if (users) {
             setLocalStorage("ACCESS_TOKEN", users.access_token)
             // if (users.length === 1) {
@@ -406,14 +405,10 @@ const Deposit = () => {
     const handleSignInGoogle = async () => {
         try {
             const result = await signInWithGooglePopup()
-            console.log("login success")
-            console.log("result", result)
             const credential = GoogleAuthProvider.credentialFromResult(result)
             const token = credential.accessToken
-            console.log("token", token)
             // The signed-in user info.
             const user = result.user
-            console.log("user", user)
             setIsLoginGoogle(true)
         } catch (err) {
             console.log("login error",err)
@@ -1092,7 +1087,6 @@ const Deposit = () => {
                     )
                 })
                 .then(() => {
-                    console.log("setDepositingSucces")
                     setDepositing(false)
                     setIsModalResult(true)
 
@@ -1103,7 +1097,6 @@ const Deposit = () => {
                         setDepositing(false)
                         onDisconnect()
                     }
-                    console.log("errDepositing")
 
                     result = false
                 }))
@@ -1141,7 +1134,6 @@ const Deposit = () => {
 
                 const statusCode = await res.status
                 if (!res) {
-                    console.log("dsad1")
                     const res2 = await handleGetAccessToken(account, userIdSelected)
                     const data = res2?.data?.data
                     const accessToken = data.access_token

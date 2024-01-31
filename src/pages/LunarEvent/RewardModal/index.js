@@ -51,7 +51,6 @@ const RewardModal = (props) => {
     },[isCopy])
 
     const copyAddress=(text)=>{
-        console.log("dadsadsa",text)
    
         setIsCopy(true)
         navigator.clipboard.writeText(text)

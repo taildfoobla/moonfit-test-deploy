@@ -123,7 +123,6 @@ const MFAssetSelect = (props) => {
                       </div>;
                     },
                     MenuList: (props) => {
-                        console.log('propsss: ', props)
                         return <div className='menuList'>
                             <div className='menuListBox'>
                                 <span style={{display: 'block', fontSize: '17px', color: '#FFF', textTransform: 'uppercase', padding: '12px 20px', borderBottom: '1px solid rgba(144, 130, 157, 0.2)'}}>Select a token</span>

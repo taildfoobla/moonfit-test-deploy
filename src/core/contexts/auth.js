@@ -254,7 +254,6 @@ const AuthProvider = ({children}) => {
     const getLoginSocialData=async()=>{
         const res = await getRedirectResult(auth)
         if(res){
-            console.log("res",res)
         }
     }
 
@@ -641,7 +640,6 @@ const AuthProvider = ({children}) => {
     }
 
     const handleLoginInCyberApp = async (address) => {
-        console.log("loginCyber")
         try {
             const value = {
                 wallet_address: address,
@@ -691,7 +689,6 @@ const AuthProvider = ({children}) => {
                     data: data.data.users,
                 })
             } else {
-                console.log("noAccount")
                 const user = []
                 const jwt = ""
                 const currentBalance = await web3.eth.getBalance(address) // Get wallets balance
@@ -706,7 +703,6 @@ const AuthProvider = ({children}) => {
                     message: data.message,
                     account: address,
                 }
-                console.log("value", value)
                 setNetWork(network)
                 saveWalletInfo(user, currentBalance, ethBalance, address, nChainId, nftBalance, jwt)
                 setListUsers(value)
@@ -782,7 +778,6 @@ const AuthProvider = ({children}) => {
             },
             {description: "Sign in Cyber"}
         )
-        console.log("hash", hash)
         return hash
     }
 

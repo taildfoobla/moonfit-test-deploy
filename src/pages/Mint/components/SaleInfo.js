@@ -100,7 +100,6 @@ const SaleInfo = (props) => {
         const receipt = await getTransactionReceipt(txHash)
 
         if (receipt) {
-            console.log(receipt)
             if (typeof callback === "function") {
                 callback()
             }
@@ -278,11 +277,9 @@ const SaleInfo = (props) => {
                     is_free: true,
                 }
         }
-        console.log("round", round, value)
         setIsMinting(true)
         const res = await checkApi(mintAPI,[round, value])
         setIsMinting(false)
-        console.log("res", res)
         const {data, message, success} = res
         setIsOpenConfirmPopup(false)
         if (success) {
@@ -394,7 +391,6 @@ const SaleInfo = (props) => {
     }
 
     const _renderModalConfirm = () => {
-        console.log("selected",selectedPack,isAstar)
         const user = JSON.parse(getLocalStorage(LOCALSTORAGE_KEY.SOCIAL_ACOUNT))
         return (
             <div className="mf-modal-confirm">

@@ -20,7 +20,6 @@ export default function VerificationModal({isOpen, onClose,onToggleActiveTwoFa,o
    }
 
    const handlePaste = async() => {
-    console.log("paste")
     const data = await navigator.clipboard.readText()
     inputRef.current.focus()
     if(data.length>6){
@@ -34,7 +33,6 @@ export default function VerificationModal({isOpen, onClose,onToggleActiveTwoFa,o
 
     const handleSubmit=async()=>{
         const res = await checkApi(change2faAPI,[code])
-        console.log("res",res)
         const {success,message,data}=res
         if(success===true){
             onChangeCodeToActiveTwoFa(data?.secret_key)

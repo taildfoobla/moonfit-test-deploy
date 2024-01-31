@@ -4,8 +4,7 @@ import {depositNFTToApp, updateTransactionHash} from "../../../core/utils-app/ap
 import {sendTransaction} from "../../../core/utils-app/blockchain";
 export const depositToMobileApp = async (provider, connector, params, callback) => {
     const response = await depositNFTToApp(params)
-    console.log("depositProvider",provider)
-    console.log("depositConnector",connector)
+  
     let {data, success, message} = response
     if (typeof data.success === "boolean" && !data.success) {
         success = false;
