@@ -1,7 +1,5 @@
 {
-  "projects": {
-    "default": "moonfit-token-sale"
-  },
+  "projects": {},
   "targets": {
     "mf-raffle-game": {
       "hosting": {
