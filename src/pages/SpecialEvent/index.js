@@ -12,13 +12,15 @@ import LunarEvent from "../LunarEvent"
 import CyberConnectEvent from "../CyberConnectEvent"
 import ChristmasEvent from "../ChristmasChallenge"
 import BountySpin from "../BountySpin"
+import ValentineChallenge from "../ValentineChallenge"
 
 const SpecialEvent = () => {
     const params = useParams()
     const navigate = useNavigate()
 
     if (
-        ![  "bounty-spin",
+        ![  "valentine-challenge",
+            "bounty-spin",
             "moonfit-x-cyberconnect-challenge",
             "christmas-challenge",
             "christmas-event",
@@ -62,17 +64,19 @@ const SpecialEvent = () => {
                 output = <YuliverseEvent />
                 break
             case "lunar-gaming-festival-thanksgiving-challenge":
-                output = <LunarEvent/>
+                output = <LunarEvent />
                 break
             case "christmas-challenge":
-                output=<ChristmasEvent/>
+                output = <ChristmasEvent />
                 break
             case "moonfit-x-cyberconnect-challenge":
                 output = <CyberConnectEvent />
                 break
             case "bounty-spin":
-                output= <BountySpin/>
+                output = <BountySpin />
                 break
+            case "valentine-challenge":
+                output= <ValentineChallenge/>
             default:
                 break
         }

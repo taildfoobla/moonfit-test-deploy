@@ -142,7 +142,14 @@ export const signInWithApplePopup = async () => {
                         data: {is_testnet: false},
                     },
                 }
+              
+                const dataTimezone={
+                    "timezone_offset_minute": new Date().getTimezoneOffset(),
+                    "timezone": Intl.DateTimeFormat().resolvedOptions().timeZone,
+                }
+
                 await createUserAPI(value)
+                await sendUserTimezoneAPI(dataTimezone)
             }
             if (walletSignature !== null) {
                 await connectWalletToAccountAPI()

@@ -44,10 +44,18 @@ import astrIcon from "../../assets/images/bounty-spin/wheel/astar-wheel.png"
 import glmrIcon from "../../assets/images/bounty-spin/wheel/glmr-wheel.png"
 import mfrIcon from "../../assets/images/bounty-spin/wheel/mfr-wheel.png"
 import omfgIcon from "../../assets/images/bounty-spin/wheel/omfg-wheel.png"
+import { sendUserTimezoneAPI } from "../../core/services/create-user-in-db"
 
 const loadingIcon = <LoadingOutlined style={{fontSize: 60, color: "#FFF"}} spin />
 
 const loadingMissonIcon = <LoadingOutlined style={{fontSize: 30, color: "#FFF"}} spin />
+
+const poolData = [
+    {index: 1, img: glmrIcon, name: "GLMR", value: 0},
+    {index: 2, img: omfgIcon, name: "oMFG", value: ""},
+    {index: 3, img: astrIcon, name: "ASTR", value: 0},
+    {index: 4, img: mfrIcon, name: "MFR", value: ""},
+]
 
 const BountySpin = () => {
     const navigate = useNavigate()
@@ -196,6 +204,18 @@ const BountySpin = () => {
                         value: data?.user?.omfg,
                     },
                 ]
+
+                if(data?.user?.timezone===null){
+                    console.log("sendTimezone")
+                    const dataTimezone={
+                        "timezone_offset_minute": new Date().getTimezoneOffset(),
+                        "timezone": Intl.DateTimeFormat().resolvedOptions().timeZone,
+                    }
+                    console.log("dataSend",dataTimezone)
+                    await checkApi(sendUserTimezoneAPI,[dataTimezone])
+
+                }
+
                 setTokens(newTokensValue)
                 setLoadingFetch(false)
             } else {
@@ -213,12 +233,12 @@ const BountySpin = () => {
         }
     }
 
-    const getWheelInfoNoToken = async ()=>{
-        try{
-            const res = await getWheelInfoNoTokenAPI();
+    const getWheelInfoNoToken = async () => {
+        try {
+            const res = await getWheelInfoNoTokenAPI()
             const {success, message, data} = res
-            console.log("res",res)
-            if(success){
+            console.log("res", res)
+            if (success) {
                 const dataHistory = data?.histories
                 if (dataHistory) {
                     const length = dataHistory?.length
@@ -264,8 +284,7 @@ const BountySpin = () => {
                 }
 
                 setLoadingFetch(false)
-
-            }else{
+            } else {
                 return AntdMessage.error({
                     key: "err",
                     content: message,
@@ -273,7 +292,7 @@ const BountySpin = () => {
                     duration: 5,
                 })
             }
-        }catch(err){
+        } catch (err) {
             const errMessage = err?.response?.data?.message
             setLoadingFetch(false)
 
@@ -351,9 +370,8 @@ const BountySpin = () => {
     }
 
     const handleTogleOpenRefLink = () => {
-        if(auth.isConnected&&isLoginSocial){
+        if (auth.isConnected && isLoginSocial) {
             setIsOpenRefLink(!isOpenRefLink)
-
         }
     }
 
@@ -372,9 +390,9 @@ const BountySpin = () => {
         // navigate("/mint")
     }
 
-    console.log("dsadsa",auth.isConnected)
-    console.log("123",isLoginSocial)
-    console.log("mission",isLoadingMission)
+    console.log("dsadsa", auth.isConnected)
+    console.log("123", isLoginSocial)
+    console.log("mission", isLoadingMission)
 
     return (
         <div
@@ -434,7 +452,23 @@ const BountySpin = () => {
                                     <img src={img2} alt="" />
                                     <img src={img3} alt="" />
                                 </div>
-
+                                <div className="pool-status">
+                                    <div className="border-gradient-2"></div>
+                                    <div className="pool-status-content">
+                                        <h3>Pool Status</h3>
+                                        <ul className="pool-token-list">
+                                            {poolData.map((item) => (
+                                                <li className={`pool-token-item ${item.value===0?"blur":""}`} key ={item.index}>
+                                                    <div className="info">
+                                                        <img src={item.img} alt="" />
+                                                        <span>{item.name}</span>
+                                                    </div>
+                                                    <p className="value">{item.value}</p>
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    </div>
+                                </div>
                                 <div className="claim-tutorial bounty-spin-tutorial">
                                     <h3>How to join ?</h3>
                                     <div className="claim-tutorial-content">
@@ -585,7 +619,7 @@ const BountySpin = () => {
                                                     </span>
                                                 </span>
                                             </div>
-                                            {auth.isConnected&&isLoginSocial&&isLoadingMission ? (
+                                            {auth.isConnected && isLoginSocial && isLoadingMission ? (
                                                 loadingMissonIcon
                                             ) : missons?.zealy ? (
                                                 <img className="check" src={doneIcon} alt="" />
@@ -605,12 +639,16 @@ const BountySpin = () => {
                                             </div>
                                             <div className="result">
                                                 <button
-                                                    className={`invite ${isOpenRefLink||(!auth.isConnected||!isLoginSocial) ? "disabled" : ""}`}
+                                                    className={`invite ${
+                                                        isOpenRefLink || !auth.isConnected || !isLoginSocial
+                                                            ? "disabled"
+                                                            : ""
+                                                    }`}
                                                     onClick={handleTogleOpenRefLink}
                                                 >
                                                     Invite friends
                                                 </button>
-                                                {auth.isConnected&&isLoginSocial&&isLoadingMission ? (
+                                                {auth.isConnected && isLoginSocial && isLoadingMission ? (
                                                     loadingMissonIcon
                                                 ) : missons?.invite ? (
                                                     <img className="check" src={doneIcon} alt="" />
