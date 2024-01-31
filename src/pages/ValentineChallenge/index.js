@@ -118,7 +118,7 @@ const ValentineChallenge = () => {
     return (
         <ValentineEventWrapper>
             <MFModal
-                visible={openModal}
+                visible={!openModal}
                 width={570}
                 height={520.63}
                 centered={true}
