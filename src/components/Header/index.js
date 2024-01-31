@@ -278,6 +278,9 @@ const Header = () => {
             case "christmas-challenge":
                 className = "christmas-challenge"
                 break
+            case "valentine-challenge":
+                className = "valentine-challenge"
+                break
             default:
                 break
         }
@@ -342,12 +345,7 @@ const Header = () => {
             }
         }
         if (!isLoginSocial) {
-            if (
-                title === "Withdraw" ||
-                title === "Deposit" ||
-                title === "Asset" ||
-                title === "2FA" 
-            ) {
+            if (title === "Withdraw" || title === "Deposit" || title === "Asset" || title === "2FA") {
                 e.preventDefault()
                 return AntdMessage.error({
                     key: "err",
