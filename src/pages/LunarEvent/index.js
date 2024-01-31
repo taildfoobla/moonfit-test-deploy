@@ -18,6 +18,7 @@ import MFCountdown from "../../components/Countdown"
 import {LOCALSTORAGE_KEY, setLocalStorage} from "../../core/utils/helpers/storage"
 import LunarWrapper from "../../components/Wrapper/LunarWrapper"
 import TaskModal from "./TasksModal"
+import { getLocalStorage } from "../../core/utils/helpers/storage"
 
 
 const LunarEvent = () => {
@@ -38,15 +39,16 @@ const LunarEvent = () => {
 
     useEffect(() => {
         fetchEventById()
-        // const eventStatus= localStorage.getItem("EVENTS_STATUS")
-        // if(eventStatus){
-        //     const data = eventStatus.find(event=>event.slug==params.id)
-        //     const endTime = Date.parse(new Date(data.end))
-        //     const todayTime = Date.now()
-        //     if(todayTime>endTime){
-        //         setIsExPired(true)
-        //     }
-        // }
+     
+        const events = JSON.parse(getLocalStorage("_events"))
+        const thisEvent = events.find((event) => {
+            return event.slug === params.id
+        })
+        if (thisEvent && thisEvent.status === "expired") {
+            setIsExPired(true)
+        } else {
+            setIsExPired(false)
+        }
     }, [params.id, user, onDisconnect])
 
     const fetchEventById = async () => {

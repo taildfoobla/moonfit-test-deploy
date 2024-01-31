@@ -13,16 +13,15 @@ import zealyTask from "../../assets/images/summer/zealy-task.svg"
 import christmasChallengeHeader from "../../assets/images/christmas-challenge/chrismas-challenge-header.png"
 import valentineChallengeHeader from "../../assets/images/valentine-challenge/valentine-challenge-header.png"
 import christmasChallengePrize from "../../assets/images/christmas-challenge/christmas-challenge-prize.png"
-import valentineChallengePrize from '../../assets/images/valentine-challenge/valentine-challenge-prize.png'
+import valentineChallengePrize from "../../assets/images/valentine-challenge/valentine-challenge-prize.png"
 import {Button, message, Tooltip} from "antd"
 import RewardModal from "./RewardModal"
 import MFModal from "../../components/MFModal"
 import moment from "moment"
 import MFCountdown from "../../components/Countdown"
-import {LOCALSTORAGE_KEY, setLocalStorage} from "../../core/utils/helpers/storage"
+import {LOCALSTORAGE_KEY, getLocalStorage, setLocalStorage} from "../../core/utils/helpers/storage"
 import TaskModal from "./TasksModal"
 import ValentineEventWrapper from "../../components/Wrapper/ValentineEventWrapper"
-
 
 const ValentineChallenge = () => {
     const params = useParams()
@@ -33,8 +32,8 @@ const ValentineChallenge = () => {
     const [openModal, setOpenModal] = useState(false)
     const [reward, setReward] = useState({})
     const [timeLeft, setTimeLeft] = useState(moment(moment().endOf("day")).unix() * 1000)
-    const [backgroundList,setBackgoundList] = useState([])
-    const [isExpired,setIsExPired]= useState(false)
+    const [backgroundList, setBackgoundList] = useState([])
+    const [isExpired, setIsExPired] = useState(false)
 
     useEffect(() => {
         document.title = "MoonFit - Valentine Challenge"
@@ -42,19 +41,20 @@ const ValentineChallenge = () => {
 
     useEffect(() => {
         fetchEventById()
-        // const eventStatus= localStorage.getItem("EVENTS_STATUS")
-        // if(eventStatus){
-        //     const data = eventStatus.find(event=>event.slug==params.id)
-        //     const endTime = Date.parse(new Date(data.end))
-        //     const todayTime = Date.now()
-        //     if(todayTime>endTime){
-        //         setIsExPired(true)
-        //     }
-        // }
+        const events = JSON.parse(getLocalStorage("_events"))
+        const thisEvent = events.find((event) => {
+            return event.slug === params.id
+        })
+        if (thisEvent && thisEvent.status === "expired") {
+            setIsExPired(true)
+        } else {
+            setIsExPired(false)
+        }
+     
     }, [params.id, user, onDisconnect])
 
     const fetchEventById = async () => {
-        const {data} = await EventService.getAdventEvent(params.id)
+        const {data} = await EventService.getAdventEvent("christmas-challenge")
         EventService.setDefaultEventData(params.id, data.data)
         setEvent(data.data)
         setBackgoundList(data.background_task)
@@ -65,6 +65,7 @@ const ValentineChallenge = () => {
             )
             window.dispatchEvent(new Event("checkWinner"))
         }
+    
     }
     const onCloseModal = () => {
         fetchEventById()
@@ -146,8 +147,8 @@ const ValentineChallenge = () => {
             </MFModal> */}
             <div className="calendar-valentine-challenge-container">
                 <div className="valentine-challenge-header">
-                 <img src={valentineChallengeHeader} alt=""/>
-                 <img src={valentineChallengePrize} alt=""/>
+                    <img src={valentineChallengeHeader} alt="" />
+                    <img src={valentineChallengePrize} alt="" />
                 </div>
                 <div className="title">
                     {/* <img src={eventTitle} alt="title" /> */}
@@ -155,13 +156,13 @@ const ValentineChallenge = () => {
                         <h4>How to join this event:</h4>
                         {/* <div className="event-guide"></div> */}
                         <div className="list-event-notification">
-                        {/* <div className="notify d-flex">
+                            {/* <div className="notify d-flex">
                                 <p>
                                     <span className="index">1</span>
                                     Complete tasks to earn random rewards from MoonFit: $GLMR, $ASTR, $tMFG, $MFR, Exclusive Merchandise ...
                                 </p>
                             </div> */}
-                             <div className="notify d-flex">
+                            <div className="notify d-flex">
                                 <p>
                                     <span className="index">1</span>Users complete daily challenge
                                 </p>
@@ -232,14 +233,13 @@ const ValentineChallenge = () => {
     )
 }
 
-const AuthCalendar = ({loading, task, index, refetch, openModal, setReward, setOpenModal,backgroundData}) => {
+const AuthCalendar = ({loading, task, index, refetch, openModal, setReward, setOpenModal, backgroundData}) => {
     const params = useParams()
     const [modalChallenge, setModalChallenge] = useState({
         visible: false,
         data: null,
     })
     const now = moment()
-
 
     const renderTooltip = (action, status) => {
         let tooltip = ""
@@ -389,7 +389,7 @@ const UnauthCalendar = ({task, index}) => {
                 <div className={`date`} style={{background: `url(${task?.image_url})`, backgroundSize: "cover"}}>
                     <span className="date-of-month">
                         <time>{new Date(task?.date).getDate()}</time>
-                    </span> 
+                    </span>
                     <p
                         className={
                             task?.type_action === "rest" ? "rest" : task?.type === "distance" ? "distance" : "run"
