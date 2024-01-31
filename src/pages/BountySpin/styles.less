@@ -9,6 +9,18 @@
     color: #ffb206;
 }
 
+.border-gradient-2 {
+    position: absolute;
+    top: -3px;
+    bottom: -3px;
+    left: -3px;
+    right: -3px;
+    background: linear-gradient(90deg, #ff963f 0%, #ffed10 100%);
+    box-shadow: 0px 4px 80px 0px rgba(161, 107, 216, 0.6);
+    z-index: -1;
+    border-radius: 23px;
+}
+
 img {
     margin: 0;
 }
@@ -263,14 +275,14 @@ img {
                 &:nth-child(3) {
                     // height: 130px;
                     width: 570px;
-                    margin-bottom: 25px;
+                    margin-bottom: 27.83px;
                     display: block;
                 }
             }
         }
     }
     .lucky-wheel-left {
-        margin-top: 18px;
+        margin-top: 42px;
         display: flex;
         flex-direction: column;
         gap: 0;
@@ -363,6 +375,81 @@ img {
                             scale: 1;
                         }
                     }
+                }
+            }
+        }
+    }
+}
+
+.pool-status {
+    position: relative;
+    width: 100%;
+    margin-bottom: 32.34px;
+    .pool-status-content {
+        background: linear-gradient(90deg, #600 -4.21%, #b42525 149.99%);
+        border-radius: 20px;
+        padding: 20px;
+        width: 100%;
+        h3 {
+            color: #fff;
+
+            leading-trim: both;
+
+            text-edge: cap;
+            font-family: "Race Sport";
+            font-size: 18px;
+            font-style: normal;
+            font-weight: 400;
+            line-height: 26px; /* 144.444% */
+            text-transform: uppercase;
+            margin-bottom: 9px;
+        }
+        .pool-token-list {
+            padding: 0;
+            margin: 0;
+            list-style: none;
+            display:flex;
+           justify-content: space-between;
+            flex-wrap: wrap;
+            align-items: center;
+            .pool-token-item {
+                width: calc((100% - 55px)/2);
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding:16px 0;
+                border-bottom: 1px solid rgba(255,255,255,0.2);
+                &.blur{
+                    opacity: 0.5;
+                }
+                .info {
+                    display: flex;
+                    gap:8.25px;
+                    align-items: center;
+                    img {
+                        width: 28px;
+                        height: 28px;
+                    }
+                    span {
+                        color: #fff;
+
+                        font-family: "Darker Grotesque";
+                        font-size: 18px;
+                        font-style: normal;
+                        font-weight: 600;
+                        line-height: 28px;
+                    }
+                }
+                p {
+                    color: #fff;
+
+                    text-align: right;
+                    font-family: "Darker Grotesque";
+                    font-size: 18px;
+                    font-style: normal;
+                    font-weight: 600;
+                    line-height: 28px;
+                    margin: 0;
                 }
             }
         }
@@ -1951,12 +2038,11 @@ img {
                         //     display:none;
                         // }
                     }
-                    .wheel-background{
-                    top:-20px !important;
-                    left:-20px !important;
-                    right:-20px !important;
-                    bottom:-20px !important;
-          
+                    .wheel-background {
+                        top: -20px !important;
+                        left: -20px !important;
+                        right: -20px !important;
+                        bottom: -20px !important;
                     }
                     .spin-button {
                         width: 282px;
@@ -1975,7 +2061,9 @@ img {
             }
         }
     }
-
+    .pool-status{
+        display:none;
+    }
     .claim-tutorial {
         &.bounty-spin-tutorial {
             display: none;

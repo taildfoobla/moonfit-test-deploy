@@ -16,7 +16,7 @@ export const createUserAPI = async (value) => {
     return data
 }
 
-export const sendUserTimezoneAPI = async (value) => {
+export const sendUserTimezoneAPI = async ([value]) => {
     const accessToken = getLocalStorage(LOCALSTORAGE_KEY.ACCESS_TOKEN)
     const body=value
     const config = {
