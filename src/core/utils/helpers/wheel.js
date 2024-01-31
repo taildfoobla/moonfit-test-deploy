@@ -34,7 +34,6 @@ export const depositOnchainWheelHaveToken = async ([provider, connector, data, a
     }
     try{
         const txHash = await sendTransaction(provider, connector, sendData)
-        console.log("txHash", txHash)
         if (txHash) {
            
             updateTransactionHaveToken([ data.wallet_transaction_id,  txHash])
@@ -59,7 +58,6 @@ export const depositOnchainWheel = async ([provider, connector, data, account]) 
     }
     try{
         const txHash = await sendTransaction(provider, connector, sendData)
-        console.log("txHash", txHash)
         if (txHash) {
            
            const res = await updateTransactionHash([ data.wallet_transaction_id,  txHash])

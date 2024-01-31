@@ -55,7 +55,6 @@ export const signInWithGooglePopup = async () => {
     try {
         const res = await signInWithPopup(auth, googleProvider)
         // const res = await signInWithRedirect(auth,googleProvider)
-        // console.log("res",res)
         if (res) {
             const isAlreadyInDb = res?.user?.reloadUserInfo?.customAttributes ? true : false
             const uId = res?.user?.uid
@@ -77,7 +76,6 @@ export const signInWithGooglePopup = async () => {
        
 
             if (!isAlreadyInDb) {
-                console.log("create user")
                 const value = {
                     input: {
                         uid: uId,
@@ -107,7 +105,6 @@ export const signInWithGooglePopup = async () => {
             return true
         }
     } catch (err) {
-        console.log(err)
         AntdMessage.error({
             key: "err",
             content: err.message,
@@ -164,7 +161,6 @@ export const signInWithApplePopup = async () => {
             return true
         }
     } catch (err) {
-        console.log(err)
         AntdMessage.error({
             key: "err",
             content: err.message,
@@ -178,9 +174,7 @@ export const signInWithApplePopup = async () => {
 export const signOutAllPlatform = async () => {
     signOut(auth)
         .then((result) => {
-            console.log("resultSignOut", result)
             // Sign-out successful.
-            console.log("signOutSuccess")
             removeLocalStorage(LOCALSTORAGE_KEY.ACCESS_TOKEN)
             removeLocalStorage(LOCALSTORAGE_KEY.REFRESH_TOKEN)
             removeLocalStorage(LOCALSTORAGE_KEY.SOCIAL_ACOUNT)

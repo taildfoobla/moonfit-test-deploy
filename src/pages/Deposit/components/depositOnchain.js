@@ -19,9 +19,7 @@ export const depositOnchain = async ([provider, connector, data, account]) => {
     }
     try{
         const txHash = await sendTransaction(provider, connector, sendData)
-        console.log("txHash", txHash)
         if (txHash) {
-           console.log("beforeUpdate")
            if(accessToken!==null){
             updateTransactionHaveToken([ data.wallet_transaction_id,  txHash])
            }else{
@@ -32,7 +30,6 @@ export const depositOnchain = async ([provider, connector, data, account]) => {
             const key = CryptoJS.AES.encrypt(JSON.stringify(value), CYBER_ACCOUNT_KEY).toString()
             updateTransactionNoToken({transaction_id: data.wallet_transaction_id, transaction_hash: txHash,key})
            }
-           console.log("afterUpdate") 
            return true
         }else{
             return false

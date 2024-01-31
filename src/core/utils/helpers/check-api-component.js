@@ -4,12 +4,10 @@ import { message as AntdMessage } from "antd"
 import { signOutAllPlatform } from "./firebase"
 
 export const checkApiComponent = async (callback) => {
-    console.log("checking api")
 
     try {
         let res
         if(array){
-            console.log("here1")
             res = await callback()
 
         }else{
@@ -18,7 +16,6 @@ export const checkApiComponent = async (callback) => {
 
         }
         if (res.data === undefined) {
-            console.log("returnBoolean")
             return res
         }
         const {message, success} = res.data
@@ -41,9 +38,7 @@ export const checkApiComponent = async (callback) => {
     } catch (err) {
         const errMessage = err?.response?.data?.message
         if(errMessage&&errMessage.includes("token has expired")){
-            console.log("beforeGetAccessToken")
             const newTokenRes = await getAccessTokenAPI()
-            console.log("afterGetAccessToken",newTokenRes)
             if (newTokenRes?.access_token) {
               
                 const accessToken = newTokenRes?.access_token
@@ -53,10 +48,8 @@ export const checkApiComponent = async (callback) => {
                 let newData
                 if(array){
                     newData = await callback(array.map((item) => item))
-                    console.log("newDataReturn", newData)
                 }else{
                     newData=await callback()
-                    console.log("newDataReturn1", newData)
 
                 }
                 return newData

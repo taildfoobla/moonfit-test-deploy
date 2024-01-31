@@ -326,9 +326,8 @@ const Header = () => {
             removeLocalStorage(LOCALSTORAGE_KEY.ACCESS_TOKEN)
             removeLocalStorage(LOCALSTORAGE_KEY.REFRESH_TOKEN)
             removeLocalStorage(LOCALSTORAGE_KEY.SOCIAL_ACOUNT)
-            console.log("signout success")
         } catch (err) {
-            console.log("signout err")
+            console.log("signout err",err)
         }
     }
 

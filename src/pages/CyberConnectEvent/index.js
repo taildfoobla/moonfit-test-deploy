@@ -68,7 +68,6 @@ const CyberConnectEvent = () => {
             }
         } else {
             if (text !== null) {
-                console.log("disconect")
                 onDisconnect()
                 return AntdMessage.error({
                     key:"err",
@@ -90,7 +89,6 @@ const CyberConnectEvent = () => {
                         setLocalStorage(LOCALSTORAGE_KEY.REFRESH_TOKEN, refreshToken)
                         fetchEventById("reCall")
                     } else {
-                        console.log("disconect")
                         onDisconnect()
                         return AntdMessage.error({
                             key:"err",

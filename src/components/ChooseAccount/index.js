@@ -98,7 +98,6 @@ export default function ChooseAccountModal() {
     }
 
     const onChangeAccount = ({target: {value}}) => {
-        // console.log('radio1 checked', value);
         setUserIdSelected(value)
     }
 
@@ -107,7 +106,6 @@ export default function ChooseAccountModal() {
         const isConnectedCyberApp = connectToCyber?.isConnected
         let res
         if (isConnectedCyberApp) {
-            console.log("cyberAPp")
             res = await handleLoginAfterChooseAccountCyberApp(account, userIdSelected)
         } else {
             res = await handleLoginAfterChooseAccount(account, userIdSelected)

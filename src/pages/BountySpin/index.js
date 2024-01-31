@@ -206,12 +206,10 @@ const BountySpin = () => {
                 ]
 
                 if(data?.user?.timezone===null){
-                    console.log("sendTimezone")
                     const dataTimezone={
                         "timezone_offset_minute": new Date().getTimezoneOffset(),
                         "timezone": Intl.DateTimeFormat().resolvedOptions().timeZone,
                     }
-                    console.log("dataSend",dataTimezone)
                     await checkApi(sendUserTimezoneAPI,[dataTimezone])
 
                 }
@@ -237,7 +235,6 @@ const BountySpin = () => {
         try {
             const res = await getWheelInfoNoTokenAPI()
             const {success, message, data} = res
-            console.log("res", res)
             if (success) {
                 const dataHistory = data?.histories
                 if (dataHistory) {
@@ -390,9 +387,7 @@ const BountySpin = () => {
         // navigate("/mint")
     }
 
-    console.log("dsadsa", auth.isConnected)
-    console.log("123", isLoginSocial)
-    console.log("mission", isLoadingMission)
+
 
     return (
         <div

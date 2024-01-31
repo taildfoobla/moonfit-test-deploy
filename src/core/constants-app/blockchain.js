@@ -485,9 +485,7 @@ export const WEB3_METHODS = {
         
     },
     addToChainId(chainId,data=null) {
-        console.log("NETWORKS",NETWORKS)
         const network = NETWORKS.find((item) => item.chainId === chainId) || {}
-        console.log(network)
         if(data===null){
             return {
                 method: "wallet_addEthereumChain",

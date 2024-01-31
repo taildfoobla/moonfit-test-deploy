@@ -69,7 +69,6 @@ const SummerEvent = () => {
         setTimeLeft(moment(moment().endOf("day")).unix() * 1000)
     }
 
-    console.log("event",event)
 
     return (
         <SummerWrapper>

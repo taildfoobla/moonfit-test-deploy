@@ -19,7 +19,6 @@ export default function AuthTwoFA({isOpen, onClose, selectedAsset, selectedNetwo
     }
 
     const handlePaste = async() => {
-        console.log("paste")
         const data = await navigator.clipboard.readText()
         inputRef.current.focus()
         if(data.length>6){

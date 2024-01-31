@@ -16,7 +16,6 @@ export default function ChangeMintNetwork() {
     }
 
     const renderNetwork = (network) => {
-        console.log("network",network)
         let networkName = ""
         let networkIcon = ""
         switch (network) {
