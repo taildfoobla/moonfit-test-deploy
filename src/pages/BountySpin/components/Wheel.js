@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react"
+import React, {useEffect, useRef, useState} from "react"
 import mfg from "../../../assets/images/lucky-wheel/mfg.png"
 import mfr from "../../../assets/images/lucky-wheel/mfr-border.svg"
 import mfrWhite from "../../../assets/images/lucky-wheel/mfr-white.svg"
@@ -62,12 +62,13 @@ import LuckyRewardModal from "../../../components/LuckyRewardModal"
 import {checkApi} from "../../../core/utils/helpers/check-api"
 import {spinOnChain, checkOnchain} from "../../../core/services/bounty-spin"
 import {useLocation, useParams, useSearchParams} from "react-router-dom"
+import ReCAPTCHA from "react-google-recaptcha"
 
 const {CYBER_ACCOUNT_KEY} = COMMON_CONFIGS
 
 const Wheel = (props) => {
-    const location =useLocation()
-
+    const location = useLocation()
+    const recaptcha = useRef()
     const {
         networkChainId,
         freeSpin,
@@ -81,7 +82,7 @@ const Wheel = (props) => {
         setGameToken,
         getHistoryData,
         setIsRerender,
-        tokens
+        tokens,
     } = props
     const [loading, setLoading] = useState(false)
     const [reward, setReward] = useState({})
@@ -99,9 +100,9 @@ const Wheel = (props) => {
         sendViaCyberWallet,
         connectToCyber,
         setIsOpenModalChooseAccount,
+        isLoginSocial,
         listUsers,
     } = useAuth()
-    
 
     const [searchParams] = useSearchParams()
 
@@ -125,11 +126,30 @@ const Wheel = (props) => {
         wheel.style.transform = "rotate(" + deg + "deg)"
     }
     const onSpin = async () => {
+        // const captchaValue = recaptcha.current.getValue();
+        // if (!captchaValue) {
+        //     alert("Please verify the reCAPTCHA!");
+
+        //     return
+        //   } else {
+        //     // make form submission
+        //     alert("Form submission successful!");
+        //     console.log("capcha",captchaValue)
+        //     return
+        //   }
+        if (!isLoginSocial || !auth.isConnected) {
+            return AntdMessage.error({
+                key: "err",
+                content: "Connect your wallet and link your social accounts to start spinning!",
+                className: "message-error",
+                duration: 3,
+            })
+        }
         if (loading) {
             return
         }
-        const mfrToken = tokens.find(token=>token.type==="MFR")
-        if(freeSpin<1&&mfrToken?.value<1){
+        const mfrToken = tokens.find((token) => token.type === "MFR")
+        if (freeSpin < 1 && mfrToken?.value < 1) {
             return AntdMessage.error({
                 key: "err",
                 content: "You don't have enough MFR to spin",
@@ -138,12 +158,7 @@ const Wheel = (props) => {
             })
         }
 
-        // if (gameToken < 5 && !freeSpin) {
-        //     return openMessage()
-        // }
-
         const token = !freeSpin ? gameToken - 5 : gameToken
-        // // updateGameToken(token)
         setGameToken(token)
         setShowWidget(false)
         const walletAddress = JSON.parse(getLocalStorage(LOCALSTORAGE_KEY.WALLET_SIGNATURE))?.account
@@ -156,12 +171,10 @@ const Wheel = (props) => {
             })
         }
 
-        const accessToken = getLocalStorage(LOCALSTORAGE_KEY.ACCESS_TOKEN)
-
         try {
             setLoading(true)
             let value
-            if (searchParams.get("referral_code")!==null) {
+            if (searchParams.get("referral_code") !== null) {
                 value = {
                     wallet_address: walletAddress,
                     referral_code: searchParams.get("referral_code"),
@@ -208,8 +221,14 @@ const Wheel = (props) => {
                         y = setInterval(async () => {
                             z = await checkApi(checkOnchain, [luckyWheelId])
                             isCompleted = z.data?.reward
-                            if(!location.pathname.includes("bounty-spin")){
+                            if(!window.location.href.includes("bounty-spin")){
                                 clearInterval(y)
+                                
+                                let wheel = document.getElementById("inner-wheel")
+                                if(wheel){
+                                    wheel.style.transition = "0s"
+                                }
+                                return
                             }
                             if (isCompleted) {
                                 clearInterval(y)
@@ -239,6 +258,7 @@ const Wheel = (props) => {
                                     // }, 2000)
                                 }, 7500)
                             } else {
+                          
                                 count++
                                 rotateWheel(count)
                             }
@@ -246,7 +266,6 @@ const Wheel = (props) => {
                     }
                 }
             } else {
-
                 setLoading(false)
                 setIsRerender(true)
                 return AntdMessage.error({
@@ -258,7 +277,6 @@ const Wheel = (props) => {
             }
         } catch (error) {
             setLoading(false)
-            // refreshAccessToken()
         }
     }
 
@@ -273,28 +291,28 @@ const Wheel = (props) => {
                 output = <img src={mfgWheel} alt="" />
                 break
             case "GLMR":
-                if (color==="color-0") {
+                if (color === "color-0") {
                     output = <img src={luckyWheel1} alt="" />
-                } else if (color==="color-1") {
+                } else if (color === "color-1") {
                     output = <img src={luckyWheel2} alt="" />
-                } else if(color==="color-2"){
+                } else if (color === "color-2") {
                     output = <img src={luckyWheel3} alt="" />
-                } else if (color ==="color-3"){
+                } else if (color === "color-3") {
                     output = <img src={luckyWheel4} alt="" />
-                } else{
+                } else {
                     output = <img src={luckyWheel5} alt="" />
                 }
                 break
             case "ASTR":
-                if (color==="color-0") {
+                if (color === "color-0") {
                     output = <img src={luckyWheel1} alt="" />
-                } else if (color==="color-1") {
+                } else if (color === "color-1") {
                     output = <img src={luckyWheel2} alt="" />
-                } else if(color==="color-2"){
+                } else if (color === "color-2") {
                     output = <img src={luckyWheel3} alt="" />
-                } else if (color ==="color-3"){
+                } else if (color === "color-3") {
                     output = <img src={luckyWheel4} alt="" />
-                } else{
+                } else {
                     output = <img src={luckyWheel5} alt="" />
                 }
                 break
@@ -349,10 +367,10 @@ const Wheel = (props) => {
         return output
     }
 
-    const renderTextButton=()=>{
-        if(freeSpin>0){
+    const renderTextButton = () => {
+        if (freeSpin > 0) {
             return `${freeSpin} free spin`
-        }else{
+        } else {
             return `Spin now`
         }
     }
@@ -419,7 +437,7 @@ const Wheel = (props) => {
             <div className="flex flex-col justify-between wheel-flex">
                 <div className="wheel-wrapper" id="wheel-wrapper">
                     <div className="wheel-background">
-                        <img src={wheelBg} alt=""/>
+                        <img src={wheelBg} alt="" />
                     </div>
                     <div id="direction">
                         <div id="direction-inner"></div>
@@ -447,10 +465,7 @@ const Wheel = (props) => {
                                     luckyWheel.map((wheel, index) => {
                                         // let randomNumber = Math.round(Math.random() * 2)
                                         return (
-                                            <div
-                                                key={index}
-                                                className={`sec ${wheel.type} ${wheel.color}`}
-                                            >
+                                            <div key={index} className={`sec ${wheel.type} ${wheel.color}`}>
                                                 {_renderImage(wheel.type, wheel.color)}
                                                 <span>
                                                     {wheel.type === "GLMR" || wheel.type === "ASTR" ? "1" : wheel.value}
@@ -470,6 +485,7 @@ const Wheel = (props) => {
                     <img src={lottery} alt="" />
                     <span>{renderTextButton()}</span>
                 </div>
+                {/* <ReCAPTCHA ref={recaptcha} sitekey={"6LdfhmApAAAAAEgoVBB5oueRi_tPD7YdfMh18QiL"} /> */}
             </div>
         </div>
     )

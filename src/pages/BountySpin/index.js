@@ -10,7 +10,7 @@ import LuckyWheelBg from "../../assets/images/bounty-spin/bg.png"
 import LuckyWheelBgMobile from "../../assets/images/lucky-wheel/lucky wheel-bg-mobile.png"
 import LuckyWheelHistoryIcon from "../../assets/images/lucky-wheel/lw-history-gift.png"
 import LuckyWheelHistoryModal from "../../components/LuckyWheelHistoryModal"
-import {checkTaskAPI, getHisoryList} from "../../core/services/bounty-spin"
+import {checkTaskAPI, getHisoryList, getWheelInfoNoTokenAPI} from "../../core/services/bounty-spin"
 import Bg from "../../assets/images/bounty-spin/bg.png"
 import "./styles.less"
 import WinnerListMobile from "./components/WinnerListMobile"
@@ -44,11 +44,18 @@ import astrIcon from "../../assets/images/bounty-spin/wheel/astar-wheel.png"
 import glmrIcon from "../../assets/images/bounty-spin/wheel/glmr-wheel.png"
 import mfrIcon from "../../assets/images/bounty-spin/wheel/mfr-wheel.png"
 import omfgIcon from "../../assets/images/bounty-spin/wheel/omfg-wheel.png"
+import { sendUserTimezoneAPI } from "../../core/services/create-user-in-db"
 
 const loadingIcon = <LoadingOutlined style={{fontSize: 60, color: "#FFF"}} spin />
 
 const loadingMissonIcon = <LoadingOutlined style={{fontSize: 30, color: "#FFF"}} spin />
 
+const poolData = [
+    {index: 1, img: glmrIcon, name: "GLMR", value: 0},
+    {index: 2, img: omfgIcon, name: "oMFG", value: ""},
+    {index: 3, img: astrIcon, name: "ASTR", value: 0},
+    {index: 4, img: mfrIcon, name: "MFR", value: ""},
+]
 
 const BountySpin = () => {
     const navigate = useNavigate()
@@ -82,7 +89,7 @@ const BountySpin = () => {
     const [tokens, setTokens] = useState([])
     const [zealyTaskId, setZealyTaskId] = useState("")
     const [isRerender, setIsRerender] = useState(false)
-    const [isLoadingMission,setIsLoadingMisson]=useState(true)
+    const [isLoadingMission, setIsLoadingMisson] = useState(true)
 
     useEffect(() => {
         if (isLoginSocial && auth?.isConnected) {
@@ -93,13 +100,16 @@ const BountySpin = () => {
             getTaskData(id)
             fetchLuckyWheelInfo(id)
         } else {
-            navigate("/")
-            AntdMessage.error({
-                key: "err",
-                content: "Please connect wallet and login social to spin",
-                className: "message-error",
-                duration: 5,
-            })
+            // navigate("/")
+            // AntdMessage.error({
+            //     key: "err",
+            //     content: "Please connect wallet and login social to spin",
+            //     className: "message-error",
+            //     duration: 5,
+            // })
+            setMissions({invite: false, zealy: false})
+            setIsOpenRefLink(false)
+            getWheelInfoNoToken()
         }
     }, [selectedNetwork, isLoginSocial, auth?.isConnected])
 
@@ -194,6 +204,18 @@ const BountySpin = () => {
                         value: data?.user?.omfg,
                     },
                 ]
+
+                if(data?.user?.timezone===null){
+                    console.log("sendTimezone")
+                    const dataTimezone={
+                        "timezone_offset_minute": new Date().getTimezoneOffset(),
+                        "timezone": Intl.DateTimeFormat().resolvedOptions().timeZone,
+                    }
+                    console.log("dataSend",dataTimezone)
+                    await checkApi(sendUserTimezoneAPI,[dataTimezone])
+
+                }
+
                 setTokens(newTokensValue)
                 setLoadingFetch(false)
             } else {
@@ -211,6 +233,78 @@ const BountySpin = () => {
         }
     }
 
+    const getWheelInfoNoToken = async () => {
+        try {
+            const res = await getWheelInfoNoTokenAPI()
+            const {success, message, data} = res
+            console.log("res", res)
+            if (success) {
+                const dataHistory = data?.histories
+                if (dataHistory) {
+                    const length = dataHistory?.length
+                    const number1 = Math.floor(length / 4)
+                    const number2 = Math.floor(length / 2)
+                    const dataHistoryDesktop1 = dataHistory.slice(0, number1)
+                    const dataHistoryDesktop2 = dataHistory.slice(number1, number1 * 2)
+                    const dataHistoryDesktop3 = dataHistory.slice(number1 * 2, number1 * 3)
+                    const dataHistoryDesktop4 = dataHistory.slice(number1 * 3, length)
+
+                    const dataHistoryMobile1 = dataHistory.slice(0, number2)
+                    const dataHistoryMobile2 = dataHistory.slice(number2, length)
+
+                    setHistoriedFixed(dataHistory)
+
+                    setHistories({
+                        histories1: dataHistoryDesktop1,
+                        histories2: dataHistoryDesktop2,
+                        histories3: dataHistoryDesktop3,
+                        histories4: dataHistoryDesktop4,
+                        histories5: dataHistoryMobile1,
+                        histories6: dataHistoryMobile2,
+                    })
+                }
+
+                if (data?.wheels) {
+                    let luckyMoney = data?.wheels.filter((item) => item.type === "GLMR" || item.type === "ASTR")
+
+                    luckyMoney = luckyMoney.sort((a, b) => {
+                        return a.value - b.value
+                    })
+                    let newData = data?.wheels.map((item) => {
+                        if (item.type === "GLMR" || item.type === "ASTR") {
+                            const index = luckyMoney.findIndex((lucky) => {
+                                return lucky.value === item.value
+                            })
+                            return {...item, color: `color-${index}`}
+                        } else {
+                            return {...item, color: ""}
+                        }
+                    })
+                    setWheelsInfo(newData || [])
+                }
+
+                setLoadingFetch(false)
+            } else {
+                return AntdMessage.error({
+                    key: "err",
+                    content: message,
+                    className: "message-error",
+                    duration: 5,
+                })
+            }
+        } catch (err) {
+            const errMessage = err?.response?.data?.message
+            setLoadingFetch(false)
+
+            return AntdMessage.error({
+                key: "err",
+                content: errMessage,
+                className: "message-error",
+                duration: 5,
+            })
+        }
+    }
+
     const getTaskData = async (chainId) => {
         const res = await checkApi(checkTaskAPI, [chainId])
         const {success, message, data} = res
@@ -221,7 +315,7 @@ const BountySpin = () => {
             })
             setZealyTaskId(data?.zealy_task[0])
             setIsLoadingMisson(false)
-        }else{
+        } else {
             return AntdMessage.error({
                 key: "err",
                 content: message,
@@ -236,15 +330,14 @@ const BountySpin = () => {
         if (walletAddress) {
             const res = await checkApi(getHisoryList, [walletAddress, lastId, limit])
             if (res?.data) {
-                if(isRerender){
+                if (isRerender) {
                     setHistoryRewards(res.data?.histories)
                     setUserHasMoreHistory(res?.data?.has_more)
-                }else{
+                } else {
                     const newData = historyRewards.concat(res.data?.histories)
                     setHistoryRewards(newData)
                     setUserHasMoreHistory(res?.data?.has_more)
                 }
-               
             }
         }
     }
@@ -277,7 +370,9 @@ const BountySpin = () => {
     }
 
     const handleTogleOpenRefLink = () => {
-        setIsOpenRefLink(!isOpenRefLink)
+        if (auth.isConnected && isLoginSocial) {
+            setIsOpenRefLink(!isOpenRefLink)
+        }
     }
 
     const handleCopy = () => {
@@ -294,6 +389,11 @@ const BountySpin = () => {
         navigate(`/${url}`)
         // navigate("/mint")
     }
+
+    console.log("dsadsa", auth.isConnected)
+    console.log("123", isLoginSocial)
+    console.log("mission", isLoadingMission)
+
     return (
         <div
             className={`lucky-wheel-wrapped-container bounty-spin-container ${
@@ -341,7 +441,10 @@ const BountySpin = () => {
                                 hasMore={userHasMoreHistory}
                                 getHisoryList={getHistoryData}
                             />
-                            <UserBalanceInfo tokens={tokens} onToggleHistoryModal={handleToggleHistoryModal} />
+
+                            {auth.isConnected && isLoginSocial && (
+                                <UserBalanceInfo tokens={tokens} onToggleHistoryModal={handleToggleHistoryModal} />
+                            )}
 
                             <div className="lucky-wheel-right">
                                 <div className="header-picture">
@@ -349,7 +452,23 @@ const BountySpin = () => {
                                     <img src={img2} alt="" />
                                     <img src={img3} alt="" />
                                 </div>
-
+                                <div className="pool-status">
+                                    <div className="border-gradient-2"></div>
+                                    <div className="pool-status-content">
+                                        <h3>Pool Status</h3>
+                                        <ul className="pool-token-list">
+                                            {poolData.map((item) => (
+                                                <li className={`pool-token-item ${item.value===0?"blur":""}`} key ={item.index}>
+                                                    <div className="info">
+                                                        <img src={item.img} alt="" />
+                                                        <span>{item.name}</span>
+                                                    </div>
+                                                    <p className="value">{item.value}</p>
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    </div>
+                                </div>
                                 <div className="claim-tutorial bounty-spin-tutorial">
                                     <h3>How to join ?</h3>
                                     <div className="claim-tutorial-content">
@@ -391,17 +510,28 @@ const BountySpin = () => {
                                             Earn more spins - complete all our tasks below
                                         </p>
                                         <p className="hightlight-text">
-                                        Note: Upon selecting Astar Network/Moonbeam Network, opening Red Envelope will give you ASTR/GLMR tokens accordingly fam. You need to pay a small gas fee for each spin.
+                                            Note: Upon selecting Astar Network/Moonbeam Network, opening Red Envelope
+                                            will give you ASTR/GLMR tokens accordingly fam. You need to pay a small gas
+                                            fee for each spin.
                                         </p>
                                     </div>
                                 </div>
                             </div>
                             <div className="lucky-wheel-left">
-                                <UserBalanceInfo tokens={tokens} onToggleHistoryModal={handleToggleHistoryModal} />
-                                <WinnerListMobileWrapper
-                                    histories1={histories.histories5}
-                                    histories2={histories.histories6}
-                                />
+                                {auth.isConnected && isLoginSocial && (
+                                    <>
+                                        {" "}
+                                        <UserBalanceInfo
+                                            tokens={tokens}
+                                            onToggleHistoryModal={handleToggleHistoryModal}
+                                        />{" "}
+                                        <WinnerListMobileWrapper
+                                            histories1={histories.histories5}
+                                            histories2={histories.histories6}
+                                        />
+                                    </>
+                                )}
+
                                 <Wheel
                                     networkChainId={networkChainId}
                                     luckyWheel={wheelsInfo}
@@ -458,7 +588,9 @@ const BountySpin = () => {
                                             Earn more spins - complete all our tasks below
                                         </p>
                                         <p className="hightlight-text">
-                                        Note: Upon selecting Astar Network/Moonbeam Network, opening Red Envelope will give you ASTR/GLMR tokens accordingly fam. You need to pay a small gas fee for each spin.
+                                            Note: Upon selecting Astar Network/Moonbeam Network, opening Red Envelope
+                                            will give you ASTR/GLMR tokens accordingly fam. You need to pay a small gas
+                                            fee for each spin.
                                         </p>
                                     </div>
                                 </div>
@@ -487,7 +619,9 @@ const BountySpin = () => {
                                                     </span>
                                                 </span>
                                             </div>
-                                            {isLoadingMission?loadingMissonIcon:missons?.zealy ? (
+                                            {auth.isConnected && isLoginSocial && isLoadingMission ? (
+                                                loadingMissonIcon
+                                            ) : missons?.zealy ? (
                                                 <img className="check" src={doneIcon} alt="" />
                                             ) : (
                                                 <img className="check" src={notDoneIcon} alt="" />
@@ -505,12 +639,18 @@ const BountySpin = () => {
                                             </div>
                                             <div className="result">
                                                 <button
-                                                    className={`invite ${isOpenRefLink ? "disabled" : ""}`}
+                                                    className={`invite ${
+                                                        isOpenRefLink || !auth.isConnected || !isLoginSocial
+                                                            ? "disabled"
+                                                            : ""
+                                                    }`}
                                                     onClick={handleTogleOpenRefLink}
                                                 >
                                                     Invite friends
                                                 </button>
-                                                {isLoadingMission?loadingMissonIcon:missons?.invite ? (
+                                                {auth.isConnected && isLoginSocial && isLoadingMission ? (
+                                                    loadingMissonIcon
+                                                ) : missons?.invite ? (
                                                     <img className="check" src={doneIcon} alt="" />
                                                 ) : (
                                                     <img className="check" src={notDoneIcon} alt="" />

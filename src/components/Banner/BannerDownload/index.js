@@ -39,14 +39,14 @@ export default function BannerDownload(props) {
     }
 
     const handlePreventPassthrough=(e)=>{
-        if(!isLoginSocial && !auth?.isConnected){
-            e.preventDefault()
-            return AntdMessage.error({
-                key:"err",
-                content: "Please connect wallet and login social",
-                className: "message-error",
-                duration: 5,})
-        }
+        // if(!isLoginSocial && !auth?.isConnected){
+        //     e.preventDefault()
+        //     return AntdMessage.error({
+        //         key:"err",
+        //         content: "Please connect wallet and login social",
+        //         className: "message-error",
+        //         duration: 5,})
+        // }
     }
 
     return (

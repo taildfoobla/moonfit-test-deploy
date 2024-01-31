@@ -7,6 +7,6 @@ export const chainData = [
     // {name: "moonbeam", chainId: 1287},
     // {
     //     name: "astar",
-    //     chainId: 84,
+    //     chainId: 81,
     // },
 ]
