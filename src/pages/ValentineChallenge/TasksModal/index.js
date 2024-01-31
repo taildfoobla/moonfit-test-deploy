@@ -110,7 +110,7 @@ const TaskModal = (props) => {
         try {
             setLoading(true)
             const req = {
-                slug: "christmas-challenge",
+                slug: "valentine-challenge",
                 date: taskData.date,
                 type_reward,
             }
