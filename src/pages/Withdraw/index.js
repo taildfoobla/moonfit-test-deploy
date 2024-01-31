@@ -403,7 +403,6 @@ export default function Withdraw() {
         const num = Number(value.replaceAll(",", ""))
 
         if (selectedAsset?.value <= Number(selectedNetwork?.fees[0]?.value)) {
-            console.log("here1")
             setAmountInput("0")
             return
         }
@@ -502,23 +501,18 @@ export default function Withdraw() {
                         let infoMessage = ""
                         let type = ""
                         if (selectedAsset?.isSwap) {
-                            console.log("swap")
                             type = "isSwap"
                             infoMessage = renderMessageBeast("isSwap", value)
                         } else if (selectedAsset?.isCooldownWithdraw) {
-                            console.log("withdraw")
                             type = "isCooldownWithdraw"
                             infoMessage = renderMessageBeast("isCooldownWithdraw", value)
                         } else if (selectedAsset?.isSelling) {
-                            console.log("selling")
                             type = "isSelling"
                             infoMessage = renderMessageBeast("isSelling", value)
                         } else if (selectedAsset?.isJoinClan) {
-                            console.log("clan")
                             type = "isJoinClan"
                             infoMessage = renderMessageBeast("isJoinClan", value)
                         } else if (selectedAsset?.isUpgrading) {
-                            console.log("upgrade")
                             type = "isUpgrading"
                             infoMessage = renderMessageBeast("isUpgrading", value)
                         } else if (
@@ -527,15 +521,12 @@ export default function Withdraw() {
                             selectedAsset?.itemSpeed !== 0 ||
                             selectedAsset?.itemStamina !== 0
                         ) {
-                            console.log("item")
                             type = "item"
                             infoMessage = renderMessageBeast("item", value)
                         } else if (selectedAsset?.health < 100) {
-                            console.log("heath")
                             type = "health"
                             infoMessage = renderMessageBeast("health", value)
                         } else {
-                            console.log("lockWithdraw")
                             type = "lockWithdraw"
                             infoMessage = renderMessageBeast("lockWithdraw", value)
                         }
@@ -601,7 +592,6 @@ export default function Withdraw() {
     }
 
     const handlePaste = async() => {
-        console.log("paste")
         const data = await navigator.clipboard.readText()
         inputRef.current.focus()
         if(data.length>6){
@@ -675,7 +665,6 @@ export default function Withdraw() {
                                                 handleChangeInputAddress(e.target.value)
                                             }}
                                             onBlur={(e)=>{
-                                                console.log("dsadsa",e.target)
                                                 e.target.scrollLeft=e.target.scrollWidth
                                             }}
                                         />

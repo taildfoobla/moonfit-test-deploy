@@ -14,7 +14,6 @@ export const withdrawAPI = async ([value]) => {
         },
     }
     const {data} = await ApiService.makeRequest.post("/wallet/withdrawal", body, config)
-    console.log("data",data)
     return data
 }
 
@@ -27,7 +26,6 @@ export const getFeeHealthAPI = async ([value]) => {
         },
     }
     const {data} = await ApiService.makeRequest.post("/beasts/regain-fee-by-web", body, config)
-    console.log("data",data)
     return data
 }
 
@@ -42,7 +40,6 @@ export const regenHealthAPI = async ([value]) => {
         },
     }
     const {data} = await ApiService.makeRequest.post("/beasts/payment-regained-health-by-web", body, config)
-    console.log("data",data)
     return data
 }
 
@@ -56,7 +53,6 @@ export const getFeeSpeedUpUpgradeAPI = async ([value]) => {
         },
     }
     const {data} = await ApiService.makeRequest.post("/beasts/speed-up-level-upgrade-fee-by-web", body, config)
-    console.log("data",data)
     return data
 }
 
@@ -70,7 +66,6 @@ export const speedUpUpgradeAPI = async ([value]) => {
         },
     }
     const {data} = await ApiService.makeRequest.post("/beasts/speed-up-level-upgrade-by-web", body, config)
-    console.log("data",data)
     return data
 }
 
@@ -84,7 +79,6 @@ export const unWearAllItemAPI = async ([value]) => {
         },
     }
     const {data} = await ApiService.makeRequest.post("/beasts/un-wear-all-item", body, config)
-    console.log("data",data)
     return data
 }
 
@@ -99,7 +93,6 @@ export const leaveClanAPI = async ([value]) => {
         },
     }
     const {data} = await ApiService.makeRequest.post("/clan/leave-clan", body, config)
-    console.log("data",data)
     return data
 }
 
@@ -112,6 +105,5 @@ export const cancelSellingAPI = async ([value]) => {
         },
     }
     const {data} = await ApiService.makeRequest.post("/marketplace/cancel-selling", body, config)
-    console.log("data",data)
     return data
 }

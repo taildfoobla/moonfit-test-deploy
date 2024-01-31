@@ -278,6 +278,9 @@ const Header = () => {
             case "christmas-challenge":
                 className = "christmas-challenge"
                 break
+            case "valentine-challenge":
+                className = "valentine-challenge"
+                break
             default:
                 break
         }
@@ -323,9 +326,8 @@ const Header = () => {
             removeLocalStorage(LOCALSTORAGE_KEY.ACCESS_TOKEN)
             removeLocalStorage(LOCALSTORAGE_KEY.REFRESH_TOKEN)
             removeLocalStorage(LOCALSTORAGE_KEY.SOCIAL_ACOUNT)
-            console.log("signout success")
         } catch (err) {
-            console.log("signout err")
+            console.log("signout err",err)
         }
     }
 
@@ -342,12 +344,7 @@ const Header = () => {
             }
         }
         if (!isLoginSocial) {
-            if (
-                title === "Withdraw" ||
-                title === "Deposit" ||
-                title === "Asset" ||
-                title === "2FA" 
-            ) {
+            if (title === "Withdraw" || title === "Deposit" || title === "Asset" || title === "2FA") {
                 e.preventDefault()
                 return AntdMessage.error({
                     key: "err",

@@ -37,12 +37,10 @@ export default function AssetsManagement() {
     }
 
     const checkApi = async (callback, array) => {
-        console.log("here")
 
         try {
             let res
             if(array){
-                console.log("here1")
                 res = await callback(array.map((item) => item))
 
             }else{
@@ -51,7 +49,6 @@ export default function AssetsManagement() {
 
             }
             if (res.data === undefined) {
-                console.log("returnBoolean")
                 return res
             }
             const {message, success} = res.data
@@ -74,9 +71,7 @@ export default function AssetsManagement() {
         } catch (err) {
             const errMessage = err?.response?.data?.message
             if(errMessage&&errMessage.includes("token has expired")){
-                console.log("beforeGetAccessToken")
                 const newTokenRes = await getAccessTokenAPI()
-                console.log("afterGetAccessToken",newTokenRes)
                 if (newTokenRes?.access_token) {
                   
                     const accessToken = newTokenRes?.access_token
@@ -86,10 +81,8 @@ export default function AssetsManagement() {
                     let newData
                     if(array){
                         newData = await callback(array.map((item) => item))
-                        console.log("newDataReturn", newData)
                     }else{
                         newData=await callback()
-                        console.log("newDataReturn1", newData)
 
                     }
                     return newData

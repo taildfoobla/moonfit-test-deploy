@@ -123,7 +123,6 @@ const LuckyWheel = () => {
                 setLocalStorage(LOCALSTORAGE_KEY.WHEEL_REWARDS, JSON.stringify(data?.wheels))
             }
         } catch (error) {
-            console.log(error)
             setLoadingFetch(false)
             // refreshAccessToken()
         }
@@ -311,7 +310,7 @@ const LuckyWheel = () => {
                                         Download MoonFit app{" "}
                                         <span
                                             onClick={() => {
-                                                console.log("dsadsa")
+                                              
                                                 handleOpenNewTab("https://onelink.to/kqzrmx")
                                             }}
                                         >

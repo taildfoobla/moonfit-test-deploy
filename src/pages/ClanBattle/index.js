@@ -73,7 +73,6 @@ const ClanBattle = () => {
         setIsLoading(true)
         try {
             const { data } = await ClanBattleService.getBattleDetail(params.id);
-            console.log('getBattleDetail', data)
             setBattle(data)
             document.title = data?.battle?.name || "Moonfit x Worldcup 2022"
             document.description = "Moonfit x Worldcup 2022"

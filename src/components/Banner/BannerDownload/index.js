@@ -34,7 +34,6 @@ export default function BannerDownload(props) {
     }
 
     const handlePrevSlider = () => {
-        console.log("prev")
         sliderRef.current.prev()
     }
 

@@ -58,7 +58,6 @@ export default function TwoFaPage() {
     }
 
     const handleToggleConfirmModal = () => {
-        console.log("here", isOpenConfirmModal)
         setIsOpenConfirmModal(!isOpenConfirmModal)
     }
 
@@ -74,7 +73,6 @@ export default function TwoFaPage() {
     setIsOpenActiveTwoFa(!isOpenActiveTwoFa)
     }
 
-    console.log("isHave2FA", isHave2FA)
 
     if (isLoading) {
         return (

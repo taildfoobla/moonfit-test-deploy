@@ -56,7 +56,6 @@ export default function CreateTwoFa({setIsHave2FA}) {
 
     const handleChangeInputCode = (e, index) => {
         const input = e.target
-        console.log("value", input.value)
         const value = {...authCode, [`input_${index}`]: input.value}
         setAuthCode(value)
         if (input.value !== "" && index < 5) {
@@ -71,7 +70,6 @@ export default function CreateTwoFa({setIsHave2FA}) {
     const handlePaste = (e) => {
         const data = e.clipboardData.getData("text")
         const value = data.split("")
-        console.log("data", value)
 
         if (value.length === 6) {
             setAuthCode({

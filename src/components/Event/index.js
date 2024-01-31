@@ -120,7 +120,8 @@ const Event = ({event, isHolder}) => {
 
     const isSpecial =
         event?.christmas_event ||
-        [   "bounty-spin",
+        [   "valentine-challenge",
+            "bounty-spin",
             "christmas-challenge",
             "lucky-wheel",
             "moonfit-x-cyberconnect-challenge",

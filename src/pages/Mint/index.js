@@ -86,11 +86,9 @@ const Mint = () => {
 
     useEffect(() => {
         if (isRerender) {
-            console.log("rerender")
             getTotalSalesData()
             getMoonBeastData()
         } else if (isRefresh) {
-            console.log("refresh")
             getTotalSalesData()
             getMoonBeastData()
         }
@@ -177,16 +175,13 @@ const Mint = () => {
 
         try {
             const countMoonBeasts = await balanceOfAccount(auth?.user?.account)
-            console.log({countMoonBeasts})
 
             if (countMoonBeasts) {
                 const result = await getMoonBeastByOwner(auth?.user?.account, 0, countMoonBeasts - 1)
-                console.log(result)
                 const _moonBeasts = Array.from(result[0])
                     .map((tokenId) => ({tokenId: parseInt(tokenId, 10)}))
                     .filter((item) => item.tokenId >= firstTokenId && item.tokenId <= lastTokenId)
                 _moonBeasts.reverse()
-                console.log({_moonBeasts})
                 setMoonBeasts(_moonBeasts)
             }
         } catch (e) {

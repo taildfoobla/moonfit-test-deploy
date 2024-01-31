@@ -98,12 +98,10 @@ export default function ItemManagement({isLoading, moonItems}) {
         clearTimeout(timeOut)
         e.target.classList.add("display-scrollbar")
         timeOut = setTimeout(() => {
-            console.log("ABC", e.target.style.classList)
             e.target.classList.remove("display-scrollbar")
         }, 1000)
     }
 
-    console.log("moonItems", moonItems)
 
     return (
         <AssetsManagementCard childClassName="items-management">

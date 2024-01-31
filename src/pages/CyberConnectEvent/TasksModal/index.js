@@ -59,7 +59,6 @@ const TaskModal = (props) => {
         try {
             const res = await callback(array.map((item) => item))
             if (res.data === undefined) {
-                console.log("returnBoolean")
                 return res
             }
             const {message, success} = res.data
@@ -89,7 +88,6 @@ const TaskModal = (props) => {
                     setLocalStorage("ACCESS_TOKEN", accessToken)
                     setLocalStorage("REFRESH_TOKEN", refreshToken)
                     const newData = await callback(array.map((item) => item))
-                    console.log("newDataReturn", newData)
                     return newData
                 } else {
                     onDisconnect()
@@ -104,7 +102,7 @@ const TaskModal = (props) => {
 
             // return res
         } catch (err) {
-            console.log("errreerere", err)
+            console.log("err", err)
         }
     }
 
@@ -191,7 +189,6 @@ const TaskModal = (props) => {
     }
 
     const onClaimTask = async (type_reward, taskIndex, text = null) => {
-        console.log("claimTask")
         const accessToken = getLocalStorage(LOCALSTORAGE_KEY.ACCESS_TOKEN)
         const walletAddress = JSON.parse(getLocalStorage(LOCALSTORAGE_KEY.WALLET_SIGNATURE))?.account
         if (connectToCyber?.isConnected) {
@@ -245,7 +242,6 @@ const TaskModal = (props) => {
                     })
                 }
             }else{
-                console.log("notoken")
                 setLoading(true)
                 const req = {
                     slug: "moonfit-x-cyberconnect-challenge",
@@ -258,9 +254,7 @@ const TaskModal = (props) => {
                 const transactionData = data?.transaction_data
                 const to = transactionData?.transaction?.to
                 const dataTracsaction = transactionData?.transaction?.data
-                console.log("beforeSendCyber")
                 const hash = await sendViaCyberWallet(transactionData)
-                console.log("afterSendCyber")
                 if (hash) {
                     const value = {
                         wallet_address: walletAddress,
@@ -396,7 +390,6 @@ const TaskModal = (props) => {
                     // setCurrentClaimIndex(newClaimIndex)
                 }
             } catch (e) {
-                console.log("errDepositing")
                 setLoading(false)
             }
             }
@@ -433,10 +426,8 @@ const TaskModal = (props) => {
                             setLoading(false)
                             return
                         }
-                        console.log("sendTransactionSuccess",sendTransactionSucces)
 
                         const x = await checkTransactionHash([data])
-                        console.log("XXXXXX", x)
                         let isCompleted = x.is_completed
                         let y
                         let z
@@ -456,7 +447,6 @@ const TaskModal = (props) => {
                                 }
                                 setCurrentClaimIndex(newClaimIndex)
                             }
-                            console.log("ZZZZZZ", z)
                         }, 5000)
 
                     }
@@ -473,7 +463,6 @@ const TaskModal = (props) => {
 
                     }
                 } catch (e) {
-                    console.log("errDepositing")
                     setLoading(false)
                 }
             }
@@ -615,7 +604,6 @@ const TaskModal = (props) => {
                                     type_action === "hodl_nft_in_app" ||
                                     type_action === "connect_wallet" ||
                                     type_action === "run"
-                                console.log("isHaveGuide", isHaveGuide)
                                 return (
                                     <li className="task" key={`task_${index}`}>
                                         <div className="task-content">

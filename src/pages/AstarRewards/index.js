@@ -44,7 +44,6 @@ export default function AstarRewards() {
     const [rewardList, setRewardList] = useState([])
 
     const {isConnected, auth, showWalletSelectModal, showConnectModal, signatureData, provider, connector} = useAuth()
-    console.log("signature data",signatureData)
     //useEffect for first time
     useEffect(() => {
         // let number = parseFloat(moonfitTotalStake.replace(/,/g, ""));

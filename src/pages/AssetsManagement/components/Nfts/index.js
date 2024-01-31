@@ -91,7 +91,6 @@ export default function NftManagement({isLoading, nfts}) {
         }, 1000)
     }
 
-    console.log("nfts", nfts)
 
     return (
         <AssetsManagementCard childClassName="nfts-management">
