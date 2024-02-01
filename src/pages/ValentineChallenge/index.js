@@ -54,7 +54,7 @@ const ValentineChallenge = () => {
     }, [params.id, user, onDisconnect])
 
     const fetchEventById = async () => {
-        const {data} = await EventService.getAdventEvent("christmas-challenge")
+        const {data} = await EventService.getAdventEventV2(params.id)
         EventService.setDefaultEventData(params.id, data.data)
         setEvent(data.data)
         setBackgoundList(data.background_task)
@@ -118,7 +118,7 @@ const ValentineChallenge = () => {
     return (
         <ValentineEventWrapper>
             <MFModal
-                visible={!openModal}
+                visible={openModal}
                 width={570}
                 height={520.63}
                 centered={true}

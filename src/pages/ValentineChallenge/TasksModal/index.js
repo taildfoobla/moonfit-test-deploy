@@ -110,11 +110,11 @@ const TaskModal = (props) => {
         try {
             setLoading(true)
             const req = {
-                slug: "valentine-challenge",
+                slug: "valentine-challenge-2024",
                 date: taskData.date,
                 type_reward,
             }
-            const res = await EventService.claimLunarFestival(req)
+            const res = await EventService.claimAdvent(req)
             // setLoading(false)
             // setOpenModal(true)
             const {success, message, data} = res.data
@@ -152,8 +152,8 @@ const TaskModal = (props) => {
    
     return (
         <div className="task-challenge">
-            <div className="task-bg">
-                <img src={backgroundData[randomNumberBg]} alt=""/>
+            <div className="task-bg" style={{backgroundColor:taskData.background,boxShadow:`0px 4px 44px ${taskData.background}`}}>
+                {/* <img src={backgroundData[randomNumberBg]} alt=""/> */}
             </div>
             <MFModal
                 visible={openRewardModal}

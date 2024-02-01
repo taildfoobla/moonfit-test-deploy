@@ -193,6 +193,13 @@ const claimLunarFestival = async (req) => {
     return res
 }
 
+const claimAdvent = async (req) => {
+    const res = await ApiService.makeAuthRequest.post(`web-event/advent-event/claim-reward`, req, {
+        baseURL: API_APP_URI,
+    })
+    return res
+}
+
 const claimOnChain = async ([req]) => {
     const accessToken = getLocalStorage(LOCALSTORAGE_KEY.ACCESS_TOKEN)
     const walletAddress = JSON.parse(getLocalStorage(LOCALSTORAGE_KEY.WALLET_SIGNATURE))?.account
@@ -264,6 +271,7 @@ const EventService = {
     claimSummerFitsnap,
     claimLunarFestival,
     claimOnChain,
+    claimAdvent
 }
 
 export default EventService
