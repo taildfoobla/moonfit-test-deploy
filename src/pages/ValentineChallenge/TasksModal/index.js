@@ -16,12 +16,14 @@ import {Fragment} from "react"
 import {LoadingOutlined} from "@ant-design/icons"
 import MFModal from "../../../components/MFModal"
 import ClaimModal from "../ClaimModal"
+import { useAuth } from "../../../core/contexts/auth"
 
 const antIcon = <LoadingOutlined style={{fontSize: 24, color: "#000"}} spin />
 
 const TaskModal = (props) => {
     const {taskData, dateOfMonth, refetch, setReward, setOpenModal, setModalChallenge, toggle,backgroundData} = props
-
+    const {auth}=useAuth()
+    const {user}=auth
     const [loading, setLoading] = useState(false)
     const [currentClaimIndex, setCurrentClaimIndex] = useState([])
     const [openRewardModal, setOpenRewardModal] = useState(false)
@@ -113,6 +115,7 @@ const TaskModal = (props) => {
                 slug: "valentine-challenge-2024",
                 date: taskData.date,
                 type_reward,
+                wallet_address:user.account
             }
             const res = await EventService.claimAdvent(req)
             // setLoading(false)
