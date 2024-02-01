@@ -122,6 +122,10 @@ const getAdventEventV2 = async (event) => {
             `web-event/advent-event/get-detail-event-v2/${event}`,
             {
                 baseURL: API_APP_URI,
+                headers: {
+                    "Content-Type": "application/json",
+                    "wallet_address": `${walletAddress}`,
+                },
             }
         )
 
