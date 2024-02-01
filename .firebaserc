@@ -1,15 +1,13 @@
 {
-  "projects": {},
+  "projects": {
+    "default": "moonfit-token-sale"
+  },
   "targets": {
-    "mf-raffle-game": {
-      "hosting": {
-        "dev": [
-          "mf-raffle-game"
-        ]
-      }
-    },
     "moonfit-token-sale": {
       "hosting": {
+        "dev": [
+          "moonfit-token-sale"
+        ],
         "prod": [
           "moonfit-nft"
         ]
