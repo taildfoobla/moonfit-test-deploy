@@ -278,7 +278,7 @@ const Header = () => {
             case "christmas-challenge":
                 className = "christmas-challenge"
                 break
-            case "valentine-challenge":
+            case "valentine-challenge-2024":
                 className = "valentine-challenge"
                 break
             default:

@@ -13,7 +13,8 @@ export const WEB3_METHODS = {
         params: [
             {
                 chainId: '0x504',
-                rpcUrls: ['https://rpc.api.moonbeam.network'],
+                // rpcUrls: ['https://rpc.api.moonbeam.network'],
+                rpcUrls: ['https://rpc.ankr.com/moonbeam'],
                 chainName: 'Moonbeam',
                 nativeCurrency: { name: 'GLMR', decimals: 18, symbol: 'GLMR' },
                 blockExplorerUrls: ['https://moonbeam.moonscan.io/']
@@ -24,7 +25,8 @@ export const WEB3_METHODS = {
         method: 'wallet_switchEthereumChain',
         params: [
             {
-                chainId: '0x504'
+                chainId: '0x504',
+                //    rpcUrls: ['https://rpc.ankr.com/moonbeam'],
             }
         ]
     },
@@ -200,7 +202,9 @@ export const SUPPORTED_NETWORKS = [
         network: "mainnet",
         chain_id: 1284,
         network_id: 1284,
-        rpc_url: "https://rpc.api.moonbeam.network",
+        // rpc_url: "https://rpc.api.moonbeam.network",
+        rpc_url: "https://rpc.ankr.com/moonbeam",
+
         native_currency: {
             symbol: "GLMR",
             name: "Glimmer",

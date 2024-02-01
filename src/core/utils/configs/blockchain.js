@@ -21,7 +21,8 @@ const getConfigs = () => {
         default:
             return {
                 MOONBEAM_SCAN_URL: 'https://moonscan.io',
-                RPC_URL: 'https://rpc.api.moonbeam.network',
+                // RPC_URL: 'https://rpc.api.moonbeam.network',
+                RPC_URL: 'https://rpc.ankr.com/moonbeam',
                 MOONBEAM_WSS_URL: 'wss://wss.api.moonbeam.network',
                 MFG_SC: '',
                 MFR_SC: '',

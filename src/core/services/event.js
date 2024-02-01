@@ -122,6 +122,10 @@ const getAdventEventV2 = async (event) => {
             `web-event/advent-event/get-detail-event-v2/${event}`,
             {
                 baseURL: API_APP_URI,
+                headers: {
+                    "Content-Type": "application/json",
+                    "wallet_address": `${walletAddress}`,
+                },
             }
         )
 
@@ -187,6 +191,13 @@ const claimSummerFitsnap = async (req) => {
     return res
 }
 const claimLunarFestival = async (req) => {
+    const res = await ApiService.makeAuthRequest.post(`web-event/advent-event/claim-reward`, req, {
+        baseURL: API_APP_URI,
+    })
+    return res
+}
+
+const claimAdvent = async (req) => {
     const res = await ApiService.makeAuthRequest.post(`web-event/advent-event/claim-reward`, req, {
         baseURL: API_APP_URI,
     })
@@ -264,6 +275,7 @@ const EventService = {
     claimSummerFitsnap,
     claimLunarFestival,
     claimOnChain,
+    claimAdvent
 }
 
 export default EventService

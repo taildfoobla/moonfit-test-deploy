@@ -19,7 +19,7 @@ const SpecialEvent = () => {
     const navigate = useNavigate()
 
     if (
-        ![  "valentine-challenge",
+        ![  "valentine-challenge-2024",
             "bounty-spin",
             "moonfit-x-cyberconnect-challenge",
             "christmas-challenge",
@@ -75,7 +75,7 @@ const SpecialEvent = () => {
             case "bounty-spin":
                 output = <BountySpin />
                 break
-            case "valentine-challenge":
+            case "valentine-challenge-2024":
                 output= <ValentineChallenge/>
             default:
                 break

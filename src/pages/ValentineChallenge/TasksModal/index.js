@@ -16,12 +16,14 @@ import {Fragment} from "react"
 import {LoadingOutlined} from "@ant-design/icons"
 import MFModal from "../../../components/MFModal"
 import ClaimModal from "../ClaimModal"
+import { useAuth } from "../../../core/contexts/auth"
 
 const antIcon = <LoadingOutlined style={{fontSize: 24, color: "#000"}} spin />
 
 const TaskModal = (props) => {
     const {taskData, dateOfMonth, refetch, setReward, setOpenModal, setModalChallenge, toggle,backgroundData} = props
-
+    const {auth}=useAuth()
+    const {user}=auth
     const [loading, setLoading] = useState(false)
     const [currentClaimIndex, setCurrentClaimIndex] = useState([])
     const [openRewardModal, setOpenRewardModal] = useState(false)
@@ -110,11 +112,12 @@ const TaskModal = (props) => {
         try {
             setLoading(true)
             const req = {
-                slug: "valentine-challenge",
+                slug: "valentine-challenge-2024",
                 date: taskData.date,
                 type_reward,
+                wallet_address:user.account
             }
-            const res = await EventService.claimLunarFestival(req)
+            const res = await EventService.claimAdvent(req)
             // setLoading(false)
             // setOpenModal(true)
             const {success, message, data} = res.data
@@ -152,8 +155,8 @@ const TaskModal = (props) => {
    
     return (
         <div className="task-challenge">
-            <div className="task-bg">
-                <img src={backgroundData[randomNumberBg]} alt=""/>
+            <div className="task-bg" style={{backgroundColor:taskData.background,boxShadow:`0px 4px 44px ${taskData.background}`}}>
+                {/* <img src={backgroundData[randomNumberBg]} alt=""/> */}
             </div>
             <MFModal
                 visible={openRewardModal}

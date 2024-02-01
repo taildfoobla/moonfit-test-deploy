@@ -426,6 +426,7 @@ const AuthProvider = ({children}) => {
                 provider = new WalletConnectProvider({
                     rpc: {
                         1287: "https://rpc.api.moonbase.moonbeam.network",
+                        // 1287: "https://rpc.ankr.com/moonbeam",
                     },
                 })
                 await provider.enable()
