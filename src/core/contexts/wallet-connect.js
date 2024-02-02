@@ -1,5 +1,5 @@
 import React, {useState, useEffect, createContext, useContext, useReducer} from "react"
-import { createWeb3Modal,defaultWagmiConfig } from "@web3modal/wagmi"
+import {createWeb3Modal, defaultWagmiConfig} from "@web3modal/wagmi/dist/esm/exports/react"
 import {
     arbitrum,
     avalanche,
@@ -12,14 +12,14 @@ import {
     moonbaseAlpha,
     baseGoerli,
 } from "wagmi/chains"
-import { walletConnectProvider, EIP6963Connector } from '@web3modal/wagmi'
+import {walletConnectProvider, EIP6963Connector} from "@web3modal/wagmi"
+import { WalletConnectModal } from '@walletconnect/modal'
 
-import { WagmiConfig, configureChains, createConfig } from 'wagmi'
-import { publicProvider } from 'wagmi/providers/public'
-import { CoinbaseWalletConnector } from 'wagmi/connectors/coinbaseWallet'
-import { InjectedConnector } from 'wagmi/connectors/injected'
-import { WalletConnectConnector } from 'wagmi/connectors/walletConnect'
-
+import {WagmiConfig, configureChains, createConfig} from "wagmi"
+import {publicProvider} from "wagmi/providers/public"
+import {CoinbaseWalletConnector} from "wagmi/connectors/coinbaseWallet"
+import {InjectedConnector} from "wagmi/connectors/injected"
+import {WalletConnectConnector} from "wagmi/connectors/walletConnect"
 
 
 import HomeTest from "./Home"
@@ -38,29 +38,33 @@ const metadata = {
     icons: ["https://prod-cdn.moonfit.xyz/image/original/assets/images/preview/web-preview_1.png"],
 }
 
+const {chains, publicClient} = configureChains(chainsA, [walletConnectProvider({projectId}), publicProvider()])
 
-const { chains, publicClient } = configureChains(
-    chainsA,
-    [walletConnectProvider({ projectId }), publicProvider()]
-  )
-
-  const wagmiConfig = createConfig({
+const wagmiConfig = createConfig({
     autoConnect: true,
     connectors: [
-      new WalletConnectConnector({ chains, options: { projectId, showQrModal: false, metadata } }),
-      new EIP6963Connector({ chains }),
-      new InjectedConnector({ chains, options: { shimDisconnect: true } }),
-      new CoinbaseWalletConnector({ chains, options: { appName: metadata.name } })
+        new WalletConnectConnector({chains, options: {projectId, showQrModal: false, metadata}}),
+        new EIP6963Connector({chains}),
+        new InjectedConnector({chains, options: {shimDisconnect: true}}),
+        new CoinbaseWalletConnector({chains, options: {appName: metadata.name}}),
     ],
-    publicClient
-  })
+    publicClient,
+})
 
-  createWeb3Modal({
+createWeb3Modal({
     wagmiConfig,
     projectId,
     chains,
-    enableAnalytics: true // Optional - defaults to your Cloud configuration
+    enableAnalytics: true, // Optional - defaults to your Cloud configuration
+})
+
+const modal = new WalletConnectModal({
+    wagmiConfig,
+    projectId,
+    chains,
+    enableAnalytics: true, // Optional - defaults to your Cloud configuration
   })
+
 
 const initalState = {}
 
@@ -82,7 +86,10 @@ export default function WalletConnectProvider({children}) {
     return (
         <WalletConnectContext.Provider value={context}>
             <WagmiConfig config={wagmiConfig}>
-                <HomeTest/>
+                <button style={{marginTop:"100px"}} onClick={async()=>{
+                    await modal.openModal()
+                }}>TEST-open</button>
+                <HomeTest />
             </WagmiConfig>
         </WalletConnectContext.Provider>
     )

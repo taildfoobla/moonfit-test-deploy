@@ -1,24 +1,36 @@
-import React, { useRef } from "react"
-// import {useWeb3Modal} from "../../../node_modules/@web3modal/wagmi/dist/esm/exports/react"
+import React, {useRef} from "react"
+
+
 import {useDisconnect} from "wagmi"
 import {useSendTransaction} from "wagmi"
 import {parseEther} from "viem"
 import {parseGwei} from "viem"
 import {useSwitchNetwork} from "wagmi"
-import { chainsA } from "./wallet-connect"
+import {chainsA} from "./wallet-connect"
+import {useAccount} from "wagmi"
+import {useWeb3Modal} from "../../../node_modules/@web3modal/wagmi/dist/esm/exports/react"
+
 export default function HomeTest() {
-    // const {open, close} = useWeb3Modal()
+    const {open, close} = useWeb3Modal()
     const {disconnect} = useDisconnect()
     const {data, isLoading, isSuccess, sendTransaction, sendTransactionAsync} = useSendTransaction()
     const {chains, error, pendingChainId, switchNetwork} = useSwitchNetwork()
-    const openRef=useRef()
-  console.log("open",openRef.current)
+    const openWeb3ModalRef = useRef(null)
+
     return (
         <div style={{paddingTop: "200px", background: "#FFF"}}>
-            <button onClick={async()=>{
-            openRef.current.click();
-            }}>Open Modal</button>
-            <w3m-button  ref={openRef}/>
+            <button
+                onClick={async () => {
+                    console.log(openWeb3ModalRef)
+                   openWeb3ModalRef.current.click();
+                   open()
+                }}
+            >
+                Open Modal
+            </button>
+            <w3m-button ref={openWeb3ModalRef} onClick={()=>{
+                console.log("trigger success")
+            }} />
             <button onClick={disconnect}>Disconnect</button>
             <button
                 onClick={async () => {
