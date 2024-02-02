@@ -41,7 +41,9 @@ const getConfigs = () => {
                 API_APP_URI: 'https://api-prod.moonfit.xyz/v1/',
                 APP_URI: 'event.moonfit.xyz',
                 CYBER_ACCOUNT_KEY:'1jlvqWJqnPUFS720L0hcHDQq8nIRl7KW',
-                MOON_BEAM_RPC:'https://rpc.api.moonbeam.network/'
+                // MOON_BEAM_RPC:'https://rpc.api.moonbeam.network/'
+                MOON_BEAM_RPC:'https://rpc.ankr.com/moonbeam/'
+
             }
         default:
             return {
