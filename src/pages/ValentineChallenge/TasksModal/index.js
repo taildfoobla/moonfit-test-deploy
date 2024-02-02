@@ -158,7 +158,7 @@ const TaskModal = (props) => {
             <div className="task-bg" style={{backgroundColor:taskData.background,boxShadow:`0px 4px 44px ${taskData.background}`}}>
                 {/* <img src={backgroundData[randomNumberBg]} alt=""/> */}
             </div>
-            <MFModal
+            {/* <MFModal
                 visible={openRewardModal}
                 width={488}
                 centered={true}
@@ -176,7 +176,7 @@ const TaskModal = (props) => {
                     type_reward={typeReward}
                     index={taskIndex}
                 />
-            </MFModal>
+            </MFModal> */}
             {taskData && (
                 <Fragment>
 
@@ -219,7 +219,9 @@ const TaskModal = (props) => {
                                                 )}
                                             </div>
                                         </div>
-                                        <div className="task-claim">
+                                        <div className="task-claim" 
+                                        // style={{minWidth:`${is_claimed?"30%":""}`}}
+                                        >
                                             <Button
                                                 type="primary"
                                                 disabled={
@@ -231,24 +233,28 @@ const TaskModal = (props) => {
                                                 }
                                                 // onClick={() => onClaimTask(type_action, type_reward, index)}
                                                 onClick={() => {
-                                                    onOpenModalClaim(type_reward, index)
+                                                    // onOpenModalClaim(type_reward, index)
+                                                    onClaimTask(type_reward,index)
                                                 }}
-                                                style={
-                                                    is_claimed || currentClaimIndex.includes(index)
-                                                        ? {padding: "0 8px"}
-                                                        : null
-                                                }
+                                                // style={
+                                                //     is_claimed || currentClaimIndex.includes(index)
+                                                //         ? {padding: "0 8px"}
+                                                //         : null
+                                                // }
                                             >
                                                 {/* {loading ? <Spin indicator={antIcon} /> : "Claim"} */}
                                                 {is_claimed || currentClaimIndex.includes(index) ? (
-                                                    <span>
-                                                        <img
-                                                            style={{marginRight: "2px", marginTop: "6px"}}
+                                                  <span style={{display:"flex",alignItems:"center",gap:"5px",justifyContent:"center"}}>
+                                                    <img
+                                                            style={{marginRight: "2px"}}
                                                             src={checkCircle}
                                                             alt=""
                                                         />{" "}
-                                                        Claimed
-                                                    </span>
+                                                        <span>
+                                                      
+                                                      Claimed
+                                                  </span>
+                                                  </span>  
                                                 ) : (
                                                     "Claim"
                                                 )}

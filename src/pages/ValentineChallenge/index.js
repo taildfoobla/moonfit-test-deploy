@@ -25,7 +25,7 @@ import ValentineEventWrapper from "../../components/Wrapper/ValentineEventWrappe
 
 const ValentineChallenge = () => {
     const params = useParams()
-    const {onDisconnect, auth} = useAuth()
+    const {onDisconnect, auth,isLoginSocial} = useAuth()
     const {user} = auth
     const [event, setEvent] = useState(EventService.getDefaultEventData(params.id, null))
     const [loading, setLoading] = useState(false)
@@ -54,7 +54,7 @@ const ValentineChallenge = () => {
         }
      
      
-    }, [params.id, user, onDisconnect])
+    }, [auth.isConnected,isLoginSocial])
 
     const fetchEventById = async () => {
         const {data} = await EventService.getAdventEventV2(params.id)
