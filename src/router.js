@@ -14,6 +14,8 @@ import AssetsManagement from "./pages/AssetsManagement"
 import Withdraw from "./pages/Withdraw"
 import TwoFaPage from "./pages/TwoFA"
 import BountySpin from "./pages/BountySpin"
+import HomeTest from "./core/contexts/Home"
+import WalletConnectProvider from "./core/contexts/wallet-connect"
 
 const router = (
     <Routes>
@@ -31,7 +33,7 @@ const router = (
             <Route path="/withdraw" element={<Withdraw/>}/>
             <Route path="/two-fa" element={<TwoFaPage/>}/>
             <Route path="/special-event/bounty-spin" element={<BountySpin/>}/>
-
+            <Route path="/test" element={<WalletConnectProvider/>}/>
             <Route path="*" element={<Home />} />
         </Route>
 

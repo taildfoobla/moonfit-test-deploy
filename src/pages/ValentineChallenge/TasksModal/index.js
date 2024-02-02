@@ -243,7 +243,7 @@ const TaskModal = (props) => {
                                                 {is_claimed || currentClaimIndex.includes(index) ? (
                                                     <span>
                                                         <img
-                                                            style={{marginRight: "2px", marginTop: "-4px"}}
+                                                            style={{marginRight: "2px", marginTop: "6px"}}
                                                             src={checkCircle}
                                                             alt=""
                                                         />{" "}
