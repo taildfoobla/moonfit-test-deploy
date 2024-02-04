@@ -108,7 +108,6 @@ export default function AstarRewards() {
             return str
         }
     }
-    console.log("sign", signatureData)
     //function to get stake data if didn't connect wallet
     const getMoonFitTotalStake = async () => {
         const res = await getMoonFitTotalStakeAPI()
