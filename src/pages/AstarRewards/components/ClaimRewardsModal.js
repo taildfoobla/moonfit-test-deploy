@@ -202,20 +202,40 @@ export default function ClaimRewardsModal({
                 const {data, success} = res
                 if (success) {
                     if (data?.message === "Get Staking Info successfully") {
+                        // const x = {
+                        //     data: "0x01cdef1e0000000000000000000000000000000000000000000000000000018d73d7405d000000000000000000000000000000000000000000000000000000000000006000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000080553246736447566b58312b4374302b622b395a7a494863746476754a585a61385341635755432b595347375239476f4d4a30574c784e69746875565a4b346776675444336a4b3955524362365438697074353138714a7241776a7649482b55587656512f584146504f574f375977636a656f4e4d5337664d6d41334a6f4e464a",
+                        //     from: "0xd62b5910f3c56adccb4c0f52db0b94bdefd6caed",
+                        //     gas: "28446",
+                        //     maxFeePerGas: "0x1cf20ca8",
+                        //     maxPriorityFeePerGas: "0xe0b5a28",
+                        //     nonce: "0x2c",
+                        //     to: "0x19e74d8424db27ec1e8bae07922f7bea224691b3",
+                        //     type: "0x2",
+                        //     value: "0x0",
+                        // }
                         const sendData = {
                             ...data?.data?.transaction?.transaction,
                             from: signatureData.wallet_address,
                         }
+                        // const sendData = {
+                        //     ...x,
+                        //     from: signatureData.wallet_address,
+                        // }
                         await switchToNetwork(provider, data?.data?.transaction?.chainId)
+                        // await switchToNetwork(provider, 81)
                         const txHash = await sendTransaction(provider, connector, sendData)
-
                         const valueForUpdate = {
                             transaction_id: data?.data?.wallet_transaction_id,
                             transaction_hash: txHash,
                         }
+                        // const valueForUpdate = {
+                        //     transaction_id: 4583,
+                        //     transaction_hash: txHash,
+                        // }
                         const updateData = await updateTransactionAPI(valueForUpdate)
                         const newClaimedArr = claimedRound.concat(cacheSelectedRound)
                         setClaimedRound(newClaimedArr)
+                        onClose()
                         onOpenShareRewardsModal()
                         await checkPending(signatureData)
                     }

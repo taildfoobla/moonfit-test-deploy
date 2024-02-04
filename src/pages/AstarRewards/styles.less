@@ -5,6 +5,7 @@
     }
     button {
         border: none;
+        transition: all 0.2s ease;
     }
     span {
         &.change-color {
@@ -1392,6 +1393,9 @@
                         }
                         .claim-rewards-round {
                             width: 240px;
+                            display: flex;
+                            align-items: center;
+                            gap: 5px;
                             .pending {
                                 cursor: not-allowed;
                                 padding: 3px 86px;
@@ -1420,6 +1424,7 @@
                                 width: 20px;
                                 height: 20px;
                                 border-radius: 3px;
+                                cursor: pointer;
                                 &::before {
                                     background-color: transparent;
                                     border: 1.5px solid #90829d;
@@ -1460,6 +1465,9 @@
                 border-radius: 8px;
                 color: #fff;
                 text-transform: none;
+                cursor: pointer;
+                outline: none;
+                border: none;
                 &.disabled {
                     cursor: not-allowed;
                     background: linear-gradient(85deg, #af6d90 2.68%, #76b9b8 100%);
@@ -2033,6 +2041,7 @@
                                     width: 20px;
                                     height: 20px;
                                     border-radius: 3px;
+                                    cursor: pointer;
                                     &::before {
                                         background-color: transparent;
                                         border: 1.5px solid #90829d;
@@ -2071,6 +2080,9 @@
                     border-radius: 8px;
                     color: #fff;
                     text-transform: none;
+                    outline: none;
+                    border: none;
+                    cursor: pointer;
                 }
             }
         }
@@ -2264,6 +2276,10 @@
                 font-weight: 700;
                 line-height: 36px;
                 text-transform: none;
+                outline: none;
+                border: none;
+                cursor: pointer;
+                transition: all 0.2s ease;
                 &:hover,
                 &:focus {
                     transform: translateY(0);
