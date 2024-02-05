@@ -132,30 +132,30 @@ export default function AstarRewards() {
 
     // function to get Stake data
     const getStakeInfo = async (signatureData) => {
-        // const res = await getStakeInfoAPI(signatureData)
-        const res = {
-            success: true,
-            message: "Get Staking Info successfully",
-            data: {
-                user_info: {
-                    substrate_address: ["ZhxkLoXWcKDXw9jMEDqZ468xAo7eND7cveUbc2fTATDGERt"],
-                    total_stake: 0,
-                    rounds: [
-                        {
-                            wallet_address: "0x468853c41b3cc4e696a3f851d6b6de60bf557588",
-                            total_value: 3.8863,
-                            status: "created",
-                            round: 1,
-                            time: "2023-12-27T11:04:02.539Z",
-                        },
-                    ],
-                },
-                moonfit_info: {
-                    total_stake: 1363241.4262518426,
-                    number_of_stakers: "120",
-                },
-            },
-        }
+        const res = await getStakeInfoAPI(signatureData)
+        // const res = {
+        //     success: true,
+        //     message: "Get Staking Info successfully",
+        //     data: {
+        //         user_info: {
+        //             substrate_address: ["ZhxkLoXWcKDXw9jMEDqZ468xAo7eND7cveUbc2fTATDGERt"],
+        //             total_stake: 0,
+        //             rounds: [
+        //                 {
+        //                     wallet_address: "0x468853c41b3cc4e696a3f851d6b6de60bf557588",
+        //                     total_value: 3.8863,
+        //                     status: "created",
+        //                     round: 1,
+        //                     time: "2023-12-27T11:04:02.539Z",
+        //                 },
+        //             ],
+        //         },
+        //         moonfit_info: {
+        //             total_stake: 1363241.4262518426,
+        //             number_of_stakers: "120",
+        //         },
+        //     },
+        // }
         const {data, success, message} = res
         if (success) {
             if (message === "Get Staking Info successfully") {
@@ -179,7 +179,9 @@ export default function AstarRewards() {
 
     // function to reCall data
     const reCallData = async (signatureData) => {
+     
         const res = await getStakeInfoAPI(signatureData)
+
         const {data, success} = res
         if (success) {
             if (data?.message === "Get Staking Info successfully") {
@@ -194,6 +196,7 @@ export default function AstarRewards() {
                 // });
                 // setClaimable(newClaimable);
                 const rounds = data?.data?.user_info?.round
+                console.log("rounds",rounds)
                 let pendingArr = []
                 rounds?.forEach((item) => {
                     if (item.status === "pending") {

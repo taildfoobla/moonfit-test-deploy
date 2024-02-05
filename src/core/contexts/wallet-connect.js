@@ -27,8 +27,7 @@ import HomeTest from "./Home"
 export const chainsA = [mainnet, polygon, avalanche, arbitrum, bsc, optimism, gnosis, fantom, moonbaseAlpha, baseGoerli]
 const projectId = "9328f8e7d9c506e6120b5ae8a939feeb"
 
-console.log("env", process.env.REACT_APP_ENV)
-console.log("id", process.env.REACT_APP_WALLET_CONNECT_PROJECT_ID)
+
 
 const metadata = {
     name: "MoonFit - Web3 & NFT Lifestyle App",

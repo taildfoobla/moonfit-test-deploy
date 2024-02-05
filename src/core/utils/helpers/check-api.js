@@ -68,12 +68,14 @@ export const checkApi = async (callback, array) => {
             } else {
                 signOutAllPlatform()
                 // setIsLoginSocial(false)
-                  return AntdMessage.error({
+                  AntdMessage.error({
                     key:"err",
                     content: "Your login session has expired",
                     className: "message-error",
                     duration: 5,
                 })
+
+                location.reload()
             }
         }else{
             
