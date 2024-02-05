@@ -32,7 +32,7 @@ const router = (
             <Route path="/withdraw" element={<Withdraw/>}/>
             <Route path="/two-fa" element={<TwoFaPage/>}/>
             <Route path="/special-event/bounty-spin" element={<BountySpin/>}/>
-            {/* <Route path="/test" element={<HomeTest/>}/> */}
+            <Route path="/test" element={<HomeTest/>}/>
             <Route path="*" element={<Home />} />
         </Route>
 
