@@ -96,21 +96,23 @@ export default function AstarRewards() {
     // function to format number
     function formatNumber(number) {
         let str
-        if(number.toLocaleString("en-US").includes(".")){
-           str = number
-          .toLocaleString("en-US")
-          .substr(0, number.toLocaleString("en-US").indexOf(".") + 3);
+        if(number){
+            if (number.toLocaleString("en-US").includes(".")) {
+                str = number.toLocaleString("en-US").substr(0, number.toLocaleString("en-US").indexOf(".") + 3)
+            } else {
+                str = number.toLocaleString("en-US")
+            }
+    
+            if (number == Number(str)) {
+                return number
+            } else {
+                return str
+            }
         }else{
-          str= number.toLocaleString("en-US")
+            return 0
         }
-       
-        if (number == Number(str)) {
-          return number;
-        } else {
-          return str;
-        }
+      
     }
-
     //function to get stake data if didn't connect wallet
     const getMoonFitTotalStake = async () => {
         const res = await getMoonFitTotalStakeAPI()
@@ -130,8 +132,30 @@ export default function AstarRewards() {
 
     // function to get Stake data
     const getStakeInfo = async (signatureData) => {
-        const res = await getStakeInfoAPI(signatureData)
-
+        // const res = await getStakeInfoAPI(signatureData)
+        const res = {
+            success: true,
+            message: "Get Staking Info successfully",
+            data: {
+                user_info: {
+                    substrate_address: ["ZhxkLoXWcKDXw9jMEDqZ468xAo7eND7cveUbc2fTATDGERt"],
+                    total_stake: 0,
+                    rounds: [
+                        {
+                            wallet_address: "0x468853c41b3cc4e696a3f851d6b6de60bf557588",
+                            total_value: 3.8863,
+                            status: "created",
+                            round: 1,
+                            time: "2023-12-27T11:04:02.539Z",
+                        },
+                    ],
+                },
+                moonfit_info: {
+                    total_stake: 1363241.4262518426,
+                    number_of_stakers: "120",
+                },
+            },
+        }
         const {data, success, message} = res
         if (success) {
             if (message === "Get Staking Info successfully") {
@@ -757,7 +781,7 @@ export default function AstarRewards() {
                             <img src={AstarFooterImgMobile} alt="" />
                         </div>
                         <div className="astar-page-footer-right">
-                            <Collapse  className="astar-page-accordion">
+                            <Collapse className="astar-page-accordion">
                                 {items.map((item) => (
                                     <Panel
                                         header={
