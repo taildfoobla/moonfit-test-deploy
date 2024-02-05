@@ -28,6 +28,7 @@ import {getLocalStorage, LOCALSTORAGE_KEY} from "../../core/utils/helpers/storag
 import ShareRewardsModal from "./components/ShareRewardsModal"
 import ClaimRewardsModal from "./components/ClaimRewardsModal"
 import {Collapse} from "antd"
+import { useWalletConnect } from "../../core/contexts/wallet-connect"
 
 const {Panel} = Collapse
 
@@ -42,6 +43,8 @@ export default function AstarRewards() {
     const [claimable, setClaimable] = useState(0)
     const [nextTime, setNextTime] = useState("31/12/2023")
     const [rewardList, setRewardList] = useState([])
+
+    const x =useWalletConnect()
 
     const {isConnected, auth, showWalletSelectModal, showConnectModal, signatureData, provider, connector} = useAuth()
     //useEffect for first time

@@ -1,5 +1,5 @@
 import React, {useState, useEffect, createContext, useContext, useReducer} from "react"
-import {createWeb3Modal, defaultWagmiConfig} from "@web3modal/wagmi/dist/esm/exports/react"
+import {createWeb3Modal, defaultWagmiConfig, useWeb3Modal, useWeb3ModalState} from "@web3modal/wagmi/dist/esm/exports/react"
 import {
     arbitrum,
     avalanche,
@@ -15,7 +15,7 @@ import {
 import {walletConnectProvider, EIP6963Connector} from "@web3modal/wagmi"
 import {WalletConnectModal} from "@walletconnect/modal"
 
-import {WagmiConfig, configureChains, createConfig} from "wagmi"
+import {WagmiConfig, configureChains, createConfig, useAccount, useDisconnect, useSendTransaction, useSwitchNetwork} from "wagmi"
 import {publicProvider} from "wagmi/providers/public"
 import {CoinbaseWalletConnector} from "wagmi/connectors/coinbaseWallet"
 import {InjectedConnector} from "wagmi/connectors/injected"
@@ -23,10 +23,10 @@ import {WalletConnectConnector} from "wagmi/connectors/walletConnect"
 
 import HomeTest from "./Home"
 import {LOCALSTORAGE_KEY, getLocalStorage} from "../utils/helpers/storage"
+import { onIdTokenChanged } from "firebase/auth"
 
 export const chainsA = [mainnet, polygon, avalanche, arbitrum, bsc, optimism, gnosis, fantom, moonbaseAlpha, baseGoerli]
 const projectId = "9328f8e7d9c506e6120b5ae8a939feeb"
-
 
 const metadata = {
     name: "MoonFit - Web3 & NFT Lifestyle App",
@@ -98,21 +98,19 @@ export const WalletConnectContext = createContext()
 
 export default function WalletConnectProvider({children}) {
     const [state, dispatch] = useReducer(reducer, initalState)
-    
-   
 
-    const handleConnectWalletConnect=()=>{
-        dispatch({type:ACTIONS.connect})
+    const handleConnectWalletConnect = () => {
+        dispatch({type: ACTIONS.connect})
     }
 
     const handleDisconnectWalletConnect = () => {
-        dispatch({type:ACTIONS.disconnect})
+        dispatch({type: ACTIONS.disconnect})
     }
 
     const context = {
         walletConnect: state,
         handleConnectWalletConnect,
-        handleDisconnectWalletConnect
+        handleDisconnectWalletConnect,
     }
 
     return (
@@ -124,6 +122,35 @@ export default function WalletConnectProvider({children}) {
 
 export const useWalletConnect = () => {
     const context = useContext(WalletConnectContext)
-    return context
+    const {walletConnect,handleConnectWalletConnect,handleDisconnectWalletConnect} = context
+    const {open, close} = useWeb3Modal()
+    const {  selectedNetworkId } = useWeb3ModalState()
+
+
+    const {disconnect} = useDisconnect()
+    const {sendTransactionAsync} = useSendTransaction()
+    const {switchNetworkAsync} = useSwitchNetwork()
+    const { address, isConnected } = useAccount()
+    useEffect(()=>{
+        console.log("here")
+        if(isConnected){
+            handleConnectWalletConnect()
+        }else{
+            handleDisconnectWalletConnect()
+        }
+    },
+    [isConnected])
+
+    const handleOpenWalletConnectModal=()=>{
+        open()
+    }
+
+    const handleDisconnect=()=>{
+        disconnect()
+    }
+
+
+
+    return {...context}
 }
 

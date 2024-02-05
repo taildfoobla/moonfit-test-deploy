@@ -251,11 +251,7 @@ const AuthProvider = ({children}) => {
     //     getUserData()
     // }, [chooseUserData])
 
-    const getLoginSocialData=async()=>{
-        const res = await getRedirectResult(auth)
-        if(res){
-        }
-    }
+ 
 
     const hideConnectModal = () => setIsConnectModalVisible(false)
 
