@@ -27,6 +27,7 @@ import {LOCALSTORAGE_KEY, getLocalStorage} from "../utils/helpers/storage"
 export const chainsA = [mainnet, polygon, avalanche, arbitrum, bsc, optimism, gnosis, fantom, moonbaseAlpha, baseGoerli]
 const projectId = "9328f8e7d9c506e6120b5ae8a939feeb"
 
+
 const metadata = {
     name: "MoonFit - Web3 & NFT Lifestyle App",
     description:
@@ -101,6 +102,8 @@ export const WalletConnectContext = createContext()
 export default function WalletConnectProvider({children}) {
     const [state, dispatch] = useReducer(reducer, initalState)
     
+   
+
     const handleConnectWalletConnect=()=>{
         dispatch({type:ACTIONS.connect})
     }

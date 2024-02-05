@@ -209,6 +209,7 @@ const Wheel = (props) => {
                         setLoading(false)
                         return
                     }
+                    setIsRerender(true)
 
                     let count = 1
                     rotateWheel(count)
@@ -252,6 +253,7 @@ const Wheel = (props) => {
                                     toggleReward(true)
                                     setFreeSpin(z.data.free_spin)
                                     setIsRerender(true)
+
                                     // setTimeout(() => {
                                     //     wheel.style.transition = "0s"
                                     //     wheel.style.transform = "rotate(" +y + "deg)"
