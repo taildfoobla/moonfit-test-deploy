@@ -25,7 +25,7 @@ import ValentineEventWrapper from "../../components/Wrapper/ValentineEventWrappe
 
 const ValentineChallenge = () => {
     const params = useParams()
-    const {onDisconnect, auth} = useAuth()
+    const {onDisconnect, auth,isLoginSocial} = useAuth()
     const {user} = auth
     const [event, setEvent] = useState(EventService.getDefaultEventData(params.id, null))
     const [loading, setLoading] = useState(false)
@@ -42,16 +42,19 @@ const ValentineChallenge = () => {
     useEffect(() => {
         fetchEventById()
         const events = JSON.parse(getLocalStorage("_events"))
-        const thisEvent = events.find((event) => {
-            return event.slug === params.id
-        })
-        if (thisEvent && thisEvent.status === "expired") {
-            setIsExPired(true)
-        } else {
-            setIsExPired(false)
+        if(events){
+            const thisEvent = events.find((event) => {
+                return event.slug === params.id
+            })
+            if (thisEvent && thisEvent.status === "expired") {
+                setIsExPired(true)
+            } else {
+                setIsExPired(false)
+            }
         }
      
-    }, [params.id, user, onDisconnect])
+     
+    }, [auth.isConnected,isLoginSocial])
 
     const fetchEventById = async () => {
         const {data} = await EventService.getAdventEventV2(params.id)

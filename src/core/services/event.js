@@ -112,7 +112,7 @@ const getAdventEventV2 = async (event) => {
     const accessToken = getLocalStorage(LOCALSTORAGE_KEY.ACCESS_TOKEN)
     const walletAddress = JSON.parse(getLocalStorage(LOCALSTORAGE_KEY.WALLET_SIGNATURE))?.account
 
-    if (accessToken !== null) {
+    if (accessToken !== null&&walletAddress!==null) {
         window.__api_getAdventEvents = window.__api_getAdventEvents || {}
         if (window.__api_getAdventEvents[event]) {
             return window.__api_getAdventEvents[event]
@@ -134,35 +134,35 @@ const getAdventEventV2 = async (event) => {
 
             return r
         })
-    } else if (walletAddress !== undefined) {
-        const value = {
-            wallet_address: walletAddress,
-            time: Date.now(),
-        }
-        const key = CryptoJS.AES.encrypt(JSON.stringify(value), CYBER_ACCOUNT_KEY).toString()
+    // } else if (walletAddress !== undefined) {
+    //     const value = {
+    //         wallet_address: walletAddress,
+    //         time: Date.now(),
+    //     }
+    //     const key = CryptoJS.AES.encrypt(JSON.stringify(value), CYBER_ACCOUNT_KEY).toString()
 
-        window.__api_getAdventEvents = window.__api_getAdventEvents || {}
-        if (window.__api_getAdventEvents[event]) {
-            return window.__api_getAdventEvents[event]
-        }
+    //     window.__api_getAdventEvents = window.__api_getAdventEvents || {}
+    //     if (window.__api_getAdventEvents[event]) {
+    //         return window.__api_getAdventEvents[event]
+    //     }
 
-        window.__api_getAdventEvents[event] = ApiService.makeRequest.get(
-            `web-event/advent-event/get-detail-event-v2/${event}`,
-            {
-                baseURL: API_APP_URI,
-                headers: {
-                    "Content-Type": "application/json",
-                    wallet_address: `${walletAddress}`,
-                    key: key,
-                },
-            }
-        )
+    //     window.__api_getAdventEvents[event] = ApiService.makeRequest.get(
+    //         `web-event/advent-event/get-detail-event-v2/${event}`,
+    //         {
+    //             baseURL: API_APP_URI,
+    //             headers: {
+    //                 "Content-Type": "application/json",
+    //                 wallet_address: `${walletAddress}`,
+    //                 key: key,
+    //             },
+    //         }
+    //     )
 
-        return window.__api_getAdventEvents[event].then((r) => {
-            delete window.__api_getAdventEvents[event]
+    //     return window.__api_getAdventEvents[event].then((r) => {
+    //         delete window.__api_getAdventEvents[event]
 
-            return r
-        })
+    //         return r
+    //     })
     } else {
         window.__api_getAdventEvents = window.__api_getAdventEvents || {}
         if (window.__api_getAdventEvents[event]) {

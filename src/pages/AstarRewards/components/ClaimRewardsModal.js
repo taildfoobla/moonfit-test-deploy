@@ -113,16 +113,20 @@ export default function ClaimRewardsModal({
     }
     function formatNumber(number) {
         let str
-        if (number.toLocaleString("en-US").includes(".")) {
-            str = number.toLocaleString("en-US").substr(0, number.toLocaleString("en-US").indexOf(".") + 3)
-        } else {
-            str = number.toLocaleString("en-US")
-        }
+        if (number) {
+            if (number.toLocaleString("en-US").includes(".")) {
+                str = number.toLocaleString("en-US").substr(0, number.toLocaleString("en-US").indexOf(".") + 3)
+            } else {
+                str = number.toLocaleString("en-US")
+            }
 
-        if (number == Number(str)) {
-            return number
+            if (number == Number(str)) {
+                return number
+            } else {
+                return str
+            }
         } else {
-            return str
+            return 0
         }
     }
 
@@ -132,10 +136,10 @@ export default function ClaimRewardsModal({
         const res = await getStakeInfoAPI(signatureData)
         const {data, success} = res
         if (success) {
-            if (data?.message === "Get Staking Info successfully") {
+            if (message === "Get Staking Info successfully") {
                 const canClaimArr = []
 
-                data?.data?.user_info?.rounds.forEach((round) => {
+                data?.user_info?.rounds.forEach((round) => {
                     if (round.status === "created") {
                         canClaimArr.push(round)
                     }
@@ -163,7 +167,7 @@ export default function ClaimRewardsModal({
 
                 // setClaimedRound(claimedArr);
                 // setPendingRound(newPendingArr);
-                setRewardInfo(data?.data?.user_info?.total_stake, newClaimableNumber)
+                setRewardInfo(data?.user_info?.total_stake, newClaimableNumber)
                 // if(newPendingArr?.length==0){
                 //   setIsNeedCheckPending(false)
                 // }
@@ -197,11 +201,47 @@ export default function ClaimRewardsModal({
                 ...signatureData,
                 rounds: selectedRound,
             }
+            // const value = {
+            //     message: "MoonFit:0xaC26C8296D823561EB2C9fb8167D8936761694B0:1703144154494",
+            //     signature:
+            //         "0x10109db033037a541b0f257dc25361daa58edbaefdaa741d5280554d2bbd504f1363e20fa473bb3f5f0f1582d07e4f06760ef87096dfd84cfb7d43bb502f3b801b",
+            //     wallet_address: "0xaC26C8296D823561EB2C9fb8167D8936761694B0",
+            //     rounds: [1],
+            // }
             try {
                 const res = await claimStakingAPI(value)
-                const {data, success} = res
+                // const res ={
+                //     "success": true,
+                //     "message": "Get Staking Info successfully",
+                //     "data": {
+                //         "transaction": {
+                //             "transaction": {
+                //                 "to": "0x801bd8a6b9046634425f0ed33320d11e3dd44ef7",
+                //                 "type": "0x2",
+                //                 "maxFeePerGas": "0x22232ffb9c6",
+                //                 "maxPriorityFeePerGas": "0xb746b1a980",
+                //                 "value": "0x0",
+                //                 "data": "0x619b0fd8000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000010000000000000000000000000000000000000000000000000000000000000001",
+                //                 "from": "0xac26c8296d823561eb2c9fb8167d8936761694b0",
+                //                 "nonce": "0x115",
+                //                 "gas": "28446"
+                //             },
+                //             "estimateGas": null,
+                //             "transactionURL": "https://shibuya.subscan.io/tx/",
+                //             "chainId": 81,
+                //             "chainHex": "0x51",
+                //             "currencyDecimal": 18,
+                //             "networkName": "Shibuya Network",
+                //             "currencySymbol": "SBY",
+                //             "symbol": "ASTR",
+                //             "rpc": "https://evm.shibuya.astar.network"
+                //         },
+                //         "wallet_transaction_id": 4584
+                //     }
+                // }
+                const {data, message, success} = res
                 if (success) {
-                    if (data?.message === "Get Staking Info successfully") {
+                    if (message === "Get Staking Info successfully") {
                         // const x = {
                         //     data: "0x01cdef1e0000000000000000000000000000000000000000000000000000018d73d7405d000000000000000000000000000000000000000000000000000000000000006000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000080553246736447566b58312b4374302b622b395a7a494863746476754a585a61385341635755432b595347375239476f4d4a30574c784e69746875565a4b346776675444336a4b3955524362365438697074353138714a7241776a7649482b55587656512f584146504f574f375977636a656f4e4d5337664d6d41334a6f4e464a",
                         //     from: "0xd62b5910f3c56adccb4c0f52db0b94bdefd6caed",
@@ -214,18 +254,18 @@ export default function ClaimRewardsModal({
                         //     value: "0x0",
                         // }
                         const sendData = {
-                            ...data?.data?.transaction?.transaction,
+                            ...data?.transaction?.transaction,
                             from: signatureData.wallet_address,
                         }
                         // const sendData = {
                         //     ...x,
                         //     from: signatureData.wallet_address,
                         // }
-                        await switchToNetwork(provider, data?.data?.transaction?.chainId)
+                        await switchToNetwork(provider, data?.transaction?.chainId)
                         // await switchToNetwork(provider, 81)
                         const txHash = await sendTransaction(provider, connector, sendData)
                         const valueForUpdate = {
-                            transaction_id: data?.data?.wallet_transaction_id,
+                            transaction_id: data?.wallet_transaction_id,
                             transaction_hash: txHash,
                         }
                         // const valueForUpdate = {

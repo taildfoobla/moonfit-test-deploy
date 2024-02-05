@@ -11,7 +11,7 @@ import {useLocation} from "react-router-dom"
 import BodyBg from "./assets/images/planet.png"
 import {render} from "@testing-library/react"
 import GlobalContextProvider from "./core/contexts/global"
-// import WalletConnectProvider from "./core/contexts/wallet-connect"
+import WalletConnectProvider from "./core/contexts/wallet-connect"
 
 function App() {
     const location = useLocation()

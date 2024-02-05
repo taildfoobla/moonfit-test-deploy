@@ -96,17 +96,22 @@ export default function AstarRewards() {
     // function to format number
     function formatNumber(number) {
         let str
-        if (number.toLocaleString("en-US").includes(".")) {
-            str = number.toLocaleString("en-US").substr(0, number.toLocaleString("en-US").indexOf(".") + 3)
-        } else {
-            str = number.toLocaleString("en-US")
+        if(number){
+            if (number.toLocaleString("en-US").includes(".")) {
+                str = number.toLocaleString("en-US").substr(0, number.toLocaleString("en-US").indexOf(".") + 3)
+            } else {
+                str = number.toLocaleString("en-US")
+            }
+    
+            if (number == Number(str)) {
+                return number
+            } else {
+                return str
+            }
+        }else{
+            return 0
         }
-
-        if (number == Number(str)) {
-            return number
-        } else {
-            return str
-        }
+      
     }
     //function to get stake data if didn't connect wallet
     const getMoonFitTotalStake = async () => {
@@ -174,7 +179,9 @@ export default function AstarRewards() {
 
     // function to reCall data
     const reCallData = async (signatureData) => {
+     
         const res = await getStakeInfoAPI(signatureData)
+
         const {data, success} = res
         if (success) {
             if (data?.message === "Get Staking Info successfully") {
@@ -189,6 +196,7 @@ export default function AstarRewards() {
                 // });
                 // setClaimable(newClaimable);
                 const rounds = data?.data?.user_info?.round
+                console.log("rounds",rounds)
                 let pendingArr = []
                 rounds?.forEach((item) => {
                     if (item.status === "pending") {
