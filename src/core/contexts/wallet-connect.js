@@ -72,9 +72,7 @@ const getConnectedLocalData = () => {
 
 const getAccountLocalData = () => {
     const store = JSON.parse(getLocalStorage(LOCALSTORAGE_KEY.wagmi_store))
-    console.log("store", store)
     if (store?.state?.data?.account) {
-        console.log("here")
         return store?.state?.data
     } else {
         return {}
@@ -85,8 +83,7 @@ const initalState = {
     isConnectedWalletConnect: getConnectedLocalData(),
     accountDataWalletConnect: getAccountLocalData(),
 }
-console.log("isConnected", initalState.isConnected)
-console.log("accountData", initalState.accountData)
+
 const reducer = (state, action) => {
     const {type, value} = action
     switch (type) {
