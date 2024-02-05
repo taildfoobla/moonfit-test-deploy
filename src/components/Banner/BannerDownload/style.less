@@ -92,7 +92,15 @@ html {
     .banner-slider{
         width: 518px;
         height: 252px;
-       
+       .show{
+        .slick-slide{
+            .slick-list{
+                .slick-track{
+                    width: 518px !important;
+                }
+            }
+        }
+       }
         .slick-slider{
             width: 100%;
             height: 100%;
@@ -103,7 +111,7 @@ html {
                 box-shadow: 4px 4px 40px 20px #753566;
 
                 .slick-track{
-                    width: 518px !important;
+                    // width: 518px !important;
                     height: 100%;
                     .slick-slide{
                     //  margin-right: 30px;

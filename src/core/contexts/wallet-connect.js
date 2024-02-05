@@ -85,10 +85,7 @@ export default function WalletConnectProvider({children}) {
     return (
         <WalletConnectContext.Provider value={context}>
             <WagmiConfig config={wagmiConfig}>
-                <button style={{marginTop:"100px"}} onClick={async()=>{
-                    await modal.openModal()
-                }}>TEST-open</button>
-                <HomeTest />
+           {children}         
             </WagmiConfig>
         </WalletConnectContext.Provider>
     )
