@@ -13,7 +13,7 @@ import {
     baseGoerli,
 } from "wagmi/chains"
 import {walletConnectProvider, EIP6963Connector} from "@web3modal/wagmi"
-import { WalletConnectModal } from '@walletconnect/modal'
+import {WalletConnectModal} from "@walletconnect/modal"
 
 import {WagmiConfig, configureChains, createConfig} from "wagmi"
 import {publicProvider} from "wagmi/providers/public"
@@ -21,12 +21,11 @@ import {CoinbaseWalletConnector} from "wagmi/connectors/coinbaseWallet"
 import {InjectedConnector} from "wagmi/connectors/injected"
 import {WalletConnectConnector} from "wagmi/connectors/walletConnect"
 
-
 import HomeTest from "./Home"
+import {LOCALSTORAGE_KEY, getLocalStorage} from "../utils/helpers/storage"
 
 export const chainsA = [mainnet, polygon, avalanche, arbitrum, bsc, optimism, gnosis, fantom, moonbaseAlpha, baseGoerli]
 const projectId = "9328f8e7d9c506e6120b5ae8a939feeb"
-
 
 
 const metadata = {
@@ -57,19 +56,41 @@ createWeb3Modal({
     enableAnalytics: true, // Optional - defaults to your Cloud configuration
 })
 
-const modal = new WalletConnectModal({
-    wagmiConfig,
-    projectId,
-    chains,
-    enableAnalytics: true, // Optional - defaults to your Cloud configuration
-  })
+const ACTIONS = {
+    disconnect: "DISCONNECT",
+    connect: "CONNECT",
+}
 
+const getConnectedLocalData = () => {
+    const walletConnectIsConnected = getLocalStorage(LOCALSTORAGE_KEY.wagmi_connected)
+    if (walletConnectIsConnected) {
+        return walletConnectIsConnected
+    } else {
+        return false
+    }
+}
 
-const initalState = {}
+const getAccountLocalData = () => {
+    const store = JSON.parse(getLocalStorage(LOCALSTORAGE_KEY.wagmi_store))
+    if (store?.state?.data?.account) {
+        return store?.state?.data
+    } else {
+        return {}
+    }
+}
+
+const initalState = {
+    isConnectedWalletConnect: getConnectedLocalData(),
+    accountDataWalletConnect: getAccountLocalData(),
+}
 
 const reducer = (state, action) => {
     const {type, value} = action
     switch (type) {
+        case ACTIONS.disconnect:
+            return {...state, accountDataWalletConnect: false}
+        case ACTIONS.disconnect:
+            return {...state, isConnectedWalletConnect: false}
     }
 }
 
@@ -77,16 +98,26 @@ export const WalletConnectContext = createContext()
 
 export default function WalletConnectProvider({children}) {
     const [state, dispatch] = useReducer(reducer, initalState)
+    
+   
+
+    const handleConnectWalletConnect=()=>{
+        dispatch({type:ACTIONS.connect})
+    }
+
+    const handleDisconnectWalletConnect = () => {
+        dispatch({type:ACTIONS.disconnect})
+    }
 
     const context = {
         walletConnect: state,
+        handleConnectWalletConnect,
+        handleDisconnectWalletConnect
     }
 
     return (
         <WalletConnectContext.Provider value={context}>
-            <WagmiConfig config={wagmiConfig}>
-           {children}         
-            </WagmiConfig>
+            <WagmiConfig config={wagmiConfig}>{children}</WagmiConfig>
         </WalletConnectContext.Provider>
     )
 }

@@ -1,4 +1,6 @@
 export const LOCALSTORAGE_KEY = {
+    wagmi_store:"wagmi.store",
+    wagmi_connected:"wagmi.connected",
     SOCIAL_ACOUNT:"SOCIAL_ACOUNT",
     SELECTED_NETWORK:'SELECTED_NETWORK',
     WHEEL_REWARDS:'WHEEL_REWARDS', 
