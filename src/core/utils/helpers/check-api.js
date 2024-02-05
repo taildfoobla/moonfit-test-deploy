@@ -48,7 +48,7 @@ export const checkApi = async (callback, array) => {
        
     } catch (err) {
         const errMessage = err?.response?.data?.message
-        if(errMessage&&errMessage.includes("token has expired")){
+        if(errMessage&&errMessage.includes("expired")){
             const newTokenRes = await getAccessTokenAPI()
             if (newTokenRes?.access_token) {
               
