@@ -13,7 +13,7 @@ import {
     baseGoerli,
 } from "wagmi/chains"
 import {walletConnectProvider, EIP6963Connector} from "@web3modal/wagmi"
-import { WalletConnectModal } from '@walletconnect/modal'
+import {WalletConnectModal} from "@walletconnect/modal"
 
 import {WagmiConfig, configureChains, createConfig} from "wagmi"
 import {publicProvider} from "wagmi/providers/public"
@@ -21,14 +21,11 @@ import {CoinbaseWalletConnector} from "wagmi/connectors/coinbaseWallet"
 import {InjectedConnector} from "wagmi/connectors/injected"
 import {WalletConnectConnector} from "wagmi/connectors/walletConnect"
 
-
 import HomeTest from "./Home"
+import {LOCALSTORAGE_KEY, getLocalStorage} from "../utils/helpers/storage"
 
 export const chainsA = [mainnet, polygon, avalanche, arbitrum, bsc, optimism, gnosis, fantom, moonbaseAlpha, baseGoerli]
 const projectId = "9328f8e7d9c506e6120b5ae8a939feeb"
-
-console.log("env", process.env.REACT_APP_ENV)
-console.log("id", process.env.REACT_APP_WALLET_CONNECT_PROJECT_ID)
 
 const metadata = {
     name: "MoonFit - Web3 & NFT Lifestyle App",
@@ -58,19 +55,44 @@ createWeb3Modal({
     enableAnalytics: true, // Optional - defaults to your Cloud configuration
 })
 
-const modal = new WalletConnectModal({
-    wagmiConfig,
-    projectId,
-    chains,
-    enableAnalytics: true, // Optional - defaults to your Cloud configuration
-  })
+const ACTIONS = {
+    disconnect: "DISCONNECT",
+    connect: "CONNECT",
+}
 
+const getConnectedLocalData = () => {
+    const walletConnectIsConnected = getLocalStorage(LOCALSTORAGE_KEY.wagmi_connected)
+    if (walletConnectIsConnected) {
+        return walletConnectIsConnected
+    } else {
+        return false
+    }
+}
 
-const initalState = {}
+const getAccountLocalData = () => {
+    const store = JSON.parse(getLocalStorage(LOCALSTORAGE_KEY.wagmi_store))
+    console.log("store", store)
+    if (store?.state?.data?.account) {
+        console.log("here")
+        return store?.state?.data
+    } else {
+        return {}
+    }
+}
 
+const initalState = {
+    isConnectedWalletConnect: getConnectedLocalData(),
+    accountDataWalletConnect: getAccountLocalData(),
+}
+console.log("isConnected", initalState.isConnected)
+console.log("accountData", initalState.accountData)
 const reducer = (state, action) => {
     const {type, value} = action
     switch (type) {
+        case ACTIONS.disconnect:
+            return {...state, accountDataWalletConnect: false}
+        case ACTIONS.disconnect:
+            return {...state, isConnectedWalletConnect: false}
     }
 }
 
@@ -78,19 +100,24 @@ export const WalletConnectContext = createContext()
 
 export default function WalletConnectProvider({children}) {
     const [state, dispatch] = useReducer(reducer, initalState)
+    
+    const handleConnectWalletConnect=()=>{
+        dispatch({type:ACTIONS.connect})
+    }
+
+    const handleDisconnectWalletConnect = () => {
+        dispatch({type:ACTIONS.disconnect})
+    }
 
     const context = {
         walletConnect: state,
+        handleConnectWalletConnect,
+        handleDisconnectWalletConnect
     }
 
     return (
         <WalletConnectContext.Provider value={context}>
-            <WagmiConfig config={wagmiConfig}>
-                <button style={{marginTop:"100px"}} onClick={async()=>{
-                    await modal.openModal()
-                }}>TEST-open</button>
-                <HomeTest />
-            </WagmiConfig>
+            <WagmiConfig config={wagmiConfig}>{children}</WagmiConfig>
         </WalletConnectContext.Provider>
     )
 }

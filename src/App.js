@@ -39,7 +39,7 @@ function App() {
     // }
     return (
         <AuthProvider>
-            {/* <WalletConnectProvider> */}
+            <WalletConnectProvider>
             <GlobalContextProvider>
             <FirstShow />
             <ChooseAccountModal />
@@ -48,7 +48,7 @@ function App() {
                 <div>{routerWithoutProvider}</div>
             </ScrollTop>
             </GlobalContextProvider>
-            {/* </WalletConnectProvider> */}
+            </WalletConnectProvider>
         </AuthProvider>
     )
 }

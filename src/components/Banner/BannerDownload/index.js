@@ -79,7 +79,7 @@ export default function BannerDownload(props) {
         <img src={BannerBackground} alt=''/>
     </div> */}
                 </div>
-                <div className="banner-slider">
+                <div className={`banner-slider ${highlightEvent?.length>1?"show":""}`}>
                     <Carousel dots={false} ref={sliderRef} autoplay={false}>
                         {highlightEvent.map((event, index) => (
                             <div key={index} className="hightlight-event-container">
