@@ -5,6 +5,7 @@
     }
     button {
         border: none;
+        transition: all 0.2s ease;
     }
     span {
         &.change-color {
@@ -264,6 +265,10 @@
                 justify-content: center;
                 gap: 16px;
                 button {
+                    border: none;
+                    outline: none;
+                    cursor: pointer;
+                    transition: all 0.2s ease;
                     &:active {
                         transform: translateY(5px) !important;
                     }
@@ -547,6 +552,7 @@
                             color: #280748;
                             text-transform: capitalize;
                             border-radius: 8px;
+                            cursor: pointer;
 
                             &:active {
                                 transform: translateY(5px) !important;
@@ -1391,6 +1397,9 @@
                         }
                         .claim-rewards-round {
                             width: 240px;
+                            display: flex;
+                            align-items: center;
+                            gap: 5px;
                             .pending {
                                 cursor: not-allowed;
                                 padding: 3px 86px;
@@ -1419,6 +1428,7 @@
                                 width: 20px;
                                 height: 20px;
                                 border-radius: 3px;
+                                cursor: pointer;
                                 &::before {
                                     background-color: transparent;
                                     border: 1.5px solid #90829d;
@@ -1459,6 +1469,9 @@
                 border-radius: 8px;
                 color: #fff;
                 text-transform: none;
+                cursor: pointer;
+                outline: none;
+                border: none;
                 &.disabled {
                     cursor: not-allowed;
                     background: linear-gradient(85deg, #af6d90 2.68%, #76b9b8 100%);
@@ -2032,6 +2045,7 @@
                                     width: 20px;
                                     height: 20px;
                                     border-radius: 3px;
+                                    cursor: pointer;
                                     &::before {
                                         background-color: transparent;
                                         border: 1.5px solid #90829d;
@@ -2070,6 +2084,9 @@
                     border-radius: 8px;
                     color: #fff;
                     text-transform: none;
+                    outline: none;
+                    border: none;
+                    cursor: pointer;
                 }
             }
         }
@@ -2205,6 +2222,8 @@
                                     line-height: 20px;
                                     user-select: none;
                                     cursor: pointer;
+                                    display: flex;
+                                    gap: 5px;
                                     input {
                                         width: 20px;
                                         height: 20px;
@@ -2261,6 +2280,10 @@
                 font-weight: 700;
                 line-height: 36px;
                 text-transform: none;
+                outline: none;
+                border: none;
+                cursor: pointer;
+                transition: all 0.2s ease;
                 &:hover,
                 &:focus {
                     transform: translateY(0);
@@ -3503,3 +3526,4 @@
         }
     }
 }
+
