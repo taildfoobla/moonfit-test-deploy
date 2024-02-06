@@ -9,7 +9,8 @@ import walletconnectLogo from "../../assets/images/wallets/walletconnect-2.png"
 import socialLoginIcon from "../../assets/images/wallets/social-login.png"
 import {EVM_WALLETS} from "../../core/utils/constants/blockchain"
 import {connectWalletToAccountAPI} from "../../core/services/connect-account"
-import { isMobileOrTablet } from "../../core/utils/helpers/device"
+import {isMobileOrTablet} from "../../core/utils/helpers/device"
+import {useWalletConnect} from "../../core/contexts/wallet-connect"
 
 export default function ConnectWalletModal({
     onWalletSelect,
@@ -18,7 +19,9 @@ export default function ConnectWalletModal({
     isOpen,
     onClose,
     isLoginSocial,
+    onToggleWalletConnectModal
 }) {
+
     const metamask = EVM_WALLETS.find((wallet) => wallet.title === "MetaMask")
     const subwallet = EVM_WALLETS.find((wallet) => wallet.title === "SubWallet (EVM)")
 
@@ -28,17 +31,16 @@ export default function ConnectWalletModal({
     }
 
     const handleConnectWallet = async (wallet) => {
-        const isMobile=isMobileOrTablet()
-        const isVisible= isMobile?wallet.isMobileSupport : true
+        const isMobile = isMobileOrTablet()
+        const isVisible = isMobile ? wallet.isMobileSupport : true
 
-        
         const isInstalled = window[wallet.extensionName] && window[wallet.extensionName][wallet.isSetGlobalString]
         if (isVisible) {
             await onWalletSelect(wallet)
             // if (isLoginSocial) {
             //     await connectWalletToAccountAPI()
             // }
-        } else if(!isInstalled && !isMobile) {
+        } else if (!isInstalled && !isMobile) {
             window.open(wallet.installUrl)
         }
     }
@@ -52,7 +54,7 @@ export default function ConnectWalletModal({
             <img className="moonfit-logo" src={moonfitLogo} alt="Moonfit" />
             <h3>welcome to Moonfit</h3>
             <p>Please select sign-in method</p>
-            <ul className={isLoginSocial?"login-social":""}>
+            <ul className={isLoginSocial ? "login-social" : ""}>
                 <li
                     onClick={() => {
                         handleConnectWallet(metamask)
@@ -80,7 +82,12 @@ export default function ConnectWalletModal({
                     </div>
                     <span>SubWallet</span>
                 </li>
-                <li>
+                <li
+                    onClick={() => {
+                        onClose()
+                        onToggleWalletConnectModal()
+                    }}
+                >
                     <div className="wallet-picture">
                         <div className="border-gradient"></div>
                         <div className="wallet-img">

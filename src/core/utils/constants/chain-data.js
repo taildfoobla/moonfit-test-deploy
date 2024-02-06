@@ -1,3 +1,37 @@
+
+export const chain={
+    astarTestnet:{
+        id: 81,
+        name: 'Moonbase Alpha',
+        network: 'moonbase-alpha',
+        nativeCurrency: { name: 'SBY', decimals: 18, symbol: 'SBY' },
+        rpcUrls: {
+          default: {
+            http: ['https://evm.shibuya.astar.network']
+          }
+        
+        },
+        blockExplorers: {
+          default: {
+            name: 'Moonscan',
+            url: 'https://moonbase.moonscan.io',
+          },
+          etherscan: {
+            name: 'Moonscan',
+            url: 'https://moonbase.moonscan.io',
+          },
+        },
+        contracts: {
+          multicall3: {
+            address: '0xcA11bde05977b3631167028862bE2a173976CA11',
+            blockCreated: 1850686,
+          },
+        },
+        testnet: true,
+    }
+}
+
+
 const getChainData = (env) => {
     switch (env) {
         case "production":

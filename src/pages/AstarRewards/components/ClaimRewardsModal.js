@@ -274,7 +274,7 @@ export default function ClaimRewardsModal({
                         //     transaction_id: 4583,
                         //     transaction_hash: txHash,
                         // }
-                        // const updateData = await updateTransactionAPI(valueForUpdate)
+                        const updateData = await updateTransactionAPI(valueForUpdate)
                         const newClaimedArr = claimedRound.concat(cacheSelectedRound)
                         setClaimedRound(newClaimedArr)
                         onClose()
