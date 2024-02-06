@@ -92,7 +92,6 @@ const BountySpin = () => {
     const [isLoadingMission, setIsLoadingMisson] = useState(true)
 
     useEffect(() => {
-        console.log("auth",auth)
         if (isLoginSocial && auth?.isConnected) {
             const network = chainData.find((chain) => chain.name === selectedNetwork)
             const id = network?.chainId || 1284

@@ -63,7 +63,6 @@ const Header = () => {
     } = useAuth()
 
     const {walletConnect,handleDisConnected} = useWalletConnect()
-    console.log("walletConnect", walletConnect)
 
     const {isConnected, user} = auth
 

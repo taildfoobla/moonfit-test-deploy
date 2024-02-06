@@ -107,7 +107,6 @@ const Wheel = (props) => {
     const {walletConnect,handleSendTransaction} =useWalletConnect()
     const [searchParams] = useSearchParams()
 
-    console.log("walletConnect",walletConnect)
 
     const toggleReward = (open) => setOpenReward(open)
 
@@ -129,15 +128,15 @@ const Wheel = (props) => {
         wheel.style.transform = "rotate(" + deg + "deg)"
     }
     const onSpin = async () => {
-     
-        // if (!isLoginSocial || !auth.isConnected) {
-        //     return AntdMessage.error({
-        //         key: "err",
-        //         content: "Connect your wallet and link your social accounts to start spinning!",
-        //         className: "message-error",
-        //         duration: 3,
-        //     })
-        // }
+        console.log("spin")
+        if (!isLoginSocial || !auth.isConnected) {
+            return AntdMessage.error({
+                key: "err",
+                content: "Connect your wallet and link your social accounts to start spinning!",
+                className: "message-error",
+                duration: 3,
+            })
+        }
         if (loading) {
             return
         }
@@ -154,10 +153,11 @@ const Wheel = (props) => {
         const token = !freeSpin ? gameToken - 5 : gameToken
         setGameToken(token)
         setShowWidget(false)
-        // const walletAddress = JSON.parse(getLocalStorage(LOCALSTORAGE_KEY.WALLET_SIGNATURE))?.account
-        const walletAddress = walletConnect.accountDataWalletConnect
-
+        const walletAddress = JSON.parse(getLocalStorage(LOCALSTORAGE_KEY.WALLET_SIGNATURE))?.account
+        // const walletAddress = walletConnect.accountDataWalletConnect
+        console.log("walletAddress",walletConnect)
         if (!walletAddress) {
+            console.log("spin-1")
             return AntdMessage.error({
                 key: "err",
                 content: "Please connect your wallet",
@@ -167,6 +167,7 @@ const Wheel = (props) => {
         }
 
         try {
+            console.log("spin-2")
             setLoading(true)
             let value
             if (searchParams.get("referral_code") !== null) {
@@ -183,7 +184,7 @@ const Wheel = (props) => {
             }
             console.log("value",value)
             const res = await checkApi(spinOnChain, [value])
-
+            console.log("here")
             const {data, success} = res
             if (success) {
                 const transactionData = data?.transaction_data
