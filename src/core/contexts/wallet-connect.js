@@ -1,5 +1,10 @@
 import React, {useState, useEffect, createContext, useContext, useReducer} from "react"
-import {createWeb3Modal, defaultWagmiConfig, useWeb3Modal, useWeb3ModalState} from "@web3modal/wagmi/dist/esm/exports/react"
+import {
+    createWeb3Modal,
+    defaultWagmiConfig,
+    useWeb3Modal,
+    useWeb3ModalState,
+} from "@web3modal/wagmi/dist/esm/exports/react"
 import {
     arbitrum,
     avalanche,
@@ -15,15 +20,25 @@ import {
 import {walletConnectProvider, EIP6963Connector} from "@web3modal/wagmi"
 import {WalletConnectModal} from "@walletconnect/modal"
 
-import {WagmiConfig, configureChains, createConfig, useAccount, useDisconnect, useSendTransaction, useSwitchNetwork} from "wagmi"
+import {
+    WagmiConfig,
+    configureChains,
+    createConfig,
+    useAccount,
+    useDisconnect,
+    useSendTransaction,
+    useSwitchNetwork,
+} from "wagmi"
 import {publicProvider} from "wagmi/providers/public"
 import {CoinbaseWalletConnector} from "wagmi/connectors/coinbaseWallet"
 import {InjectedConnector} from "wagmi/connectors/injected"
 import {WalletConnectConnector} from "wagmi/connectors/walletConnect"
 
 import HomeTest from "./Home"
-import {LOCALSTORAGE_KEY, getLocalStorage} from "../utils/helpers/storage"
-import { onIdTokenChanged } from "firebase/auth"
+import {LOCALSTORAGE_KEY, getLocalStorage, setLocalStorage} from "../utils/helpers/storage"
+import {onIdTokenChanged} from "firebase/auth"
+import {parseEther, parseGwei} from "viem"
+import {useAuth} from "./auth"
 
 export const chainsA = [mainnet, polygon, avalanche, arbitrum, bsc, optimism, gnosis, fantom, moonbaseAlpha, baseGoerli]
 const projectId = "9328f8e7d9c506e6120b5ae8a939feeb"
@@ -59,6 +74,7 @@ createWeb3Modal({
 const ACTIONS = {
     disconnect: "DISCONNECT",
     connect: "CONNECT",
+    setAddress: "SET_ADDRESS",
 }
 
 const getConnectedLocalData = () => {
@@ -80,17 +96,19 @@ const getAccountLocalData = () => {
 }
 
 const initalState = {
-    isConnectedWalletConnect: getConnectedLocalData(),
-    accountDataWalletConnect: getAccountLocalData(),
+    isConnectedWalletConnect: false,
+    accountDataWalletConnect: "",
 }
 
 const reducer = (state, action) => {
     const {type, value} = action
     switch (type) {
         case ACTIONS.disconnect:
-            return {...state, accountDataWalletConnect: false}
-        case ACTIONS.disconnect:
             return {...state, isConnectedWalletConnect: false}
+        case ACTIONS.connect:
+            return {...state, isConnectedWalletConnect: true}
+        case ACTIONS.setAddress:
+            return {...state, accountDataWalletConnect: value}
     }
 }
 
@@ -107,50 +125,101 @@ export default function WalletConnectProvider({children}) {
         dispatch({type: ACTIONS.disconnect})
     }
 
+    const handleSetAddress = (address) => {
+        dispatch({type: ACTIONS.setAddress, value: address})
+    }
+
     const context = {
         walletConnect: state,
         handleConnectWalletConnect,
         handleDisconnectWalletConnect,
+        handleSetAddress,
     }
 
     return (
         <WalletConnectContext.Provider value={context}>
-            <WagmiConfig config={wagmiConfig}>{children}</WagmiConfig>
+            <WagmiConfig config={wagmiConfig}>
+                <WalletConnectWrapper>{children}</WalletConnectWrapper>
+            </WagmiConfig>
         </WalletConnectContext.Provider>
     )
 }
 
-export const useWalletConnect = () => {
-    const context = useContext(WalletConnectContext)
-    const {walletConnect,handleConnectWalletConnect,handleDisconnectWalletConnect} = context
-    const {open, close} = useWeb3Modal()
-    const {  selectedNetworkId } = useWeb3ModalState()
+function WalletConnectWrapper({children}) {
 
+    const context = useContext(WalletConnectContext)
+    const {walletConnect, handleConnectWalletConnect, handleDisconnectWalletConnect, handleSetAddress} = context
+    const {open, close} = useWeb3Modal()
+    const {selectedNetworkId} = useWeb3ModalState()
 
     const {disconnect} = useDisconnect()
     const {sendTransactionAsync} = useSendTransaction()
     const {switchNetworkAsync} = useSwitchNetwork()
-    const { address, isConnected } = useAccount()
-    useEffect(()=>{
-        console.log("here")
-        if(isConnected){
-            handleConnectWalletConnect()
-        }else{
-            handleDisconnectWalletConnect()
-        }
-    },
-    [isConnected])
+    const {address, isConnected} = useAccount()
 
-    const handleOpenWalletConnectModal=()=>{
+    const {isOpenWalletConnectModal,handleToggleConnect} = useAuth()
+
+    useEffect(() => {
+        if (isConnected) {
+            handleConnectWalletConnect()
+            handleSetAddress(address)
+            handleToggleConnect("CONNECT",address)
+            const walletData={account:address}
+            setLocalStorage(LOCALSTORAGE_KEY.WALLET_ACCOUNT,JSON.stringify(walletData))
+        } else {
+            handleDisconnectWalletConnect()
+            handleSetAddress("")
+            // handleToggleConnect("DISCONNECT",address)
+
+        }
+    }, [isConnected])
+
+    useEffect(() => {
+        if(isOpenWalletConnectModal){
+            open()
+        }
+    }, [isOpenWalletConnectModal])
+
+    return <>{children}</>
+}
+
+export const useWalletConnect = () => {
+    const context = useContext(WalletConnectContext)
+    const {walletConnect, handleConnectWalletConnect, handleDisconnectWalletConnect} = context
+    const {open, close} = useWeb3Modal()
+    const {selectedNetworkId} = useWeb3ModalState()
+
+    const {disconnect} = useDisconnect()
+    const {sendTransactionAsync} = useSendTransaction()
+    const {switchNetworkAsync} = useSwitchNetwork()
+    const {address, isConnected} = useAccount()
+
+    const handleDisConnected = () => {
+        disconnect()
+        handleDisconnectWalletConnect()
+    }
+
+    const handleOpenModalWalletConnect = () => {
         open()
     }
 
-    const handleDisconnect=()=>{
-        disconnect()
+    const handleSendTransaction = async (chainId, data) => {
+        const sendData = {
+            chainId: chainId,
+            data: data?.data,
+            // gas:parseGwei(`${parseInt(data?.gas, 16)/Math.pow(10,18)}`),
+            // maxFeePerGas:parseGwei(`${parseInt(data?.maxFeePerGas, 16)/Math.pow(10,18)}`),
+            // maxPriorityFeePerGas:parseGwei(`${parseInt(data?.maxPriorityFeePerGas, 16)/Math.pow(10,18)}`),
+            to: data?.to,
+            value: parseEther(`${parseInt(data?.value, 16)}`),
+        }
+
+        if (selectedNetworkId !== chainId) {
+            await switchNetworkAsync(chainId)
+        }
+       return await sendTransactionAsync(sendData)
     }
 
-
-
-    return {...context}
+    return {...context, handleDisConnected, handleOpenModalWalletConnect, handleSendTransaction}
 }
 

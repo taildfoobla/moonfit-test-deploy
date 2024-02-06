@@ -71,7 +71,6 @@ export default function AstarRewards() {
     // useEffect for getting Stake data
     useEffect(() => {
         const signatureDataLocal = JSON.parse(getLocalStorage(LOCALSTORAGE_KEY.WALLET_SIGNATURE))
-
         if (signatureDataLocal !== null) {
             getStakeInfo(signatureDataLocal.signature)
         } else {
