@@ -211,6 +211,8 @@ function WalletConnectWrapper({children}) {
                     account:address,
                     signature:signData
                 }))
+            }else{
+                disconnect()
             }
         }else{
             handleConnectWalletConnect()
