@@ -39,6 +39,8 @@ import {LOCALSTORAGE_KEY, getLocalStorage, setLocalStorage} from "../utils/helpe
 import {onIdTokenChanged} from "firebase/auth"
 import {parseEther, parseGwei} from "viem"
 import {useAuth} from "./auth"
+import { useSignMessage } from 'wagmi'
+
 
 export const chainsA = [mainnet, polygon, avalanche, arbitrum, bsc, optimism, gnosis, fantom, moonbaseAlpha, baseGoerli]
 const projectId = "9328f8e7d9c506e6120b5ae8a939feeb"
@@ -156,16 +158,16 @@ function WalletConnectWrapper({children}) {
     const {sendTransactionAsync} = useSendTransaction()
     const {switchNetworkAsync} = useSwitchNetwork()
     const {address, isConnected} = useAccount()
+    const {signMessageAsync } = useSignMessage()
 
-    const {isOpenWalletConnectModal,handleToggleConnect} = useAuth()
+    const {isOpenWalletConnectModal,handleToggleConnect,handleToggleWalletConnectModal} = useAuth()
 
     useEffect(() => {
         if (isConnected) {
-            handleConnectWalletConnect()
-            handleSetAddress(address)
-            handleToggleConnect("CONNECT",address)
-            const walletData={account:address}
-            setLocalStorage(LOCALSTORAGE_KEY.WALLET_ACCOUNT,JSON.stringify(walletData))
+            console.log("isConnect")
+            const signMessage = `MoonFit:${address}:${new Date().getTime()}`
+            handleSignMessage()
+          
         } else {
             handleDisconnectWalletConnect()
             handleSetAddress("")
@@ -177,8 +179,52 @@ function WalletConnectWrapper({children}) {
     useEffect(() => {
         if(isOpenWalletConnectModal){
             open()
+            handleToggleWalletConnectModal()
         }
     }, [isOpenWalletConnectModal])
+
+    const handleSignMessage=async()=>{
+        const walletSignatureLocal=JSON.parse(getLocalStorage(LOCALSTORAGE_KEY.WALLET_SIGNATURE))
+
+
+        if(!walletSignatureLocal){
+            const signMessage = `MoonFit:${address}:${new Date().getTime()}`
+            const signature=  await signMessageAsync({
+                message:signMessage
+            })
+            // console.log("signature",signature)
+            if(signature){
+                console.log("here")
+                const signData = {
+                    message: signMessage,
+                    signature,
+                    wallet_address: address,
+                }
+        
+                handleConnectWalletConnect()
+                handleSetAddress(address)
+                handleToggleConnect("CONNECT",address)
+                const walletData={account:address}
+                setLocalStorage(LOCALSTORAGE_KEY.WALLET_ACCOUNT,JSON.stringify(walletData))
+        
+                setLocalStorage(LOCALSTORAGE_KEY.WALLET_SIGNATURE,JSON.stringify({
+                    account:address,
+                    signature:signData
+                }))
+            }
+        }else{
+            handleConnectWalletConnect()
+            handleSetAddress(address)
+            handleToggleConnect("CONNECT",address)
+            const walletData={account:address}
+            setLocalStorage(LOCALSTORAGE_KEY.WALLET_ACCOUNT,JSON.stringify(walletData))
+        }
+
+     
+       
+
+
+    }
 
     return <>{children}</>
 }
@@ -204,15 +250,29 @@ export const useWalletConnect = () => {
     }
 
     const handleSendTransaction = async (chainId, data) => {
-        const sendData = {
-            chainId: chainId,
-            data: data?.data,
-            // gas:parseGwei(`${parseInt(data?.gas, 16)/Math.pow(10,18)}`),
-            // maxFeePerGas:parseGwei(`${parseInt(data?.maxFeePerGas, 16)/Math.pow(10,18)}`),
-            // maxPriorityFeePerGas:parseGwei(`${parseInt(data?.maxPriorityFeePerGas, 16)/Math.pow(10,18)}`),
-            to: data?.to,
-            value: parseEther(`${parseInt(data?.value, 16)}`),
+        let sendData 
+        
+        if(data?.value){
+            sendData= {
+                chainId: chainId,
+                data: data?.data,
+                // gas:parseGwei(`${parseInt(data?.gas, 16)/Math.pow(10,18)}`),
+                // maxFeePerGas:parseGwei(`${parseInt(data?.maxFeePerGas, 16)/Math.pow(10,18)}`),
+                // maxPriorityFeePerGas:parseGwei(`${parseInt(data?.maxPriorityFeePerGas, 16)/Math.pow(10,18)}`),
+                to: data?.to,
+                value: parseEther(`${parseInt(data?.value, 16)}`),
+            }
+        }else{
+            sendData= {
+                chainId: chainId,
+                data: data?.data,
+                // gas:parseGwei(`${parseInt(data?.gas, 16)/Math.pow(10,18)}`),
+                // maxFeePerGas:parseGwei(`${parseInt(data?.maxFeePerGas, 16)/Math.pow(10,18)}`),
+                // maxPriorityFeePerGas:parseGwei(`${parseInt(data?.maxPriorityFeePerGas, 16)/Math.pow(10,18)}`),
+                to: data?.to,
+            }
         }
+     
 
         if (selectedNetworkId !== chainId) {
             await switchNetworkAsync(chainId)

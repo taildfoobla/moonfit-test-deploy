@@ -504,7 +504,6 @@ const AuthProvider = ({children}) => {
             console.error(e)
         }
     }, [connector])
-console.log("state",state)
     useEffect(() => {
         const wc = getLocalStorage(LOCALSTORAGE_KEY.WC_CONNECTOR, null)
         if (wc && isMobileOrTablet()) {
@@ -839,7 +838,8 @@ console.log("state",state)
         setIsLoginSocial,
         setIsOpenModalSocial,
         handleToggleConnect,
-        isOpenWalletConnectModal
+        isOpenWalletConnectModal,
+        handleToggleWalletConnectModal
     }
 
     return (

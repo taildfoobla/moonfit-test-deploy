@@ -19,7 +19,7 @@ import EnvWrapper from "./components/EnvWrapper"
 // import NFTStages from "../components/NFTStages"
 import NFTStages from "./components/NFTStages"
 // import {loginByWallet} from "../utils/api"
-import {loginByWallet} from "../../core/utils-app/api"
+import {depositNFTToApp, loginByWallet, updateTransactionHash} from "../../core/utils-app/api"
 // import CurveBGWrapper from '../wrappers/CurveBG'
 import CurveBGWrapper from "./components/CurveBG"
 // import walletIcon from "../assets/images/icons/Wallet.svg";
@@ -55,16 +55,17 @@ import {loadAsset, loadTokens} from "../../core/services-app/loadAsset"
 import {getLocalStorage, removeLocalStorage, setLocalStorage} from "../../core/utils-app/storage"
 import DepositWrapper from "../../components/Wrapper/DepositWrapper"
 import Web3 from "web3"
-import { GoogleAuthProvider } from "firebase/auth"
+import {GoogleAuthProvider} from "firebase/auth"
 import {signInWithGooglePopup, signOutAllPlatform} from "../../core/utils/helpers/firebase"
 import "./style.less"
-import { LOCALSTORAGE_KEY } from "../../core/utils/helpers/storage"
-import { useNavigate } from "react-router-dom"
-import { renderEmail } from "../../core/utils/helpers/render-email"
-
+import {LOCALSTORAGE_KEY} from "../../core/utils/helpers/storage"
+import {useNavigate} from "react-router-dom"
+import {renderEmail} from "../../core/utils/helpers/render-email"
+import {checkApi} from "../../core/utils/helpers/check-api"
+import {useWalletConnect} from "../../core/contexts/wallet-connect"
 
 const Deposit = () => {
-    const navigate=useNavigate()
+    const navigate = useNavigate()
     const [loading, setLoading] = useState(false)
     // eslint-disable-next-line no-unused-vars
     const [isFetching, setIsFetching] = useState(true)
@@ -116,24 +117,27 @@ const Deposit = () => {
         handleGetAccessToken,
         connectToCyber,
         setIsOpenModalChooseAccount,
-        isLoginSocial
+        isLoginSocial,
     } = useAuth()
-    const socialAccount=JSON.parse(getLocalStorage(LOCALSTORAGE_KEY.SOCIAL_ACOUNT))
 
+    const {handleSendTransaction} = useWalletConnect()
+
+    const socialAccount = JSON.parse(getLocalStorage(LOCALSTORAGE_KEY.SOCIAL_ACOUNT))
 
     useEffect(() => {
-        if(isLoginSocial){
+        if (isLoginSocial) {
             setIsLogin(false)
-            const userData =JSON.parse(getLocalStorage(LOCALSTORAGE_KEY.SOCIAL_ACOUNT))
+            const userData = JSON.parse(getLocalStorage(LOCALSTORAGE_KEY.SOCIAL_ACOUNT))
             const walletAccount = JSON.parse(getLocalStorage(LOCALSTORAGE_KEY.WALLET_ACCOUNT))
-            const value ={
-                ...userData,account:walletAccount?.account
+            const value = {
+                ...userData,
+                account: walletAccount?.account,
             }
             setUser(value)
-        }else{
+        } else {
             navigate("/")
         }
-    }, [isLoginSocial,isConnected])
+    }, [isLoginSocial, isConnected])
 
     useEffect(() => {
         if (!depositing) {
@@ -237,7 +241,7 @@ const Deposit = () => {
     }
 
     const fetchData = async (loading = true) => {
-        if (!auth?.user?.appUser || !auth?.user?.account) {
+        if (!auth?.user?.account) {
             return null
         }
 
@@ -411,7 +415,7 @@ const Deposit = () => {
             const user = result.user
             setIsLoginGoogle(true)
         } catch (err) {
-            console.log("login error",err)
+            console.log("login error", err)
         }
     }
 
@@ -426,7 +430,7 @@ const Deposit = () => {
     }
 
     const _renderEmailAddress = (email) => {
-        if(email){
+        if (email) {
             if (email?.length > 22) {
                 return (
                     <Tooltip title={email}>
@@ -434,10 +438,9 @@ const Deposit = () => {
                     </Tooltip>
                 )
             }
-    
+
             return <span>{email}</span>
         }
-     
     }
 
     const _renderName = (name) => {
@@ -454,7 +457,7 @@ const Deposit = () => {
         //                         Can't find user connected to{" "}
         //                         {listUsers?.account ? getShortAddress(listUsers?.account, 6) : ""} wallet.
         //                     </p>
-                          
+
         //                 </div>
         //                 <div className="section-connected-guide">
         //                     <div className="guide-title">
@@ -565,7 +568,7 @@ const Deposit = () => {
                         </p>
                     </div> */}
 
-                    {/* <div className="button-change">
+                {/* <div className="button-change">
                         <div
                             className={
                                 "flex items-center normal-case text-base cursor-pointer rounded-[32px] pt-1 pb-2 px-3 bg-[#A16BD8] text-white hover:opacity-70"
@@ -855,7 +858,7 @@ const Deposit = () => {
                     </div>
                     <div className="section-inner py-5 pl-8 to">
                         <p className="uppercase font-semibold text-base text-[#abadc3] mb-0 to-label">to</p>
-                        <p className="text-white to-value">{renderEmail(socialAccount?.email,10)}</p>
+                        <p className="text-white to-value">{renderEmail(socialAccount?.email, 10)}</p>
                     </div>
                     <div className="exchange-icon absolute top-1/2 left-1/2">
                         <ExchangeIcon width={100} height={100} />
@@ -1049,6 +1052,7 @@ const Deposit = () => {
     }
 
     const _handleDepositedAsset = async (text) => {
+       try{
         if (text !== "reCall") {
             setDepositing(true)
             setIsModalConfirm(false)
@@ -1063,43 +1067,97 @@ const Deposit = () => {
         //     balance,
         //     amount,
         // })
-        let result
-        provider &&
-            (await switchToNetwork(provider, assetSelected.chainId)
-                .then(async () => {
-                    await depositToMobileApp(
-                        provider,
-                        connector,
-                        {
-                            type: assetSelected.type,
-                            chainId: assetSelected.chainId,
-                            token_id: assetSelected.tokenId,
-                            user_id: user.id,
-                            address: user.wallet_address,
-                            value: amount,
-                        },
-                        (response) => {
-                            setDepositResult({
-                                ...response,
-                                txUrl: `${assetSelected.scan}/tx/${response.txHash}`,
-                            })
-                        }
-                    )
-                })
-                .then(() => {
-                    setDepositing(false)
-                    setIsModalResult(true)
+        let result =false
+        console.log("before")
+        const response = await checkApi(depositNFTToApp, [
+            {
+                type: assetSelected.type,
+                chainId: assetSelected.chainId,
+                token_id: assetSelected.tokenId,
+                user_id: user.id,
+                address: user.wallet_address,
+                value: amount,
+            },
+        ])
+        console.log("after", response)
+        const {data, success, message} = response
 
-                    result = true
-                })
-                .catch((err) => {
-                    if (text === "reCall") {
-                        setDepositing(false)
-                        onDisconnect()
-                    }
+        if (typeof data.success === "boolean" && !data.success) {
+            success = false
+            message = data.message
+        }
 
-                    result = false
-                }))
+        const transactionData = data.transaction
+        if (!success) {
+            setDepositing(false)
+            result = false
+            return
+        }
+        const txHash = await handleSendTransaction(assetSelected.chainId, transactionData)||null
+
+        if (txHash) {
+            console.log("haveHash")
+          await updateTransactionHash([{transaction_id: data.id, transaction_hash: txHash}])
+            
+            setDepositResult({
+                success,
+                message,
+                transactionId: response.id,
+                transactionData,
+                txHash,
+                txUrl: `${assetSelected.scan}/tx/${response.txHash}`,
+            })
+            setDepositing(false)
+            setIsModalResult(true)
+            result = true
+        } else {
+            console.log("noHash")
+           
+            setDepositResult({
+                success: false,
+                message: String(message).includes('insufficient funds for transfer') ? 'Insufficient funds for transfer' : message,
+            })
+            setDepositing(false)
+            setIsModalResult(true)
+            result = false
+        }
+
+        // provider &&
+        //     (await switchToNetwork(provider, assetSelected.chainId)
+        //         .then(async () => {
+        //             await depositToMobileApp(
+        //                 provider,
+        //                 connector,
+        //                 {
+        //                     type: assetSelected.type,
+        //                     chainId: assetSelected.chainId,
+        //                     token_id: assetSelected.tokenId,
+        //                     user_id: user.id,
+        //                     address: user.wallet_address,
+        //                     value: amount,
+        //                 },
+        //                 (response) => {
+        //                     setDepositResult({
+        //                         ...response,
+        //                         txUrl: `${assetSelected.scan}/tx/${response.txHash}`,
+        //                     })
+        //                 }
+        //             )
+        //         })
+        //         .then(() => {
+        //             setDepositing(false)
+        //             setIsModalResult(true)
+
+        //             result = true
+        //         })
+        //         .catch((err) => {
+        //             if (text === "reCall") {
+        //                 setDepositing(false)
+        //                 onDisconnect()
+        //             }
+
+        //             result = false
+        //         }))
 
         // await depositToMobileApp(provider, connector, {
         //     type: assetSelected.type,
@@ -1118,6 +1176,12 @@ const Deposit = () => {
         //     setIsModalResult(true)
         // })
         return result
+       } catch(err){
+        console.log("error",err)
+        setDepositing(false)
+        return false
+       }
+     
     }
 
     const _handleCloseModalDepositAsset = () => {
@@ -1125,23 +1189,23 @@ const Deposit = () => {
     }
 
     const _handleOpenModalDepositAsset = async () => {
-        const web3 = new Web3(provider)
-        const walletAccount = await web3.eth.getAccounts()
-        const account = walletAccount[0]
+        // const web3 = new Web3(provider)
+        // const walletAccount = await web3.eth.getAccounts()
+        // const account = walletAccount[0]
         if (assetSelected && ["MintPass", "MoonBeast"].includes(assetSelected.type) && !assetSelected.isApproved) {
             try {
                 const res = await _handleDepositedAsset()
 
                 const statusCode = await res.status
-                if (!res) {
-                    const res2 = await handleGetAccessToken(account, userIdSelected)
-                    const data = res2?.data?.data
-                    const accessToken = data.access_token
-                    const refreshToken = data.refresh_token
-                    setLocalStorage("ACCESS_TOKEN", accessToken)
-                    setLocalStorage("REFRESH_TOKEN", refreshToken)
-                    const result = await _handleDepositedAsset("reCall")
-                }
+                // if (!res) {
+                //     const res2 = await handleGetAccessToken(account, userIdSelected)
+                //     const data = res2?.data?.data
+                //     const accessToken = data.access_token
+                //     const refreshToken = data.refresh_token
+                //     setLocalStorage("ACCESS_TOKEN", accessToken)
+                //     setLocalStorage("REFRESH_TOKEN", refreshToken)
+                //     const result = await _handleDepositedAsset("reCall")
+                // }
             } catch (err) {}
         } else {
             setIsModalConfirm(true)
@@ -1167,7 +1231,10 @@ const Deposit = () => {
                     <div className="container">
                         <div className="moonfit-card">
                             <div className="moonfit-card-inner">
-                                <div className="card-title flex flex-col lg:flex-row justify-center lg:justify-between items-start" style={{alignItems:"flex-start"}}>
+                                <div
+                                    className="card-title flex flex-col lg:flex-row justify-center lg:justify-between items-start"
+                                    style={{alignItems: "flex-start"}}
+                                >
                                     <div className={"w-full moonfit-card-title"}>
                                         <span>
                                             {isChooseAcc
