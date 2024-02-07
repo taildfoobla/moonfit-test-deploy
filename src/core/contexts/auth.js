@@ -83,7 +83,12 @@ const checkSignature = () => {
 
     const data = JSON.parse(getLocalStorage(LOCALSTORAGE_KEY.WALLET_SIGNATURE))
 
-    if (userData != null && data && userData.account.toLowerCase() === data.account.toLowerCase()) {
+    // if (userData != null && data && userData.account.toLowerCase() === data.account.toLowerCase()) {
+    //     return true
+    // } else {
+    //     return false
+    // }
+    if (userData !== null && data !==null) {
         return true
     } else {
         return false
@@ -93,7 +98,12 @@ const checkSignature = () => {
 const checkSignatureData = () => {
     const userData = JSON.parse(getLocalStorage(LOCALSTORAGE_KEY.WALLET_ACCOUNT))
     const data = JSON.parse(getLocalStorage(LOCALSTORAGE_KEY.WALLET_SIGNATURE))
-    if (userData != null && data && userData.account.toLowerCase() === data.account.toLowerCase()) {
+    // if (userData != null && data && userData.account.toLowerCase() === data.account.toLowerCase()) {
+    //     return data.signature
+    // } else {
+    //     return {}
+    // }
+    if (userData !== null && data !==null) {
         return data.signature
     } else {
         return {}
@@ -119,7 +129,7 @@ const AuthProvider = ({children}) => {
     const isMetaMaskBrowser = isMobileOrTablet() && !!window[PROVIDER_NAME.MetaMask]
     const [connector, setConnector] = useState(null)
     const [isSignature, seIsSignature] = useState(checkSignature())
-    const [signatureData, setSignatureData] = useState(checkSignatureData())
+    const [signatureData, setSignatureData] = useState(checkSignatureData)
     // const [listUsers, setListUsers] = useState({success: true, message: "", data: [],account:""})
     const [listUsers, setListUsers] = useState(checkListUsers())
     const [chooseUserData, setChooseUserData] = useState({})
@@ -128,7 +138,6 @@ const AuthProvider = ({children}) => {
     const [isOpenModalChooseAccount, setIsOpenModalChooseAccount] = useState(false)
     const [isLoginSocial, setIsLoginSocial] = useState(checkIsLoginSocial())
     const [isOpenModalSocial,setIsOpenModalSocial]=useState(false)
-
 
 
 
