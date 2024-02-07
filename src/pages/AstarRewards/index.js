@@ -134,30 +134,12 @@ export default function AstarRewards() {
 
     // function to get Stake data
     const getStakeInfo = async (signatureData) => {
+        const test ={
+            "message": "MoonFit:0xaC26C8296D823561EB2C9fb8167D8936761694B0:1703144154494",
+    "signature": "0x10109db033037a541b0f257dc25361daa58edbaefdaa741d5280554d2bbd504f1363e20fa473bb3f5f0f1582d07e4f06760ef87096dfd84cfb7d43bb502f3b801b",
+    "wallet_address": "0xaC26C8296D823561EB2C9fb8167D8936761694B0",
+        }
         const res = await getStakeInfoAPI(signatureData)
-        // const res = {
-        //     success: true,
-        //     message: "Get Staking Info successfully",
-        //     data: {
-        //         user_info: {
-        //             substrate_address: ["ZhxkLoXWcKDXw9jMEDqZ468xAo7eND7cveUbc2fTATDGERt"],
-        //             total_stake: 0,
-        //             rounds: [
-        //                 {
-        //                     wallet_address: "0x468853c41b3cc4e696a3f851d6b6de60bf557588",
-        //                     total_value: 3.8863,
-        //                     status: "created",
-        //                     round: 1,
-        //                     time: "2023-12-27T11:04:02.539Z",
-        //                 },
-        //             ],
-        //         },
-        //         moonfit_info: {
-        //             total_stake: 1363241.4262518426,
-        //             number_of_stakers: "120",
-        //         },
-        //     },
-        // }
         const {data, success, message} = res
         if (success) {
             if (message === "Get Staking Info successfully") {
