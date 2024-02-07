@@ -132,6 +132,12 @@ export default function AstarRewards() {
 
     // function to get Stake data
     const getStakeInfo = async (signatureData) => {
+        const test ={
+            "message": "MoonFit:0xaC26C8296D823561EB2C9fb8167D8936761694B0:1703144154494",
+            "signature": "0x10109db033037a541b0f257dc25361daa58edbaefdaa741d5280554d2bbd504f1363e20fa473bb3f5f0f1582d07e4f06760ef87096dfd84cfb7d43bb502f3b801b",
+            "wallet_address": "0xaC26C8296D823561EB2C9fb8167D8936761694B0",
+   
+        }
         const res = await getStakeInfoAPI(signatureData)
         // const res = {
         //     success: true,
