@@ -94,7 +94,7 @@ const BountySpin = () => {
     useEffect(() => {
         if (isLoginSocial && auth?.isConnected) {
             const network = chainData.find((chain) => chain.name === selectedNetwork)
-            const id = network?.chainId || process.env.REACT_APP_ENV==="production"?1284:1287
+            const id = network?.chainId || (process.env.REACT_APP_ENV==="production"?1284:1287)
             setNetworkChainId(id)
             getHistoryData()
             getTaskData(id)
@@ -116,7 +116,7 @@ const BountySpin = () => {
     useEffect(() => {
         if (isRerender) {
             const network = chainData.find((chain) => chain.name === selectedNetwork)
-            const id = network?.chainId || process.env.REACT_APP_ENV==="production"? 1284:1287
+            const id = network?.chainId || (process.env.REACT_APP_ENV==="production"? 1284:1287)
             
             getHistoryData()
             fetchLuckyWheelInfo(id)
