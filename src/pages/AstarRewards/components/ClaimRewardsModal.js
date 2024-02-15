@@ -205,11 +205,13 @@ export default function ClaimRewardsModal({
             }
     
             try {
+                console.log("here")
                 const res = await claimStakingAPI(value)
                 const {data, message, success} = res
                 if (success) {
+                    console.log("here-2")
                     if (message === "Get Staking Info successfully") {
-                      
+                      console.log("here-3")
                         const sendData = {
                             ...data?.transaction?.transaction,
                             from: signatureData.wallet_address,
@@ -222,8 +224,9 @@ export default function ClaimRewardsModal({
                             transaction_id: data?.wallet_transaction_id,
                             transaction_hash: txHash,
                         }
-                       
-                        const updateData = await updateTransactionAPI(valueForUpdate)
+                       console.log("before update transaction")
+                        await updateTransactionAPI(valueForUpdate)
+                        console.log("after update transaction")
                         const newClaimedArr = claimedRound.concat(cacheSelectedRound)
                         setClaimedRound(newClaimedArr)
                         onClose()
