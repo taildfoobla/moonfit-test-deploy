@@ -6,7 +6,11 @@ import PackItemInfo from "./PackItemInfo"
 import LockMintPass from "../../../assets/images/mint/lock-mintpass.svg"
 import Sell from "../../../assets/images/mint/sell.png"
 // import {WITH_MINT_PASS_PACK, WITHOUT_MINT_PASS_PACK} from '../../constants/packs'
-import {WITH_MINT_PASS_PACK, WITHOUT_MINT_PASS_PACK} from "../../../core/constants-app/packs"
+import {
+    WITH_MINT_PASS_PACK,
+    WITHOUT_MINT_PASS_PACK,
+    WITHOUT_MINT_PASS_PACK_ASTR,
+} from "../../../core/constants-app/packs"
 // import {
 //     mintNFTWithMintPassData,
 //     mintNFTWithoutMintPassData,
@@ -44,7 +48,7 @@ import {Button, message as AndtMessage} from "antd"
 import {getLocalStorage, LOCALSTORAGE_KEY} from "../../../core/utils/helpers/storage"
 import MoonBeastList from "./MoonBeastsList"
 import Loading from "./LoadingOutlined"
-import { checkApi } from "../../../core/utils/helpers/check-api"
+import {checkApi} from "../../../core/utils/helpers/check-api"
 
 const BUTTON_TEXT = {
     MINTING: "Minting",
@@ -70,18 +74,27 @@ const SaleInfo = (props) => {
     const [isOpenConfirmPopup, setIsOpenConfirmPopup] = useState(false)
     const [round, setRound] = useState("mint-round-3")
     const [isMinting, setIsMinting] = useState(false)
-    const {amount, isRerender,setIsRerender,moonBeasts,moonBeastLoading,setMoonBeastLoading} = props
+    const {amount, isRerender, setIsRerender, moonBeasts, moonBeastLoading, setMoonBeastLoading} = props
 
     const {selectedNetwork} = useGlobalContext()
     const isAstar = selectedNetwork === "astar"
     useEffect(() => {
-        setListPack(tab === 1 ? WITH_MINT_PASS_PACK : WITHOUT_MINT_PASS_PACK)
+        setListPack(tab === 1 ? WITH_MINT_PASS_PACK : isAstar ? WITHOUT_MINT_PASS_PACK_ASTR : WITHOUT_MINT_PASS_PACK)
     }, [tab])
 
     useEffect(() => {
         if (isAstar) {
             setTab(2)
             setSelectedPack({...(oldSelectedPack[2] || {}), tab: 2})
+            setListPack(
+                tab === 1 ? WITH_MINT_PASS_PACK : isAstar ? WITHOUT_MINT_PASS_PACK_ASTR : WITHOUT_MINT_PASS_PACK
+            )
+        } else {
+            setTab(1)
+            setSelectedPack({...(oldSelectedPack[2] || {}), tab: 1})
+            setListPack(
+                tab === 1 ? WITH_MINT_PASS_PACK : isAstar ? WITHOUT_MINT_PASS_PACK_ASTR : WITHOUT_MINT_PASS_PACK
+            )
         }
     }, [selectedNetwork])
 
@@ -229,14 +242,13 @@ const SaleInfo = (props) => {
     }
 
     const handleOpenConfirmPopup = (round) => {
-        if(isAstar&&selectedPack.value<=amount.ASTR){
+        if (isAstar && selectedPack.value <= amount.ASTR) {
             setIsOpenConfirmPopup(true)
             setRound(round)
-        }else if(selectedPack.value<=amount.GLMR){
+        } else if (selectedPack.value <= amount.GLMR) {
             setIsOpenConfirmPopup(true)
             setRound(round)
         }
-
     }
     const handleCloseConfirmPopup = () => {
         setIsOpenConfirmPopup(false)
@@ -278,7 +290,7 @@ const SaleInfo = (props) => {
                 }
         }
         setIsMinting(true)
-        const res = await checkApi(mintAPI,[round, value])
+        const res = await checkApi(mintAPI, [round, value])
         setIsMinting(false)
         const {data, message, success} = res
         setIsOpenConfirmPopup(false)
@@ -397,8 +409,9 @@ const SaleInfo = (props) => {
                 <div className="mf-modal-confirm-box">
                     <div className="mf-modal-confirm-content">
                         <div className="confirm-text">
-                        Are you sure you want to mint a pack of {selectedPack.amount} NFTs with a price of {selectedPack?.value} {isAstar?"ASTR":"GLMR"} for 
-                           <span>"{user?.email}"</span>?
+                            Are you sure you want to mint a pack of {selectedPack.amount} NFTs with a price of{" "}
+                            {selectedPack?.value} {isAstar ? "ASTR" : "GLMR"} for
+                            <span>"{user?.email}"</span>?
                         </div>
 
                         <div className="confirm-button">
@@ -411,7 +424,7 @@ const SaleInfo = (props) => {
                                     handleMint(round)
                                 }}
                             >
-                                {isMinting||isRerender?<Loading/>:"Yes"}
+                                {isMinting || isRerender ? <Loading /> : "Yes"}
                             </Button>
                         </div>
                     </div>
@@ -432,7 +445,7 @@ const SaleInfo = (props) => {
         // if (isAstar) {
         //     return "Buy MoonBeast"
         // } else {
-            return `Mint Pack ${selectedPack.amount}`
+        return `Mint Pack ${selectedPack.amount}`
         // }
     }
 
@@ -480,10 +493,18 @@ const SaleInfo = (props) => {
 
             return (
                 <button
-                    className={`button button-secondary ${isAstar?amount?.ASTR<=selectedPack.value?"disabled":"":amount?.GLMR <= selectedPack.value ? "disabled" : ""}`}
+                    className={`button button-secondary ${
+                        isAstar
+                            ? amount?.ASTR <= selectedPack.value
+                                ? "disabled"
+                                : ""
+                            : amount?.GLMR <= selectedPack.value
+                            ? "disabled"
+                            : ""
+                    }`}
                     type="button"
                     onClick={() => {
-                        handleOpenConfirmPopup(isAstar?"mint-nft-on-astar":"mint-round-3")
+                        handleOpenConfirmPopup(isAstar ? "mint-nft-on-astar" : "mint-round-3")
                     }}
                 >
                     <img className="mr-2" src={_renderButtonIcon()} alt="" style={{width: "30px", height: "30px"}} />
@@ -501,10 +522,18 @@ const SaleInfo = (props) => {
         }
         return (
             <button
-                className={`button button-secondary ${isAstar?amount?.ASTR<=selectedPack?.value?"disabled":"":amount?.GLMR <= selectedPack.value ? "disabled" : ""}`}
+                className={`button button-secondary ${
+                    isAstar
+                        ? amount?.ASTR <= selectedPack?.value
+                            ? "disabled"
+                            : ""
+                        : amount?.GLMR <= selectedPack.value
+                        ? "disabled"
+                        : ""
+                }`}
                 type="button"
                 onClick={() => {
-                    handleOpenConfirmPopup(isAstar?"mint-nft-on-astar":"mint-round-4")
+                    handleOpenConfirmPopup(isAstar ? "mint-nft-on-astar" : "mint-round-4")
                 }}
             >
                 <img className="mr-2" src={_renderButtonIcon()} alt="" style={{width: "30px", height: "30px"}} />
@@ -605,7 +634,7 @@ const SaleInfo = (props) => {
                         <span className="text-[16px] text-[#A8ADC3] fee-info">FEE:</span>
                         <p className="text-[20px] text-[#4CCBC9] race-sport-font fee-amount">
                             {selectedPack.tab === tab && selectedPack.value
-                                ? `${numberFormat(selectedPack.value)} $GLMR`
+                                ? `${numberFormat(selectedPack.value)} ${isAstar ? "$ASTR" : "$GLMR"}`
                                 : "\u00A0"}
                         </p>
                     </div>
@@ -630,7 +659,14 @@ const SaleInfo = (props) => {
                     </div>
                 )} */}
             </div>
-            <MoonBeastList setMoonBeastLoading={setMoonBeastLoading} moonBeastLoading={moonBeastLoading} isRerender={isRerender} isMinting={isMinting}  moonBeasts={moonBeasts} total={selectedPack.amount}/>
+            <MoonBeastList
+                setMoonBeastLoading={setMoonBeastLoading}
+                moonBeastLoading={moonBeastLoading}
+                isRerender={isRerender}
+                isMinting={isMinting}
+                moonBeasts={moonBeasts}
+                total={selectedPack.amount}
+            />
         </>
     )
 }
