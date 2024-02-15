@@ -103,6 +103,8 @@ export default function InfoBeastModal({
     const renderMessageBeast = (type, value, time) => {
         const {upgradingTime, clanName, cooldownTimeWithdraw, health, lockWithdrawTime} = value
         switch (type) {
+            case "isLocked":
+                return "Your MintPass is locked"
             case "isSwap":
                 return "Your MoonBeast is currently undergoing a swap, please try again in a few minutes"
 
@@ -356,7 +358,6 @@ export default function InfoBeastModal({
             }
         } catch (err) {}
     }
-
     return (
         <Modal className="info-beast-modal" centered={true} open={isOpen} onCancel={onClose} footer={false}>
             {/* <ConfirmModal isOpen={isOpenConfirmModal} onClose={handleCloseConfirmModal} /> */}

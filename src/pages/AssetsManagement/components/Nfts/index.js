@@ -7,6 +7,7 @@ import luckIcon from "../../../../assets/images/mint/luck.svg"
 import speedIcon from "../../../../assets/images/mint/speed.svg"
 import astarIcon from "../../../../assets/images/assets-management/nfts/astar-icon.png"
 import beastImg from "../../../../assets/images/assets-management/nfts/beast-img.png"
+import lockMintpassIcon from "../../../../assets/images/assets-management/nfts/lock-mintpass.png"
 import {Col, Row} from "antd"
 import AssetsManagementButton from "../share/Button"
 import NoData from "../share/NoData"
@@ -112,6 +113,10 @@ export default function NftManagement({isLoading, nfts}) {
                         {nfts.map((nft, index) => (
                             <Col xs={12} key={index}>
                                 <div className="picture">
+                                    {nft?.is_locked&&  <div className="lock-mask">
+                                        <img src={lockMintpassIcon} alt=""/>
+                                    </div>}
+                                  
                                     <img className="big-picture" src={nft.image_url} alt="" />
                                     <img className="small-icon" src={nft.chainIcon} alt="" />
                                     <span
