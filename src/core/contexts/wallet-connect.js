@@ -5,6 +5,8 @@ import {
     useWeb3Modal,
     useWeb3ModalState,
 } from "@web3modal/wagmi/dist/esm/exports/react"
+// import { createWeb3Modal,defaultWagmiConfig,useWeb3Modal,useWeb3ModalState } from "@web3modal/wagmi/react"
+
 import {
     arbitrum,
     avalanche,

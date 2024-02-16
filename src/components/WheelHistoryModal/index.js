@@ -36,7 +36,7 @@ export default function WheelHistoryModal({name, isOpen, onClose, historyData, h
         e.target.classList.add("display-scrollbar")
         timeOut = setTimeout(() => {
             e.target.classList.remove("display-scrollbar")
-        }, 2000)
+        }, 3000)
         const maxHeight = e.target.scrollHeight - e.target.clientHeight
         const presentHeight = e.target.scrollTop
         if (presentHeight === maxHeight - 1 && hasMore) {

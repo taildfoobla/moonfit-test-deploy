@@ -110,6 +110,28 @@ const Wheel = (props) => {
 
     const toggleReward = (open) => setOpenReward(open)
 
+    const initWheelData = [
+        {index: 1, reward_type: "1_GLMR", type: "GLMR", value: 0.33, ratio: {from: 0, to: 36}, color: "color-0"},
+        {index: 2, reward_type: "2_MFR", type: "MFR", value: 5, ratio: {from: 36, to: 72}, color: ""},
+        {index: 3, reward_type: "4_GLMR", type: "GLMR", value: 10, ratio: {from: 72, to: 108}, color: "color-3"},
+        {index: 4, reward_type: "1_MFR", type: "MFR", value: 1, ratio: {from: 108, to: 144}, color: ""},
+        {index: 5, reward_type: "3_GLMR", type: "GLMR", value: 3.3, ratio: {from: 144, to: 180}, color: "color-2"},
+        {index: 6, reward_type: "3_MFR", type: "MFR", value: 10, ratio: {from: 180, to: 216}, color: ""},
+        {index: 7, reward_type: "5_GLMR", type: "GLMR", value: 20, ratio: {from: 216, to: 252}, color: "color-4"},
+        {index: 8, reward_type: "1_oMFG", type: "oMFG", value: 1, ratio: {from: 252, to: 288}, color: ""},
+        {index: 9, reward_type: "2_GLMR", type: "GLMR", value: 0.66, ratio: {from: 288, to: 324}, color: "color-1"},
+        {index: 10, reward_type: "2_oMFG", type: "oMFG", value: 5, ratio: {from: 324, to: 360}, color: ""},
+    ]
+
+    useEffect(() => {
+        console.log("luck")
+        writeFile(luckyWheel)
+    }, [luckyWheel])
+
+    const writeFile = (data) => {
+        localStorage.setItem("test", JSON.stringify(data))
+    }
+
     const toggleLuckyReward = () => {
         setOpenLuckyReward(!openLuckyReward)
     }
@@ -229,11 +251,11 @@ const Wheel = (props) => {
                             z = await checkApi(checkOnchain, [updateTx?.meta?.lucky_wheel_id])
 
                             isCompleted = z.data?.reward
-                            if(!window.location.href.includes("bounty-spin")){
+                            if (!window.location.href.includes("bounty-spin")) {
                                 clearInterval(y)
-                                
+
                                 let wheel = document.getElementById("inner-wheel")
-                                if(wheel){
+                                if (wheel) {
                                     wheel.style.transition = "0s"
                                 }
                                 return
@@ -267,7 +289,6 @@ const Wheel = (props) => {
                                     // }, 2000)
                                 }, 7500)
                             } else {
-                          
                                 count++
                                 rotateWheel(count)
                             }
@@ -399,8 +420,6 @@ const Wheel = (props) => {
         setIndex(e.target.value)
     }
 
-    // const env = process.env.REACT_APP_ENV
-
     return (
         <div className="wheel-container bounty-spin-wheel">
             {/* <div className={showWidget ? "show" : "hide"}>
@@ -470,7 +489,7 @@ const Wheel = (props) => {
                         <div className="wheeldots"></div>
                         <div className={`wheel wheel-${luckyWheel?.length || 10}`} id="outer-wheel">
                             <div id="inner-wheel">
-                                {luckyWheel &&
+                                {luckyWheel ?
                                     luckyWheel.map((wheel, index) => {
                                         // let randomNumber = Math.round(Math.random() * 2)
                                         return (
@@ -481,7 +500,10 @@ const Wheel = (props) => {
                                                 </span>
                                             </div>
                                         )
-                                    })}
+                                    }):initWheelData.map((item, index) => (
+                                        <div key={index} className={`sec ${item.type} ${item.color}`}></div>
+                                    ))}
+                                
                             </div>
 
                             <a id="spin" className={`${loading ? "disabled" : ""}`}>
