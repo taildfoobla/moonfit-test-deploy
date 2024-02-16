@@ -11,7 +11,6 @@ export const checkApi = async (callback, array) => {
     try {
         let res
         if(array){
-            console.log("here",array)
             res = await callback(array)
 
         }else{
