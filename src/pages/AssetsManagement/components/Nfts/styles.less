@@ -5,18 +5,19 @@
     .nft-list{
         height: 390px;
         overflow-y: auto;
+        scrollbar-color:#21063c #21063c;
         &::-webkit-scrollbar-track{
             width: 5px; /* Set the desired width */
             border-radius: 5px;
             border: none;
-            background-color: #21063c;
+            background-color: #b5a8c2;
             transition: all 0.2s ease;
         }
         &::-webkit-scrollbar-thumb {
          width: 5px;
          border-radius: 5px;
          border: none;   
-         background-color: #21063c;
+         background-color: #8972a0;
          transition: all 0.2s ease;
         }
         &::-webkit-scrollbar {
@@ -24,6 +25,7 @@
             border-radius: 5px;
         }
        &.display-scrollbar{
+        scrollbar-color:#141414 #2c2c2c;
         &::-webkit-scrollbar-track{
             width: 5px; /* Set the desired width */
             border-radius: 5px;
@@ -42,6 +44,22 @@
             position: relative;
             margin-bottom: 9px;
             aspect-ratio: 1;
+            .lock-mask{
+                position: absolute;
+                top:0;
+                left:0;
+                right:0;
+                bottom:0;
+                z-index: 99;
+                background-color: #0000006b;
+                display:flex;
+                align-items: center;
+                justify-content: center;
+                img{
+                    width: 50%;
+                    height: 50%;
+                }
+            }
             .big-picture {
                 width: 100%;
                 height: 100%;

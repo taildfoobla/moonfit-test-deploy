@@ -103,6 +103,8 @@ export default function InfoBeastModal({
     const renderMessageBeast = (type, value, time) => {
         const {upgradingTime, clanName, cooldownTimeWithdraw, health, lockWithdrawTime} = value
         switch (type) {
+            case "isLocked":
+                return "Your MintPass is locked"
             case "isSwap":
                 return "Your MoonBeast is currently undergoing a swap, please try again in a few minutes"
 
@@ -111,7 +113,11 @@ export default function InfoBeastModal({
                     time
                 )}`
             case "isSelling":
-                return "Your MoonBeast is selling, cancel it?"
+                if(selectedAsset.beastType==="mint-pass"){
+                    return "Your MintPass is selling, cancel it?"
+                }else{
+                    return "Your MoonBeast is selling, cancel it?"
+                }
             case "isJoinClan":
                 return `Your MoonBeast is joining clan “${clanName}". Do you want to leave your MoonBeast from the clan and continue?`
 
@@ -356,7 +362,6 @@ export default function InfoBeastModal({
             }
         } catch (err) {}
     }
-
     return (
         <Modal className="info-beast-modal" centered={true} open={isOpen} onCancel={onClose} footer={false}>
             {/* <ConfirmModal isOpen={isOpenConfirmModal} onClose={handleCloseConfirmModal} /> */}
@@ -365,8 +370,8 @@ export default function InfoBeastModal({
                 <img src={closeBorder} alt="Close" />
             </button>
             <img src={warningIcon} alt="Warning"/>
-            <h3>Can't withdraw MoonBeast</h3>
-            <p className="content">{beastMessage !== "" ? beastMessage : message}</p>
+            <h3>{selectedAsset.beastType==="mint-pass"?"Can't withdraw MintPass":"Can't withdraw MoonBeast"}</h3>
+            <p className={`content ${selectedAsset.beastType==="mint-pass"?"center":""}`}>{beastMessage !== "" ? beastMessage : message}</p>
             {type === "isUpgrading" ||
             type === "health" ||
             type === "isJoinClan" ||

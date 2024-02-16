@@ -141,16 +141,17 @@ export default function Withdraw() {
                     chainId: nft.chainId,
                     id: nft.id,
                     chainIcon: nft.chainIcon,
-                    health: nft.health,
-                    isSelling: nft.is_selling,
-                    isSwap: nft.is_swap,
-                    isCooldownWithdraw: nft.is_cooldown_withdraw,
-                    isJoinClan: nft.is_join_clan,
-                    isUpgrading: nft.is_upgrading,
-                    itemEndurance: nft.item_endurance,
-                    itemLuck: nft.item_luck,
-                    itemSpeed: nft.item_speed,
-                    itemStamina: nft.item_stamina,
+                    health: nft.health||100,
+                    isLocked:nft.is_locked||false,
+                    isSelling: nft.is_selling||false,
+                    isSwap: nft.is_swap||false,
+                    isCooldownWithdraw: nft.is_cooldown_withdraw||false,
+                    isJoinClan: nft.is_join_clan||false,
+                    isUpgrading: nft.is_upgrading||false,
+                    itemEndurance: nft.item_endurance||0,
+                    itemLuck: nft.item_luck||0,
+                    itemSpeed: nft.item_speed||0,
+                    itemStamina: nft.item_stamina||0,
                     upgradingTime: nft.upgrading_time || "",
                     clanName: nft.Clan?.name || "",
                     clanId: nft.Clan?.id || "",
@@ -265,6 +266,8 @@ export default function Withdraw() {
     const renderMessageBeast = (type, value) => {
         const {upgradingTime, clanName, cooldownTimeWithdraw, health, lockWithdrawTime} = value
         switch (type) {
+            case "isLocked":
+                return "Your MintPass is locked"
             case "isSwap":
                 return "Your MoonBeast is currently undergoing a swap, please try again in a few minutes"
 
@@ -326,7 +329,7 @@ export default function Withdraw() {
     const selectOptions =
         assetsData.withdrawList.length > 0
             ? assetsData.withdrawList.map((item) => {
-                  if (item.name === "tMFG" || item.name === "MFR"||item.name==="BNB") {
+                  if (item.name === "tMFG" || item.name === "MFR"||item.name==="BNB"||item.name==="oMFG") {
                       return {
                           value: item.name,
                           disabled: true,
@@ -479,6 +482,7 @@ export default function Withdraw() {
                 // const checkAddress =true
                 if (checkAddress) {
                     if (
+                        selectedAsset?.isLocked||
                         selectedAsset?.isSwap ||
                         selectedAsset?.isCooldownWithdraw ||
                         selectedAsset?.isSelling ||
@@ -500,7 +504,10 @@ export default function Withdraw() {
                         }
                         let infoMessage = ""
                         let type = ""
-                        if (selectedAsset?.isSwap) {
+                        if (selectedAsset?.isLocked) {
+                            type = "isLocked"
+                            infoMessage = renderMessageBeast("isLocked", value)
+                        }else if (selectedAsset?.isSwap) {
                             type = "isSwap"
                             infoMessage = renderMessageBeast("isSwap", value)
                         } else if (selectedAsset?.isCooldownWithdraw) {
