@@ -96,7 +96,7 @@ const BountySpin = () => {
             const network = chainData.find((chain) => chain.name === selectedNetwork)
             const id = network?.chainId || (process.env.REACT_APP_ENV==="production"?1284:1287)
             setNetworkChainId(id)
-            getHistoryData()
+            getHistoryData([])
             getTaskData(id)
             fetchLuckyWheelInfo(id)
         } else {
@@ -322,7 +322,7 @@ const BountySpin = () => {
         }
     }
 
-    const getHistoryData = async (lastId = null, limit = 10) => {
+    const getHistoryData = async ([lastId = null, limit = 10]) => {
         const walletAddress = JSON.parse(getLocalStorage(LOCALSTORAGE_KEY.WALLET_SIGNATURE))?.account
         if (walletAddress) {
             const res = await checkApi(getHisoryList, [walletAddress, lastId, limit])

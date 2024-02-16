@@ -491,14 +491,22 @@ const SaleInfo = (props) => {
                 )
             }
 
+            if(isAstar?amount?.ASTR<selectedPack.value:amount?.GLMR<selectedPack.value){
+                return (
+                    <button className="button button-secondary disabled" type="button" disabled>
+                        <img className="ml-3" src={LockMintPass} alt="" />
+                        <span>Insufficient Balance</span>
+                    </button>
+                )
+            }
             return (
                 <button
                     className={`button button-secondary ${
                         isAstar
-                            ? amount?.ASTR <= selectedPack.value
+                            ? amount?.ASTR < selectedPack.value
                                 ? "disabled"
                                 : ""
-                            : amount?.GLMR <= selectedPack.value
+                            : amount?.GLMR < selectedPack.value
                             ? "disabled"
                             : ""
                     }`}
@@ -520,14 +528,25 @@ const SaleInfo = (props) => {
             //     )
             // }
         }
+
+
+        if(isAstar?amount?.ASTR<selectedPack.value:amount?.GLMR<selectedPack.value){
+            return (
+                <button className="button button-secondary disabled" type="button" disabled>
+                    <img className="ml-3" src={LockMintPass} alt="" />
+                    <span>Insufficient Balance</span>
+                </button>
+            )
+        }
+
         return (
             <button
                 className={`button button-secondary ${
                     isAstar
-                        ? amount?.ASTR <= selectedPack?.value
+                        ? amount?.ASTR < selectedPack?.value
                             ? "disabled"
                             : ""
-                        : amount?.GLMR <= selectedPack.value
+                        : amount?.GLMR < selectedPack.value
                         ? "disabled"
                         : ""
                 }`}

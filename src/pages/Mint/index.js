@@ -132,13 +132,16 @@ const Mint = () => {
         if (isRerender) {
             setTimeout(() => {
                 setMoonBeasts(moonBeasts)
-                setAvailableMintPass(mintPasses?.length)
+                const newMintPasses= mintPasses.filter((nft)=>!nft?.is_locked&&!nft?.is_selling)
+                setAvailableMintPass(newMintPasses?.length)
 
                 setIsRerender(false)
             }, 2000)
         } else {
             setMoonBeasts(moonBeasts)
-            setAvailableMintPass(mintPasses?.length)
+            const newMintPasses= mintPasses.filter((nft)=>!nft?.is_locked&&!nft?.is_selling)
+
+            setAvailableMintPass(newMintPasses?.length)
         }
     }
     const _getAvailableSlots = async () => {
