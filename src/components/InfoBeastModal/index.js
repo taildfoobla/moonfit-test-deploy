@@ -113,7 +113,11 @@ export default function InfoBeastModal({
                     time
                 )}`
             case "isSelling":
-                return "Your MoonBeast is selling, cancel it?"
+                if(selectedAsset.beastType==="mint-pass"){
+                    return "Your MintPass is selling, cancel it?"
+                }else{
+                    return "Your MoonBeast is selling, cancel it?"
+                }
             case "isJoinClan":
                 return `Your MoonBeast is joining clan “${clanName}". Do you want to leave your MoonBeast from the clan and continue?`
 
@@ -366,8 +370,8 @@ export default function InfoBeastModal({
                 <img src={closeBorder} alt="Close" />
             </button>
             <img src={warningIcon} alt="Warning"/>
-            <h3>Can't withdraw MoonBeast</h3>
-            <p className="content">{beastMessage !== "" ? beastMessage : message}</p>
+            <h3>{selectedAsset.beastType==="mint-pass"?"Can't withdraw MintPass":"Can't withdraw MoonBeast"}</h3>
+            <p className={`content ${selectedAsset.beastType==="mint-pass"?"center":""}`}>{beastMessage !== "" ? beastMessage : message}</p>
             {type === "isUpgrading" ||
             type === "health" ||
             type === "isJoinClan" ||
