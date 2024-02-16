@@ -123,15 +123,6 @@ const Wheel = (props) => {
         {index: 10, reward_type: "2_oMFG", type: "oMFG", value: 5, ratio: {from: 324, to: 360}, color: ""},
     ]
 
-    useEffect(() => {
-        console.log("luck")
-        writeFile(luckyWheel)
-    }, [luckyWheel])
-
-    const writeFile = (data) => {
-        localStorage.setItem("test", JSON.stringify(data))
-    }
-
     const toggleLuckyReward = () => {
         setOpenLuckyReward(!openLuckyReward)
     }
@@ -489,7 +480,7 @@ const Wheel = (props) => {
                         <div className="wheeldots"></div>
                         <div className={`wheel wheel-${luckyWheel?.length || 10}`} id="outer-wheel">
                             <div id="inner-wheel">
-                                {luckyWheel ?
+                                {luckyWheel?.length>0 ?
                                     luckyWheel.map((wheel, index) => {
                                         // let randomNumber = Math.round(Math.random() * 2)
                                         return (
@@ -503,6 +494,7 @@ const Wheel = (props) => {
                                     }):initWheelData.map((item, index) => (
                                         <div key={index} className={`sec ${item.type} ${item.color}`}></div>
                                     ))}
+                                 
                                 
                             </div>
 

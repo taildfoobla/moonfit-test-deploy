@@ -45,7 +45,7 @@ import { useSignMessage } from 'wagmi'
 
 
 export const chainsA = [mainnet, polygon, avalanche, arbitrum, bsc, optimism, gnosis, fantom, moonbaseAlpha, baseGoerli]
-const projectId = "9328f8e7d9c506e6120b5ae8a939feeb"
+const projectId = "2d6d4341d352937d613828ea6124a208"
 
 const metadata = {
     name: "MoonFit - Web3 & NFT Lifestyle App",
@@ -139,7 +139,7 @@ export default function WalletConnectProvider({children}) {
         handleDisconnectWalletConnect,
         handleSetAddress,
     }
-
+    console.log("projectId",projectId)
     return (
         <WalletConnectContext.Provider value={context}>
             <WagmiConfig config={wagmiConfig}>
