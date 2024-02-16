@@ -139,7 +139,7 @@ export default function WalletConnectProvider({children}) {
         handleDisconnectWalletConnect,
         handleSetAddress,
     }
-
+    console.log("projectId",projectId)
     return (
         <WalletConnectContext.Provider value={context}>
             <WagmiConfig config={wagmiConfig}>
