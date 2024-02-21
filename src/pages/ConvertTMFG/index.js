@@ -12,10 +12,12 @@ import {checkApi} from "../../core/utils/helpers/check-api"
 import {getAssetsDataAPI} from "../../core/services/assets-management"
 import { message as AntdMessage } from "antd"
 import { LoadingOutlined } from '@ant-design/icons';
-import { useParams } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 import { useLocation } from "react-router-dom"
 import { useSearchParams } from "react-router-dom"
+import { useAuth } from "../../core/contexts/auth"
 export default function ConvertTMFG() {
+    const navigate=useNavigate()
     const [amount,setAmount]=useState("")
     const [tokens, setTokens] = useState([])
     const [rate,setRate]=useState(100)
@@ -24,9 +26,17 @@ export default function ConvertTMFG() {
     const location = useLocation()
     const [searchParams, setSearchParams] = useSearchParams();
 
+    const {isLoginSocial}=useAuth()
+
+
     useEffect(() => {
-        getBalanceData()
-    }, [])
+        if(isLoginSocial){
+            getBalanceData()
+        }else{
+            navigate("/")
+        }
+   
+    }, [isLoginSocial])
 
     const getBalanceData = async () => {
         const res = await checkApi(getAssetsDataAPI, [])

@@ -25,6 +25,7 @@ import ConnectSocialModal from "../../components/ConnectSocialModal"
 import { connectWalletToAccountAPI } from "../services/connect-account"
 import { getRedirectResult } from "firebase/auth"
 import { auth } from "../utils/helpers/firebase"
+import { useSearchParams } from "react-router-dom"
 
 const {APP_URI, CYBER_ACCOUNT_KEY, MOON_BEAM_RPC} = COMMON_CONFIGS
 
@@ -139,6 +140,7 @@ const AuthProvider = ({children}) => {
     const [isLoginSocial, setIsLoginSocial] = useState(checkIsLoginSocial())
     const [isOpenModalSocial,setIsOpenModalSocial]=useState(false)
 
+    const [searchParams, setSearchParams] = useSearchParams();
 
 
     useEffect(() => {
@@ -202,6 +204,18 @@ const AuthProvider = ({children}) => {
                 localStorage.removeItem("_debug")
             }
         }
+
+        //Auto login social
+
+        function autoLoginSocial(){
+            const accessToken=searchParams.get("access_token")
+            console.log("accessToken",accessToken)
+            if(accessToken){
+                setLocalStorage(LOCALSTORAGE_KEY.ACCESS_TOKEN,accessToken)
+                setIsLoginSocial(true)
+            }
+        }
+        autoLoginSocial()
 
         //Cyber Connect
 
