@@ -235,15 +235,6 @@ export default function ClaimRewardsModal({
                     }
                 }
             } catch (err) {
-                // const newArr = [];
-                // newPendingArr.forEach((round) => {
-                //   if (!cacheSelectedRound.includes(round)) {
-                //     newArr.push(round);
-                //   }
-                // });
-                // if(newArr?.length>0){
-                //   setIsNeedCheckPending(true)
-                // }
                 setPendingRound([])
                 setSelectedRound([])
             }

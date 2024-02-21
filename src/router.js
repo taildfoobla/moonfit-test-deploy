@@ -26,7 +26,7 @@ const router = (
             <Route path="/deposit" element={<Deposit />} />
             <Route path="/mint" element={<Mint />} />
             <Route path="/events/:id" element={<EventDetail />} />
-            <Route path="/clan-battle/:id" element={<ClanBattle />} />
+            {/* <Route path="/clan-battle/:id" element={<ClanBattle />} /> */}
             <Route path="/special-event/:id" element={<SpecialEvent />} />
             <Route path="/astar-rewards" element={<AstarRewards/>}/>
             <Route path="/manage-assets" element={<AssetsManagement/>}/>

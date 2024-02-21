@@ -139,6 +139,7 @@ const AuthProvider = ({children}) => {
     const [isOpenModalChooseAccount, setIsOpenModalChooseAccount] = useState(false)
     const [isLoginSocial, setIsLoginSocial] = useState(checkIsLoginSocial())
     const [isOpenModalSocial,setIsOpenModalSocial]=useState(false)
+    const [isOpenWalletConnectModal,setIsOpenWalletConnectModal]=useState(false)
 
     const [searchParams, setSearchParams] = useSearchParams();
 
@@ -274,11 +275,7 @@ const AuthProvider = ({children}) => {
     //     getUserData()
     // }, [chooseUserData])
 
-    const getLoginSocialData=async()=>{
-        const res = await getRedirectResult(auth)
-        if(res){
-        }
-    }
+ 
 
     const hideConnectModal = () => setIsConnectModalVisible(false)
 
@@ -330,6 +327,8 @@ const AuthProvider = ({children}) => {
         const userData = JSON.parse(getLocalStorage(LOCALSTORAGE_KEY.WALLET_ACCOUNT))
         dispatch({type: "CONNECT", user: userData, isConnected: true})
     }, [])
+
+
 
     const retrieveCurrentWalletInfo = useCallback(
         async (provider) => {
@@ -526,7 +525,6 @@ const AuthProvider = ({children}) => {
             console.error(e)
         }
     }, [connector])
-
     useEffect(() => {
         const wc = getLocalStorage(LOCALSTORAGE_KEY.WC_CONNECTOR, null)
         if (wc && isMobileOrTablet()) {
@@ -534,6 +532,19 @@ const AuthProvider = ({children}) => {
             setConnector(connector)
         }
     }, [])
+
+    const handleToggleConnect=(type,address)=>{
+        if(type==="CONNECT"){
+            const userData={
+                account:address,
+            }
+            dispatch({type: type,isConnected: true,user:userData})
+
+        }else{
+            dispatch({type: type})
+
+        }
+    }
 
     const onWCConnect = async () => {
         const connector = new WalletConnect({
@@ -847,6 +858,8 @@ const AuthProvider = ({children}) => {
         isLoginSocial,
         setIsLoginSocial,
         setIsOpenModalSocial,
+        handleToggleConnect,
+      
     }
 
     return (
@@ -862,6 +875,7 @@ const AuthProvider = ({children}) => {
             setIsOpenModalSocial={setIsOpenModalSocial}
             onWalletSelect={onWalletSelect}
             isLoginSocial={isLoginSocial}
+    
             />
             <ConnectSocialModal isOpen={isOpenModalSocial} onClose={setIsOpenModalSocial}/>
             {/* <MFModal

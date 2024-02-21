@@ -116,9 +116,9 @@ const BountySpin = () => {
     useEffect(() => {
         if (isRerender) {
             const network = chainData.find((chain) => chain.name === selectedNetwork)
-            const id = network?.chainId || (process.env.REACT_APP_ENV==="production"?1284:1287)
-
-            getHistoryData([])
+            const id = network?.chainId || (process.env.REACT_APP_ENV==="production"? 1284:1287)
+            
+            getHistoryData()
             fetchLuckyWheelInfo(id)
         }
     }, [isRerender])

@@ -111,7 +111,7 @@ export const loginByWallet = async (data) => {
     }
 }
 
-export const depositNFTToApp = async (data) => {
+export const depositNFTToApp = async ([data]) => {
     const authen = `Bearer ${localStorage.getItem("ACCESS_TOKEN")}`
     try {
         const {data: resp} = await axios({
