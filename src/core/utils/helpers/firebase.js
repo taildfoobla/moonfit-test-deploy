@@ -43,10 +43,10 @@ googleProvider.setCustomParameters({
 appleProvider.setCustomParameters({
     prompt: "select_account ",
 })
-export const auth = getAuth()
+export const firebaseAuth = getAuth()
 export const signInWithGooglePopup = async () => {
     try {
-        const res = await signInWithPopup(auth, googleProvider)
+        const res = await signInWithPopup(firebaseAuth, googleProvider)
         // const res = await signInWithRedirect(auth,googleProvider)
         if (res) {
             const isAlreadyInDb = res?.user?.reloadUserInfo?.customAttributes ? true : false
@@ -110,7 +110,7 @@ export const signInWithGooglePopup = async () => {
 
 export const signInWithApplePopup = async () => {
     try {
-        const res = await signInWithPopup(auth, appleProvider)
+        const res = await signInWithPopup(firebaseAuth, appleProvider)
         if (res) {
             const isAlreadyInDb = res?.user?.reloadUserInfo?.customAttributes ? true : false
             const uId = res?.user?.uid
@@ -165,7 +165,7 @@ export const signInWithApplePopup = async () => {
 }
 
 export const signOutAllPlatform = async () => {
-    signOut(auth)
+    signOut(firebaseAuth)
         .then((result) => {
             // Sign-out successful.
             removeLocalStorage(LOCALSTORAGE_KEY.ACCESS_TOKEN)

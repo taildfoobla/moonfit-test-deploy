@@ -206,17 +206,7 @@ const AuthProvider = ({children}) => {
             }
         }
 
-        //Auto login social
-
-        function autoLoginSocial(){
-            const accessToken=searchParams.get("access_token")
-            console.log("accessToken",accessToken)
-            if(accessToken){
-                setLocalStorage(LOCALSTORAGE_KEY.ACCESS_TOKEN,accessToken)
-                setIsLoginSocial(true)
-            }
-        }
-        autoLoginSocial()
+        
 
         //Cyber Connect
 
