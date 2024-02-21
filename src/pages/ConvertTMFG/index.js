@@ -16,6 +16,7 @@ import {useNavigate,useSearchParams} from "react-router-dom"
 import {useAuth} from "../../core/contexts/auth"
 import {getLocalStorage, setLocalStorage, LOCALSTORAGE_KEY} from "../../core/utils/helpers/storage"
 import {jwtDecode} from "jwt-decode"
+import { sendConvertOMFGSuccess } from "../../core/utils/helpers/webview"
 
 export default function ConvertTMFG() {
     const navigate = useNavigate()
@@ -202,6 +203,10 @@ export default function ConvertTMFG() {
         }
     }
 
+    const handleClaim =()=>{
+        sendConvertOMFGSuccess({oMFG:0})
+    }
+
     return (
         <ConvertTMFGWrapper>
             <div className="convert-tmfg-container">
@@ -290,7 +295,7 @@ export default function ConvertTMFG() {
                             <span className="change-color-E4007B">MoonFit</span> account for continuous usage
                         </p>
                         <div className="convert-button-container">
-                            <button className="convert-button">
+                            <button className="convert-button" onClick={handleClaim}>
                                 <img src={convertButtonIcon} alt="" />
                                 <span>Claim Now</span>
                             </button>

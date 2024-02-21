@@ -1,6 +1,4 @@
-import {LOCALSTORAGE_KEY, setLocalStorage} from "./LocalStorage"
-import {ACTION_TYPES} from "../common/constants"
-
+import { ACTION_TYPES } from "../constants/webview-const"
 export const postActionToMobile = (action, data, callback) => {
     console.info("postActionToMobile:", {action, data})
     if (window.messageHandler) {
@@ -18,6 +16,10 @@ export const postActionToMobile = (action, data, callback) => {
     if (typeof callback === "function") {
         callback()
     }
+}
+
+export const sendConvertOMFGSuccess=(value)=>{
+    postActionToMobile(ACTION_TYPES.CONVERT_OMFG_SUCCESSFULL,value)
 }
 
 
