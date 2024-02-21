@@ -161,7 +161,9 @@ export default function ConvertTMFG() {
       handleSetInputWidth(length)
   }
 
-
+  const handleGoToDeposit=()=>{
+    navigate("/deposit?selected=omfg")
+  }
 
     return (
         <ConvertTMFGWrapper>
@@ -246,7 +248,7 @@ export default function ConvertTMFG() {
                         </div>
                     </div>
                 </div>
-                <button className="to-deposit">
+                <button className="to-deposit" onClick={handleGoToDeposit}>
                     <img src={omfgIcon2} alt="" />
                     <span>Deposit oMFG</span>
                 </button>
