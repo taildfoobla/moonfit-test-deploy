@@ -139,9 +139,6 @@ const AuthProvider = ({children}) => {
     const [isOpenModalChooseAccount, setIsOpenModalChooseAccount] = useState(false)
     const [isLoginSocial, setIsLoginSocial] = useState(checkIsLoginSocial())
     const [isOpenModalSocial,setIsOpenModalSocial]=useState(false)
-    const [isOpenWalletConnectModal,setIsOpenWalletConnectModal]=useState(false)
-
-    const [searchParams, setSearchParams] = useSearchParams();
 
 
     useEffect(() => {

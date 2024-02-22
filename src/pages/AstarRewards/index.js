@@ -28,7 +28,6 @@ import {getLocalStorage, LOCALSTORAGE_KEY} from "../../core/utils/helpers/storag
 import ShareRewardsModal from "./components/ShareRewardsModal"
 import ClaimRewardsModal from "./components/ClaimRewardsModal"
 import {Collapse} from "antd"
-import { useWalletConnect } from "../../core/contexts/wallet-connect"
 
 const {Panel} = Collapse
 
@@ -43,8 +42,6 @@ export default function AstarRewards() {
     const [claimable, setClaimable] = useState(0)
     const [nextTime, setNextTime] = useState("31/12/2023")
     const [rewardList, setRewardList] = useState([])
-
-    const x =useWalletConnect()
 
     const {isConnected, auth, showWalletSelectModal, showConnectModal, signatureData, provider, connector} = useAuth()
     //useEffect for first time
@@ -71,6 +68,7 @@ export default function AstarRewards() {
     // useEffect for getting Stake data
     useEffect(() => {
         const signatureDataLocal = JSON.parse(getLocalStorage(LOCALSTORAGE_KEY.WALLET_SIGNATURE))
+
         if (signatureDataLocal !== null) {
             getStakeInfo(signatureDataLocal.signature)
         } else {
@@ -140,7 +138,30 @@ export default function AstarRewards() {
             "wallet_address": "0xaC26C8296D823561EB2C9fb8167D8936761694B0",
    
         }
-        const res = await getStakeInfoAPI(test)
+        const res = await getStakeInfoAPI(signatureData)
+        // const res = {
+        //     success: true,
+        //     message: "Get Staking Info successfully",
+        //     data: {
+        //         user_info: {
+        //             substrate_address: ["ZhxkLoXWcKDXw9jMEDqZ468xAo7eND7cveUbc2fTATDGERt"],
+        //             total_stake: 0,
+        //             rounds: [
+        //                 {
+        //                     wallet_address: "0x468853c41b3cc4e696a3f851d6b6de60bf557588",
+        //                     total_value: 3.8863,
+        //                     status: "created",
+        //                     round: 1,
+        //                     time: "2023-12-27T11:04:02.539Z",
+        //                 },
+        //             ],
+        //         },
+        //         moonfit_info: {
+        //             total_stake: 1363241.4262518426,
+        //             number_of_stakers: "120",
+        //         },
+        //     },
+        // }
         const {data, success, message} = res
         if (success) {
             if (message === "Get Staking Info successfully") {

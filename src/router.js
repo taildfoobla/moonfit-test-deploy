@@ -14,7 +14,6 @@ import AssetsManagement from "./pages/AssetsManagement"
 import Withdraw from "./pages/Withdraw"
 import TwoFaPage from "./pages/TwoFA"
 import BountySpin from "./pages/BountySpin"
-import HomeTest from "./core/contexts/Home"
 import ConvertTMFG from "./pages/ConvertTMFG"
 
 const router = (
