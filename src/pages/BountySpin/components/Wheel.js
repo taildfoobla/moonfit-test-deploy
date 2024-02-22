@@ -60,10 +60,9 @@ import {message as AntdMessage} from "antd"
 import WheelRewardModal from "../../../components/WheelRewardModal"
 import LuckyRewardModal from "../../../components/LuckyRewardModal"
 import {checkApi} from "../../../core/utils/helpers/check-api"
-import {spinOnChain, checkOnchain, updateTransactionHash} from "../../../core/services/bounty-spin"
+import {spinOnChain, checkOnchain} from "../../../core/services/bounty-spin"
 import {useLocation, useParams, useSearchParams} from "react-router-dom"
 import ReCAPTCHA from "react-google-recaptcha"
-import { useWalletConnect } from "../../../core/contexts/wallet-connect"
 
 const {CYBER_ACCOUNT_KEY} = COMMON_CONFIGS
 
@@ -104,9 +103,8 @@ const Wheel = (props) => {
         isLoginSocial,
         listUsers,
     } = useAuth()
-    const {walletConnect,handleSendTransaction} =useWalletConnect()
-    const [searchParams] = useSearchParams()
 
+    const [searchParams] = useSearchParams()
 
     const toggleReward = (open) => setOpenReward(open)
 
@@ -141,7 +139,17 @@ const Wheel = (props) => {
         wheel.style.transform = "rotate(" + deg + "deg)"
     }
     const onSpin = async () => {
-        console.log("spin")
+        // const captchaValue = recaptcha.current.getValue();
+        // if (!captchaValue) {
+        //     alert("Please verify the reCAPTCHA!");
+
+        //     return
+        //   } else {
+        //     // make form submission
+        //     alert("Form submission successful!");
+        //     console.log("capcha",captchaValue)
+        //     return
+        //   }
         if (!isLoginSocial || !auth.isConnected) {
             return AntdMessage.error({
                 key: "err",
@@ -167,10 +175,7 @@ const Wheel = (props) => {
         setGameToken(token)
         setShowWidget(false)
         const walletAddress = JSON.parse(getLocalStorage(LOCALSTORAGE_KEY.WALLET_SIGNATURE))?.account
-        // const walletAddress = walletConnect.accountDataWalletConnect
-        console.log("walletAddress",walletConnect)
         if (!walletAddress) {
-            console.log("spin-1")
             return AntdMessage.error({
                 key: "err",
                 content: "Please connect your wallet",
@@ -180,7 +185,6 @@ const Wheel = (props) => {
         }
 
         try {
-            console.log("spin-2")
             setLoading(true)
             let value
             if (searchParams.get("referral_code") !== null) {
@@ -195,33 +199,26 @@ const Wheel = (props) => {
                     chain_id: networkChainId,
                 }
             }
-            console.log("value",value)
+
             const res = await checkApi(spinOnChain, [value])
-            console.log("here")
+
             const {data, success} = res
             if (success) {
                 const transactionData = data?.transaction_data
                 const chainId = transactionData.chainId
-                // if (provider) {
-                    // const switchSuccess = await switchToNetworkOnchain(provider, chainId, transactionData)
-                    // if (!switchSuccess) {
-                    //     setLoading(false)
-                    //     return
-                    // }
-
-                    const txHash= await handleSendTransaction(chainId,transactionData.transaction)
-                    const updateTx=await checkApi(updateTransactionHash,[data.wallet_transaction_id,txHash?.hash])
-                    // const luckyWheelId = await checkApi(depositOnchainWheel, [
-                    //     provider,
-                    //     connector,
-                    //     data,
-                    //     auth?.user?.account,
-                    // ])
-                    // if (luckyWheelId === false) {
-                    //     setLoading(false)
-                    //     return
-                    // }
-                    if(updateTx===false){
+                if (provider) {
+                    const switchSuccess = await switchToNetworkOnchain(provider, chainId, transactionData)
+                    if (!switchSuccess) {
+                        setLoading(false)
+                        return
+                    }
+                    const luckyWheelId = await checkApi(depositOnchainWheel, [
+                        provider,
+                        connector,
+                        data,
+                        auth?.user?.account,
+                    ])
+                    if (luckyWheelId === false) {
                         setLoading(false)
                         return
                     }
@@ -230,17 +227,13 @@ const Wheel = (props) => {
                     let count = 1
                     rotateWheel(count)
 
-                    // const x = await checkApi(checkOnchain, [luckyWheelId])
-                    const x = await checkApi(checkOnchain, [updateTx?.meta?.lucky_wheel_id])
-
+                    const x = await checkApi(checkOnchain, [luckyWheelId])
                     let isCompleted = x.data?.reward
                     let y
                     let z
                     if (!isCompleted) {
                         y = setInterval(async () => {
-                            // z = await checkApi(checkOnchain, [luckyWheelId])
-                            z = await checkApi(checkOnchain, [updateTx?.meta?.lucky_wheel_id])
-
+                            z = await checkApi(checkOnchain, [luckyWheelId])
                             isCompleted = z.data?.reward
                             if (!window.location.href.includes("bounty-spin")) {
                                 clearInterval(y)
@@ -285,7 +278,7 @@ const Wheel = (props) => {
                             }
                         }, 5000)
                     }
-                // }
+                }
             } else {
                 setLoading(false)
                 setIsRerender(true)

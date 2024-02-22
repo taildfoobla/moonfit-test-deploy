@@ -10,7 +10,6 @@ import socialLoginIcon from "../../assets/images/wallets/social-login.png"
 import {EVM_WALLETS} from "../../core/utils/constants/blockchain"
 import {connectWalletToAccountAPI} from "../../core/services/connect-account"
 import {isMobileOrTablet} from "../../core/utils/helpers/device"
-import {useWalletConnect} from "../../core/contexts/wallet-connect"
 
 export default function ConnectWalletModal({
     onWalletSelect,
@@ -19,7 +18,6 @@ export default function ConnectWalletModal({
     isOpen,
     onClose,
     isLoginSocial,
-    onToggleWalletConnectModal
 }) {
 
     const metamask = EVM_WALLETS.find((wallet) => wallet.title === "MetaMask")
@@ -82,12 +80,7 @@ export default function ConnectWalletModal({
                     </div>
                     <span>SubWallet</span>
                 </li>
-                <li
-                    onClick={() => {
-                        onClose()
-                        onToggleWalletConnectModal()
-                    }}
-                >
+                <li>
                     <div className="wallet-picture">
                         <div className="border-gradient"></div>
                         <div className="wallet-img">
