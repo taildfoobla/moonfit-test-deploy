@@ -1,60 +1,41 @@
 import React, {useState, useEffect, createContext, useContext, useReducer} from "react"
-import {createWeb3Modal, defaultWagmiConfig} from "@web3modal/wagmi/dist/esm/exports/react"
-import {
-    arbitrum,
-    avalanche,
-    bsc,
-    fantom,
-    gnosis,
-    mainnet,
-    optimism,
-    polygon,
-    moonbaseAlpha,
-    baseGoerli,
-} from "wagmi/chains"
-import {walletConnectProvider, EIP6963Connector} from "@web3modal/wagmi"
-import {WalletConnectModal} from "@walletconnect/modal"
+import {getLocalStorage, LOCALSTORAGE_KEY} from "../utils/helpers/storage"
+import { createWeb3Modal, defaultConfig } from '@web3modal/ethers/react'
 
-import {WagmiConfig, configureChains, createConfig} from "wagmi"
-import {publicProvider} from "wagmi/providers/public"
-import {CoinbaseWalletConnector} from "wagmi/connectors/coinbaseWallet"
-import {InjectedConnector} from "wagmi/connectors/injected"
-import {WalletConnectConnector} from "wagmi/connectors/walletConnect"
+// 1. Get projectId at https://cloud.walletconnect.com
+const projectId = '2d6d4341d352937d613828ea6124a208'
 
-import HomeTest from "./Home"
-import {LOCALSTORAGE_KEY, getLocalStorage} from "../utils/helpers/storage"
+// 2. Set chains
+const mainnet = {
+  chainId: 1,
+  name: 'Ethereum',
+  currency: 'ETH',
+  explorerUrl: 'https://etherscan.io',
+  rpcUrl: 'https://cloudflare-eth.com'
+}
+const moonbaseAlpla = {
+    chainId: 1287,
+    name: 'Moonbase Alpha',
+    currency: 'DEV',
+    explorerUrl: 'https://moonbase.moonscan.io',
+    rpcUrl: 'https://rpc.api.moonbase.moonbeam.network'
+  }
 
-export const chainsA = [mainnet, polygon, avalanche, arbitrum, bsc, optimism, gnosis, fantom, moonbaseAlpha, baseGoerli]
-const projectId = "9328f8e7d9c506e6120b5ae8a939feeb"
-
-
+// 3. Create modal
 const metadata = {
-    name: "MoonFit - Web3 & NFT Lifestyle App",
-    description:
-        "MoonFit is a Web3 & NFT lifestyle app that promotes active living by rewarding users anytime they burn calories through physical activities.",
-    url: "https://app.moonfit.xyz",
-    icons: ["https://prod-cdn.moonfit.xyz/image/original/assets/images/preview/web-preview_1.png"],
+  name: 'My Website',
+  description: 'My Website description',
+  url: 'https://mywebsite.com', // origin must match your domain & subdomain
+  icons: ['https://avatars.mywebsite.com/']
 }
 
-const {chains, publicClient} = configureChains(chainsA, [walletConnectProvider({projectId}), publicProvider()])
-
-const wagmiConfig = createConfig({
-    autoConnect: true,
-    connectors: [
-        new WalletConnectConnector({chains, options: {projectId, showQrModal: false, metadata}}),
-        new EIP6963Connector({chains}),
-        new InjectedConnector({chains, options: {shimDisconnect: true}}),
-        new CoinbaseWalletConnector({chains, options: {appName: metadata.name}}),
-    ],
-    publicClient,
-})
-
 createWeb3Modal({
-    wagmiConfig,
-    projectId,
-    chains,
-    enableAnalytics: true, // Optional - defaults to your Cloud configuration
+  ethersConfig: defaultConfig({ metadata }),
+  chains: [mainnet,moonbaseAlpla],
+  projectId,
+  enableAnalytics: true // Optional - defaults to your Cloud configuration
 })
+
 
 const ACTIONS = {
     disconnect: "DISCONNECT",
@@ -98,26 +79,24 @@ export const WalletConnectContext = createContext()
 
 export default function WalletConnectProvider({children}) {
     const [state, dispatch] = useReducer(reducer, initalState)
-    
-   
 
-    const handleConnectWalletConnect=()=>{
-        dispatch({type:ACTIONS.connect})
+    const handleConnectWalletConnect = () => {
+        dispatch({type: ACTIONS.connect})
     }
 
     const handleDisconnectWalletConnect = () => {
-        dispatch({type:ACTIONS.disconnect})
+        dispatch({type: ACTIONS.disconnect})
     }
 
     const context = {
         walletConnect: state,
         handleConnectWalletConnect,
-        handleDisconnectWalletConnect
+        handleDisconnectWalletConnect,
     }
 
     return (
         <WalletConnectContext.Provider value={context}>
-            <WagmiConfig config={wagmiConfig}>{children}</WagmiConfig>
+          {children}
         </WalletConnectContext.Provider>
     )
 }

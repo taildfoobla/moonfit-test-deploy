@@ -4,14 +4,14 @@ import { AuthProvider } from "./core/contexts/auth"
 import { TokenBalanceProvider } from "./core/contexts/token-balance"
 import AOS from "aos"
 import routerWithoutProvider from "./routerWithoutProvider"
-import {CyberApp} from "@cyberlab/cyber-app-sdk"
+// import {CyberApp} from "@cyberlab/cyber-app-sdk"
 import FirstShow from "./components/FirstShow"
 import ChooseAccountModal from "./components/ChooseAccount"
 import {useLocation} from "react-router-dom"
 import BodyBg from "./assets/images/planet.png"
 import {render} from "@testing-library/react"
 import GlobalContextProvider from "./core/contexts/global"
-// import WalletConnectProvider from "./core/contexts/wallet-connect"
+import WalletConnectProvider from "./core/contexts/wallet-connect"
 console.log("debug_v1")
 function App() {
     const location = useLocation()
@@ -39,7 +39,7 @@ function App() {
     // }
     return (
         <AuthProvider>
-            {/* <WalletConnectProvider> */}
+            <WalletConnectProvider>
             <GlobalContextProvider>
             <FirstShow />
             <ChooseAccountModal />
@@ -48,7 +48,7 @@ function App() {
                 <div>{routerWithoutProvider}</div>
             </ScrollTop>
             </GlobalContextProvider>
-            {/* </WalletConnectProvider> */}
+            </WalletConnectProvider>
         </AuthProvider>
     )
 }
