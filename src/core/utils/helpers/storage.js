@@ -1,4 +1,5 @@
 export const LOCALSTORAGE_KEY = {
+    SELECTED_ASSET:"SELECTED_ASSET",
     wagmi_store:"wagmi.store",
     wagmi_connected:"wagmi.connected",
     SOCIAL_ACOUNT:"SOCIAL_ACOUNT",

@@ -18,7 +18,7 @@ const Footer = () => {
         window.open("https://app.moonfit.xyz/nft-sale/", "_blank")
     }
 
-    if (pathname.includes("clan-battle") || (pathname.includes("special-event") && !pathname.includes("lucky-wheel"))||pathname.includes("mint")||pathname.includes("astar-rewards")||pathname.includes("manage-assets")||pathname.includes("deposit")||pathname.includes("withdraw")||pathname.includes("two-fa")||pathname.includes("bounty-spin"))
+    if (pathname.includes("clan-battle") || (pathname.includes("special-event") && !pathname.includes("lucky-wheel"))||pathname.includes("mint")||pathname.includes("astar-rewards")||pathname.includes("manage-assets")||pathname.includes("deposit")||pathname.includes("withdraw")||pathname.includes("two-fa")||pathname.includes("bounty-spin")||pathname.includes("convert-tmfg"))
         return null
     const isChangeFooter =location.pathname.includes("lucky-wheel") || location.pathname.includes("explore")
     return (

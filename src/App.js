@@ -1,7 +1,7 @@
-import React, { useEffect } from "react"
+import React, {useEffect} from "react"
 import router from "./router"
-import { AuthProvider } from "./core/contexts/auth"
-import { TokenBalanceProvider } from "./core/contexts/token-balance"
+import {AuthProvider} from "./core/contexts/auth"
+import {TokenBalanceProvider} from "./core/contexts/token-balance"
 import AOS from "aos"
 import routerWithoutProvider from "./routerWithoutProvider"
 // import {CyberApp} from "@cyberlab/cyber-app-sdk"
@@ -18,15 +18,15 @@ function App() {
     useEffect(() => {
         AOS.init({
             once: true,
-            offset: 0
+            offset: 0,
         })
     }, [])
     useEffect(() => {
         const bodyElement = document.body
-        if (location.pathname.includes("explore")||location.pathname.includes("lucky-wheel")) {
+        if (location.pathname.includes("explore") || location.pathname.includes("lucky-wheel")) {
             bodyElement.style.backgroundImage = "none"
         } else {
-            bodyElement.style.backgroundImage=""
+            bodyElement.style.backgroundImage = ""
         }
     }, [location.pathname])
 
@@ -53,13 +53,13 @@ function App() {
     )
 }
 
-const ScrollTop = ({ children }) => {
-    const location = useLocation();
+const ScrollTop = ({children}) => {
+    const location = useLocation()
     useEffect(() => {
-        window.scrollTo({ top: 0, behavior: "smooth" });
+        window.scrollTo({top: 0, behavior: "smooth"})
         const body = document.querySelector("body")
         let timer = null
-        if (body && location.pathname.includes('summer-fitsnap-challenge')) {
+        if (body && location.pathname.includes("summer-fitsnap-challenge")) {
             timer = setTimeout(() => {
                 body.style.backgroundColor = "#f3d9b1"
             }, 1000)
@@ -69,8 +69,9 @@ const ScrollTop = ({ children }) => {
         return () => {
             clearTimeout(timer)
         }
-    }, [location]);
+    }, [location])
     return children
 }
 
 export default App
+

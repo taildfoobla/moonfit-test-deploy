@@ -69,41 +69,6 @@ const LunarEvent = () => {
         setOpenModal(false)
     }
 
-    const onClaimTask = async (type_action, type_reward, taskIndex) => {
-        try {
-            setLoading(true)
-            const req = {
-                slug: "lunar-gaming-festival-thanksgiving-challenge",
-                date: taskData.date,
-                type_reward,
-            }
-            const res = await EventService.claimSummerFitsnap(req)
-            setLoading(false)
-            setOpenModal(true)
-            const {success, message, data} = res.data
-            if (!success) {
-                return AntdMessage.error({
-                    content: message,
-                    className: "message-error",
-                    duration: 5,
-                })
-            } else {
-                // refetch()
-                setReward(data)
-                setOpenModal(true)
-                setModalChallenge((prev) => ({...prev, visible: false}))
-                const newClaimIndex = [...currentClaimIndex]
-                const isExistIndex = currentClaimIndex.includes(taskIndex)
-                if (!isExistIndex) {
-                    newClaimIndex.push(taskIndex)
-                }
-                setCurrentClaimIndex(newClaimIndex)
-            }
-        } catch (e) {
-            setLoading(false)
-        }
-    }
-
     const handleExpired = () => {
         setTimeLeft(moment(moment().endOf("day")).unix() * 1000)
     }

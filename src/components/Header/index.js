@@ -33,6 +33,7 @@ import emailIcon from "../../assets/images/email-1.png"
 import {renderEmail} from "../../core/utils/helpers/render-email"
 import {checkApi} from "../../core/utils/helpers/check-api"
 import {check2faAPI} from "../../core/services/2fa"
+import {useWalletConnect} from "../../core/contexts/wallet-connect"
 
 const {Paragraph} = Typography
 
@@ -60,6 +61,9 @@ const Header = () => {
         setIsLoginSocial,
         setIsOpenModalSocial,
     } = useAuth()
+
+    const {walletConnect,handleDisConnected} = useWalletConnect()
+
     const {isConnected, user} = auth
 
     const socialEmail = JSON.parse(getLocalStorage(LOCALSTORAGE_KEY.SOCIAL_ACOUNT))?.email
@@ -327,7 +331,7 @@ const Header = () => {
             removeLocalStorage(LOCALSTORAGE_KEY.REFRESH_TOKEN)
             removeLocalStorage(LOCALSTORAGE_KEY.SOCIAL_ACOUNT)
         } catch (err) {
-            console.log("signout err",err)
+            console.log("signout err", err)
         }
     }
 
@@ -504,6 +508,10 @@ const Header = () => {
                     key: "3",
                 },
                 {
+                    label: <Link to="/convert-tmfg">Convert tMFG</Link>,
+                    key: "7",
+                },
+                {
                     label: (
                         <div
                             className="open-account"
@@ -523,6 +531,7 @@ const Header = () => {
                             className="disconnect"
                             onClick={() => {
                                 onDisconnect()
+                                handleDisConnected()
                             }}
                         >
                             Disconnect Wallet
@@ -585,7 +594,6 @@ const Header = () => {
                     ),
                     key: "6",
                 },
-
                 // {
                 //     label: (
                 //         <Link
@@ -606,6 +614,7 @@ const Header = () => {
                             className="disconnect"
                             onClick={() => {
                                 onDisconnect()
+                                handleDisConnected()
                             }}
                         >
                             Disconnect Wallet
@@ -667,6 +676,10 @@ const Header = () => {
                     key: "3",
                 },
                 {
+                    label: <Link to="/convert-tmfg">Convert tMFG</Link>,
+                    key: "7",
+                },
+                {
                     label: (
                         <div
                             className="open-account"
@@ -686,6 +699,7 @@ const Header = () => {
                             className="disconnect"
                             onClick={() => {
                                 onDisconnect()
+                                handleDisConnected()
                             }}
                         >
                             Disconnect Wallet
@@ -740,6 +754,10 @@ const Header = () => {
                     key: "3",
                 },
                 {
+                    label: <Link to="/convert-tmfg">Convert tMFG</Link>,
+                    key: "7",
+                },
+                {
                     label: (
                         <div
                             className="open-account"
@@ -783,6 +801,10 @@ const Header = () => {
                         </Link>
                     ),
                     key: "3",
+                },
+                {
+                    label: <Link to="/convert-tmfg" onClick={handleCloseMobileMenu}>Convert tMFG</Link>,
+                    key: "7",
                 },
                 {
                     label: (
@@ -907,6 +929,10 @@ const Header = () => {
                     key: "3",
                 },
                 {
+                    label: <Link to="/convert-tmfg" onClick={handleCloseMobileMenu}>Convert tMFG</Link>,
+                    key: "7",
+                },
+                {
                     label: (
                         <div
                             className="open-account"
@@ -928,6 +954,7 @@ const Header = () => {
                             onClick={() => {
                                 onDisconnect()
                                 handleCloseMobileMenu()
+                                handleDisConnected()
                             }}
                         >
                             Disconnect Wallet
@@ -993,7 +1020,6 @@ const Header = () => {
                     ),
                     key: "6",
                 },
-
                 // {
                 //     label: (
                 //         <Link
@@ -1015,6 +1041,7 @@ const Header = () => {
                             onClick={() => {
                                 onDisconnect()
                                 handleCloseMobileMenu()
+                                handleDisConnected()
                             }}
                         >
                             Disconnect Wallet
@@ -1105,6 +1132,10 @@ const Header = () => {
                     key: "3",
                 },
                 {
+                    label: <Link to="/convert-tmfg" onClick={handleCloseMobileMenu}>Convert tMFG</Link>,
+                    key: "7",
+                },
+                {
                     label: (
                         <div
                             className="open-account"
@@ -1125,6 +1156,7 @@ const Header = () => {
                             className="disconnect"
                             onClick={() => {
                                 onDisconnect()
+                                handleDisConnected()
                             }}
                         >
                             Disconnect Wallet
@@ -1192,6 +1224,10 @@ const Header = () => {
                         </Link>
                     ),
                     key: "3",
+                },
+                {
+                    label: <Link to="/convert-tmfg" onClick={handleCloseMobileMenu}>Convert tMFG</Link>,
+                    key: "7",
                 },
                 {
                     label: (
@@ -1312,7 +1348,25 @@ const Header = () => {
                                             {getShortAddress(user.account, 9)}
                                         </Button>
                                     </Dropdown>
-                                ) : isLoginSocial ? (
+                                ) 
+                                : walletConnect.isConnectedWalletConnect ? (
+                                    <Dropdown
+                                        overlayClassName="header__choose-action"
+                                        menu={{items: itemsMenu}}
+                                        trigger={["click"]}
+                                        placement="bottomLeft"
+                                    >
+                                        <Button
+                                            className="header__wallet-address d-flex align-items-center"
+                                            // onClick={showWalletModal}
+                                        >
+                                            {/* <Image src={iconWallet} preview={false} width={36} /> */}
+                                            <Jdenticon size="36" value={walletConnect.accountDataWalletConnect} />
+                                            {getShortAddress(walletConnect.accountDataWalletConnect, 9)}
+                                        </Button>
+                                    </Dropdown>
+                                ) 
+                                : isLoginSocial ? (
                                     <Dropdown
                                         overlayClassName="header__choose-action"
                                         menu={{items: itemsMenuEmail}}

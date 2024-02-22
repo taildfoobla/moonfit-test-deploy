@@ -15,6 +15,7 @@ import Withdraw from "./pages/Withdraw"
 import TwoFaPage from "./pages/TwoFA"
 import BountySpin from "./pages/BountySpin"
 import HomeTest from "./core/contexts/Home"
+import ConvertTMFG from "./pages/ConvertTMFG"
 
 const router = (
     <Routes>
@@ -25,7 +26,7 @@ const router = (
             <Route path="/deposit" element={<Deposit />} />
             <Route path="/mint" element={<Mint />} />
             <Route path="/events/:id" element={<EventDetail />} />
-            <Route path="/clan-battle/:id" element={<ClanBattle />} />
+            {/* <Route path="/clan-battle/:id" element={<ClanBattle />} /> */}
             <Route path="/special-event/:id" element={<SpecialEvent />} />
             <Route path="/astar-rewards" element={<AstarRewards/>}/>
             <Route path="/manage-assets" element={<AssetsManagement/>}/>
@@ -33,6 +34,7 @@ const router = (
             <Route path="/two-fa" element={<TwoFaPage/>}/>
             <Route path="/special-event/bounty-spin" element={<BountySpin/>}/>
             <Route path="/test" element={<HomeTest/>}/>
+            <Route path="/convert-tmfg" element={<ConvertTMFG/>}/>
             <Route path="*" element={<Home />} />
         </Route>
 

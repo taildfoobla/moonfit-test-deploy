@@ -5,7 +5,7 @@ import { getLocalStorage,LOCALSTORAGE_KEY } from "../utils/helpers/storage"
 
 export const getWheelInfo = async ([chainId]) => {
     const accessToken = getLocalStorage(LOCALSTORAGE_KEY.ACCESS_TOKEN)
-    const walletAddress=JSON.parse(getLocalStorage(LOCALSTORAGE_KEY.WALLET_SIGNATURE))?.account
+    const walletAddress=JSON.parse(getLocalStorage(LOCALSTORAGE_KEY.WALLET_ACCOUNT))?.account
     const config = {
         headers: {
             Authorization: `Bearer ${accessToken}`, // Set the access token in the Authorization header

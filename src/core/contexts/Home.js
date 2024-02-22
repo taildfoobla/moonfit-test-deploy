@@ -39,6 +39,8 @@ export default function HomeTest() {
         console.log("tx", tx)
     }
 
+    const x=useWalletConnect()
+
     return (
         <div style={{paddingTop: "100px"}}>
             <w3m-button />
