@@ -18,8 +18,8 @@ export default function ConnectWalletModal({
     isOpen,
     onClose,
     isLoginSocial,
+    setIsOpenWalletConnectModal,
 }) {
-
     const metamask = EVM_WALLETS.find((wallet) => wallet.title === "MetaMask")
     const subwallet = EVM_WALLETS.find((wallet) => wallet.title === "SubWallet (EVM)")
 
@@ -80,7 +80,12 @@ export default function ConnectWalletModal({
                     </div>
                     <span>SubWallet</span>
                 </li>
-                <li>
+                <li
+                    onClick={() => {
+                        onClose()
+                        setIsOpenWalletConnectModal(true)
+                    }}
+                >
                     <div className="wallet-picture">
                         <div className="border-gradient"></div>
                         <div className="wallet-img">

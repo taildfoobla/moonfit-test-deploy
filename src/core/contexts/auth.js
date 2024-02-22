@@ -139,8 +139,8 @@ const AuthProvider = ({children}) => {
     const [isOpenModalChooseAccount, setIsOpenModalChooseAccount] = useState(false)
     const [isLoginSocial, setIsLoginSocial] = useState(checkIsLoginSocial())
     const [isOpenModalSocial,setIsOpenModalSocial]=useState(false)
-
-
+    const [isOpenWalletConnectModal,setIsOpenWalletConnectModal]=useState(false)
+    const [isConnectedThroughWalletConnect,setIsConnectedThroughWalletConnect]=useState(false)
     useEffect(() => {
 
         // getLoginSocialData()
@@ -262,7 +262,7 @@ const AuthProvider = ({children}) => {
     //     getUserData()
     // }, [chooseUserData])
 
- 
+  
 
     const hideConnectModal = () => setIsConnectModalVisible(false)
 
@@ -846,7 +846,10 @@ const AuthProvider = ({children}) => {
         setIsLoginSocial,
         setIsOpenModalSocial,
         handleToggleConnect,
-      
+        isOpenWalletConnectModal,
+        setIsOpenWalletConnectModal,
+        isConnectedThroughWalletConnect,
+        setIsConnectedThroughWalletConnect
     }
 
     return (
@@ -862,7 +865,7 @@ const AuthProvider = ({children}) => {
             setIsOpenModalSocial={setIsOpenModalSocial}
             onWalletSelect={onWalletSelect}
             isLoginSocial={isLoginSocial}
-    
+            setIsOpenWalletConnectModal={setIsOpenWalletConnectModal}
             />
             <ConnectSocialModal isOpen={isOpenModalSocial} onClose={setIsOpenModalSocial}/>
             {/* <MFModal

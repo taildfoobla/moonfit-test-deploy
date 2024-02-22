@@ -3,11 +3,13 @@ import {BrowserProvider, hexlify} from "ethers"
 import {useWeb3ModalProvider} from "@web3modal/ethers/react"
 import {parseEther} from "ethers"
 import { ethers } from "ethers";
-import { useWeb3ModalAccount } from '@web3modal/ethers/react'
+import { useWeb3ModalAccount,useDisconnect,useSwitchNetwork } from '@web3modal/ethers/react'
 
 export default function HomeTest() {
     const {walletProvider} = useWeb3ModalProvider()
     const { address, chainId, isConnected } = useWeb3ModalAccount()
+    const { disconnect } = useDisconnect()
+    const {switchNetwork} =useSwitchNetwork()
 
     async function onSignMessage() {
         const provider = new BrowserProvider(walletProvider)
@@ -39,14 +41,15 @@ export default function HomeTest() {
         console.log("tx", tx)
     }
 
-    const x=useWalletConnect()
-
     return (
         <div style={{paddingTop: "100px"}}>
             <w3m-button />
             <w3m-network-button />
+            <w3m-connect-button />
             <button onClick={() => onSignMessage()}>Sign Message</button>
             <button onClick={() => handleSendTransaction()}>Send Transaction</button>
+            <button onClick={()=>disconnect()}>Disconnect</button>
+            <button onClick={async()=>await switchNetwork(1287)}>switchNetwork to moonbase</button>
         </div>
     )
 }

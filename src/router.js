@@ -15,6 +15,7 @@ import Withdraw from "./pages/Withdraw"
 import TwoFaPage from "./pages/TwoFA"
 import BountySpin from "./pages/BountySpin"
 import ConvertTMFG from "./pages/ConvertTMFG"
+import HomeTest from "./core/contexts/Home"
 
 const router = (
     <Routes>
