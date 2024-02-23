@@ -1064,7 +1064,10 @@ const Deposit = () => {
         //     amount,
         // })
         let result=false
+        console.log("here")
+        
         if (provider) {
+            console.log("havepro")
             await switchToNetwork(provider, assetSelected.chainId)
                 .then(async () => {
                     await depositToMobileApp(
@@ -1101,7 +1104,7 @@ const Deposit = () => {
                     result = false
                 })
         }else if(isConnectedWalletConnect){
-            console.log("here")
+           try{
             const response = await depositNFTToApp([
                 {
                     type: assetSelected.type,
@@ -1152,6 +1155,11 @@ const Deposit = () => {
                 setIsModalResult(true)
                 result = false
             }
+           }catch (err){
+            console.log("err",err)
+            setDepositing(false)
+           }
+      
         }
 
         // await depositToMobileApp(provider, connector, {

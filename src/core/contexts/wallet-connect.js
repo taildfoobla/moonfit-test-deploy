@@ -98,9 +98,10 @@ export default function WalletConnectProvider({children}) {
         try {
             const signatureLocal = JSON.parse(getLocalStorage(LOCALSTORAGE_KEY.WALLET_SIGNATURE))
             if (signatureLocal && isConnected) {
+                console.log("here")
                 handleConnectWalletConnect(address)
                 setIsConnectedThroughWalletConnect(true)
-                signatureData(signatureLocal?.signature)
+                setSignatureData(signatureLocal?.signature)
             } else {
                 const provider = new BrowserProvider(walletProvider)
                 const signer = await provider.getSigner()
