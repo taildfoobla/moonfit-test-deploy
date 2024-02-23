@@ -100,7 +100,6 @@ const Deposit = () => {
 
     const {
         isSignature,
-        isConnected,
         wallet,
         provider,
         connector,
@@ -124,7 +123,7 @@ const Deposit = () => {
     const socialAccount = JSON.parse(getLocalStorage(LOCALSTORAGE_KEY.SOCIAL_ACOUNT))
 
     useEffect(() => {
-        if (isLoginSocial) {
+        if (isLoginSocial&&auth?.isConnected) {
             setIsLogin(false)
             const userData = JSON.parse(getLocalStorage(LOCALSTORAGE_KEY.SOCIAL_ACOUNT))
             const walletAccount = JSON.parse(getLocalStorage(LOCALSTORAGE_KEY.WALLET_ACCOUNT))
@@ -136,12 +135,10 @@ const Deposit = () => {
         } else {
             navigate("/")
         }
-    }, [isLoginSocial, isConnected])
+    }, [isLoginSocial, auth?.isConnected])
 
     useEffect(() => {
-        console.log("here1")
         if (!depositing) {
-            console.log("here2")
             fetchData().then()
             notification.destroy()
         }
@@ -243,10 +240,8 @@ const Deposit = () => {
 
     const fetchData = async (loading = true) => {
         if (!auth?.user?.account || !isLoginSocial) {
-            console.log("here3")
             return null
         }
-        console.log("here4")
         setIsFetching(true)
         loading && setLoading(true)
         // Switch Network on Desktop Wallet Extension
@@ -1106,6 +1101,7 @@ const Deposit = () => {
                     result = false
                 })
         }else if(isConnectedWalletConnect){
+            console.log("here")
             const response = await depositNFTToApp([
                 {
                     type: assetSelected.type,
@@ -1117,7 +1113,7 @@ const Deposit = () => {
                 },
             ])
             console.log("after", response)
-            const {data, success, message} = response
+            let {data,success, message} = response
     
             if (typeof data.success === "boolean" && !data.success) {
                 success = false
@@ -1133,7 +1129,6 @@ const Deposit = () => {
             const txHash = await handleSendTransaction(assetSelected.chainId, transactionData)||null
     
             if (txHash) {
-                console.log("haveHash")
               await updateTransactionHash([{transaction_id: data.id, transaction_hash: txHash}])
                 
                 setDepositResult({
@@ -1148,7 +1143,6 @@ const Deposit = () => {
                 setIsModalResult(true)
                 result = true
             } else {
-                console.log("noHash")
                
                 setDepositResult({
                     success: false,
@@ -1184,27 +1178,30 @@ const Deposit = () => {
     }
 
     const _handleOpenModalDepositAsset = async () => {
-        const web3 = new Web3(provider)
-        const walletAccount = await web3.eth.getAccounts()
-        const account = walletAccount[0]
+      
+        //     const web3 = new Web3(provider)
+        // const walletAccount = await web3.eth.getAccounts()
+        // const account = walletAccount[0]
         if (assetSelected && ["MintPass", "MoonBeast"].includes(assetSelected.type) && !assetSelected.isApproved) {
             try {
                 const res = await _handleDepositedAsset()
 
-                const statusCode = await res.status
-                if (!res) {
-                    const res2 = await handleGetAccessToken(account, userIdSelected)
-                    const data = res2?.data?.data
-                    const accessToken = data.access_token
-                    const refreshToken = data.refresh_token
-                    setLocalStorage("ACCESS_TOKEN", accessToken)
-                    setLocalStorage("REFRESH_TOKEN", refreshToken)
-                    const result = await _handleDepositedAsset("reCall")
-                }
+                // const statusCode = await res.status
+                // if (!res) {
+                //     const res2 = await handleGetAccessToken(account, userIdSelected)
+                //     const data = res2?.data?.data
+                //     const accessToken = data.access_token
+                //     const refreshToken = data.refresh_token
+                //     setLocalStorage("ACCESS_TOKEN", accessToken)
+                //     setLocalStorage("REFRESH_TOKEN", refreshToken)
+                //     const result = await _handleDepositedAsset("reCall")
+                // }
             } catch (err) {}
         } else {
             setIsModalConfirm(true)
-        }
+        } 
+        
+       
     }
 
     const _renderContainer = () => {

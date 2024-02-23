@@ -212,6 +212,7 @@ const Wheel = (props) => {
                 const chainId = transactionData.chainId
                 let luckyWheelId
                 if (provider) {
+                    console.log("havepro")
                     const switchSuccess = await switchToNetworkOnchain(provider, chainId, transactionData)
                     if (!switchSuccess) {
                         setLoading(false)
@@ -223,6 +224,7 @@ const Wheel = (props) => {
                         return
                     }
                 } else if (isConnectedThroughWalletConnect) {
+                    console.log("nohavepro")
                     const txHash = await handleSendTransaction(chainId, transactionData.transaction)
                     if(txHash){
                         const updateTx = await checkApi(updateTransactionHash, [data.wallet_transaction_id, txHash?.hash])

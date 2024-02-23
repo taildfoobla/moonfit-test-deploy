@@ -130,7 +130,7 @@ const AuthProvider = ({children}) => {
     const isMetaMaskBrowser = isMobileOrTablet() && !!window[PROVIDER_NAME.MetaMask]
     const [connector, setConnector] = useState(null)
     const [isSignature, seIsSignature] = useState(checkSignature())
-    const [signatureData, setSignatureData] = useState(checkSignatureData)
+    const [signatureData, setSignatureData] = useState(checkSignatureData())
     // const [listUsers, setListUsers] = useState({success: true, message: "", data: [],account:""})
     const [listUsers, setListUsers] = useState(checkListUsers())
     const [chooseUserData, setChooseUserData] = useState({})
@@ -831,6 +831,7 @@ const AuthProvider = ({children}) => {
         provider,
         isSignature,
         signatureData,
+        setSignatureData,
         connector,
         listUsers,
         handleLogin,

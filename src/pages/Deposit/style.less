@@ -652,10 +652,11 @@
 
             .deposit-button {
                 display: flex;
-                margin: 20px -4px 0;
-
+                margin: 20px 0 0;
+                max-width: 100%;
                 button {
-                    width: 100%;
+                    max-width: 100%;
+                    width: calc(100%/2);
                     display: flex;
                     align-items: center;
                     justify-content: center;
@@ -693,6 +694,7 @@
                     flex-direction: column-reverse;
 
                     button {
+                        width: unset;
                         margin-bottom: 6px;
                     }
                 }

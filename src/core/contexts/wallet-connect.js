@@ -1,6 +1,7 @@
 import React, {useState, useEffect, createContext, useContext, useReducer} from "react"
 import {getLocalStorage, LOCALSTORAGE_KEY, setLocalStorage} from "../utils/helpers/storage"
-import {BrowserProvider, parseEther,parseGwei} from "ethers"
+import { chains } from "../utils/constants/wallet-connect"
+import {BrowserProvider, parseEther, parseGwei} from "ethers"
 import {createWeb3Modal, defaultConfig} from "@web3modal/ethers/react"
 import {useWeb3Modal} from "@web3modal/ethers/react"
 import {useAuth} from "./auth"
@@ -9,44 +10,7 @@ import {useWeb3ModalAccount, useWeb3ModalProvider, useSwitchNetwork, useDisconne
 const projectId = "2d6d4341d352937d613828ea6124a208"
 
 // 2. Set chains
-const mainnet = {
-    chainId: 1,
-    name: "Ethereum",
-    currency: "ETH",
-    explorerUrl: "https://etherscan.io",
-    rpcUrl: "https://cloudflare-eth.com",
-}
-const moonbaseAlpla = {
-    chainId: 1287,
-    name: "Moonbase Alpha",
-    currency: "DEV",
-    explorerUrl: "https://moonbase.moonscan.io",
-    rpcUrl: "https://rpc.api.moonbase.moonbeam.network",
-}
 
-const moonBeamNetwork = {
-    chainId: 1284,
-    name: "Moonbeam",
-    currency: "GLMR",
-    explorerUrl: "https://moonbeam.moonscan.io",
-    rpcUrl: "https://rpc.ankr.com/moonbeam",
-}
-
-const astarNetwork = {
-    chainId: 592,
-    name: "Astar",
-    currency: "ASTR",
-    explorerUrl: "https://blockscout.com/astar",
-    rpcUrl: "https://evm.astar.network",
-}
-
-const shibuyaNetwork = {
-    chainId: 81,
-    name: "Shibuya Testnet",
-    currency: "SBY",
-    explorerUrl: "https://blockscout.com/shibuya",
-    rpcUrl: "https://rpc.shibuya.astar.network",
-}
 
 // 3. Create modal
 const metadata = {
@@ -58,7 +22,7 @@ const metadata = {
 
 createWeb3Modal({
     ethersConfig: defaultConfig({metadata}),
-    chains: [mainnet, moonbaseAlpla, moonBeamNetwork, astarNetwork, shibuyaNetwork],
+    chains,
     projectId,
     enableAnalytics: true, // Optional - defaults to your Cloud configuration
 })
@@ -94,6 +58,8 @@ export default function WalletConnectProvider({children}) {
         setIsOpenWalletConnectModal,
         handleToggleConnect,
         setIsConnectedThroughWalletConnect,
+        signatureData,
+        setSignatureData
     } = useAuth()
     const {open} = useWeb3Modal()
     const {address, chainId, isConnected} = useWeb3ModalAccount()
@@ -134,6 +100,7 @@ export default function WalletConnectProvider({children}) {
             if (signatureLocal && isConnected) {
                 handleConnectWalletConnect(address)
                 setIsConnectedThroughWalletConnect(true)
+                signatureData(signatureLocal?.signature)
             } else {
                 const provider = new BrowserProvider(walletProvider)
                 const signer = await provider.getSigner()
@@ -158,6 +125,7 @@ export default function WalletConnectProvider({children}) {
                             signature: signData,
                         })
                     )
+                    setSignatureData(signData)
                 } else {
                     handleDisconnectWalletConnect()
                 }

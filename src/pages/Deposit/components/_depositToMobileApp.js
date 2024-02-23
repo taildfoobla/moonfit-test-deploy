@@ -29,7 +29,6 @@ export const depositToMobileApp = async (provider, connector, params, callback) 
     if (txHash) {
         updateTransactionHash([{transaction_id: data.id, transaction_hash: txHash}]).then()
     }
-    console.log("inside5")
     callback({
         success,
         message,

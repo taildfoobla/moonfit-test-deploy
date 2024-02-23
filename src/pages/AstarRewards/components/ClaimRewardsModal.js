@@ -7,6 +7,7 @@ import {claimStakingAPI, getStakeInfoAPI} from "../../../core/services/astar-rew
 import {sendTransaction} from "../../../core/utils/helpers/blockchain"
 import {updateTransactionAPI} from "../../../core/services/astar-rewards"
 import {switchToNetwork} from "../../../core/utils-app/blockchain"
+import {useWalletConnect} from "../../../core/contexts/wallet-connect"
 
 export default function ClaimRewardsModal({
     isOpen,
@@ -30,6 +31,9 @@ export default function ClaimRewardsModal({
     const [pendingRound, setPendingRound] = useState([])
     const [claimedRound, setClaimedRound] = useState([])
     const [isNeedCheckPending, setIsNeedCheckPending] = useState(false)
+    const {walletConnectState, handleSendTransaction} = useWalletConnect()
+    const {isConnectedWalletConnect} = walletConnectState
+
     //useEffect for the first time
     useEffect(() => {
         const handleKeyDown = (event) => {
@@ -203,30 +207,29 @@ export default function ClaimRewardsModal({
                 ...signatureData,
                 rounds: selectedRound,
             }
-    
+
             try {
-                console.log("here")
                 const res = await claimStakingAPI(value)
                 const {data, message, success} = res
                 if (success) {
-                    console.log("here-2")
                     if (message === "Get Staking Info successfully") {
-                      console.log("here-3")
                         const sendData = {
                             ...data?.transaction?.transaction,
                             from: signatureData.wallet_address,
                         }
-                      
-                        await switchToNetwork(provider, data?.transaction?.chainId)
-                        // await switchToNetwork(provider, 81)
-                        const txHash = await sendTransaction(provider, connector, sendData)
+                        let txHash
+                        if (isConnectedWalletConnect) {
+                            txHash = await handleSendTransaction(data?.transaction?.chainId, sendData)
+                        } else {
+                            await switchToNetwork(provider, data?.transaction?.chainId)
+                            txHash = await sendTransaction(provider, connector, sendData)
+                        }
+
                         const valueForUpdate = {
                             transaction_id: data?.wallet_transaction_id,
                             transaction_hash: txHash,
                         }
-                       console.log("before update transaction")
                         await updateTransactionAPI(valueForUpdate)
-                        console.log("after update transaction")
                         const newClaimedArr = claimedRound.concat(cacheSelectedRound)
                         setClaimedRound(newClaimedArr)
                         onClose()
