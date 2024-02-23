@@ -60,9 +60,10 @@ import {message as AntdMessage} from "antd"
 import WheelRewardModal from "../../../components/WheelRewardModal"
 import LuckyRewardModal from "../../../components/LuckyRewardModal"
 import {checkApi} from "../../../core/utils/helpers/check-api"
-import {spinOnChain, checkOnchain} from "../../../core/services/bounty-spin"
+import {spinOnChain, checkOnchain, updateTransactionHash} from "../../../core/services/bounty-spin"
 import {useLocation, useParams, useSearchParams} from "react-router-dom"
 import ReCAPTCHA from "react-google-recaptcha"
+import {useWalletConnect} from "../../../core/contexts/wallet-connect"
 
 const {CYBER_ACCOUNT_KEY} = COMMON_CONFIGS
 
@@ -102,8 +103,11 @@ const Wheel = (props) => {
         setIsOpenModalChooseAccount,
         isLoginSocial,
         listUsers,
+        isConnectedThroughWalletConnect,
     } = useAuth()
 
+    const {walletConnectState, handleSendTransaction} = useWalletConnect()
+    const {isConnectedWalletConnect} = walletConnectState
     const [searchParams] = useSearchParams()
 
     const toggleReward = (open) => setOpenReward(open)
@@ -206,78 +210,86 @@ const Wheel = (props) => {
             if (success) {
                 const transactionData = data?.transaction_data
                 const chainId = transactionData.chainId
+                let luckyWheelId
                 if (provider) {
                     const switchSuccess = await switchToNetworkOnchain(provider, chainId, transactionData)
                     if (!switchSuccess) {
                         setLoading(false)
                         return
                     }
-                    const luckyWheelId = await checkApi(depositOnchainWheel, [
-                        provider,
-                        connector,
-                        data,
-                        auth?.user?.account,
-                    ])
+                    luckyWheelId = await checkApi(depositOnchainWheel, [provider, connector, data, auth?.user?.account])
                     if (luckyWheelId === false) {
                         setLoading(false)
                         return
                     }
-                    setIsRerender(true)
+                } else if (isConnectedThroughWalletConnect) {
+                    const txHash = await handleSendTransaction(chainId, transactionData.transaction)
+                    if(txHash){
+                        const updateTx = await checkApi(updateTransactionHash, [data.wallet_transaction_id, txHash?.hash])
 
-                    let count = 1
-                    rotateWheel(count)
+                        if (updateTx === false) {
+                            console.log("here", updateTx)
+                            return
+                        }
+                        luckyWheelId = updateTx?.meta?.lucky_wheel_id
+                    }else{
+                        setLoading(false)
 
-                    const x = await checkApi(checkOnchain, [luckyWheelId])
-                    let isCompleted = x.data?.reward
-                    let y
-                    let z
-                    if (!isCompleted) {
-                        y = setInterval(async () => {
-                            z = await checkApi(checkOnchain, [luckyWheelId])
-                            isCompleted = z.data?.reward
-                            if (!window.location.href.includes("bounty-spin")) {
-                                clearInterval(y)
-
-                                let wheel = document.getElementById("inner-wheel")
-                                if (wheel) {
-                                    wheel.style.transition = "0s"
-                                }
-                                return
-                            }
-                            if (isCompleted) {
-                                clearInterval(y)
-                                setReward(z.data?.reward)
-                                const totalDeg = 360 - z.data.reward.deg + 18 + count * 2 * 1080
-                                setCurrentDeg(totalDeg)
-                                let wheel = document.getElementById("inner-wheel")
-                                wheel.style.transition = `7s ease-out`
-                                wheel.style.transform = "rotate(" + totalDeg + "deg)"
-                                setTimeout(async () => {
-                                    setLoading(false)
-                                    if (z.data?.reward?.type === "MFR") {
-                                        setGameToken(token + z.data?.reward?.value)
-                                    }
-                                    const x = Math.floor(totalDeg / 360)
-                                    const y = totalDeg - x * 360
-                                    setCurrentDeg(y)
-                                    wheel.style.transition = "0s"
-                                    // wheel.style.transform = "rotate(" +y + "deg)"
-
-                                    toggleReward(true)
-                                    setFreeSpin(z.data.free_spin)
-                                    setIsRerender(true)
-
-                                    // setTimeout(() => {
-                                    //     wheel.style.transition = "0s"
-                                    //     wheel.style.transform = "rotate(" +y + "deg)"
-                                    // }, 2000)
-                                }, 7500)
-                            } else {
-                                count++
-                                rotateWheel(count)
-                            }
-                        }, 5000)
+                        return
                     }
+                   
+                }
+
+                setIsRerender(true)
+
+                let count = 1
+                rotateWheel(count)
+
+                const x = await checkApi(checkOnchain, [luckyWheelId])
+                let isCompleted = x.data?.reward
+                let y
+                let z
+                if (!isCompleted) {
+                    y = setInterval(async () => {
+                        z = await checkApi(checkOnchain, [luckyWheelId])
+                        isCompleted = z.data?.reward
+                        if (!window.location.href.includes("bounty-spin")) {
+                            clearInterval(y)
+
+                            let wheel = document.getElementById("inner-wheel")
+                            if (wheel) {
+                                wheel.style.transition = "0s"
+                            }
+                            return
+                        }
+                        if (isCompleted) {
+                            clearInterval(y)
+                            setReward(z.data?.reward)
+                            const totalDeg = 360 - z.data.reward.deg + 18 + count * 2 * 1080
+                            setCurrentDeg(totalDeg)
+                            let wheel = document.getElementById("inner-wheel")
+                            wheel.style.transition = `7s ease-out`
+                            wheel.style.transform = "rotate(" + totalDeg + "deg)"
+                            setTimeout(async () => {
+                                setLoading(false)
+                                if (z.data?.reward?.type === "MFR") {
+                                    setGameToken(token + z.data?.reward?.value)
+                                }
+                                const x = Math.floor(totalDeg / 360)
+                                const y = totalDeg - x * 360
+                                setCurrentDeg(y)
+                                wheel.style.transition = "0s"
+                                // wheel.style.transform = "rotate(" +y + "deg)"
+
+                                toggleReward(true)
+                                setFreeSpin(z.data.free_spin)
+                                setIsRerender(true)
+                            }, 7500)
+                        } else {
+                            count++
+                            rotateWheel(count)
+                        }
+                    }, 5000)
                 }
             } else {
                 setLoading(false)
@@ -473,22 +485,23 @@ const Wheel = (props) => {
                         <div className="wheeldots"></div>
                         <div className={`wheel wheel-${luckyWheel?.length || 10}`} id="outer-wheel">
                             <div id="inner-wheel">
-                                {luckyWheel?.length>0 ?
-                                    luckyWheel.map((wheel, index) => {
-                                        // let randomNumber = Math.round(Math.random() * 2)
-                                        return (
-                                            <div key={index} className={`sec ${wheel.type} ${wheel.color}`}>
-                                                {_renderImage(wheel.type, wheel.color)}
-                                                <span>
-                                                    {wheel.type === "GLMR" || wheel.type === "ASTR" ? "1" : wheel.value}
-                                                </span>
-                                            </div>
-                                        )
-                                    }):initWheelData.map((item, index) => (
-                                        <div key={index} className={`sec ${item.type} ${item.color}`}></div>
-                                    ))}
-                                 
-                                
+                                {luckyWheel?.length > 0
+                                    ? luckyWheel.map((wheel, index) => {
+                                          // let randomNumber = Math.round(Math.random() * 2)
+                                          return (
+                                              <div key={index} className={`sec ${wheel.type} ${wheel.color}`}>
+                                                  {_renderImage(wheel.type, wheel.color)}
+                                                  <span>
+                                                      {wheel.type === "GLMR" || wheel.type === "ASTR"
+                                                          ? "1"
+                                                          : wheel.value}
+                                                  </span>
+                                              </div>
+                                          )
+                                      })
+                                    : initWheelData.map((item, index) => (
+                                          <div key={index} className={`sec ${item.type} ${item.color}`}></div>
+                                      ))}
                             </div>
 
                             <a id="spin" className={`${loading ? "disabled" : ""}`}>

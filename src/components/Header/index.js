@@ -33,6 +33,7 @@ import emailIcon from "../../assets/images/email-1.png"
 import {renderEmail} from "../../core/utils/helpers/render-email"
 import {checkApi} from "../../core/utils/helpers/check-api"
 import {check2faAPI} from "../../core/services/2fa"
+import {useWalletConnect} from "../../core/contexts/wallet-connect"
 
 const {Paragraph} = Typography
 
@@ -60,7 +61,7 @@ const Header = () => {
         setIsLoginSocial,
         setIsOpenModalSocial,
     } = useAuth()
-
+    const {handleDisconnectWalletConnect} = useWalletConnect()
 
     const {isConnected, user} = auth
 
@@ -529,6 +530,7 @@ const Header = () => {
                             className="disconnect"
                             onClick={() => {
                                 onDisconnect()
+                                handleDisconnectWalletConnect()
                             }}
                         >
                             Disconnect Wallet
@@ -611,7 +613,7 @@ const Header = () => {
                             className="disconnect"
                             onClick={() => {
                                 onDisconnect()
-                                
+                                handleDisconnectWalletConnect()
                             }}
                         >
                             Disconnect Wallet
@@ -696,6 +698,7 @@ const Header = () => {
                             className="disconnect"
                             onClick={() => {
                                 onDisconnect()
+                                handleDisconnectWalletConnect()
                             }}
                         >
                             Disconnect Wallet
@@ -799,7 +802,11 @@ const Header = () => {
                     key: "3",
                 },
                 {
-                    label: <Link to="/convert-tmfg" onClick={handleCloseMobileMenu}>Convert tMFG</Link>,
+                    label: (
+                        <Link to="/convert-tmfg" onClick={handleCloseMobileMenu}>
+                            Convert tMFG
+                        </Link>
+                    ),
                     key: "7",
                 },
                 {
@@ -925,7 +932,11 @@ const Header = () => {
                     key: "3",
                 },
                 {
-                    label: <Link to="/convert-tmfg" onClick={handleCloseMobileMenu}>Convert tMFG</Link>,
+                    label: (
+                        <Link to="/convert-tmfg" onClick={handleCloseMobileMenu}>
+                            Convert tMFG
+                        </Link>
+                    ),
                     key: "7",
                 },
                 {
@@ -949,6 +960,7 @@ const Header = () => {
                             className="disconnect"
                             onClick={() => {
                                 onDisconnect()
+                                handleDisconnectWalletConnect()
                                 handleCloseMobileMenu()
                             }}
                         >
@@ -1035,6 +1047,7 @@ const Header = () => {
                             className="disconnect"
                             onClick={() => {
                                 onDisconnect()
+                                handleDisconnectWalletConnect()
                                 handleCloseMobileMenu()
                             }}
                         >
@@ -1126,7 +1139,11 @@ const Header = () => {
                     key: "3",
                 },
                 {
-                    label: <Link to="/convert-tmfg" onClick={handleCloseMobileMenu}>Convert tMFG</Link>,
+                    label: (
+                        <Link to="/convert-tmfg" onClick={handleCloseMobileMenu}>
+                            Convert tMFG
+                        </Link>
+                    ),
                     key: "7",
                 },
                 {
@@ -1150,6 +1167,8 @@ const Header = () => {
                             className="disconnect"
                             onClick={() => {
                                 onDisconnect()
+                                handleDisconnectWalletConnect()
+                                handleCloseMobileMenu()
                             }}
                         >
                             Disconnect Wallet
@@ -1166,6 +1185,7 @@ const Header = () => {
                             className="open-account"
                             onClick={() => {
                                 showConnectModal()
+                                handleCloseMobileMenu()
                             }}
                         >
                             connect wallet
@@ -1219,7 +1239,11 @@ const Header = () => {
                     key: "3",
                 },
                 {
-                    label: <Link to="/convert-tmfg" onClick={handleCloseMobileMenu}>Convert tMFG</Link>,
+                    label: (
+                        <Link to="/convert-tmfg" onClick={handleCloseMobileMenu}>
+                            Convert tMFG
+                        </Link>
+                    ),
                     key: "7",
                 },
                 {
@@ -1535,7 +1559,11 @@ const Header = () => {
                                     type="primary"
                                     className="-primary-2"
                                     icon={<IconWallet />}
-                                    onClick={showConnectModal}
+                                    onClick={() => {
+                                        handleCloseMobileMenu()
+                                        showConnectModal()
+                                        
+                                    }}
                                     block
                                 >
                                     Connect wallet

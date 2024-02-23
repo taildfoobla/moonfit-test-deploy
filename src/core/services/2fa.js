@@ -5,7 +5,6 @@ import {firebaseConfig} from "../utils/helpers/firebase"
 const {API_APP_URI} = COMMON_CONFIGS
 
 export const check2faAPI = async () => {
-    console.log("here")
     const accessToken = getLocalStorage(LOCALSTORAGE_KEY.ACCESS_TOKEN)
     const config = {
         headers: {
