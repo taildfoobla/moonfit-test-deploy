@@ -28,6 +28,11 @@ export default function LuckyRewardModal({rewardData, isOpen, onOpenReward, rend
         } else {
             setHaveAccesToken(false)
         }
+        if(isOpen){
+            document.body.style.overflow = 'hidden';
+        }else{
+            document.body.style.overflow = 'auto';
+        }
     }, [isOpen])
 
     const handleOk = () => {
@@ -68,7 +73,7 @@ export default function LuckyRewardModal({rewardData, isOpen, onOpenReward, rend
                         <img src={imgWon} alt="" />
                     </div>
                     <div className="lucky-wheel-reward-text-mobile">
-                        {rewardData.value}{" "}{rewardData.unit}
+                        {rewardData.value}{" "}${rewardData.unit}
                         {/* 5 $glMr */}
                         </div>
                     <div className="lucky-wheel-reward-image">
@@ -84,7 +89,7 @@ export default function LuckyRewardModal({rewardData, isOpen, onOpenReward, rend
                     </div>
                   
                 </div>
-                <div className="lucky-wheel-claim-btn-mobile">
+                <div className="lucky-wheel-claim-btn-mobile" onClick={handleOk}>
                         <img src={collectIcon} alt=""/>
                         <span>Collect</span>
                     </div>

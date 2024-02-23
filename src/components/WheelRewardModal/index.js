@@ -28,6 +28,12 @@ export default function WheelRewardModal({onToggleLuckyReward,rewardData, isOpen
         } else {
             setHaveAccesToken(false)
         }
+        if(isOpen){
+            document.body.style.overflow = 'hidden';
+        }else{
+            document.body.style.overflow = 'auto';
+        }
+
     }, [isOpen])
 
     const handleOk = (type) => {
