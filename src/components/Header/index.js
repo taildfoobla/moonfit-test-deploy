@@ -874,6 +874,7 @@ const Header = () => {
                             className="open-account"
                             onClick={() => {
                                 setIsOpenModalSocial(true)
+                                handleCloseMobileMenu()
                             }}
                         >
                             social login
@@ -978,6 +979,7 @@ const Header = () => {
                             className="open-account"
                             onClick={() => {
                                 setIsOpenModalSocial(true)
+                                handleCloseMobileMenu()
                             }}
                         >
                             social login

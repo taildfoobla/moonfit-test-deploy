@@ -1,4 +1,4 @@
-import React from "react"
+import React, {useState} from "react"
 import "./styles.less"
 import {Modal} from "antd"
 import closeBorder from "../../assets/images/astar-rewards/close-border.png"
@@ -20,6 +20,7 @@ export default function ConnectWalletModal({
     isLoginSocial,
     setIsOpenWalletConnectModal,
 }) {
+    const [isUsedMobile, setIsUsedMobile] = useState(isMobileOrTablet())
     const metamask = EVM_WALLETS.find((wallet) => wallet.title === "MetaMask")
     const subwallet = EVM_WALLETS.find((wallet) => wallet.title === "SubWallet (EVM)")
 
@@ -53,33 +54,38 @@ export default function ConnectWalletModal({
             <h3>welcome to Moonfit</h3>
             <p>Please select sign-in method</p>
             <ul className={isLoginSocial ? "login-social" : ""}>
-                <li
-                    onClick={() => {
-                        handleConnectWallet(metamask)
-                    }}
-                >
-                    <div className="wallet-picture">
-                        <div className="border-gradient"></div>
-                        <div className="wallet-img">
-                            <img src={metamaskLogo} alt="MetaMask" />
-                        </div>
-                    </div>
+                {!isUsedMobile && (
+                    <>
+                        <li
+                            onClick={() => {
+                                handleConnectWallet(metamask)
+                            }}
+                        >
+                            <div className="wallet-picture">
+                                <div className="border-gradient"></div>
+                                <div className="wallet-img">
+                                    <img src={metamaskLogo} alt="MetaMask" />
+                                </div>
+                            </div>
 
-                    <span>MetaMask</span>
-                </li>
-                <li
-                    onClick={() => {
-                        handleConnectWallet(subwallet)
-                    }}
-                >
-                    <div className="wallet-picture">
-                        <div className="border-gradient"></div>
-                        <div className="wallet-img">
-                            <img src={subwalletLogo} alt="SubWallet" />
-                        </div>
-                    </div>
-                    <span>SubWallet</span>
-                </li>
+                            <span>MetaMask</span>
+                        </li>
+                        <li
+                            onClick={() => {
+                                handleConnectWallet(subwallet)
+                            }}
+                        >
+                            <div className="wallet-picture">
+                                <div className="border-gradient"></div>
+                                <div className="wallet-img">
+                                    <img src={subwalletLogo} alt="SubWallet" />
+                                </div>
+                            </div>
+                            <span>SubWallet</span>
+                        </li>
+                    </>
+                )}
+
                 <li
                     onClick={() => {
                         onClose()
