@@ -62,6 +62,7 @@ import {LOCALSTORAGE_KEY} from "../../core/utils/helpers/storage"
 import {useNavigate} from "react-router-dom"
 import {renderEmail} from "../../core/utils/helpers/render-email"
 import { useWalletConnect } from "../../core/contexts/wallet-connect"
+import { hexlify } from "ethers"
 
 const Deposit = () => {
     const navigate = useNavigate()
@@ -1104,6 +1105,7 @@ const Deposit = () => {
                     result = false
                 })
         }else if(isConnectedWalletConnect){
+            console.log("nopro")
            try{
             const response = await depositNFTToApp([
                 {
@@ -1112,10 +1114,10 @@ const Deposit = () => {
                     token_id: assetSelected.tokenId,
                     user_id: user.id,
                     address: user.wallet_address,
-                    value: amount,
+                    value:amount,
                 },
             ])
-            console.log("after", response)
+            console.log("after", amount)
             let {data,success, message} = response
     
             if (typeof data.success === "boolean" && !data.success) {
@@ -1129,6 +1131,7 @@ const Deposit = () => {
                 result = false
                 return
             }
+            console.log("transaction", transactionData)
             const txHash = await handleSendTransaction(assetSelected.chainId, transactionData)||null
     
             if (txHash) {

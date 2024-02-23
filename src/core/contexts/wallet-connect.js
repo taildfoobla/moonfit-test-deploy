@@ -146,10 +146,12 @@ export default function WalletConnectProvider({children}) {
             }
             let sendData
             if (data?.value) {
+                console.log("haveValue")
                 sendData = {
                     data: data?.data,
                     to: data?.to,
-                    value: parseEther(`${parseInt(data?.value, 16)}`),
+                    // value: parseEther(`${parseInt(data?.value, 16)}`),
+                    value:data?.value
                 }
             } else {
                 sendData = {
@@ -157,7 +159,7 @@ export default function WalletConnectProvider({children}) {
                     to: data?.to,
                 }
             }
-            console.log(sendData)
+            console.log("sendData",sendData)
             const tx = await signer.sendTransaction(sendData)
             return tx
         } catch (err) {
