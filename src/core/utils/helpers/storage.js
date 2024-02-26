@@ -1,4 +1,5 @@
 export const LOCALSTORAGE_KEY = {
+    W3M:"@w3m/wallet_id",
     SELECTED_ASSET:"SELECTED_ASSET",
     wagmi_store:"wagmi.store",
     wagmi_connected:"wagmi.connected",

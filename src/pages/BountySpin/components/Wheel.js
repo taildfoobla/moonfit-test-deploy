@@ -224,13 +224,11 @@ const Wheel = (props) => {
                         return
                     }
                 } else if (isConnectedThroughWalletConnect) {
-                    console.log("nohavepro")
-                    const txHash = await handleSendTransaction(chainId, transactionData.transaction)
+                    const txHash = await handleSendTransaction(chainId, transactionData.transaction,setLoading)
                     if(txHash){
                         const updateTx = await checkApi(updateTransactionHash, [data.wallet_transaction_id, txHash])
 
                         if (updateTx === false) {
-                            console.log("here", updateTx)
                             return
                         }
                         luckyWheelId = updateTx?.meta?.lucky_wheel_id

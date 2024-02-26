@@ -76,12 +76,20 @@ export default function WalletConnectProvider({children}) {
         }
     }, [isOpenWalletConnectModal])
 
+    
     useEffect(() => {
+        console.log("here")
+        let timeout
         if (isConnected) {
             handleSignMessage()
-        } else {
-            handleDisconnectWalletConnect()
-            onDisconnect()
+        } 
+        else {
+            const  w3mLocal = getLocalStorage(LOCALSTORAGE_KEY.W3M)
+            if(!w3mLocal){
+                handleDisconnectWalletConnect()
+                onDisconnect()
+            }
+          
         }
     }, [isConnected])
 
@@ -147,7 +155,7 @@ export default function WalletConnectProvider({children}) {
         }
     }
 
-    const handleSendTransaction = async (id, data) => {
+    const handleSendTransaction = async (id, data,callBack=null) => {
         const provider = new BrowserProvider(walletProvider)
         const signer = await provider.getSigner()
         try {
@@ -186,12 +194,16 @@ export default function WalletConnectProvider({children}) {
             return tx?.hash
         } catch (err) {
             console.log("err", err)
-            AntdMessage.success({
+            if(callBack!==null){
+                callBack(false)
+            }
+             AntdMessage.error({
                 key: "error",
-                content: err,
+                content: err.message,
                 className: "message-error",
                 duration: 5,
             })
+            return false
         }
     }
 
