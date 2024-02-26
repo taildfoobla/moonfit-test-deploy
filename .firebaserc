@@ -1,18 +1,5 @@
 {
   "projects": {
-    "default": "moonfit-token-sale"
-  },
-  "targets": {
-    "moonfit-token-sale": {
-      "hosting": {
-        "dev": [
-          "moonfit-token-sale"
-        ],
-        "prod": [
-          "moonfit-nft"
-        ]
-      }
-    }
-  },
-  "etags": {}
+    "default": "moonfit-dev-test"
+  }
 }

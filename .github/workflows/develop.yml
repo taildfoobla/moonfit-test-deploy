@@ -1,50 +1,41 @@
-name: Deploy to firebase
-
+name: Firebase Deployment
 on:
   push:
-    branches: [develop]
-
+    branches:
+      - develop
 jobs:
   build:
-    name: Build and deploy to Firebase
+    name: Build
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@master
-      - name: Install dependencies
-        run: yarn -i
-      - name: Build dependencies
-        run: REACT_APP_ENV=development DISABLE_ESLINT_PLUGIN=true yarn build
-
+      - name: Checkout Repo
+        uses: actions/checkout@v2.3.2
+      - name: Install Dependencies
+        run: npm install      
+      - name: Build
+        env:
+          CI: false        
+        run: npm run build
+      - name: Archive Production Artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: build
+          path: build
+  deploy:
+    name: Deploy
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v2.3.2
+      - name: Download Artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: build
+          path: build
       - name: Deploy to Firebase
         uses: w9jds/firebase-action@master
         with:
-          args: deploy --only hosting:dev
+          args: deploy --only hosting
         env:
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
-
-
-# name: Deploy to firebase
-
-# on:
-#   push:
-#     branches: [develop]
-
-# jobs:
-#   build:
-#     name: Build and deploy to Firebase
-#     runs-on: ubuntu-latest
-#     steps:
-#       - name: Checkout repository
-#         uses: actions/checkout@master
-#       - name: Install dependencies
-#         run: yarn -i
-#       - name: Build dependencies
-#         run: REACT_APP_ENV=development DISABLE_ESLINT_PLUGIN=true NODE_OPTIONS=--openssl-legacy-provider yarn build
-
-#       - name: Deploy to Firebase
-#         uses: w9jds/firebase-action@master
-#         with:
-#           args: deploy --only hosting
-#         env:
-#           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
