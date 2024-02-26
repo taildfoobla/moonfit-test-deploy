@@ -1065,10 +1065,8 @@ const Deposit = () => {
         //     amount,
         // })
         let result=false
-        console.log("here")
         
         if (provider) {
-            console.log("havepro")
             await switchToNetwork(provider, assetSelected.chainId)
                 .then(async () => {
                     await depositToMobileApp(
@@ -1105,7 +1103,6 @@ const Deposit = () => {
                     result = false
                 })
         }else if(isConnectedWalletConnect){
-            console.log("nopro")
            try{
             const response = await depositNFTToApp([
                 {
@@ -1131,19 +1128,17 @@ const Deposit = () => {
                 result = false
                 return
             }
-            console.log("transaction", transactionData)
             const txHash = await handleSendTransaction(assetSelected.chainId, transactionData)||null
     
             if (txHash) {
               await updateTransactionHash([{transaction_id: data.id, transaction_hash: txHash}])
-                
                 setDepositResult({
                     success,
                     message,
                     transactionId: response.id,
                     transactionData,
                     txHash,
-                    txUrl: `${assetSelected.scan}/tx/${response.txHash}`,
+                    txUrl: `${assetSelected.scan}/tx/${txHash}`,
                 })
                 setDepositing(false)
                 setIsModalResult(true)

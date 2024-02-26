@@ -1,11 +1,13 @@
 import React, {useState, useEffect, createContext, useContext, useReducer} from "react"
 import {getLocalStorage, LOCALSTORAGE_KEY, setLocalStorage} from "../utils/helpers/storage"
-import { chains } from "../utils/constants/wallet-connect"
+import { message as AntdMessage } from "antd"
+import { chains, chainsToAdd } from "../utils/constants/wallet-connect"
 import {BrowserProvider, parseEther, parseGwei} from "ethers"
 import {createWeb3Modal, defaultConfig} from "@web3modal/ethers/react"
 import {useWeb3Modal} from "@web3modal/ethers/react"
 import {useAuth} from "./auth"
 import {useWeb3ModalAccount, useWeb3ModalProvider, useSwitchNetwork, useDisconnect} from "@web3modal/ethers/react"
+import { getShortAddress } from "../utils/helpers/blockchain"
 // 1. Get projectId at https://cloud.walletconnect.com
 const projectId = "2d6d4341d352937d613828ea6124a208"
 
@@ -59,7 +61,8 @@ export default function WalletConnectProvider({children}) {
         handleToggleConnect,
         setIsConnectedThroughWalletConnect,
         signatureData,
-        setSignatureData
+        setSignatureData,
+        onDisconnect
     } = useAuth()
     const {open} = useWeb3Modal()
     const {address, chainId, isConnected} = useWeb3ModalAccount()
@@ -77,6 +80,9 @@ export default function WalletConnectProvider({children}) {
     useEffect(() => {
         if (isConnected) {
             handleSignMessage()
+        }else{
+            handleDisconnectWalletConnect()
+            onDisconnect()
         }
     }, [isConnected])
 
@@ -98,7 +104,6 @@ export default function WalletConnectProvider({children}) {
         try {
             const signatureLocal = JSON.parse(getLocalStorage(LOCALSTORAGE_KEY.WALLET_SIGNATURE))
             if (signatureLocal && isConnected) {
-                console.log("here")
                 handleConnectWalletConnect(address)
                 setIsConnectedThroughWalletConnect(true)
                 setSignatureData(signatureLocal?.signature)
@@ -127,6 +132,12 @@ export default function WalletConnectProvider({children}) {
                         })
                     )
                     setSignatureData(signData)
+                    AntdMessage.success({
+                        key: "success",
+                        content: `Successfully to connect with ${getShortAddress(address,6)}`,
+                        className: "message-success",
+                        duration: 5,
+                    })
                 } else {
                     handleDisconnectWalletConnect()
                 }
@@ -138,15 +149,28 @@ export default function WalletConnectProvider({children}) {
     }
 
     const handleSendTransaction = async (id, data) => {
+        const provider = new BrowserProvider(walletProvider)
+        const signer = await provider.getSigner()
         try {
-            const provider = new BrowserProvider(walletProvider)
-            const signer = await provider.getSigner()
-            if (chainId !== id) {
-                await switchNetwork(id)
-            }
+            // if (chainId !== id) {
+            //     await switchNetwork(id)
+            // }
+           await window.ethereum.request({
+                method: "wallet_addEthereumChain",
+                params: [{
+                    chainId: "0x89",
+                    rpcUrls: ["https://rpc-mainnet.matic.network/"],
+                    chainName: "Matic Mainnet",
+                    nativeCurrency: {
+                        name: "MATIC",
+                        symbol: "MATIC",
+                        decimals: 18
+                    },
+                    blockExplorerUrls: ["https://polygonscan.com/"]
+                }]
+            });
             let sendData
             if (data?.value) {
-                console.log("haveValue")
                 sendData = {
                     data: data?.data,
                     to: data?.to,
@@ -159,11 +183,18 @@ export default function WalletConnectProvider({children}) {
                     to: data?.to,
                 }
             }
-            console.log("sendData",sendData)
             const tx = await signer.sendTransaction(sendData)
-            return tx
+            return tx?.hash
         } catch (err) {
             console.log("err", err)
+            provider.on
+            await provider.request(
+               {
+                method: "wallet_addEthereumChain",
+                params: [chainsToAdd.find(chain=>chain.id===id)?.params||{}]
+               })
+            await handleSendTransaction(id,data)
+
         }
     }
 

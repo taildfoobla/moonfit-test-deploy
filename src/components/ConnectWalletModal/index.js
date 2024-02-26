@@ -53,54 +53,68 @@ export default function ConnectWalletModal({
             <img className="moonfit-logo" src={moonfitLogo} alt="Moonfit" />
             <h3>welcome to Moonfit</h3>
             <p>Please select sign-in method</p>
-            <ul className={isLoginSocial ? "login-social" : ""}>
-                {!isUsedMobile && (
-                    <>
-                        <li
-                            onClick={() => {
-                                handleConnectWallet(metamask)
-                            }}
-                        >
-                            <div className="wallet-picture">
-                                <div className="border-gradient"></div>
-                                <div className="wallet-img">
-                                    <img src={metamaskLogo} alt="MetaMask" />
-                                </div>
-                            </div>
 
-                            <span>MetaMask</span>
-                        </li>
-                        <li
-                            onClick={() => {
-                                handleConnectWallet(subwallet)
-                            }}
-                        >
-                            <div className="wallet-picture">
-                                <div className="border-gradient"></div>
-                                <div className="wallet-img">
-                                    <img src={subwalletLogo} alt="SubWallet" />
-                                </div>
+            {!isUsedMobile ? (
+                <ul className={isLoginSocial ? "login-social" : ""}>
+                    <li
+                        onClick={() => {
+                            handleConnectWallet(metamask)
+                        }}
+                    >
+                        <div className="wallet-picture">
+                            <div className="border-gradient"></div>
+                            <div className="wallet-img">
+                                <img src={metamaskLogo} alt="MetaMask" />
                             </div>
-                            <span>SubWallet</span>
-                        </li>
-                    </>
-                )}
-
-                <li
-                    onClick={() => {
-                        onClose()
-                        setIsOpenWalletConnectModal(true)
-                    }}
-                >
-                    <div className="wallet-picture">
-                        <div className="border-gradient"></div>
-                        <div className="wallet-img">
-                            <img src={walletconnectLogo} alt="WalletConnect" />
                         </div>
-                    </div>
-                    <span>WalletConnect</span>
-                </li>
-            </ul>
+
+                        <span>MetaMask</span>
+                    </li>
+                    <li
+                        onClick={() => {
+                            handleConnectWallet(subwallet)
+                        }}
+                    >
+                        <div className="wallet-picture">
+                            <div className="border-gradient"></div>
+                            <div className="wallet-img">
+                                <img src={subwalletLogo} alt="SubWallet" />
+                            </div>
+                        </div>
+                        <span>SubWallet</span>
+                    </li>
+                    <li
+                        onClick={() => {
+                            onClose()
+                            setIsOpenWalletConnectModal(true)
+                        }}
+                    >
+                        <div className="wallet-picture">
+                            <div className="border-gradient"></div>
+                            <div className="wallet-img">
+                                <img src={walletconnectLogo} alt="WalletConnect" />
+                            </div>
+                        </div>
+                        <span>WalletConnect</span>
+                    </li>
+                </ul>
+            ) : (
+                <div className="social-login-wrapper">
+                    <div className="border-gradient"></div>
+
+                    <button
+                        className="social-login"
+                        onClick={() => {
+                            onClose()
+                            setIsOpenWalletConnectModal(true)
+                        }}
+                    >
+                        <p>WalletConnect</p>
+                        <img src={walletconnectLogo} alt="SocialLogin" />
+                    </button>
+                </div>
+            )}
+
             {!isLoginSocial && (
                 <div className="social-login-wrapper">
                     <div className="border-gradient"></div>

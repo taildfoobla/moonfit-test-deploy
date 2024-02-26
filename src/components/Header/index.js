@@ -60,6 +60,7 @@ const Header = () => {
         isLoginSocial,
         setIsLoginSocial,
         setIsOpenModalSocial,
+        setIsOpenWalletConnectModal
     } = useAuth()
     const {handleDisconnectWalletConnect} = useWalletConnect()
 
@@ -1186,8 +1187,8 @@ const Header = () => {
                         <div
                             className="open-account"
                             onClick={() => {
-                                showConnectModal()
                                 handleCloseMobileMenu()
+                                setIsOpenWalletConnectModal(true)
                             }}
                         >
                             connect wallet

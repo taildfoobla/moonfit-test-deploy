@@ -227,7 +227,7 @@ const Wheel = (props) => {
                     console.log("nohavepro")
                     const txHash = await handleSendTransaction(chainId, transactionData.transaction)
                     if(txHash){
-                        const updateTx = await checkApi(updateTransactionHash, [data.wallet_transaction_id, txHash?.hash])
+                        const updateTx = await checkApi(updateTransactionHash, [data.wallet_transaction_id, txHash])
 
                         if (updateTx === false) {
                             console.log("here", updateTx)

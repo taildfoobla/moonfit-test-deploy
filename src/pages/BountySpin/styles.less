@@ -1051,9 +1051,18 @@ img {
 }
 
 @media (max-width: 375.1px) {
-    .wheel-wrapper {
-        margin: 0 auto 0 !important;
+    .bounty-spin{
+        .wheel-container{
+            &.bounty-spin-wheel{
+                .wheel-flex{
+                    .wheel-wrapper {
+                        margin: 20px auto 0 !important;
+                    }
+                }
+            }
+        }
     }
+  
     .lw-bottom {
         .lw-spin-wrapper {
             .lw-code {

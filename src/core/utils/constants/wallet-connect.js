@@ -36,33 +36,46 @@ export const chains = [
     },
 ]
 
-export const chainsToAdd=[
+export const chainsToAdd = [
     {
-        chainId: "0x507",
-        rpcUrls: ["https://rpc.api.moonbase.moonbeam.network"],
-        chainName: "MoonbaseAlpha",
-        nativeCurrency: {name: "DEV", decimals: 18, symbol: "DEV"},
-        blockExplorerUrls: ["https://moonbase.moonscan.io/"],
+        id: 1287,
+        params: {
+            chainId: "0x507",
+            rpcUrls: ["https://rpc.api.moonbase.moonbeam.network"],
+            chainName: "MoonbaseAlpha",
+            nativeCurrency: {name: "DEV", decimals: 18, symbol: "DEV"},
+            blockExplorerUrls: ["https://moonbase.moonscan.io/"],
+        },
     },
     {
-        chainId: "0x504",
-        rpcUrls: ["https://rpc.api.moonbeam.network"],
-        chainName: "Moonbeam",
-        nativeCurrency: {name: "GLMR", decimals: 18, symbol: "GLMR"},
-        blockExplorerUrls: ["https://moonbeam.moonscan.io/"],
+        id: 1284,
+        params: {
+            chainId: "0x504",
+            rpcUrls: ["https://rpc.api.moonbeam.network"],
+            chainName: "Moonbeam",
+            nativeCurrency: {name: "GLMR", decimals: 18, symbol: "GLMR"},
+            blockExplorerUrls: ["https://moonbeam.moonscan.io/"],
+        },
     },
     {
-        chainId: "0x51",
-        rpcUrls: ["https://evm.shibuya.astar.network"],
-        chainName: "Shibuya Testnet",
-        nativeCurrency: {name: "SBY", decimals: 18, symbol: "SBY"},
-        blockExplorerUrls: ["https://blockscout.com/shibuya"],
+        id: 81,
+        params: {
+            chainId: "0x51",
+            rpcUrls: ["https://evm.shibuya.astar.network"],
+            chainName: "Shibuya Testnet",
+            nativeCurrency: {name: "SBY", decimals: 18, symbol: "SBY"},
+            blockExplorerUrls: ["https://blockscout.com/shibuya"],
+        },
     },
     {
-        chainId: "0x250",
-        rpcUrls: ["https://evm.astar.network"],
-        chainName: "Astar",
-        nativeCurrency: {name: "ASTR", decimals: 18, symbol: "ASTR"},
-        blockExplorerUrls: ["https://blockscout.com/astar"],
+        id: 592,
+        params: {
+            chainId: "0x250",
+            rpcUrls: ["https://evm.astar.network"],
+            chainName: "Astar",
+            nativeCurrency: {name: "ASTR", decimals: 18, symbol: "ASTR"},
+            blockExplorerUrls: ["https://blockscout.com/astar"],
+        },
     },
 ]
+
