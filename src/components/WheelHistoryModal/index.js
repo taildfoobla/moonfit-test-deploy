@@ -2,6 +2,7 @@ import React, {useState} from "react"
 import "./styles.less"
 import {Modal} from "antd"
 import closeIcon from "../../assets/images/bounty-spin/close-no-border-color-white.png"
+import backIcon from "../../assets/images/bounty-spin/back-icon.png"
 import astrIcon from "../../assets/images/lucky-wheel/wheel/astar-wheel.png"
 import noRewardIcon from "../../assets/images/bounty-spin/no-reward.png"
 import zealyTaskIcon from "../../assets/images/bounty-spin/zealy-task.png"
@@ -131,6 +132,7 @@ export default function WheelHistoryModal({name, isOpen, onClose, historyData, h
             <div className="border-gradient"></div>
             <button className="close-button" onClick={onClose}>
                 <img src={closeIcon} alt="" />
+                <img src={backIcon} alt=""/>
             </button>
             <div className="content">
                 <h3>History</h3>

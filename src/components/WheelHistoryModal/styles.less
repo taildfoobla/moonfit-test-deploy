@@ -22,6 +22,7 @@
                 padding: 0;
                 height: 100%;
                 .border-gradient {
+                    display:block;
                     position: absolute;
                     top: -1.5px;
                     bottom: -1.5px;
@@ -43,6 +44,12 @@
                     img {
                         aspect-ratio: 1;
                         width: 24px;
+                        &:nth-child(1){
+                            display:block;
+                        }
+                        &:nth-child(2){
+                            display:none;
+                        }
                     }
                 }
                 .content {
@@ -178,13 +185,37 @@
     .wheel-history-modal {
         &.bounty-spin-history {
             .ant-modal-content {
+                position: fixed;
+                top:0;
+                bottom:0;
+                left:0;
+                right:0;
                 .ant-modal-body {
+                    .border-gradient {
+                        display:none;
+                    }
+                    .close-button{
+                        top:36px;
+                        right:calc(100% - 42px);
+                        img{
+                            &:nth-child(1){
+                                display:none;
+                            }
+                            &:nth-child(2){
+                                display:block;
+                            }
+                        }
+                    }
                     .content {
                         padding: 20px 18px 20px 20px;
+                        height: 100%;
                         h3 {
                             font-size: 20px;
+                            margin-top: 16px;
+                            margin-bottom: 26px;
                         }
                         .history-list {
+                            max-height:calc(100% - 100px) ;
                             .history-item {
                                 padding: 15px;
                                 border-radius: 10px;
